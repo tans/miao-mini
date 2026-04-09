@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>妙视频 - 视频任务平台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-title" id="pageTitle">首页</div>
+    </header>
+
+    <!-- Page Container -->
+    <main class="page-container" id="pageContainer">
+      <!-- Pages render here -->
+    </main>
+
+    <!-- Tab Bar -->
+    <nav class="tab-bar">
+      <div class="tab-item active" data-page="home">
+        <div class="tab-icon home-icon"></div>
+        <div class="tab-label">首页</div>
+      </div>
+      <div class="tab-item" data-page="create-task">
+        <div class="tab-icon create-icon"></div>
+        <div class="tab-label">创建任务</div>
+      </div>
+      <div class="tab-item" data-page="my-tasks">
+        <div class="tab-icon mytasks-icon"></div>
+        <div class="tab-label">我的任务</div>
+      </div>
+      <div class="tab-item" data-page="video-proposals">
+        <div class="tab-icon proposals-icon"></div>
+        <div class="tab-label">提案</div>
+      </div>
+    </nav>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
