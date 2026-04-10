@@ -19,7 +19,7 @@ Page({
   },
 
   onReachBottom() {
-    if (!this.loading && this.data.hasMore) {
+    if (!this.data.loading && this.data.hasMore) {
       this.setData({ page: this.data.page + 1 });
       this.loadWorks();
     }

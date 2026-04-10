@@ -9,12 +9,15 @@
     "pages/my-tasks/index",
     "pages/transactions/index",
     "pages/settings/index",
-    "pages/work-detail/index"
+    "pages/work-detail/index",
+    "pages/create-task/index",
+    "pages/video-proposals/index",
+    "pages/wallet/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "妙视频",
+    "navigationBarTitleText": "创意喵",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   },
@@ -26,13 +29,13 @@
     "list": [
       {
         "pagePath": "pages/home/index",
-        "text": "任务大厅",
+        "text": "首页",
         "iconPath": "assets/icons/home.png",
         "selectedIconPath": "assets/icons/home-active.png"
       },
       {
         "pagePath": "pages/works/index",
-        "text": "过审作品",
+        "text": "灵感",
         "iconPath": "assets/icons/works.png",
         "selectedIconPath": "assets/icons/works-active.png"
       },

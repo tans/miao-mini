@@ -1,6 +1,6 @@
 <view class="works-container">
   <view class="works-header">
-    <text class="works-title">过审作品</text>
+    <text class="works-title">灵感</text>
     <view class="sort-tabs">
       <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">最新</text>
       <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">最多点赞</text>
@@ -22,7 +22,7 @@
   </view>
 
   <view class="empty-state" wx:if="{{!loading && works.length === 0}}">
-    <text>暂无过审作品</text>
+    <text>暂无灵感</text>
   </view>
 
   <view class="loading-more" wx:if="{{loading}}">

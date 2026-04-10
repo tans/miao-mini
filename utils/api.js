@@ -1,4 +1,4 @@
-// utils/api.js - 妙视频小程序 API 服务层
+// utils/api.js - 创意喵小程序 API 服务层
 const Api = {
   tokenKey: 'miao_token',
   userKey: 'miao_user',

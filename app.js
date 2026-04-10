@@ -1,4 +1,4 @@
-// 妙视频 - 视频任务平台
+// 创意喵 - 视频任务平台
 App({
   globalData: {
     user: null,
@@ -9,10 +9,14 @@ App({
   onLaunch() {
     // 检查登录状态
     const token = wx.getStorageSync('miao_token');
-    const user = wx.getStorageSync('miao_user');
-    if (token && user) {
+    const userStr = wx.getStorageSync('miao_user');
+    if (token && userStr) {
       this.globalData.token = token;
-      this.globalData.user = user;
+      try {
+        this.globalData.user = typeof userStr === 'string' ? JSON.parse(userStr) : userStr;
+      } catch (e) {
+        this.globalData.user = null;
+      }
     }
   },
 
@@ -32,7 +36,7 @@ App({
     this.globalData.token = token;
     this.globalData.user = user;
     wx.setStorageSync('miao_token', token);
-    wx.setStorageSync('miao_user', user);
+    wx.setStorageSync('miao_user', JSON.stringify(user));
   },
 
   clearAuth() {

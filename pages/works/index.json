@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "过审作品"
+  "navigationBarTitleText": "灵感",
+  "enablePullDownRefresh": true
 }

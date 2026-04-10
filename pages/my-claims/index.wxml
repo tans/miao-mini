@@ -16,7 +16,7 @@
         <text class="claim-price">¥{{item.unit_price || 0}}</text>
         <text class="claim-time">{{item.created_at}}</text>
       </view>
-      <view class="claim-actions" catchtap="stopPropagation" wx:if="{{item.status === 1}}">
+      <view class="claim-actions" catchtap="stopPropagation" wx:if="{{item.status === 0}}">
         <button class="btn-submit" bindtap="showSubmitModal" data-claim-id="{{item.id}}">提交作品</button>
       </view>
     </view>

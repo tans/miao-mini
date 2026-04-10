@@ -27,7 +27,7 @@
   <view wx:if="{{activeTab === 'claims'}}">
     <view wx:if="{{claims.length === 0}}" class="empty-state">
       <text class="empty-icon">📭</text>
-      <text class="empty-desc">暂无接单，去任务大厅看看吧</text>
+      <text class="empty-desc">暂无接单，去首页看看吧</text>
     </view>
     <view
       wx:for="{{claims}}"

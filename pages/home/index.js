@@ -12,13 +12,14 @@ Page({
   },
 
   onLoad() {
-    this.setData({ page: 1, tasks: [], hasMore: true });
     this.loadTasks();
   },
 
   onShow() {
-    this.setData({ page: 1, tasks: [], hasMore: true });
-    this.loadTasks();
+    if (this.data.tasks.length > 0) {
+      this.setData({ page: 1, hasMore: true });
+      this.loadTasks();
+    }
   },
 
   onPullDownRefresh() {
