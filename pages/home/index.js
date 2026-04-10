@@ -12,18 +12,13 @@ Page({
   },
 
   onLoad() {
-    if (!app.isLoggedIn()) {
-      wx.navigateTo({ url: '/pages/login/index' });
-      return;
-    }
+    this.setData({ page: 1, tasks: [], hasMore: true });
     this.loadTasks();
   },
 
   onShow() {
-    if (app.isLoggedIn()) {
-      this.setData({ page: 1, tasks: [], hasMore: true });
-      this.loadTasks();
-    }
+    this.setData({ page: 1, tasks: [], hasMore: true });
+    this.loadTasks();
   },
 
   onPullDownRefresh() {
