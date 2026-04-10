@@ -1,0 +1,41 @@
+<view class="claims-container">
+  <view class="tabs">
+    <text class="tab {{activeTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部</text>
+    <text class="tab {{activeTab === 'pending' ? 'active' : ''}}" data-tab="pending" bindtap="switchTab">待提交</text>
+    <text class="tab {{activeTab === 'submitted' ? 'active' : ''}}" data-tab="submitted" bindtap="switchTab">待验收</text>
+    <text class="tab {{activeTab === 'completed' ? 'active' : ''}}" data-tab="completed" bindtap="switchTab">已完成</text>
+  </view>
+
+  <view class="claim-list" wx:if="{{claims.length > 0}}">
+    <view class="claim-card" wx:for="{{filteredClaims}}" wx:key="id" bindtap="goTaskDetail" data-id="{{item.task_id}}">
+      <view class="claim-header">
+        <text class="claim-task-title">{{item.task_title || '任务' + item.task_id}}</text>
+        <text class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
+      </view>
+      <view class="claim-body">
+        <text class="claim-price">¥{{item.unit_price || 0}}</text>
+        <text class="claim-time">{{item.created_at}}</text>
+      </view>
+      <view class="claim-actions" catchtap="stopPropagation" wx:if="{{item.status === 1}}">
+        <button class="btn-submit" bindtap="showSubmitModal" data-claim-id="{{item.id}}">提交作品</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && claims.length === 0}}">
+    <text>暂无认领记录</text>
+  </view>
+</view>
+
+<!-- 提交弹窗 -->
+<view class="modal-mask" wx:if="{{showSubmitModal}}" bindtap="hideSubmitModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <text class="modal-title">提交作品</text>
+    <input class="modal-input" placeholder="请输入视频链接" value="{{submitUrl}}" bindinput="onSubmitUrlInput"/>
+    <input class="modal-input" placeholder="备注（选填）" value="{{submitNote}}" bindinput="onSubmitNoteInput"/>
+    <view class="modal-btns">
+      <button class="btn-cancel" bindtap="hideSubmitModal">取消</button>
+      <button class="btn-confirm" bindtap="confirmSubmit">提交</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,155 @@
+.claims-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.tabs {
+  background: #fff;
+  display: flex;
+  padding: 12px 16px;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab {
+  font-size: 14px;
+  color: #999;
+  padding-bottom: 4px;
+}
+
+.tab.active {
+  color: #FF2442;
+  font-weight: 500;
+  border-bottom: 2px solid #FF2442;
+}
+
+.claim-list {
+  padding: 12px;
+}
+
+.claim-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.claim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.claim-task-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.claim-status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.status-1 { background: #fff7e6; color: #fa8c16; }
+.status-2 { background: #e6fff7; color: #52c41a; }
+.status-5 { background: #fff1f0; color: #ff4d4f; }
+
+.claim-body {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.claim-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #FF2442;
+}
+
+.claim-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.claim-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-submit {
+  font-size: 13px;
+  color: #fff;
+  background: #FF2442;
+  padding: 6px 16px;
+  border-radius: 16px;
+  border: none;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 0;
+  color: #999;
+  font-size: 14px;
+}
+
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 80%;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modal-input {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.modal-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-cancel, .btn-confirm {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  border: none;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-confirm {
+  background: #FF2442;
+  color: #fff;
+}
