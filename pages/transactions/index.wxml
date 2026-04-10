@@ -1,0 +1,19 @@
+<view class="transactions-container">
+  <view class="transaction-list" wx:if="{{transactions.length > 0}}">
+    <view class="transaction-item" wx:for="{{transactions}}" wx:key="id">
+      <view class="trans-left">
+        <text class="trans-type">{{item.type_text}}</text>
+        <text class="trans-time">{{item.created_at}}</text>
+      </view>
+      <text class="trans-amount {{item.amount > 0 ? 'income' : 'expense'}}">
+        {{item.amount > 0 ? '+' : ''}}{{item.amount}}
+      </text>
+    </view>
+  </view>
+  <view class="empty-state" wx:if="{{!loading && transactions.length === 0}}">
+    <text>暂无交易记录</text>
+  </view>
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
