@@ -1,0 +1,31 @@
+<view class="works-container">
+  <view class="works-header">
+    <text class="works-title">过审作品</text>
+    <view class="sort-tabs">
+      <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">最新</text>
+      <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">最多点赞</text>
+      <text class="tab {{sort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">最多浏览</text>
+    </view>
+  </view>
+
+  <view class="works-list" wx:if="{{works.length > 0}}">
+    <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
+      <image class="work-cover" src="{{item.cover_url || item.image}}" mode="aspectFill"/>
+      <view class="work-info">
+        <text class="work-title">{{item.title}}</text>
+        <view class="work-author">
+          <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/home.png'}}"/>
+          <text class="author-name">{{item.creator_name || '创作者'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && works.length === 0}}">
+    <text>暂无过审作品</text>
+  </view>
+
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
