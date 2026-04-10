@@ -1,0 +1,18 @@
+<view class="work-detail-container">
+  <view class="work-media">
+    <image wx:if="{{work.image}}" class="work-image" src="{{work.image}}" mode="widthFix"/>
+    <video wx:if="{{work.video}}" class="work-video" src="{{work.video}}" controls/>
+  </view>
+
+  <view class="work-info-card">
+    <text class="work-title">{{work.title || '作品'}}</text>
+    <view class="work-author">
+      <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/home.png'}}"/>
+      <text class="author-name">{{work.creator_name || '创作者'}}</text>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <button class="action-btn share-btn" open-type="share">分享</button>
+  </view>
+</view>

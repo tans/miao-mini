@@ -1,0 +1,62 @@
+.work-detail-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.work-media {
+  width: 100%;
+}
+
+.work-image {
+  width: 100%;
+  display: block;
+}
+
+.work-video {
+  width: 100%;
+}
+
+.work-info-card {
+  background: #fff;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.work-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.work-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #eee;
+}
+
+.author-name {
+  font-size: 14px;
+  color: #666;
+}
+
+.action-bar {
+  padding: 16px;
+}
+
+.action-btn {
+  width: 100%;
+  background: #FF2442;
+  color: #fff;
+  border-radius: 24px;
+  border: none;
+  font-size: 15px;
+}
