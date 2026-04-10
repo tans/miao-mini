@@ -1,0 +1,50 @@
+.settings-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 12px;
+}
+
+.menu-list {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-text {
+  font-size: 15px;
+  color: #333;
+}
+
+.menu-arrow {
+  color: #ccc;
+  font-size: 16px;
+}
+
+.logout-btn {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  color: #FF2442;
+  font-size: 15px;
+  margin-top: 12px;
+}
+
+.version {
+  text-align: center;
+  color: #ccc;
+  font-size: 12px;
+  margin-top: 24px;
+}
