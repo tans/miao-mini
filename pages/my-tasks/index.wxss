@@ -1,0 +1,249 @@
+/* pages/my-tasks/index.wxss */
+.my-tasks-container {
+  padding-bottom: 20px;
+}
+
+.user-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.wallet-btn {
+  font-size: 14px;
+  color: #FF6B6B;
+  padding: 4px 12px;
+  border: 1px solid #FF6B6B;
+  border-radius: 4px;
+}
+
+.logout-btn {
+  font-size: 14px;
+  color: #999;
+  padding: 4px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.tab-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14px 0;
+  font-size: 14px;
+  color: #666;
+  position: relative;
+}
+
+.tab-btn.active {
+  color: #FF6B6B;
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: #FF6B6B;
+  border-radius: 2px;
+}
+
+.task-card {
+  margin: 8px 16px;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.task-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.task-status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.task-status.pending, .task-status.pending {
+  background: #FFF3E0;
+  color: #FF9800;
+}
+
+.task-status.submitted, .task-status.in-progress {
+  background: #FFF3E0;
+  color: #FF9800;
+}
+
+.task-status.passed, .task-status.completed {
+  background: #E3F2FD;
+  color: #2196F3;
+}
+
+.task-status.open, .task-status.online {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.task-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+}
+
+.task-budget {
+  font-weight: 700;
+  color: #FF6B6B;
+  font-size: 15px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.empty-desc {
+  color: #999;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  background: #FF6B6B;
+  color: #fff;
+}
+
+.claim-actions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.btn-sm {
+  padding: 6px 16px;
+  font-size: 13px;
+}
+
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  width: 85%;
+  max-width: 320px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions .btn {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #666;
+}

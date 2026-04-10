@@ -1,0 +1,76 @@
+<!--pages/task-detail/index.wxml-->
+<view class="detail-container" wx:if="{{task}}">
+  <!-- 任务头部 -->
+  <view class="task-header-card">
+    <view class="detail-title">{{task.title}}</view>
+    <view class="detail-meta">
+      <text>👤 {{task.business_name || '商家'}}</text>
+      <text>📅 {{task.deadline ? task.deadline.substring(0, 10) : '不限'}}</text>
+      <text class="task-status {{getStatusClass(task.status)}}">{{getStatusText(task.status)}}</text>
+    </view>
+  </view>
+
+  <!-- 任务描述 -->
+  <view class="card">
+    <view class="detail-section-title">任务描述</view>
+    <text class="detail-desc">{{task.description || '暂无描述'}}</text>
+  </view>
+
+  <!-- 预算 -->
+  <view class="card">
+    <view class="detail-section-title">预算</view>
+    <view class="budget-price">¥{{task.unit_price}}</view>
+    <view class="budget-award" wx:if="{{task.award_price > 0}}">
+      入围奖励 ¥{{task.award_price}}/人 × {{task.award_count || 0}}人
+    </view>
+  </view>
+
+  <!-- 标签 -->
+  <view class="card" wx:if="{{task.industries.length > 0}}">
+    <view class="detail-section-title">标签</view>
+    <view class="task-tags">
+      <text wx:for="{{task.industries}}" wx:key="index" class="tag video">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 视频要求 -->
+  <view class="card" wx:if="{{task.video_duration}}">
+    <view class="detail-section-title">视频要求</view>
+    <text class="detail-desc">
+      {{task.video_duration}}{{task.video_aspect ? ' | 尺寸: ' + task.video_aspect : ''}}{{task.video_resolution ? ' | 分辨率: ' + task.video_resolution : ''}}
+    </text>
+  </view>
+
+  <!-- 收到的提案 -->
+  <view class="card" wx:if="{{isMyTask}}">
+    <view class="detail-section-title">收到的提案</view>
+    <view wx:if="{{claims.length === 0}}" class="empty-state">
+      <text class="empty-desc">暂无提案</text>
+    </view>
+    <view wx:else>
+      <view wx:for="{{claims}}" wx:key="id" class="proposal-card">
+        <view class="proposal-header">
+          <view class="creator-info">
+            <view class="avatar">{{item.creator_name ? item.creator_name[0] : '创'}}</view>
+            <view>
+              <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
+              <text class="proposal-status task-status {{item.status === 2 ? 'completed' : 'pending'}}">
+                {{getClaimStatusText(item.status)}}
+              </text>
+            </view>
+          </view>
+        </view>
+        <text class="proposal-content">{{item.content || '暂无说明'}}</text>
+        <view class="proposal-actions" wx:if="{{item.status === 1}}">
+          <button class="btn btn-secondary btn-sm" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
+          <button class="btn btn-primary btn-sm" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 接单按钮 -->
+  <view class="action-bar" wx:if="{{canClaim}}">
+    <button class="btn btn-primary btn-block" bindtap="claimTask">立即接单</button>
+  </view>
+</view>

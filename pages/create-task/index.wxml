@@ -1,0 +1,106 @@
+<!--pages/create-task/index.wxml-->
+<view class="create-container">
+  <form class="card" bindsubmit="handleSubmit">
+    <view class="form-group">
+      <text class="form-label">任务标题</text>
+      <input
+        class="form-input"
+        type="text"
+        placeholder="简洁描述任务需求"
+        value="{{title}}"
+        bindinput="onTitleInput"
+      />
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">详细描述</text>
+      <textarea
+        class="form-textarea"
+        placeholder="详细说明任务要求、交付标准、注意事项..."
+        value="{{description}}"
+        bindinput="onDescInput"
+      />
+    </view>
+
+    <view class="form-row">
+      <view class="form-group flex-1">
+        <text class="form-label">基础奖励 (元/人)</text>
+        <input
+          class="form-input"
+          type="number"
+          placeholder="≥2元"
+          value="{{unit_price}}"
+          bindinput="onUnitPriceInput"
+        />
+      </view>
+      <view class="form-group flex-1">
+        <text class="form-label">报名人数上限</text>
+        <input
+          class="form-input"
+          type="number"
+          placeholder="≥10人"
+          value="{{total_count}}"
+          bindinput="onTotalCountInput"
+        />
+      </view>
+    </view>
+
+    <view class="form-row">
+      <view class="form-group flex-1">
+        <text class="form-label">入围奖励 (元/人)</text>
+        <input
+          class="form-input"
+          type="number"
+          placeholder="≥8元"
+          value="{{award_price}}"
+          bindinput="onAwardPriceInput"
+        />
+      </view>
+      <view class="form-group flex-1">
+        <text class="form-label">入围数量</text>
+        <input
+          class="form-input"
+          type="number"
+          placeholder="≥1人"
+          value="{{award_count}}"
+          bindinput="onAwardCountInput"
+        />
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">截止日期</text>
+      <picker mode="date" value="{{deadline}}" bindchange="onDeadlineChange">
+        <view class="form-input">{{deadline}}</view>
+      </picker>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">视频时长要求</text>
+      <view class="chip-group">
+        <text
+          wx:for="{{durationOptions}}"
+          wx:key="index"
+          class="chip {{video_duration === item ? 'active' : ''}}"
+          data-value="{{item}}"
+          bindtap="selectDuration"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">创作风格</text>
+      <view class="chip-group">
+        <text
+          wx:for="{{styleOptions}}"
+          wx:key="index"
+          class="chip {{creative_style === item ? 'active' : ''}}"
+          data-value="{{item}}"
+          bindtap="selectStyle"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <button class="btn btn-primary btn-block" form-type="submit">发布任务</button>
+  </form>
+</view>

@@ -1,0 +1,30 @@
+<!--pages/home/index.wxml-->
+<view class="home-container">
+  <view class="section-header">
+    <text class="section-title">最新任务</text>
+    <text class="section-count">{{tasks.length}}{{hasMore ? '+' : ''}}个任务</text>
+  </view>
+
+  <view wx:if="{{tasks.length === 0 && !loading}}" class="empty-state">
+    <text class="empty-icon">📭</text>
+    <text class="empty-desc">暂无开放任务</text>
+  </view>
+
+  <view wx:for="{{tasks}}" wx:key="id" class="card task-card" bindtap="goTaskDetail" data-id="{{item.id}}">
+    <view class="task-header">
+      <text class="task-title">{{item.title}}</text>
+      <text class="task-status open">{{getStatusText(item.status)}}</text>
+    </view>
+    <view class="task-tags" wx:if="{{item.industries.length > 0}}">
+      <text wx:for="{{item.industries}}" wx:for-item="tag" wx:key="index" class="tag">{{tag}}</text>
+    </view>
+    <view class="task-meta">
+      <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
+      <text class="task-budget">¥{{item.unit_price}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{hasMore && tasks.length > 0}}" class="load-more">
+    <button class="btn btn-secondary" bindtap="loadMore">加载更多</button>
+  </view>
+</view>
