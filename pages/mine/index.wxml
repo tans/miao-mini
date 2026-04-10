@@ -1,0 +1,54 @@
+<view class="mine-container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <image class="avatar" src="{{user.avatar || '/assets/icons/home.png'}}"/>
+    <view class="user-info">
+      <text class="nickname">{{user.username || '未登录'}}</text>
+      <text class="role-tag" wx:if="{{user.role === 'business'}}">商家</text>
+      <text class="role-tag" wx:elif="{{user.role === 'creator'}}">创作者</text>
+    </view>
+  </view>
+
+  <!-- 钱包卡片 -->
+  <view class="wallet-card" bindtap="goWallet">
+    <view class="wallet-left">
+      <text class="wallet-label">钱包余额</text>
+      <text class="wallet-balance">¥{{balance || '0.00'}}</text>
+    </view>
+    <text class="wallet-arrow">></text>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="menu-list">
+    <view class="menu-item" bindtap="goMyClaims">
+      <text class="menu-icon">📋</text>
+      <text class="menu-text">我领取的任务</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goMyTasks">
+      <text class="menu-icon">📝</text>
+      <text class="menu-text">我发布的任务</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goWorks">
+      <text class="menu-icon">🎨</text>
+      <text class="menu-text">我的提案</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goTransactions">
+      <text class="menu-icon">💰</text>
+      <text class="menu-text">收益明细</text>
+      <text class="menu-arrow">></text>
+    </view>
+    <view class="menu-item" bindtap="goSettings">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-text">设置</text>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-btn" bindtap="handleLogout" wx:if="{{isLoggedIn}}">
+    <text>退出登录</text>
+  </view>
+</view>
