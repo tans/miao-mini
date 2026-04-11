@@ -10,7 +10,7 @@ const Api = {
     if (this._apiBase) return this._apiBase;
     // 优先使用 app.globalData 中配置的后端地址
     const app = getApp();
-    return app && app.globalData && app.globalData.apiBase || 'http://localhost:8888/api/v1';
+    return app && app.globalData && app.globalData.apiBase || 'https://miao-test.clawos.cc/api/v1';
   },
 
   setApiBase(base) {

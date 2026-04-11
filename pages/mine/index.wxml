@@ -47,8 +47,4 @@
     </view>
   </view>
 
-  <!-- 退出登录 -->
-  <view class="logout-btn" bindtap="handleLogout" wx:if="{{isLoggedIn}}">
-    <text>退出登录</text>
-  </view>
 </view>

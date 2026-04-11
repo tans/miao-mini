@@ -3,7 +3,7 @@ App({
   globalData: {
     user: null,
     token: null,
-    apiBase: 'http://localhost:8888/api/v1'
+    apiBase: 'https://miao-test.clawos.cc/api/v1'
   },
 
   onLaunch() {

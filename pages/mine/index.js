@@ -70,19 +70,4 @@ Page({
     wx.navigateTo({ url: '/pages/settings/index' });
   },
 
-  handleLogout() {
-    wx.showModal({
-      title: '确认退出',
-      content: '确定要退出登录吗？',
-      success: (res) => {
-        if (res.confirm) {
-          Api.logout();
-          wx.showToast({ title: '已退出', icon: 'success' });
-          setTimeout(() => {
-            wx.switchTab({ url: '/pages/mine/index' });
-          }, 1000);
-        }
-      }
-    });
-  }
-});
+  });

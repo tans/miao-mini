@@ -1,105 +1,42 @@
 <!--pages/my-tasks/index.wxml-->
 <view class="my-tasks-container">
-  <!-- 用户信息栏 -->
-  <view class="user-bar">
-    <text class="user-name">{{userInfo.username}}</text>
-    <view class="user-actions">
-      <text class="wallet-btn" bindtap="goWallet">钱包</text>
-      <text class="logout-btn" bindtap="handleLogout">退出</text>
+  <!-- 顶部栏 -->
+  <view class="top-bar">
+    <view class="user-info">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+      <text class="username">{{userInfo.username}}</text>
     </view>
-  </view>
-
-  <!-- Tab切换 -->
-  <view class="tabs">
-    <view
-      class="tab-btn {{activeTab === 'claims' ? 'active' : ''}}"
-      data-tab="claims"
-      bindtap="switchTab"
-    >我接的单 ({{claims.length}})</view>
-    <view
-      class="tab-btn {{activeTab === 'business' ? 'active' : ''}}"
-      data-tab="business"
-      bindtap="switchTab"
-    >我发布的 ({{tasks.length}})</view>
-  </view>
-
-  <!-- 我接的单 -->
-  <view wx:if="{{activeTab === 'claims'}}">
-    <view wx:if="{{claims.length === 0}}" class="empty-state">
-      <text class="empty-icon">📭</text>
-      <text class="empty-desc">暂无接单，去首页看看吧</text>
-    </view>
-    <view
-      wx:for="{{claims}}"
-      wx:key="id"
-      class="card task-card"
-    >
-      <view class="task-header" bindtap="goTaskDetail" data-id="{{item.task_id}}">
-        <text class="task-title">{{item.task_title || '任务 #' + item.task_id}}</text>
-        <text class="task-status {{item.status}}">{{getClaimStatusText(item.status)}}</text>
-      </view>
-      <view class="task-meta">
-        <text>¥{{item.unit_price}}/人</text>
-      </view>
-      <!-- 待交付时显示提交按钮 (status=0) -->
-      <view wx:if="{{item.status === 0}}" class="claim-actions">
-        <button class="btn btn-primary btn-sm" bindtap="showSubmitModal" data-claim-id="{{item.id}}">提交作品</button>
-      </view>
+    <view class="balance-box">
+      <text class="balance-label">余额</text>
+      <text class="balance-amount">¥{{balance}}</text>
     </view>
   </view>
 
   <!-- 我发布的 -->
-  <view wx:if="{{activeTab === 'business'}}">
-    <view wx:if="{{tasks.length === 0}}" class="empty-state">
-      <text class="empty-icon">📭</text>
-      <text class="empty-desc">您还没有发布任务</text>
-      <button class="btn btn-primary" bindtap="goCreateTask">发布第一个任务</button>
-    </view>
-    <view
-      wx:for="{{tasks}}"
-      wx:key="id"
-      class="card task-card"
-      bindtap="goTaskDetail"
-      data-id="{{item.id}}"
-    >
-      <view class="task-header">
-        <text class="task-title">{{item.title}}</text>
-        <text class="task-status {{item.status}}">{{getStatusText(item.status)}}</text>
-      </view>
-      <view class="task-meta">
-        <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
-        <text class="task-budget">¥{{item.unit_price}}</text>
-      </view>
-    </view>
+  <view class="section-header">
+    <text class="section-title">我的发布</text>
   </view>
 
-  <!-- 提交作品弹窗 -->
-  <view wx:if="{{showSubmitModal}}" class="modal-mask" bindtap="hideSubmitModal">
-    <view class="modal-content" catchtap="stopPropagation">
-      <view class="modal-title">提交作品</view>
-      <view class="form-group">
-        <text class="form-label">视频链接</text>
-        <input
-          class="form-input"
-          type="text"
-          placeholder="请输入视频链接"
-          value="{{submitUrl}}"
-          bindinput="onSubmitUrlInput"
-        />
-      </view>
-      <view class="form-group">
-        <text class="form-label">备注说明</text>
-        <textarea
-          class="form-textarea"
-          placeholder="简单说明你的作品（如：视频亮点）"
-          value="{{submitNote}}"
-          bindinput="onSubmitNoteInput"
-        />
-      </view>
-      <view class="modal-actions">
-        <button class="btn btn-secondary" bindtap="hideSubmitModal">取消</button>
-        <button class="btn btn-primary" bindtap="confirmSubmit">确认提交</button>
-      </view>
+  <view wx:if="{{tasks.length === 0}}" class="empty-state">
+    <text class="empty-icon">📭</text>
+    <text class="empty-desc">您还没有发布任务</text>
+    <button class="btn btn-primary" bindtap="goCreateTask">发布第一个任务</button>
+  </view>
+
+  <view
+    wx:for="{{tasks}}"
+    wx:key="id"
+    class="card task-card"
+    bindtap="goTaskDetail"
+    data-id="{{item.id}}"
+  >
+    <view class="task-header">
+      <text class="task-title">{{item.title}}</text>
+      <text class="task-status {{item.status}}">{{getStatusText(item.status)}}</text>
+    </view>
+    <view class="task-meta">
+      <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
+      <text class="task-budget">¥{{item.unit_price}}</text>
     </view>
   </view>
 </view>
