@@ -1,6 +1,6 @@
 // pages/my-tasks/index.js
 const Api = require('../../utils/api.js');
-const { getStatusText } = require('../../utils/util.js');
+const { getStatusText, getStatusClass } = require('../../utils/util.js');
 const app = getApp();
 
 Page({

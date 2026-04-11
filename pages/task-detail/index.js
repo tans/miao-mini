@@ -60,7 +60,7 @@ Page({
 
   async claimTask() {
     const { task } = this.data;
-    wx.showLoading({ title: '提交中...' });
+    wx.showLoading({ title: '接单中...' });
     try {
       await Api.claimTask(task.id);
       wx.showToast({ title: '接单成功！', icon: 'success' });

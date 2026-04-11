@@ -93,8 +93,26 @@
 .empty-state {
   text-align: center;
   padding: 60px 0;
+}
+
+.empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.empty-desc {
+  color: #666;
+  font-size: 16px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.empty-tip {
   color: #999;
-  font-size: 14px;
+  font-size: 13px;
+  display: block;
 }
 
 .loading-more {

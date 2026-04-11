@@ -22,7 +22,9 @@
   </view>
 
   <view class="empty-state" wx:if="{{!loading && works.length === 0}}">
-    <text>暂无灵感</text>
+    <text class="empty-icon">🔧</text>
+    <text class="empty-desc">功能开发中</text>
+    <text class="empty-tip">作品展示功能即将上线</text>
   </view>
 
   <view class="loading-more" wx:if="{{loading}}">

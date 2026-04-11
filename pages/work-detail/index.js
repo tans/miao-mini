@@ -1,3 +1,4 @@
+// pages/work-detail/index.js
 const Api = require('../../utils/api.js');
 
 Page({
@@ -6,20 +7,11 @@ Page({
   },
 
   onLoad(e) {
+    // /works 接口未在 OpenAPI 中定义，暂时显示功能开发中
+    // TODO: 后端实现 /works 接口后完善此逻辑
     if (e.id) {
-      this.loadWork(e.id);
-    }
-  },
-
-  async loadWork(id) {
-    wx.showLoading({ title: '加载中...' });
-    try {
-      const res = await Api.request('GET', `/works/${id}`, null, true);
-      this.setData({ work: res.data });
-    } catch (err) {
-      wx.showToast({ title: '加载失败', icon: 'none' });
-    } finally {
-      wx.hideLoading();
+      wx.showToast({ title: '功能开发中', icon: 'none' });
+      setTimeout(() => wx.navigateBack(), 1500);
     }
   }
 });

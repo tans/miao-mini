@@ -17,6 +17,8 @@ Page({
       this.loadWallet();
     } else {
       this.setData({ user: null, balance: '0.00' });
+      // 未登录，跳转到登录页面
+      wx.redirectTo({ url: '/pages/login/index' });
     }
   },
 
@@ -31,6 +33,10 @@ Page({
   },
 
   goWallet() {
+    if (!app.isLoggedIn()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
     wx.navigateTo({ url: '/pages/wallet/index' });
   },
 

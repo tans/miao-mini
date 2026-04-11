@@ -1,5 +1,6 @@
 const Api = require('../../utils/api.js');
 const { getClaimStatusText } = require('../../utils/util.js');
+const app = getApp();
 
 Page({
   data: {
@@ -13,6 +14,10 @@ Page({
   },
 
   onLoad() {
+    if (!app.isLoggedIn()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
     this.loadClaims();
   },
 

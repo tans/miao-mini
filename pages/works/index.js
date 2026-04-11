@@ -6,49 +6,33 @@ Page({
     sort: 'latest',
     page: 1,
     loading: false,
-    hasMore: true
+    hasMore: true,
+    isDeveloping: true  // 功能开发中标记
   },
 
   onLoad() {
-    this.loadWorks();
+    // /works 接口未在 OpenAPI 中定义，暂时显示功能开发中
+    // TODO: 后端实现 /works 接口后移除此逻辑
   },
 
   onPullDownRefresh() {
-    this.setData({ works: [], page: 1, hasMore: true });
-    this.loadWorks().then(() => wx.stopPullDownRefresh());
+    wx.stopPullDownRefresh();
   },
 
   onReachBottom() {
-    if (!this.data.loading && this.data.hasMore) {
-      this.setData({ page: this.data.page + 1 });
-      this.loadWorks();
-    }
+    // 暂不处理
   },
 
   switchSort(e) {
-    const sort = e.currentTarget.dataset.sort;
-    this.setData({ sort, works: [], page: 1, hasMore: true });
-    this.loadWorks();
+    // 暂不处理
   },
 
   async loadWorks() {
-    this.setData({ loading: true });
-    try {
-      const res = await Api.request('GET', `/works?sort=${this.data.sort}&page=${this.data.page}&limit=20`, null, true);
-      const newWorks = res.data && res.data.data || [];
-      this.setData({
-        works: this.data.page === 1 ? newWorks : [...this.data.works, ...newWorks],
-        hasMore: newWorks.length >= 20,
-        loading: false
-      });
-    } catch (err) {
-      this.setData({ loading: false });
-      wx.showToast({ title: '加载失败', icon: 'none' });
-    }
+    // 暂不处理，/works 接口未实现
+    this.setData({ loading: false });
   },
 
   goWorkDetail(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/work-detail/index?id=${id}` });
+    wx.showToast({ title: '功能开发中', icon: 'none' });
   }
 });

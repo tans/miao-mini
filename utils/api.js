@@ -32,7 +32,12 @@ const Api = {
 
   getUser() {
     const u = wx.getStorageSync(this.userKey);
-    return u ? JSON.parse(u) : null;
+    if (!u) return null;
+    try {
+      return JSON.parse(u);
+    } catch (e) {
+      return null;
+    }
   },
 
   setUser(user) {
@@ -116,10 +121,8 @@ const Api = {
   },
 
   async getTask(id) {
-    // No single task fetch API, find in list
-    const res = await this.getTasks({ limit: 100 });
-    const task = (res.data && res.data.data || []).find(t => t.id == id || t.id === id);
-    return { code: 0, message: 'success', data: task };
+    // Use single task endpoint from OpenAPI: GET /tasks/{id}
+    return this.request('GET', `/tasks/${id}`, null, true);
   },
 
   // Business
