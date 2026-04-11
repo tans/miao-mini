@@ -12,7 +12,8 @@
     "pages/work-detail/index",
     "pages/create-task/index",
     "pages/video-proposals/index",
-    "pages/wallet/index"
+    "pages/wallet/index",
+    "pages/settings/profile/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
