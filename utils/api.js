@@ -187,7 +187,7 @@ const Api = {
   },
 
   getBalance() {
-    return this.request('GET', '/business/balance');
+    return this.request('GET', '/wallet');
   },
 };
 
