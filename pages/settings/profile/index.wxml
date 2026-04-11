@@ -1,0 +1,56 @@
+<view class="profile-container">
+
+  <!-- 头像区域 -->
+  <view class="section avatar-section" bindtap="chooseAvatar">
+    <image class="avatar-img" src="{{avatar || '/assets/icons/mine.png'}}" mode="aspectFill"/>
+    <view class="avatar-hint">
+      <text class="avatar-hint-text">点击更换头像</text>
+    </view>
+  </view>
+
+  <!-- 表单区域 -->
+  <view class="section form-section">
+
+    <!-- 名称 -->
+    <view class="form-row">
+      <text class="form-label">名称</text>
+      <view class="input-wrap">
+        <input
+          class="form-input"
+          type="text"
+          placeholder="请输入名称"
+          maxlength="20"
+          value="{{nickname}}"
+          bindinput="onNicknameInput"
+        />
+        <text class="char-count">{{nickname.length}}/20</text>
+      </view>
+    </view>
+
+    <view class="divider"/>
+
+    <!-- 手机号 -->
+    <view class="form-row">
+      <text class="form-label">手机</text>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="请输入手机号"
+        maxlength="11"
+        value="{{phone}}"
+        bindinput="onPhoneInput"
+      />
+    </view>
+
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-wrap">
+    <button
+      class="save-btn {{canSave ? '' : 'disabled'}}"
+      disabled="{{!canSave || saving}}"
+      bindtap="handleSave"
+    >{{saving ? '保存中...' : '保存'}}</button>
+  </view>
+
+</view>
