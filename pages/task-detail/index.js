@@ -33,7 +33,7 @@ Page({
 
       const user = app.getUser();
       const taskStatus = typeof task.status === 'number' ? task.status : parseInt(task.status, 10);
-      const isMyTask = user && task.business_id == user.id;
+      const isMyTask = user && task.business_id === user.id;
       // 已上线(status=1)且用户是创作者且不是任务创建者时可接单
       const canClaim = !isMyTask && user && user.role === 'creator' && taskStatus === 1;
 
@@ -78,7 +78,7 @@ Page({
     const { claimId, result } = e.currentTarget.dataset;
     try {
       await Api.reviewClaim(claimId, result);
-      wx.showToast({ title: result == 1 ? '已采纳' : '已拒绝', icon: 'success' });
+      wx.showToast({ title: result === 1 ? '已采纳' : '已拒绝', icon: 'success' });
       this.loadTaskClaims(this.data.task.id);
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });

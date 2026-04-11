@@ -43,9 +43,10 @@ Page({
       const allClaims = [];
       let page = 1;
       let hasMore = true;
+      const maxPages = 5; // 限制最多5页，避免过多请求
 
       // 分页获取所有商家任务及其提案
-      while (hasMore) {
+      while (hasMore && page <= maxPages) {
         const tasksRes = await Api.getMyBusinessTasks({ page, status: 2 });
         const tasks = tasksRes.data || [];
         if (tasks.length === 0) break;

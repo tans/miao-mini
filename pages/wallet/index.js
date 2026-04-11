@@ -8,7 +8,8 @@ Page({
     balance: 0,
     totalIncome: 0,
     transactions: [],
-    loading: false
+    loading: false,
+    isLoading: false
   },
 
   onLoad() {
@@ -19,13 +20,14 @@ Page({
   },
 
   onShow() {
-    if (app.isLoggedIn()) {
+    if (app.isLoggedIn() && !this.data.isLoading) {
       this.loadWallet();
     }
   },
 
   async loadWallet() {
-    this.setData({ loading: true });
+    if (this.data.isLoading) return;
+    this.setData({ loading: true, isLoading: true });
     wx.showLoading({ title: '加载中...' });
     try {
       const [walletRes, transRes] = await Promise.all([
@@ -49,9 +51,9 @@ Page({
       });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
-      this.setData({ loading: false });
     } finally {
       wx.hideLoading();
+      this.setData({ loading: false, isLoading: false });
     }
   },
 

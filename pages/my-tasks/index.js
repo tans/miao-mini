@@ -40,7 +40,7 @@ Page({
       ]);
       this.setData({
         tasks: tasksRes.data || [],
-        balance: walletRes.data && walletRes.data.balance !== undefined ? walletRes.data.balance : '0.00'
+        balance: walletRes.data && walletRes.data.balance !== undefined ? Number(walletRes.data.balance).toFixed(2) : '0.00'
       });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
@@ -55,7 +55,7 @@ Page({
   },
 
   goCreateTask() {
-    wx.switchTab({ url: '/pages/create-task/index' });
+    wx.navigateTo({ url: '/pages/create-task/index' });
   },
 
   goWallet() {
