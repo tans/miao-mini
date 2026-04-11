@@ -109,6 +109,11 @@ const Api = {
     return this.request('GET', '/users/me');
   },
 
+  updateProfile(data) {
+    // data: { nickname, phone, avatar }
+    return this.request('PUT', '/users/me', data);
+  },
+
   // Tasks
   getTasks(params = {}) {
     const q = [];
