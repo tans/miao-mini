@@ -17,8 +17,8 @@ Page({
       this.loadWallet();
     } else {
       this.setData({ user: null, balance: '0.00' });
-      // 未登录，跳转到登录页面
-      wx.navigateTo({ url: '/pages/login/index' });
+      // tabBar 页不能用 navigateTo，用 reLaunch 清空栈后跳转
+      wx.reLaunch({ url: '/pages/login/index' });
     }
   },
 

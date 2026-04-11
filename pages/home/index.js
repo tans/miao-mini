@@ -17,7 +17,7 @@ Page({
 
   onShow() {
     if (this.data.tasks.length > 0) {
-      this.setData({ page: 1, hasMore: true });
+      this.setData({ page: 1, hasMore: true, tasks: [] });
       this.loadTasks();
     }
   },

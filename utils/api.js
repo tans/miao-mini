@@ -130,6 +130,12 @@ const Api = {
         name: 'file',
         header: { Authorization: 'Bearer ' + this.getToken() },
         success: (res) => {
+          if (res.statusCode === 401) {
+            Api.clearAuth();
+            wx.navigateTo({ url: '/pages/login/index' });
+            reject(new Error('登录已过期'));
+            return;
+          }
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
