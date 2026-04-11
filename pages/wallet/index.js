@@ -9,7 +9,6 @@ Page({
     totalIncome: 0,
     transactions: [],
     loading: false,
-    isLoading: false
   },
 
   onLoad() {
@@ -20,14 +19,14 @@ Page({
   },
 
   onShow() {
-    if (app.isLoggedIn() && !this.data.isLoading) {
+    if (app.isLoggedIn() && !this.data.loading) {
       this.loadWallet();
     }
   },
 
   async loadWallet() {
-    if (this.data.isLoading) return;
-    this.setData({ loading: true, isLoading: true });
+    if (this.data.loading) return;
+    this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
       const [walletRes, transRes] = await Promise.all([
@@ -36,7 +35,6 @@ Page({
       ]);
 
       const wallet = walletRes.data || {};
-      // transactions 在 data.transactions 中
       const transData = transRes.data || {};
       const transactions = (transData.transactions || []).map(t => ({
         ...t,
@@ -47,13 +45,12 @@ Page({
         balance: wallet.balance || 0,
         totalIncome: wallet.total_income || 0,
         transactions,
-        loading: false
       });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
       wx.hideLoading();
-      this.setData({ loading: false, isLoading: false });
+      this.setData({ loading: false });
     }
   },
 

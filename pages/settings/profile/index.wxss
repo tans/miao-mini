@@ -12,12 +12,22 @@
   margin-bottom: 12px;
 }
 
-/* 头像区 */
+/* 头像区：button 重置默认样式 */
 .avatar-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 28px 16px 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: none;
+  line-height: normal;
+  font-size: inherit;
+  color: inherit;
+}
+
+.avatar-section::after {
+  border: none;
 }
 
 .avatar-img {

@@ -3,7 +3,7 @@
   <view class="user-card">
     <image class="avatar" src="{{user.avatar || '/assets/icons/home.png'}}"/>
     <view class="user-info">
-      <text class="nickname">{{user.username || '未登录'}}</text>
+      <text class="nickname">{{user.nickname || user.username || '未登录'}}</text>
       <text class="role-tag" wx:if="{{user.role === 'business'}}">商家</text>
       <text class="role-tag" wx:elif="{{user.role === 'creator'}}">创作者</text>
     </view>

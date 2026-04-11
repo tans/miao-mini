@@ -18,7 +18,7 @@ Page({
     } else {
       this.setData({ user: null, balance: '0.00' });
       // 未登录，跳转到登录页面
-      wx.redirectTo({ url: '/pages/login/index' });
+      wx.navigateTo({ url: '/pages/login/index' });
     }
   },
 

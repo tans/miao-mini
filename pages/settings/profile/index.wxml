@@ -1,12 +1,12 @@
 <view class="profile-container">
 
-  <!-- 头像区域 -->
-  <view class="section avatar-section" bindtap="chooseAvatar">
+  <!-- 头像区域：open-type=chooseAvatar 触发原生头像选择（含微信头像+相册） -->
+  <button class="avatar-section section" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
     <image class="avatar-img" src="{{avatar || '/assets/icons/mine.png'}}" mode="aspectFill"/>
     <view class="avatar-hint">
-      <text class="avatar-hint-text">点击更换头像</text>
+      <text class="avatar-hint-text">{{avatarUploading ? '上传中...' : '点击更换头像'}}</text>
     </view>
-  </view>
+  </button>
 
   <!-- 表单区域 -->
   <view class="section form-section">
@@ -29,12 +29,12 @@
 
     <view class="divider"/>
 
-    <!-- 手机号 -->
+    <!-- 手机号：type=digit 避免 iOS 吞掉前导零 -->
     <view class="form-row">
       <text class="form-label">手机</text>
       <input
         class="form-input"
-        type="number"
+        type="digit"
         placeholder="请输入手机号"
         maxlength="11"
         value="{{phone}}"

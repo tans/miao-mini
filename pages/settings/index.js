@@ -4,6 +4,7 @@ Page({
   onLoad() {
     if (!getApp().isLoggedIn()) {
       wx.navigateTo({ url: '/pages/login/index' });
+      return;
     }
   },
 

@@ -11,6 +11,7 @@ Page({
     _origAvatar: '',
     canSave: false,
     saving: false,
+    avatarUploading: false,
   },
 
   onLoad() {
@@ -42,15 +43,11 @@ Page({
   },
 
   onNicknameInput(e) {
-    const nickname = e.detail.value;
-    this.setData({ nickname });
-    this._checkDirty();
+    this.setData({ nickname: e.detail.value }, () => this._checkDirty());
   },
 
   onPhoneInput(e) {
-    const phone = e.detail.value;
-    this.setData({ phone });
-    this._checkDirty();
+    this.setData({ phone: e.detail.value }, () => this._checkDirty());
   },
 
   _checkDirty() {
@@ -59,52 +56,26 @@ Page({
     this.setData({ canSave: dirty });
   },
 
-  chooseAvatar() {
-    wx.showActionSheet({
-      itemList: ['使用微信头像', '从相册选择'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          this._useWechatAvatar();
-        } else {
-          this._chooseFromAlbum();
-        }
-      }
-    });
-  },
+  // 原生头像选择（含微信头像 + 相册，由系统弹窗处理）
+  async onChooseAvatar(e) {
+    const tempPath = e.detail.avatarUrl;
+    if (!tempPath) return;
 
-  _useWechatAvatar() {
-    wx.getUserProfile({
-      desc: '用于完善个人信息',
-      success: (res) => {
-        const avatar = res.userInfo.avatarUrl;
-        this.setData({ avatar });
-        this._checkDirty();
-      },
-      fail: () => {
-        wx.showToast({ title: '获取头像失败', icon: 'none' });
-      }
-    });
-  },
-
-  _chooseFromAlbum() {
-    wx.chooseMedia({
-      count: 1,
-      mediaType: ['image'],
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        const tempPath = res.tempFiles[0].tempFilePath;
-        this.setData({ avatar: tempPath });
-        this._checkDirty();
-      },
-      fail: () => {
-        wx.showToast({ title: '选择图片失败', icon: 'none' });
-      }
-    });
+    this.setData({ avatarUploading: true });
+    try {
+      const url = await Api.uploadImage(tempPath);
+      this.setData({ avatar: url });
+      this._checkDirty();
+    } catch (err) {
+      wx.showToast({ title: '头像上传失败', icon: 'none' });
+    } finally {
+      this.setData({ avatarUploading: false });
+    }
   },
 
   async handleSave() {
-    const { nickname, phone, avatar, saving } = this.data;
-    if (saving) return;
+    const { nickname, phone, avatar, saving, avatarUploading } = this.data;
+    if (saving || avatarUploading) return;
 
     if (!nickname.trim()) {
       wx.showToast({ title: '名称不能为空', icon: 'none' });
@@ -121,10 +92,8 @@ Page({
     try {
       await Api.updateProfile({ nickname: nickname.trim(), phone, avatar });
 
-      const user = app.getUser() || {};
-      user.nickname = nickname.trim();
-      user.phone = phone;
-      user.avatar = avatar;
+      // 展开旧对象再覆盖，避免直接 mutate globalData 引用
+      const user = { ...(app.getUser() || {}), nickname: nickname.trim(), phone, avatar };
       app.setAuth(app.getToken(), user);
 
       wx.showToast({ title: '保存成功', icon: 'success' });

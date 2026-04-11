@@ -34,7 +34,7 @@ Page({
   async loadWorks() {
     this.setData({ loading: true });
     try {
-      const res = await Api.request('GET', `/works?sort=${this.data.sort}&page=${this.data.page}&limit=20`, null, true);
+      const res = await Api.getWorks({ sort: this.data.sort, page: this.data.page, limit: 20 });
       const newWorks = res.data && res.data.data || [];
       this.setData({
         works: this.data.page === 1 ? newWorks : [...this.data.works, ...newWorks],

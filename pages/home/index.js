@@ -35,16 +35,12 @@ Page({
 
     wx.showLoading({ title: '加载中...' });
     try {
-      const res = await Api.getTasks({ page: this.data.page, limit: 20, sort: 'created_at' });
-      const tasks = res.data?.data || [];
-      const openTasks = tasks.filter(t => {
-        const s = typeof t.status === 'number' ? t.status : parseInt(t.status, 10);
-        return s === 1; // status=1: 已上线
-      });
+      const res = await Api.getTasks({ page: this.data.page, limit: 20, sort: 'created_at', status: 1 });
+      const newTasks = res.data?.data || [];
 
       this.setData({
-        tasks: this.data.page === 1 ? openTasks : [...this.data.tasks, ...openTasks],
-        hasMore: openTasks.length === 20,
+        tasks: this.data.page === 1 ? newTasks : [...this.data.tasks, ...newTasks],
+        hasMore: newTasks.length === 20,
         loading: false
       });
     } catch (err) {

@@ -76,11 +76,18 @@ const Api = {
         data,
         header,
         success: (res) => {
-          if (res.data.code === 0) {
+          if (res.statusCode === 401) {
+            Api.clearAuth();
+            wx.navigateTo({ url: '/pages/login/index' });
+            reject(new Error('登录已过期'));
+            return;
+          }
+          if (res.data && res.data.code === 0) {
             resolve(res.data);
           } else {
-            wx.showToast({ title: res.data.message || '请求失败', icon: 'none' });
-            reject(new Error(res.data.message || '请求失败'));
+            const msg = (res.data && res.data.message) || '请求失败';
+            wx.showToast({ title: msg, icon: 'none' });
+            reject(new Error(msg));
           }
         },
         fail: (err) => {
@@ -114,6 +121,37 @@ const Api = {
     return this.request('PUT', '/users/me', data);
   },
 
+  // 上传图片到服务器，返回永久 URL（string）
+  uploadImage(tempFilePath) {
+    return new Promise((resolve, reject) => {
+      wx.uploadFile({
+        url: this.getApiBase() + '/upload?type=image',
+        filePath: tempFilePath,
+        name: 'file',
+        header: { Authorization: 'Bearer ' + this.getToken() },
+        success: (res) => {
+          try {
+            const data = JSON.parse(res.data);
+            if (data.code === 0 && data.data && data.data.url) {
+              resolve(data.data.url);
+            } else {
+              const msg = (data && data.message) || '上传失败';
+              wx.showToast({ title: msg, icon: 'none' });
+              reject(new Error(msg));
+            }
+          } catch (e) {
+            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
+            reject(e);
+          }
+        },
+        fail: (err) => {
+          wx.showToast({ title: '上传失败', icon: 'none' });
+          reject(err);
+        },
+      });
+    });
+  },
+
   // Tasks
   getTasks(params = {}) {
     const q = [];
@@ -121,6 +159,7 @@ const Api = {
     if (params.limit) q.push(`limit=${params.limit}`);
     if (params.keyword) q.push(`keyword=${params.keyword}`);
     if (params.sort) q.push(`sort=${params.sort}`);
+    if (params.status != null) q.push(`status=${params.status}`);
     const qs = q.length ? '?' + q.join('&') : '';
     return this.request('GET', '/tasks' + qs, null, true);
   },
@@ -186,8 +225,14 @@ const Api = {
     return this.request('GET', '/business/stats');
   },
 
-  getBalance() {
-    return this.request('GET', '/wallet');
+  // Works
+  getWorks(params = {}) {
+    const q = [];
+    if (params.sort) q.push(`sort=${params.sort}`);
+    if (params.page) q.push(`page=${params.page}`);
+    if (params.limit) q.push(`limit=${params.limit}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/works' + qs, null, true);
   },
 };
 
