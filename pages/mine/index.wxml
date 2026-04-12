@@ -31,12 +31,7 @@
       <text class="menu-text">我发布的任务</text>
       <text class="menu-arrow">></text>
     </view>
-    <view class="menu-item" bindtap="goWorks">
-      <text class="menu-icon">🎨</text>
-      <text class="menu-text">我的提案</text>
-      <text class="menu-arrow">></text>
-    </view>
-    <view class="menu-item" bindtap="goTransactions">
+<view class="menu-item" bindtap="goTransactions">
       <text class="menu-icon">💰</text>
       <text class="menu-text">收益明细</text>
       <text class="menu-arrow">></text>
