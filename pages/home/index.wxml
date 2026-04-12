@@ -1,30 +1,73 @@
 <!--pages/home/index.wxml-->
 <view class="home-container">
+
+  <!-- 排序栏 -->
+  <view class="sort-bar">
+    <view
+      class="sort-item {{sort === 'created_at' ? 'active' : ''}}"
+      bindtap="setSort" data-sort="created_at"
+    >最新</view>
+    <view
+      class="sort-item {{sort === 'price_desc' ? 'active' : ''}}"
+      bindtap="setSort" data-sort="price_desc"
+    >价格最高</view>
+    <view
+      class="sort-item {{sort === 'price_asc' ? 'active' : ''}}"
+      bindtap="setSort" data-sort="price_asc"
+    >价格最低</view>
+  </view>
+
+  <!-- 行业筛选标签 -->
+  <scroll-view class="industry-bar" scroll-x wx:if="{{industryTags.length > 0}}">
+    <view class="industry-inner">
+      <view
+        class="industry-tag {{activeIndustry === '' ? 'active' : ''}}"
+        bindtap="setIndustry" data-industry=""
+      >全部</view>
+      <view
+        wx:for="{{industryTags}}" wx:key="index"
+        class="industry-tag {{activeIndustry === item ? 'active' : ''}}"
+        bindtap="setIndustry" data-industry="{{item}}"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 任务数量 -->
   <view class="section-header">
-    <text class="section-title">最新任务</text>
-    <text class="section-count">{{tasks.length}}{{hasMore ? '+' : ''}}个任务</text>
+    <text class="section-title">{{activeIndustry ? activeIndustry : '全部任务'}}</text>
+    <text class="section-count">{{displayTasks.length}}{{hasMore && activeIndustry === '' ? '+' : ''}}个</text>
   </view>
 
-  <view wx:if="{{tasks.length === 0 && !loading}}" class="empty-state">
+  <view wx:if="{{displayTasks.length === 0 && !loading}}" class="empty-state">
     <text class="empty-icon">📭</text>
-    <text class="empty-desc">暂无开放任务</text>
+    <text class="empty-desc">暂无相关任务</text>
   </view>
 
-  <view wx:for="{{tasks}}" wx:key="id" class="card task-card" bindtap="goTaskDetail" data-id="{{item.id}}">
+  <view
+    wx:for="{{displayTasks}}" wx:key="id"
+    class="card task-card"
+    bindtap="goTaskDetail" data-id="{{item.id}}"
+  >
     <view class="task-header">
       <text class="task-title">{{item.title}}</text>
-      <text class="task-status open">{{getStatusText(item.status)}}</text>
+      <text class="task-budget">¥{{item.unit_price}}</text>
     </view>
     <view class="task-tags" wx:if="{{item.industries.length > 0}}">
-      <text wx:for="{{item.industries}}" wx:for-item="tag" wx:key="index" class="tag">{{tag}}</text>
+      <text
+        wx:for="{{item.industries}}" wx:for-item="tag" wx:key="index"
+        class="tag"
+      >{{tag}}</text>
     </view>
     <view class="task-meta">
-      <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
-      <text class="task-budget">¥{{item.unit_price}}</text>
+      <text class="task-meta-date">📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
+      <text class="task-remain">剩余 {{item.remaining_count}} 名</text>
     </view>
   </view>
 
-  <view wx:if="{{hasMore && tasks.length > 0}}" class="load-more">
-    <button class="btn btn-secondary" bindtap="loadMore">加载更多</button>
+  <view wx:if="{{hasMore && activeIndustry === '' && displayTasks.length > 0}}" class="load-more">
+    <button class="btn-load" bindtap="loadMore" disabled="{{loading}}">
+      {{loading ? '加载中...' : '加载更多'}}
+    </button>
   </view>
+
 </view>
