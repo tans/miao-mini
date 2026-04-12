@@ -209,6 +209,7 @@ const Api = {
     return this.request('GET', '/creator/claims' + qs);
   },
 
+  // data: { content: string, materials: [{file_name, file_path, file_size, file_type, thumbnail_path?}] }
   submitClaim(claimId, data) {
     return this.request('PUT', `/creator/claim/${claimId}/submit`, data);
   },
