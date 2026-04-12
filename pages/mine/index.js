@@ -35,6 +35,10 @@ Page({
     }
   },
 
+  goProfile() {
+    wx.navigateTo({ url: '/pages/settings/profile/index' });
+  },
+
   goWallet() {
     if (!app.isLoggedIn()) {
       wx.navigateTo({ url: '/pages/login/index' });

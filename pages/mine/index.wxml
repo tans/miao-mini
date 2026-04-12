@@ -1,12 +1,13 @@
 <view class="mine-container">
   <!-- 用户信息卡片 -->
-  <view class="user-card">
+  <view class="user-card" bindtap="goProfile">
     <image class="avatar" src="{{user.avatar || '/assets/icons/home.png'}}"/>
     <view class="user-info">
       <text class="nickname">{{user.nickname || user.username || '未登录'}}</text>
       <text class="role-tag" wx:if="{{user.role === 'business'}}">商家</text>
       <text class="role-tag" wx:elif="{{user.role === 'creator'}}">创作者</text>
     </view>
+    <text class="user-card-arrow">></text>
   </view>
 
   <!-- 钱包卡片 -->
