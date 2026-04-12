@@ -12,7 +12,13 @@ Page({
   async handleLogin() {
     wx.showLoading({ title: '登录中...' });
     try {
-      const { code } = await wx.login();
+      // 获取 wx.login code，失败时用固定值（后端未配置 AppID 时直接用 code 做 openid）
+      let code = 'dev_' + Date.now();
+      try {
+        const res = await wx.login();
+        if (res.code) code = res.code;
+      } catch (e) {}
+
       await Api.loginByWechat(code);
       wx.showToast({ title: '登录成功', icon: 'success' });
       setTimeout(() => {
