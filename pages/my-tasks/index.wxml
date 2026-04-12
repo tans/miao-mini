@@ -20,8 +20,7 @@
   <view wx:if="{{tasks.length === 0}}" class="empty-state">
     <text class="empty-icon">📭</text>
     <text class="empty-desc">您还没有发布任务</text>
-    <button class="btn btn-primary" bindtap="goCreateTask" wx:if="{{userInfo.role === 'business'}}">发布第一个任务</button>
-    <text wx:else class="empty-tip">只有商家才能发布任务</text>
+    <button class="btn btn-primary" bindtap="goCreateTask">发布第一个任务</button>
   </view>
 
   <view
