@@ -44,7 +44,7 @@
 .budget-price {
   font-size: 28px;
   font-weight: 700;
-  color: #FF6B6B;
+  color: #FF2442;
 }
 
 .budget-award {
@@ -62,7 +62,7 @@
   display: inline-block;
   padding: 2px 8px;
   background: #FFF0F0;
-  color: #FF6B6B;
+  color: #FF2442;
   border-radius: 4px;
   font-size: 12px;
   margin-right: 6px;
@@ -134,7 +134,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #FF6B6B;
+  background: #FF2442;
   color: #fff;
   display: flex;
   align-items: center;
@@ -174,7 +174,7 @@
 }
 
 .btn-primary {
-  background: #FF6B6B;
+  background: #FF2442;
   color: #fff;
 }
 

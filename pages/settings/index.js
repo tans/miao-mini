@@ -29,7 +29,7 @@ Page({
           Api.logout();
           wx.showToast({ title: '已退出', icon: 'success' });
           setTimeout(() => {
-            wx.switchTab({ url: '/pages/mine/index' });
+            wx.reLaunch({ url: '/pages/login/index' });
           }, 1000);
         }
       }

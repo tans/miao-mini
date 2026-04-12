@@ -8,7 +8,8 @@ Page({
     allClaims: [],
     filteredClaims: [],
     activeFilter: 'all',
-    filters: ['all', 'pending', 'passed', 'rejected']
+    filters: ['all', 'pending', 'passed', 'rejected'],
+    loading: false
   },
 
   onLoad() {
@@ -26,18 +27,18 @@ Page({
   },
 
   onShow() {
-    if (app.isLoggedIn()) {
+    if (app.isLoggedIn() && !this.data.loading) {
       this.loadProposals();
     }
   },
 
   onPullDownRefresh() {
-    this.loadProposals().then(() => {
-      wx.stopPullDownRefresh();
-    });
+    this.loadProposals().finally(() => wx.stopPullDownRefresh());
   },
 
   async loadProposals() {
+    if (this.data.loading) return;
+    this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
       const allClaims = [];
@@ -71,6 +72,7 @@ Page({
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
+      this.setData({ loading: false });
       wx.hideLoading();
     }
   },

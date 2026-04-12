@@ -20,6 +20,7 @@ Page({
   },
 
   async loadTransactions() {
+    if (this.data.loading) return;
     this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
@@ -30,11 +31,11 @@ Page({
         ...t,
         type_text: typeMap[t.type] || '其他'
       }));
-      this.setData({ transactions, loading: false });
+      this.setData({ transactions });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
-      this.setData({ loading: false });
     } finally {
+      this.setData({ loading: false });
       wx.hideLoading();
     }
   }

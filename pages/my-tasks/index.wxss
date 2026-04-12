@@ -52,7 +52,7 @@
 .balance-amount {
   font-size: 16px;
   font-weight: 700;
-  color: #FF6B6B;
+  color: #FF2442;
 }
 
 .tabs {
@@ -72,7 +72,7 @@
 }
 
 .tab-btn.active {
-  color: #FF6B6B;
+  color: #FF2442;
   font-weight: 600;
 }
 
@@ -84,7 +84,7 @@
   transform: translateX(-50%);
   width: 40px;
   height: 3px;
-  background: #FF6B6B;
+  background: #FF2442;
   border-radius: 2px;
 }
 
@@ -144,7 +144,7 @@
 
 .task-budget {
   font-weight: 700;
-  color: #FF6B6B;
+  color: #FF2442;
   font-size: 15px;
 }
 
@@ -178,7 +178,7 @@
 }
 
 .empty-tip {
-  color: #FF6B6B;
+  color: #FF2442;
   font-size: 13px;
   display: block;
 }
@@ -191,7 +191,7 @@
   font-weight: 600;
   text-align: center;
   border: none;
-  background: #FF6B6B;
+  background: #FF2442;
   color: #fff;
 }
 

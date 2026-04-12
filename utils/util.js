@@ -45,8 +45,8 @@ function getStatusText(status) {
  */
 function getClaimStatusText(status) {
   // 数字类型状态
-  if (typeof status === 'number' || !isNaN(parseInt(status))) {
-    const num = typeof status === 'number' ? status : parseInt(status, 10);
+  if (typeof status === 'number') {
+    const num = status;
     const numMap = {
       0: '待交付',
       1: '待验收',

@@ -1,6 +1,5 @@
 // pages/wallet/index.js
 const Api = require('../../utils/api.js');
-const { formatPrice } = require('../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -57,9 +56,5 @@ Page({
   getTransTypeText(type) {
     const map = { 1: '充值', 2: '提现', 3: '任务收入', 4: '冻结', 5: '解冻' };
     return map[type] || '其他';
-  },
-
-  formatPrice(price) {
-    return formatPrice(price);
   }
 });

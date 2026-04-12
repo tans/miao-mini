@@ -3,7 +3,7 @@
   <!-- 顶部栏 -->
   <view class="top-bar">
     <view class="user-info">
-      <image class="avatar" src="{{userInfo.avatarUrl || '/assets/icons/home.png'}}" mode="aspectFill" />
+      <image class="avatar" src="{{userInfo.avatar || '/assets/icons/home.png'}}" mode="aspectFill" />
       <text class="username">{{userInfo.username}}</text>
     </view>
     <view class="balance-box">

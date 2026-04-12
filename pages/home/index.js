@@ -12,11 +12,12 @@ Page({
   },
 
   onLoad() {
-    this.loadTasks();
+    this._initialized = false;
+    this.loadTasks().then(() => { this._initialized = true; });
   },
 
   onShow() {
-    if (this.data.tasks.length > 0) {
+    if (this._initialized && this.data.tasks.length > 0) {
       this.setData({ page: 1, hasMore: true, tasks: [] });
       this.loadTasks();
     }
@@ -24,9 +25,7 @@ Page({
 
   onPullDownRefresh() {
     this.setData({ page: 1, tasks: [], hasMore: true });
-    this.loadTasks().then(() => {
-      wx.stopPullDownRefresh();
-    });
+    this.loadTasks().finally(() => wx.stopPullDownRefresh());
   },
 
   async loadTasks() {

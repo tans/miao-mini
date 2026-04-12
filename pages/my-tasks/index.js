@@ -26,9 +26,7 @@ Page({
   },
 
   onPullDownRefresh() {
-    this.loadData().then(() => {
-      wx.stopPullDownRefresh();
-    });
+    this.loadData().finally(() => wx.stopPullDownRefresh());
   },
 
   async loadData() {
@@ -39,7 +37,7 @@ Page({
         Api.getWallet()
       ]);
       this.setData({
-        tasks: tasksRes.data || [],
+        tasks: (tasksRes.data && tasksRes.data.data) || tasksRes.data || [],
         balance: walletRes.data && walletRes.data.balance !== undefined ? Number(walletRes.data.balance).toFixed(2) : '0.00'
       });
     } catch (err) {

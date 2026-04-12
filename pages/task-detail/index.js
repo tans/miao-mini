@@ -12,10 +12,7 @@ Page({
   },
 
   onLoad(options) {
-    if (!app.isLoggedIn()) {
-      wx.navigateTo({ url: '/pages/login/index' });
-      return;
-    }
+    // 详情允许未登录用户查看；仅在操作（接单/审核）时才要求登录
     this.loadTaskDetail(options.id);
   },
 
@@ -59,13 +56,17 @@ Page({
   },
 
   async claimTask() {
+    if (!app.isLoggedIn()) {
+      wx.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
     const { task } = this.data;
     wx.showLoading({ title: '接单中...' });
     try {
       await Api.claimTask(task.id);
       wx.showToast({ title: '接单成功！', icon: 'success' });
       setTimeout(() => {
-        wx.switchTab({ url: '/pages/my-tasks/index' });
+        wx.navigateTo({ url: '/pages/my-claims/index' });
       }, 1500);
     } catch (err) {
       wx.showToast({ title: err.message || '接单失败', icon: 'none' });

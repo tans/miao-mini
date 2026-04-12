@@ -7,6 +7,7 @@ Page({
     claims: [],
     filteredClaims: [],
     activeTab: 'all',
+    loading: false,
     showSubmitModal: false,
     submitClaimId: null,
     submitUrl: '',
@@ -22,10 +23,12 @@ Page({
   },
 
   onPullDownRefresh() {
-    this.loadClaims().then(() => wx.stopPullDownRefresh());
+    this.loadClaims().finally(() => wx.stopPullDownRefresh());
   },
 
   async loadClaims() {
+    if (this.data.loading) return;
+    this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getMyClaims({ page: 1 });
@@ -34,6 +37,7 @@ Page({
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
+      this.setData({ loading: false });
       wx.hideLoading();
     }
   },

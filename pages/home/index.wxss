@@ -59,7 +59,7 @@
   display: inline-block;
   padding: 2px 8px;
   background: #FFF0F0;
-  color: #FF6B6B;
+  color: #FF2442;
   border-radius: 4px;
   font-size: 12px;
   margin-right: 6px;
@@ -76,7 +76,7 @@
 
 .task-budget {
   font-weight: 700;
-  color: #FF6B6B;
+  color: #FF2442;
   font-size: 15px;
 }
 

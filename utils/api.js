@@ -78,7 +78,7 @@ const Api = {
         success: (res) => {
           if (res.statusCode === 401) {
             Api.clearAuth();
-            wx.navigateTo({ url: '/pages/login/index' });
+            wx.reLaunch({ url: '/pages/login/index' });
             reject(new Error('登录已过期'));
             return;
           }
@@ -132,7 +132,7 @@ const Api = {
         success: (res) => {
           if (res.statusCode === 401) {
             Api.clearAuth();
-            wx.navigateTo({ url: '/pages/login/index' });
+            wx.reLaunch({ url: '/pages/login/index' });
             reject(new Error('登录已过期'));
             return;
           }
@@ -232,6 +232,10 @@ const Api = {
   },
 
   // Works
+  getWork(id) {
+    return this.request('GET', `/works/${id}`, null, true);
+  },
+
   getWorks(params = {}) {
     const q = [];
     if (params.sort) q.push(`sort=${params.sort}`);
