@@ -22,12 +22,6 @@ Page({
       wx.navigateTo({ url: '/pages/login/index' });
       return;
     }
-    const user = app.getUser();
-    if (user && user.role !== 'business') {
-      wx.showToast({ title: '只有商家才能创建任务', icon: 'none' });
-      wx.switchTab({ url: '/pages/home/index' });
-      return;
-    }
     // 设置默认截止日期为30天后
     const date = new Date();
     date.setDate(date.getDate() + 30);
@@ -96,7 +90,7 @@ Page({
       });
       wx.showToast({ title: '发布成功！', icon: 'success' });
       setTimeout(() => {
-        wx.switchTab({ url: '/pages/my-tasks/index' });
+        wx.navigateTo({ url: '/pages/my-tasks/index' });
       }, 1500);
     } catch (err) {
       wx.showToast({ title: err.message || '发布失败', icon: 'none' });
