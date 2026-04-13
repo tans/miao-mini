@@ -40,7 +40,14 @@ Page({
       const res = await Api.getTasks({ page, limit: 20, sort, status: 1 });
       const newTasks = res.data?.data || [];
 
-      const allTasks = page === 1 ? newTasks : [...this.data.tasks, ...newTasks];
+      const rawTasks = page === 1 ? newTasks : [...this.data.tasks, ...newTasks];
+
+      // 提取封面（第一个 image 素材的 file_path）
+      const allTasks = rawTasks.map(t => {
+        const mats = t.materials || [];
+        const firstImage = mats.find(m => m.file_type === 'image');
+        return { ...t, cover: firstImage ? firstImage.file_path : '' };
+      });
 
       // 提取所有行业标签（去重）
       const tagSet = new Set();

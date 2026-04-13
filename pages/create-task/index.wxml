@@ -101,6 +101,40 @@
       </view>
     </view>
 
+    <!-- 任务素材（必填，第一个必须是图片） -->
+    <view class="form-group">
+      <text class="form-label">任务素材 <text class="label-required">*</text></text>
+      <text class="label-hint">第一个必须是图片，可继续添加视频等素材</text>
+
+      <view class="materials-grid">
+        <view
+          wx:for="{{materials}}" wx:key="index"
+          class="material-item"
+        >
+          <image
+            wx:if="{{item.fileType === 'image'}}"
+            class="material-thumb"
+            src="{{item.url}}"
+            mode="aspectFill"
+          />
+          <view wx:else class="material-video-thumb">
+            <text class="material-video-icon">▶</text>
+            <text class="material-video-name">{{item.fileName}}</text>
+          </view>
+          <view class="material-delete" bindtap="deleteMaterial" data-index="{{index}}">✕</view>
+        </view>
+
+        <view wx:if="{{materials.length < 9}}" class="material-add" bindtap="addMaterial">
+          <text class="material-add-icon">+</text>
+          <text class="material-add-label">添加素材</text>
+        </view>
+      </view>
+
+      <view wx:if="{{uploading}}" class="uploading-tip">
+        <text>上传中，请稍候...</text>
+      </view>
+    </view>
+
     <button class="btn btn-primary btn-block" form-type="submit">发布任务</button>
   </form>
 </view>

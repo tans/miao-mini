@@ -158,6 +158,43 @@ const Api = {
     });
   },
 
+  // 上传视频到服务器，返回永久 URL（string）
+  uploadVideo(tempFilePath) {
+    return new Promise((resolve, reject) => {
+      wx.uploadFile({
+        url: this.getApiBase() + '/upload?type=video',
+        filePath: tempFilePath,
+        name: 'file',
+        header: { Authorization: 'Bearer ' + this.getToken() },
+        success: (res) => {
+          if (res.statusCode === 401) {
+            Api.clearAuth();
+            wx.reLaunch({ url: '/pages/login/index' });
+            reject(new Error('登录已过期'));
+            return;
+          }
+          try {
+            const data = JSON.parse(res.data);
+            if (data.code === 0 && data.data && data.data.url) {
+              resolve(data.data.url);
+            } else {
+              const msg = (data && data.message) || '上传失败';
+              wx.showToast({ title: msg, icon: 'none' });
+              reject(new Error(msg));
+            }
+          } catch (e) {
+            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
+            reject(e);
+          }
+        },
+        fail: (err) => {
+          wx.showToast({ title: '上传失败', icon: 'none' });
+          reject(err);
+        },
+      });
+    });
+  },
+
   // Tasks
   getTasks(params = {}) {
     const q = [];

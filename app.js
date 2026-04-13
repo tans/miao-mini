@@ -8,7 +8,7 @@ App({
 
   onLaunch() {
     // 检测运行环境：只有微信开发者工具才用 localhost
-    const info = wx.getSystemInfoSync();
+    const info = wx.getDeviceInfo();
     const isDevtools = info.platform === 'devtools';
     this.globalData.apiBase = isDevtools
       ? 'http://localhost:8888/api/v1'

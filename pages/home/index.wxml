@@ -43,24 +43,36 @@
     <text class="empty-desc">暂无相关任务</text>
   </view>
 
-  <view
-    wx:for="{{displayTasks}}" wx:key="id"
-    class="card task-card"
-    bindtap="goTaskDetail" data-id="{{item.id}}"
-  >
-    <view class="task-header">
-      <text class="task-title">{{item.title}}</text>
-      <text class="task-budget">¥{{item.unit_price}}</text>
-    </view>
-    <view class="task-tags" wx:if="{{item.industries.length > 0}}">
-      <text
-        wx:for="{{item.industries}}" wx:for-item="tag" wx:key="index"
-        class="tag"
-      >{{tag}}</text>
-    </view>
-    <view class="task-meta">
-      <text class="task-meta-date">📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
-      <text class="task-remain">剩余 {{item.remaining_count}} 名</text>
+  <!-- 两列任务网格 -->
+  <view class="task-grid">
+    <view
+      wx:for="{{displayTasks}}" wx:key="id"
+      class="task-card-grid"
+      bindtap="goTaskDetail" data-id="{{item.id}}"
+    >
+      <view class="card-thumb-wrap">
+        <image
+          wx:if="{{item.cover}}"
+          class="card-thumb"
+          src="{{item.cover}}"
+          mode="aspectFill"
+          lazy-load
+        />
+        <view wx:else class="card-thumb-placeholder">
+          <text class="placeholder-icon">🎬</text>
+        </view>
+      </view>
+      <view class="card-body">
+        <text class="card-title">{{item.title}}</text>
+        <view class="card-tags" wx:if="{{item.industries.length > 0}}">
+          <text class="card-tag">{{item.industries[0]}}</text>
+          <text wx:if="{{item.industries.length > 1}}" class="card-tag-more">+{{item.industries.length - 1}}</text>
+        </view>
+        <view class="card-footer">
+          <text class="card-price">¥{{item.unit_price}}</text>
+          <text class="card-remain">剩{{item.remaining_count}}名</text>
+        </view>
+      </view>
     </view>
   </view>
 
