@@ -3,11 +3,17 @@ App({
   globalData: {
     user: null,
     token: null,
-    // apiBase: 'https://miao-test.clawos.cc/api/v1'
-    apiBase: "http://localhost:8888/api/v1",
+    apiBase: '', // 动态设置
   },
 
   onLaunch() {
+    // 检测运行环境：只有微信开发者工具才用 localhost
+    const info = wx.getSystemInfoSync();
+    const isDevtools = info.platform === 'devtools';
+    this.globalData.apiBase = isDevtools
+      ? 'http://localhost:8888/api/v1'
+      : 'https://miao-test.clawos.cc/api/v1';
+
     // 检查登录状态
     const token = wx.getStorageSync("miao_token");
     const userStr = wx.getStorageSync("miao_user");
