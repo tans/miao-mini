@@ -1,142 +1,61 @@
-/* 创意喵全局样式 */
+/* 创意喵全局样式 - 引入weui基础样式库 */
+@import 'miniprogram_dist/weui-wxss/dist/style/weui.wxss';
 
+/* WeUI 主题色覆盖 - 使用weui默认颜色变量 */
 page {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #333;
-  background-color: #f5f5f5;
+  --weui-THEME-color: #07c160;
+  --weui-BRAND-color: #07c160;
 }
 
-/* 卡片 */
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 12px 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-/* 按钮 */
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  border: none;
-}
-
+/* 按钮主题色改为weui默认绿色 */
 .btn-primary {
-  background: #FF2442;
-  color: #fff;
+  background: #07c160;
 }
 
-.btn-secondary {
-  background: #f0f0f0;
-  color: #666;
+.btn-primary:not(.btn-disabled):active {
+  background: #059a4c;
 }
 
-.btn-block {
-  display: block;
-  width: 100%;
-}
-
-.btn[disabled] {
-  opacity: 0.6;
-}
-
-/* 表单 */
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-label {
-  display: block;
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 6px;
-}
-
+/* 表单样式覆盖 */
 .form-input,
 .form-textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 14px;
-  box-sizing: border-box;
+  border-color: #e6e6e6;
 }
 
-.form-textarea {
-  min-height: 100px;
-  resize: vertical;
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #07c160;
+  box-shadow: 0 0 0 2px rgba(7, 193, 96, 0.1);
 }
 
 /* 标签 */
-.tag {
-  display: inline-block;
-  padding: 2px 8px;
-  background: #f0f0f0;
-  border-radius: 4px;
-  font-size: 12px;
-  color: #666;
-  margin-right: 6px;
-}
-
 .tag.video {
-  background: #FFF0F0;
-  color: #FF2442;
+  background: #e8f5e9;
+  color: #07c160;
 }
 
 /* 状态标签 */
-.task-status {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
 .task-status.open,
 .task-status.online,
 .task-status.pending {
-  background: #E8F5E9;
-  color: #4CAF50;
+  background: #e8f5e9;
+  color: #07c160;
 }
 
 .task-status.in-progress,
 .task-status.submitted {
-  background: #FFF3E0;
-  color: #FF9800;
+  background: #fff3e0;
+  color: #ff9800;
 }
 
 .task-status.completed,
 .task-status.passed {
-  background: #E3F2FD;
-  color: #2196F3;
+  background: #e3f2fd;
+  color: #2196f3;
 }
 
 .task-status.closed,
 .task-status.cancelled {
-  background: #f0f0f0;
-  color: #999;
-}
-
-/* 空状态 */
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-}
-
-.empty-state-desc {
-  color: #999;
-  font-size: 14px;
-}
-
-/* 加载中 */
-.loading {
-  text-align: center;
-  padding: 60px;
+  background: #f5f5f5;
   color: #999;
 }
