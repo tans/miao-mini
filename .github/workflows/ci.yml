@@ -27,9 +27,9 @@ jobs:
         uses: crazyurus/miniprogram-action@2.0.0
         with:
           action_type: preview
-          appid: ${{ secrets.MINI_APPID }}
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          MINI_APPID: ${{ secrets.MINI_APPID }}
 
   upload:
     name: Upload
@@ -52,7 +52,7 @@ jobs:
         uses: crazyurus/miniprogram-action@2.0.0
         with:
           action_type: upload
-          appid: ${{ secrets.MINI_APPID }}
           version: ${{ github.run_number }}.0
         env:
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          MINI_APPID: ${{ secrets.MINI_APPID }}
