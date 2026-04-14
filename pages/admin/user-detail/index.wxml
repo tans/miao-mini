@@ -3,7 +3,7 @@
     <text>加载中...</text>
   </view>
 
-  <block wx:else if="{{user}}">
+  <view class="content" wx:elif="{{user}}">
     <view class="user-card">
       <view class="user-header">
         <view class="user-avatar">
@@ -76,7 +76,7 @@
         {{user.status === 1 ? '禁用账户' : '启用账户'}}
       </button>
     </view>
-  </block>
+  </view>
 
   <view class="empty" wx:else>
     <text>用户不存在</text>

@@ -4,6 +4,10 @@
   padding: 20rpx;
 }
 
+.content {
+  /* content wrapper */
+}
+
 .loading, .empty {
   text-align: center;
   padding: 100rpx;
