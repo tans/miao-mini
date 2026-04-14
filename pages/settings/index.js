@@ -27,19 +27,4 @@ Page({
     wx.showToast({ title: '功能开发中', icon: 'none' });
   },
 
-  handleLogout() {
-    wx.showModal({
-      title: '确认退出',
-      content: '确定要退出登录吗？',
-      success: (res) => {
-        if (res.confirm) {
-          Api.logout();
-          wx.showToast({ title: '已退出', icon: 'success' });
-          setTimeout(() => {
-            wx.reLaunch({ url: '/pages/login/index' });
-          }, 1000);
-        }
-      }
-    });
-  }
 });
