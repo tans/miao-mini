@@ -164,7 +164,8 @@ Page({
         wx.navigateTo({ url: '/pages/my-tasks/index' });
       }, 1500);
     } catch (err) {
-      wx.showToast({ title: err.message || '发布失败', icon: 'none' });
+      const msg = err && err.message || '发布失败';
+      wx.showToast({ title: msg, icon: 'none' });
     } finally {
       wx.hideLoading();
     }

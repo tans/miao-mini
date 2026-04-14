@@ -16,7 +16,7 @@ async function upload() {
   const uploadResult = await ci.upload({
     project,
     version: process.env.VERSION || '1.0.0',
-    desc: process.env.GITHUB_SHA ? `Upload from ${process.env.GITHUB_SHA.slice(0, 7)}` : 'CI Upload',
+    desc: process.env.COMMIT_MESSAGE || 'CI Upload',
     setting: {
       es6: true,
       es7: true,

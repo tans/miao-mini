@@ -35,3 +35,4 @@ jobs:
           MINI_APPID: ${{ secrets.MINI_APPID }}
           PRIVATE_KEY_PATH: ${{ github.workspace }}/private_key
           VERSION: ${{ github.run_number }}.0
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}

@@ -76,6 +76,8 @@
   outline: none;
   background: transparent;
   text-align: right;
+  padding: 10px 12px;
+  box-sizing: border-box;
 }
 
 .char-count {

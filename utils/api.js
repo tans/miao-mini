@@ -82,17 +82,29 @@ const Api = {
             reject(new Error('登录已过期'));
             return;
           }
-          if (res.data && res.data.code === 0) {
-            resolve(res.data);
+          let data = res.data;
+          // Handle non-JSON responses (e.g., HTML error pages)
+          if (typeof data === 'string') {
+            try {
+              data = JSON.parse(data);
+            } catch (e) {
+              wx.showToast({ title: '服务器响应异常', icon: 'none' });
+              reject(new Error('服务器响应异常'));
+              return;
+            }
+          }
+          if (data && data.code === 0) {
+            resolve(data);
           } else {
-            const msg = (res.data && res.data.message) || '请求失败';
+            const msg = (data && data.message) || '请求失败';
             wx.showToast({ title: msg, icon: 'none' });
             reject(new Error(msg));
           }
         },
         fail: (err) => {
-          wx.showToast({ title: '网络请求失败', icon: 'none' });
-          reject(err);
+          const msg = err && (err.message || err.errMsg) || '网络请求失败';
+          wx.showToast({ title: msg, icon: 'none' });
+          reject(new Error(msg));
         }
       });
     });
@@ -139,7 +151,15 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
-              resolve(data.data.url);
+              // Ensure URL is absolute for WeChat image component
+              const url = data.data.url;
+              if (url.startsWith('/')) {
+                // Prepend API base (without /api/v1) to relative URLs
+                const base = this.getApiBase().replace(/\/api\/v1$/, '');
+                resolve(base + url);
+              } else {
+                resolve(url);
+              }
             } else {
               const msg = (data && data.message) || '上传失败';
               wx.showToast({ title: msg, icon: 'none' });
@@ -176,7 +196,14 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
-              resolve(data.data.url);
+              // Ensure URL is absolute for WeChat video component
+              const url = data.data.url;
+              if (url.startsWith('/')) {
+                const base = this.getApiBase().replace(/\/api\/v1$/, '');
+                resolve(base + url);
+              } else {
+                resolve(url);
+              }
             } else {
               const msg = (data && data.message) || '上传失败';
               wx.showToast({ title: msg, icon: 'none' });
