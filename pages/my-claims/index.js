@@ -16,7 +16,9 @@ Page({
 
   onLoad() {
     if (!app.isLoggedIn()) {
-      wx.navigateTo({ url: '/pages/login/index' });
+      app.silentLogin().then(() => {
+        if (app.isLoggedIn()) this.loadClaims();
+      });
       return;
     }
     this.loadClaims();

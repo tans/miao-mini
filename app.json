@@ -3,7 +3,6 @@
     "pages/home/index",
     "pages/works/index",
     "pages/mine/index",
-    "pages/login/index",
     "pages/task-detail/index",
     "pages/my-claims/index",
     "pages/my-tasks/index",

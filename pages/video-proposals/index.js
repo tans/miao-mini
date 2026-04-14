@@ -14,9 +14,15 @@ Page({
 
   onLoad() {
     if (!app.isLoggedIn()) {
-      wx.navigateTo({ url: '/pages/login/index' });
+      app.silentLogin().then(() => {
+        if (app.isLoggedIn()) this._initPage();
+      });
       return;
     }
+    this._initPage();
+  },
+
+  _initPage() {
     const user = app.getUser();
     if (user && user.role !== 'business') {
       wx.showToast({ title: '只有商家才能查看提案', icon: 'none' });

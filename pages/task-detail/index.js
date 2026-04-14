@@ -57,8 +57,13 @@ Page({
 
   async claimTask() {
     if (!app.isLoggedIn()) {
-      wx.navigateTo({ url: '/pages/login/index' });
-      return;
+      wx.showLoading({ title: '登录中...' });
+      await app.silentLogin();
+      wx.hideLoading();
+      if (!app.isLoggedIn()) {
+        wx.showToast({ title: '登录失败，请稍后重试', icon: 'none' });
+        return;
+      }
     }
     const { task } = this.data;
     wx.showLoading({ title: '接单中...' });

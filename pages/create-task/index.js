@@ -21,8 +21,13 @@ Page({
 
   onLoad() {
     if (!app.isLoggedIn()) {
-      wx.navigateTo({ url: '/pages/login/index' });
-      return;
+      wx.showLoading({ title: '登录中...' });
+      app.silentLogin().then(() => {
+        wx.hideLoading();
+        if (!app.isLoggedIn()) {
+          wx.showToast({ title: '登录失败，请稍后重试', icon: 'none' });
+        }
+      });
     }
     // 设置默认截止日期为30天后
     const date = new Date();
