@@ -21,29 +21,16 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci && npm install miniprogram-ci --save-dev
 
       - name: Prepare private key
-        run: echo "${{ secrets.PRIVATE_KEY }}" > private_key
-
-      - name: Download DevTools
-        run: |
-          mkdir -p ./miniprogram-dev
-          cd ./miniprogram-dev
-          wget -q https://servicewechat.com/wxa-dev/logicmgmt_mp_build/latest/build.yml -O build.yml
-          wget -q $(grep url build.yml | head -1 | cut -d'"' -f4) -O cli.tar.gz
-          tar xzf cli.tar.gz
-          ls -la
+        run: echo "${{ secrets.PRIVATE_KEY }}" > ./private_key
 
       - name: Preview
-        run: |
-          cd miniprogram-dev
-          ./devtools-cli preview \
-            --project ../ \
-            --app-id ${{ secrets.MINI_APPID }} \
-            --private-key-path ../private_key \
-            --version ${{ github.run_number }} \
-            --qr-code-output-path ./qrcode.txt
+        run: node scripts/ci-preview.js
+        env:
+          MINI_APPID: ${{ secrets.MINI_APPID }}
+          PRIVATE_KEY_PATH: ${{ github.workspace }}/private_key
 
   upload:
     name: Upload
@@ -60,24 +47,14 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci && npm install miniprogram-ci --save-dev
 
       - name: Prepare private key
-        run: echo "${{ secrets.PRIVATE_KEY }}" > private_key
-
-      - name: Download DevTools
-        run: |
-          mkdir -p ./.miniprogram-dev
-          cd ./.miniprogram-dev
-          wget -q https://servicewechat.com/wxa-dev/logicmgmt_mp_build/latest/build.yml -O build.yml
-          wget -q $(grep url build.yml | head -1 | cut -d'"' -f4) -O cli.tar.gz
-          tar xzf cli.tar.gz
+        run: echo "${{ secrets.PRIVATE_KEY }}" > ./private_key
 
       - name: Upload
-        run: |
-          cd ./.miniprogram-dev
-          ./devtools-cli upload \
-            --project ../ \
-            --app-id ${{ secrets.MINI_APPID }} \
-            --private-key-path ../private_key \
-            --version ${{ github.run_number }}.0
+        run: node scripts/ci-upload.js
+        env:
+          MINI_APPID: ${{ secrets.MINI_APPID }}
+          PRIVATE_KEY_PATH: ${{ github.workspace }}/private_key
+          VERSION: ${{ github.run_number }}.0
