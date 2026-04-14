@@ -18,5 +18,5 @@
     <text>退出登录</text>
   </view>
 
-  <view class="version">版本 1.0.0</view>
+  <view class="version">版本 {{version}}</view>
 </view>

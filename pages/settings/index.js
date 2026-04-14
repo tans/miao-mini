@@ -1,11 +1,18 @@
 const Api = require('../../utils/api.js');
 
 Page({
+  data: {
+    version: '1.0.0',
+  },
+
   onLoad() {
     if (!getApp().isLoggedIn()) {
       wx.navigateTo({ url: '/pages/login/index' });
       return;
     }
+    this.setData({
+      version: wx.getAccountInfoSync().miniProgram.version || '1.0.0',
+    });
   },
 
   goProfile() {
