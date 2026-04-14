@@ -4,7 +4,7 @@
 }
 
 .balance-card {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
+  background: linear-gradient(135deg, #07c160 0%, #4cd964 100%);
   color: #fff;
   padding: 30px 24px;
   text-align: center;
@@ -123,5 +123,5 @@
 }
 
 .trans-amount.expense {
-  color: #FF2442;
+  color: #e64340;
 }

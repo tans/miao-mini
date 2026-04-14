@@ -52,7 +52,7 @@
 .balance-amount {
   font-size: 16px;
   font-weight: 700;
-  color: #FF2442;
+  color: #07c160;
 }
 
 .tabs {
@@ -130,7 +130,7 @@
 
 .task-status.open, .task-status.online {
   background: #E8F5E9;
-  color: #4CAF50;
+  color: #07c160;
 }
 
 .task-meta {
@@ -144,7 +144,7 @@
 
 .task-budget {
   font-weight: 700;
-  color: #FF2442;
+  color: #07c160;
   font-size: 15px;
 }
 

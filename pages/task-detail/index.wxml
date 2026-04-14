@@ -11,66 +11,78 @@
   </view>
 
   <!-- 任务描述 -->
-  <view class="card">
-    <view class="detail-section-title">任务描述</view>
-    <text class="detail-desc">{{task.description || '暂无描述'}}</text>
-  </view>
+  <mp-cells title="任务描述">
+    <mp-cell>
+      <text class="detail-text">{{task.description || '暂无描述'}}</text>
+    </mp-cell>
+  </mp-cells>
 
   <!-- 预算 -->
-  <view class="card">
-    <view class="detail-section-title">预算</view>
-    <view class="budget-price">¥{{task.unit_price}}</view>
-    <view class="budget-award" wx:if="{{task.award_price > 0}}">
-      入围奖励 ¥{{task.award_price}}/人 × {{task.award_count || 0}}人
-    </view>
-  </view>
+  <mp-cells title="预算">
+    <mp-cell>
+      <view class="budget-price">¥{{task.unit_price}}</view>
+      <view class="budget-award" wx:if="{{task.award_price > 0}}">
+        入围奖励 ¥{{task.award_price}}/人 × {{task.award_count || 0}}人
+      </view>
+    </mp-cell>
+  </mp-cells>
 
   <!-- 标签 -->
-  <view class="card" wx:if="{{task.industries.length > 0}}">
-    <view class="detail-section-title">标签</view>
-    <view class="task-tags">
-      <text wx:for="{{task.industries}}" wx:key="index" class="tag video">{{item}}</text>
-    </view>
-  </view>
+  <mp-cells title="标签" wx:if="{{task.industries.length > 0}}">
+    <mp-cell>
+      <view class="task-tags">
+        <text wx:for="{{task.industries}}" wx:key="index" class="tag video">{{item}}</text>
+      </view>
+    </mp-cell>
+  </mp-cells>
 
   <!-- 视频要求 -->
-  <view class="card" wx:if="{{task.video_duration}}">
-    <view class="detail-section-title">视频要求</view>
-    <text class="detail-desc">
-      {{task.video_duration}}{{task.video_aspect ? ' | 尺寸: ' + task.video_aspect : ''}}{{task.video_resolution ? ' | 分辨率: ' + task.video_resolution : ''}}
-    </text>
-  </view>
+  <mp-cells title="视频要求" wx:if="{{task.video_duration}}">
+    <mp-cell>
+      <text class="detail-text">
+        {{task.video_duration}}{{task.video_aspect ? ' | 尺寸: ' + task.video_aspect : ''}}{{task.video_resolution ? ' | 分辨率: ' + task.video_resolution : ''}}
+      </text>
+    </mp-cell>
+  </mp-cells>
 
   <!-- 收到的提案 -->
-  <view class="card" wx:if="{{isMyTask}}">
-    <view class="detail-section-title">收到的提案</view>
-    <view wx:if="{{claims.length === 0}}" class="empty-state">
-      <text class="empty-desc">暂无提案</text>
-    </view>
-    <view wx:else>
-      <view wx:for="{{claims}}" wx:key="id" class="proposal-card">
-        <view class="proposal-header">
-          <view class="creator-info">
-            <view class="avatar">{{item.creator_name ? item.creator_name[0] : '创'}}</view>
-            <view>
-              <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
-              <text class="proposal-status task-status {{item.status === 2 ? 'completed' : 'pending'}}">
-                {{getClaimStatusText(item.status)}}
-              </text>
+  <mp-cells title="收到的提案" wx:if="{{isMyTask}}">
+    <block wx:if="{{claims.length === 0}}">
+      <mp-cell>
+        <view class="empty-state">
+          <text class="empty-desc">暂无提案</text>
+        </view>
+      </mp-cell>
+    </block>
+    <block wx:else>
+      <mp-cell wx:for="{{claims}}" wx:key="id">
+        <view class="proposal-card">
+          <view class="proposal-header">
+            <view class="creator-info">
+              <view class="avatar-sm">{{item.creator_name ? item.creator_name[0] : '创'}}</view>
+              <view>
+                <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
+                <text class="proposal-status task-status {{item.status === 2 ? 'completed' : 'pending'}}">
+                  {{getClaimStatusText(item.status)}}
+                </text>
+              </view>
             </view>
           </view>
+          <text class="proposal-content">{{item.content || '暂无说明'}}</text>
+          <view class="proposal-actions" wx:if="{{item.status === 1}}">
+            <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
+            <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
+          </view>
         </view>
-        <text class="proposal-content">{{item.content || '暂无说明'}}</text>
-        <view class="proposal-actions" wx:if="{{item.status === 1}}">
-          <button class="btn btn-secondary btn-sm" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
-          <button class="btn btn-primary btn-sm" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
-        </view>
-      </view>
-    </view>
-  </view>
+      </mp-cell>
+    </block>
+  </mp-cells>
 
   <!-- 接单按钮 -->
   <view class="action-bar" wx:if="{{canClaim}}">
-    <button class="btn btn-primary btn-block" bindtap="claimTask">立即接单</button>
+    <button class="weui-btn weui-btn_primary weui-btn_block" bindtap="claimTask">立即接单</button>
   </view>
 </view>
+
+<!-- 空状态 -->
+<mp-msg type="warn" msg="暂无任务信息" wx:if="{{!task}}" />

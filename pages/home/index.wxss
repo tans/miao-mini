@@ -22,7 +22,7 @@
 }
 
 .sort-item.active {
-  color: #FF2442;
+  color: #07c160;
   font-weight: 600;
 }
 
@@ -33,7 +33,7 @@
   left: 14px;
   right: 14px;
   height: 2px;
-  background: #FF2442;
+  background: #07c160;
   border-radius: 2px;
 }
 
@@ -62,8 +62,8 @@
 }
 
 .industry-tag.active {
-  background: rgba(255, 36, 66, 0.1);
-  color: #FF2442;
+  background: rgba(7, 193, 96, 0.1);
+  color: #07c160;
   font-weight: 600;
 }
 
@@ -153,8 +153,8 @@
 }
 
 .card-tag {
-  background: #FFF0F0;
-  color: #FF2442;
+  background: #e8f5e9;
+  color: #07c160;
   font-size: 20rpx;
   padding: 2rpx 8rpx;
   border-radius: 4rpx;
@@ -174,7 +174,7 @@
 .card-price {
   font-size: 28rpx;
   font-weight: 700;
-  color: #FF2442;
+  color: #07c160;
 }
 
 .card-remain {

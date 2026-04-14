@@ -16,7 +16,15 @@ Page({
     durationOptions: ['15秒', '30秒', '60秒', '1-3分钟'],
     styleOptions: ['种草推荐', '开箱评测', '剧情故事', '日常记录'],
     materials: [],
-    uploading: false
+    uploading: false,
+    rules: [
+      { prop: 'title', rules: [{ required: true, message: '请填写任务标题' }] },
+      { prop: 'description', rules: [{ required: true, message: '请填写详细描述' }] },
+      { prop: 'unit_price', rules: [{ required: true, message: '请填写基础奖励' }, { validator: (val) => val >= 2, message: '基础奖励至少2元' }] },
+      { prop: 'total_count', rules: [{ required: true, message: '请填写报名人数上限' }, { validator: (val) => val >= 10, message: '报名人数至少10人' }] },
+      { prop: 'deadline', rules: [{ required: true, message: '请填写截止日期' }] },
+    ],
+    formData: {}
   },
 
   onLoad() {

@@ -32,9 +32,9 @@
 }
 
 .tab.active {
-  color: #FF2442;
+  color: #07c160;
   font-weight: 500;
-  border-bottom: 2px solid #FF2442;
+  border-bottom: 2px solid #07c160;
 }
 
 .works-list {

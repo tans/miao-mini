@@ -28,14 +28,7 @@
   margin-right: 8px;
 }
 
-.detail-section-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-}
-
-.detail-desc {
+.detail-text {
   color: #666;
   font-size: 14px;
   line-height: 1.7;
@@ -44,7 +37,7 @@
 .budget-price {
   font-size: 28px;
   font-weight: 700;
-  color: #FF2442;
+  color: #07c160;
 }
 
 .budget-award {
@@ -61,19 +54,12 @@
 .tag {
   display: inline-block;
   padding: 2px 8px;
-  background: #FFF0F0;
-  color: #FF2442;
+  background: #e8f5e9;
+  color: #07c160;
   border-radius: 4px;
   font-size: 12px;
   margin-right: 6px;
   margin-bottom: 4px;
-}
-
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 8px 16px;
 }
 
 .task-status {
@@ -84,18 +70,18 @@
 }
 
 .task-status.open, .task-status.online, .task-status.pending {
-  background: #E8F5E9;
-  color: #4CAF50;
+  background: #e8f5e9;
+  color: #07c160;
 }
 
 .task-status.in-progress, .task-status.submitted {
-  background: #FFF3E0;
-  color: #FF9800;
+  background: #fff3e0;
+  color: #ff9800;
 }
 
 .task-status.completed, .task-status.passed {
-  background: #E3F2FD;
-  color: #2196F3;
+  background: #e3f2fd;
+  color: #2196f3;
 }
 
 .empty-state {
@@ -110,11 +96,6 @@
 
 .proposal-card {
   padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.proposal-card:last-child {
-  border-bottom: none;
 }
 
 .proposal-header {
@@ -130,11 +111,11 @@
   gap: 10px;
 }
 
-.avatar {
+.avatar-sm {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #FF2442;
+  background: #07c160;
   color: #fff;
   display: flex;
   align-items: center;
@@ -161,31 +142,6 @@
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-}
-
-.btn {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  text-align: center;
-  border: none;
-}
-
-.btn-primary {
-  background: #FF2442;
-  color: #fff;
-}
-
-.btn-secondary {
-  background: #f0f0f0;
-  color: #666;
-}
-
-.btn-block {
-  display: block;
-  width: 100%;
 }
 
 .action-bar {

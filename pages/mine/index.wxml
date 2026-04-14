@@ -20,27 +20,18 @@
   </view>
 
   <!-- 功能列表 -->
-  <view class="menu-list">
-    <view class="menu-item" bindtap="goMyClaims">
-      <text class="menu-icon">📋</text>
-      <text class="menu-text">我领取的任务</text>
-      <text class="menu-arrow">></text>
-    </view>
-    <view class="menu-item" bindtap="goMyTasks">
-      <text class="menu-icon">📝</text>
-      <text class="menu-text">我发布的任务</text>
-      <text class="menu-arrow">></text>
-    </view>
-<view class="menu-item" bindtap="goTransactions">
-      <text class="menu-icon">💰</text>
-      <text class="menu-text">收益明细</text>
-      <text class="menu-arrow">></text>
-    </view>
-    <view class="menu-item" bindtap="goSettings">
-      <text class="menu-icon">⚙️</text>
-      <text class="menu-text">设置</text>
-      <text class="menu-arrow">></text>
-    </view>
-  </view>
-
+  <mp-cells title="我的操作" footer="">
+    <mp-cell link bindtap="goMyClaims" value="我领取的任务" hover>
+      <text slot="icon" class="menu-icon">📋</text>
+    </mp-cell>
+    <mp-cell link bindtap="goMyTasks" value="我发布的任务" hover>
+      <text slot="icon" class="menu-icon">📝</text>
+    </mp-cell>
+    <mp-cell link bindtap="goTransactions" value="收益明细" hover>
+      <text slot="icon" class="menu-icon">💰</text>
+    </mp-cell>
+    <mp-cell link bindtap="goSettings" value="设置" hover>
+      <text slot="icon" class="menu-icon">⚙️</text>
+    </mp-cell>
+  </mp-cells>
 </view>

@@ -1,122 +1,89 @@
 <!--pages/create-task/index.wxml-->
 <view class="create-container">
-  <form class="card" bindsubmit="handleSubmit">
-    <view class="form-group">
-      <text class="form-label">任务标题</text>
-      <input
-        class="form-input"
-        type="text"
-        placeholder="简洁描述任务需求"
-        value="{{title}}"
-        bindinput="onTitleInput"
-      />
-    </view>
+  <mp-form-page title="发布任务" subtitle="填写任务信息">
+    <mp-form id="taskForm" rules="{{rules}}" models="{{formData}}">
+      <!-- 任务标题 -->
+      <mp-cells title="任务标题" footer="简洁描述任务需求">
+        <mp-cell prop="title" show-error>
+          <input class="weui-input" placeholder="简洁描述任务需求" value="{{title}}" bindinput="onTitleInput"/>
+        </mp-cell>
+      </mp-cells>
 
-    <view class="form-group">
-      <text class="form-label">详细描述</text>
-      <textarea
-        class="form-textarea"
-        placeholder="详细说明任务要求、交付标准、注意事项..."
-        value="{{description}}"
-        bindinput="onDescInput"
-      />
-    </view>
+      <!-- 详细描述 -->
+      <mp-cells title="详细描述" footer="详细说明任务要求、交付标准、注意事项">
+        <mp-cell prop="description" show-error>
+          <textarea class="weui-textarea" placeholder="详细说明任务要求、交付标准、注意事项..." value="{{description}}" bindinput="onDescInput" style="min-height: 120px"/>
+        </mp-cell>
+      </mp-cells>
 
-    <view class="form-row">
-      <view class="form-group flex-1">
-        <text class="form-label">基础奖励 (元/人)</text>
-        <input
-          class="form-input"
-          type="number"
-          placeholder="≥2元"
-          value="{{unit_price}}"
-          bindinput="onUnitPriceInput"
-        />
-      </view>
-      <view class="form-group flex-1">
-        <text class="form-label">报名人数上限</text>
-        <input
-          class="form-input"
-          type="number"
-          placeholder="≥10人"
-          value="{{total_count}}"
-          bindinput="onTotalCountInput"
-        />
-      </view>
-    </view>
+      <!-- 奖励设置 -->
+      <mp-cells title="奖励设置">
+        <mp-cell prop="unit_price" show-error>
+          <view slot="title" class="weui-label">基础奖励 (元/人)</view>
+          <input type="number" class="weui-input" placeholder="≥2元" value="{{unit_price}}" bindinput="onUnitPriceInput"/>
+        </mp-cell>
+        <mp-cell prop="total_count" show-error>
+          <view slot="title" class="weui-label">报名人数上限</view>
+          <input type="number" class="weui-input" placeholder="≥10人" value="{{total_count}}" bindinput="onTotalCountInput"/>
+        </mp-cell>
+        <mp-cell>
+          <view slot="title" class="weui-label">入围奖励 (元/人)</view>
+          <input type="number" class="weui-input" placeholder="≥8元" value="{{award_price}}" bindinput="onAwardPriceInput"/>
+        </mp-cell>
+        <mp-cell>
+          <view slot="title" class="weui-label">入围数量</view>
+          <input type="number" class="weui-input" placeholder="≥1人" value="{{award_count}}" bindinput="onAwardCountInput"/>
+        </mp-cell>
+      </mp-cells>
 
-    <view class="form-row">
-      <view class="form-group flex-1">
-        <text class="form-label">入围奖励 (元/人)</text>
-        <input
-          class="form-input"
-          type="number"
-          placeholder="≥8元"
-          value="{{award_price}}"
-          bindinput="onAwardPriceInput"
-        />
-      </view>
-      <view class="form-group flex-1">
-        <text class="form-label">入围数量</text>
-        <input
-          class="form-input"
-          type="number"
-          placeholder="≥1人"
-          value="{{award_count}}"
-          bindinput="onAwardCountInput"
-        />
-      </view>
-    </view>
+      <!-- 截止日期 -->
+      <mp-cells title="截止日期">
+        <mp-cell prop="deadline" show-error>
+          <picker mode="date" value="{{deadline}}" bindchange="onDeadlineChange">
+            <view class="weui-input">{{deadline}}</view>
+          </picker>
+        </mp-cell>
+      </mp-cells>
 
-    <view class="form-group">
-      <text class="form-label">截止日期</text>
-      <picker mode="date" value="{{deadline}}" bindchange="onDeadlineChange">
-        <view class="form-input">{{deadline}}</view>
-      </picker>
-    </view>
+      <!-- 视频时长 -->
+      <mp-cells title="视频时长要求">
+        <mp-cell>
+          <view class="chip-group">
+            <text
+              wx:for="{{durationOptions}}"
+              wx:key="index"
+              class="chip {{video_duration === item ? 'active' : ''}}"
+              data-value="{{item}}"
+              bindtap="selectDuration"
+            >{{item}}</text>
+          </view>
+        </mp-cell>
+      </mp-cells>
 
-    <view class="form-group">
-      <text class="form-label">视频时长要求</text>
-      <view class="chip-group">
-        <text
-          wx:for="{{durationOptions}}"
-          wx:key="index"
-          class="chip {{video_duration === item ? 'active' : ''}}"
-          data-value="{{item}}"
-          bindtap="selectDuration"
-        >{{item}}</text>
-      </view>
-    </view>
+      <!-- 创作风格 -->
+      <mp-cells title="创作风格">
+        <mp-cell>
+          <view class="chip-group">
+            <text
+              wx:for="{{styleOptions}}"
+              wx:key="index"
+              class="chip {{creative_style === item ? 'active' : ''}}"
+              data-value="{{item}}"
+              bindtap="selectStyle"
+            >{{item}}</text>
+          </view>
+        </mp-cell>
+      </mp-cells>
+    </mp-form>
 
-    <view class="form-group">
-      <text class="form-label">创作风格</text>
-      <view class="chip-group">
-        <text
-          wx:for="{{styleOptions}}"
-          wx:key="index"
-          class="chip {{creative_style === item ? 'active' : ''}}"
-          data-value="{{item}}"
-          bindtap="selectStyle"
-        >{{item}}</text>
-      </view>
-    </view>
-
-    <!-- 任务素材（必填，第一个必须是图片） -->
-    <view class="form-group">
-      <text class="form-label">任务素材 <text class="label-required">*</text></text>
-      <text class="label-hint">第一个必须是图片，可继续添加视频等素材</text>
+    <!-- 素材上传 -->
+    <view class="materials-section">
+      <view class="section-title">任务素材 <text class="required">*</text></view>
+      <view class="section-hint">第一个必须是图片，可继续添加视频等素材</view>
 
       <view class="materials-grid">
-        <view
-          wx:for="{{materials}}" wx:key="index"
-          class="material-item"
-        >
-          <image
-            wx:if="{{item.fileType === 'image'}}"
-            class="material-thumb"
-            src="{{item.url}}"
-            mode="aspectFill"
-          />
+        <view wx:for="{{materials}}" wx:key="index" class="material-item">
+          <image wx:if="{{item.fileType === 'image'}}" class="material-thumb" src="{{item.url}}" mode="aspectFill"/>
           <view wx:else class="material-video-thumb">
             <text class="material-video-icon">▶</text>
             <text class="material-video-name">{{item.fileName}}</text>
@@ -131,10 +98,14 @@
       </view>
 
       <view wx:if="{{uploading}}" class="uploading-tip">
+        <mp-loading type="circle"></mp-loading>
         <text>上传中，请稍候...</text>
       </view>
     </view>
 
-    <button class="btn btn-primary btn-block" form-type="submit">发布任务</button>
-  </form>
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <button class="weui-btn weui-btn_primary" bindtap="handleSubmit">发布任务</button>
+    </view>
+  </mp-form-page>
 </view>

@@ -20,23 +20,19 @@
   <view wx:if="{{tasks.length === 0}}" class="empty-state">
     <text class="empty-icon">📭</text>
     <text class="empty-desc">您还没有发布任务</text>
-    <button class="btn btn-primary" bindtap="goCreateTask">发布第一个任务</button>
+    <button class="weui-btn weui-btn_primary" bindtap="goCreateTask">发布第一个任务</button>
   </view>
 
-  <view
-    wx:for="{{tasks}}"
-    wx:key="id"
-    class="card task-card"
-    bindtap="goTaskDetail"
-    data-id="{{item.id}}"
-  >
-    <view class="task-header">
-      <text class="task-title">{{item.title}}</text>
-      <text class="task-status {{getStatusClass(item.status)}}">{{getStatusText(item.status)}}</text>
-    </view>
-    <view class="task-meta">
-      <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
-      <text class="task-budget">¥{{item.unit_price}}</text>
-    </view>
-  </view>
+  <mp-cells>
+    <mp-cell wx:for="{{tasks}}" wx:key="id" link bindtap="goTaskDetail" data-id="{{item.id}}">
+      <view slot="title" class="task-cell">
+        <text class="task-title">{{item.title}}</text>
+        <view class="task-meta">
+          <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
+          <text class="task-budget">¥{{item.unit_price}}</text>
+        </view>
+      </view>
+      <text class="task-status {{getStatusClass(item.status)}}" slot="footer">{{getStatusText(item.status)}}</text>
+    </mp-cell>
+  </mp-cells>
 </view>

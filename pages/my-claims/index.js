@@ -11,7 +11,8 @@ Page({
     showSubmitModal: false,
     submitClaimId: null,
     submitUrl: '',
-    submitNote: ''
+    submitNote: '',
+    dialogButtons: [{ text: '取消', action: 'cancel' }, { text: '提交', type: 'primary', action: 'confirm' }]
   },
 
   onLoad() {
@@ -67,6 +68,15 @@ Page({
 
   hideSubmitModal() {
     this.setData({ showSubmitModal: false });
+  },
+
+  onDialogTap(e) {
+    const action = e.detail.action;
+    if (action === 'cancel') {
+      this.hideSubmitModal();
+    } else if (action === 'confirm') {
+      this.confirmSubmit();
+    }
   },
 
   onSubmitUrlInput(e) { this.setData({ submitUrl: e.detail.value }); },
