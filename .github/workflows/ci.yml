@@ -24,7 +24,7 @@ jobs:
         run: npm ci && npm install miniprogram-ci --save-dev
 
       - name: Prepare private key
-        run: echo "${{ secrets.PRIVATE_KEY }}" > ./private_key
+        run: printf '%s' "${{ secrets.MINI_PRIVATE_KEY }}" > ./private_key
 
       - name: Preview
         run: node scripts/ci-preview.js
@@ -50,7 +50,7 @@ jobs:
         run: npm ci && npm install miniprogram-ci --save-dev
 
       - name: Prepare private key
-        run: echo "${{ secrets.PRIVATE_KEY }}" > ./private_key
+        run: printf '%s' "${{ secrets.MINI_PRIVATE_KEY }}" > ./private_key
 
       - name: Upload
         run: node scripts/ci-upload.js
