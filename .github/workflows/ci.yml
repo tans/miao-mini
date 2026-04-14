@@ -23,13 +23,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Prepare private key
+        run: echo "${{ secrets.PRIVATE_KEY }}" > private_key
+
+      - name: Download DevTools
+        run: |
+          mkdir -p ./miniprogram-dev
+          cd ./miniprogram-dev
+          wget -q https://servicewechat.com/wxa-dev/logicmgmt_mp_build/latest/build.yml -O build.yml
+          wget -q $(grep url build.yml | head -1 | cut -d'"' -f4) -O cli.tar.gz
+          tar xzf cli.tar.gz
+          ls -la
+
       - name: Preview
-        uses: crazyurus/miniprogram-action@2.0.0
-        with:
-          action_type: preview
-        env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          MINI_APPID: ${{ secrets.MINI_APPID }}
+        run: |
+          cd miniprogram-dev
+          ./devtools-cli preview \
+            --project ../ \
+            --app-id ${{ secrets.MINI_APPID }} \
+            --private-key-path ../private_key \
+            --version ${{ github.run_number }} \
+            --qr-code-output-path ./qrcode.txt
 
   upload:
     name: Upload
@@ -48,11 +62,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Prepare private key
+        run: echo "${{ secrets.PRIVATE_KEY }}" > private_key
+
+      - name: Download DevTools
+        run: |
+          mkdir -p ./.miniprogram-dev
+          cd ./.miniprogram-dev
+          wget -q https://servicewechat.com/wxa-dev/logicmgmt_mp_build/latest/build.yml -O build.yml
+          wget -q $(grep url build.yml | head -1 | cut -d'"' -f4) -O cli.tar.gz
+          tar xzf cli.tar.gz
+
       - name: Upload
-        uses: crazyurus/miniprogram-action@2.0.0
-        with:
-          action_type: upload
-          version: ${{ github.run_number }}.0
-        env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          MINI_APPID: ${{ secrets.MINI_APPID }}
+        run: |
+          cd ./.miniprogram-dev
+          ./devtools-cli upload \
+            --project ../ \
+            --app-id ${{ secrets.MINI_APPID }} \
+            --private-key-path ../private_key \
+            --version ${{ github.run_number }}.0
