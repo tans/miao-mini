@@ -31,8 +31,8 @@ Page({
       const user = app.getUser();
       const taskStatus = typeof task.status === 'number' ? task.status : parseInt(task.status, 10);
       const isMyTask = user && task.business_id === user.id;
-      // 已上线(status=1)且用户是创作者且不是任务创建者时可接单
-      const canClaim = !isMyTask && user && user.role === 'creator' && taskStatus === 1;
+      // 已上线(status=2)且用户是创作者且不是任务创建者时可接单
+      const canClaim = !isMyTask && user && user.role === 'creator' && taskStatus === 2;
 
       this.setData({ task, isMyTask, canClaim });
 
