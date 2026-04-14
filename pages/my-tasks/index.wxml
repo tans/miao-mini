@@ -30,7 +30,7 @@
         <text class="task-title">{{item.title}}</text>
         <view class="task-meta">
           <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
-          <text class="task-budget">¥{{item.unit_price}}</text>
+          <text class="task-budget">¥{{item.total_budget || item.unit_price}}</text>
         </view>
       </view>
       <text class="task-status {{getStatusClass(item.status)}}" slot="footer">{{getStatusText(item.status)}}</text>

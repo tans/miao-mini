@@ -17,6 +17,9 @@ Page({
     styleOptions: ['种草推荐', '开箱评测', '剧情故事', '日常记录'],
     materials: [],
     uploading: false,
+    baseTotal: '0.00',
+    awardTotal: '0.00',
+    totalBudget: '0.00',
     rules: [
       { prop: 'title', rules: [{ required: true, message: '请填写任务标题' }] },
       { prop: 'description', rules: [{ required: true, message: '请填写详细描述' }] },
@@ -53,18 +56,39 @@ Page({
 
   onUnitPriceInput(e) {
     this.setData({ unit_price: e.detail.value });
+    this.updateBudgetPreview();
   },
 
   onTotalCountInput(e) {
     this.setData({ total_count: e.detail.value });
+    this.updateBudgetPreview();
   },
 
   onAwardPriceInput(e) {
     this.setData({ award_price: e.detail.value });
+    this.updateBudgetPreview();
   },
 
   onAwardCountInput(e) {
     this.setData({ award_count: e.detail.value });
+    this.updateBudgetPreview();
+  },
+
+  updateBudgetPreview() {
+    const unitPrice = parseFloat(this.data.unit_price) || 0;
+    const totalCount = parseInt(this.data.total_count) || 0;
+    const awardPrice = parseFloat(this.data.award_price) || 0;
+    const awardCount = parseInt(this.data.award_count) || 0;
+
+    const baseTotal = unitPrice * totalCount;
+    const awardTotal = awardPrice * awardCount;
+    const total = baseTotal + awardTotal;
+
+    this.setData({
+      baseTotal: baseTotal.toFixed(2),
+      awardTotal: awardTotal.toFixed(2),
+      totalBudget: total.toFixed(2)
+    });
   },
 
   onDeadlineChange(e) {

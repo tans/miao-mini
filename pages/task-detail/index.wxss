@@ -46,6 +46,41 @@
   margin-top: 4px;
 }
 
+.budget-info {
+  width: 100%;
+}
+
+.budget-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+
+.budget-label {
+  font-size: 13px;
+  color: #666;
+}
+
+.budget-value {
+  font-size: 13px;
+  color: #333;
+}
+
+.budget-total {
+  font-size: 20px;
+  font-weight: 700;
+  color: #07c160;
+}
+
+.budget-value.frozen {
+  color: #ff9800;
+}
+
+.budget-value.paid {
+  color: #2196f3;
+}
+
 .task-tags {
   display: flex;
   flex-wrap: wrap;

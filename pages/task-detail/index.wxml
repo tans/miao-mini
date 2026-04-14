@@ -20,9 +20,27 @@
   <!-- 预算 -->
   <mp-cells title="预算">
     <mp-cell>
-      <view class="budget-price">¥{{task.unit_price}}</view>
-      <view class="budget-award" wx:if="{{task.award_price > 0}}">
-        入围奖励 ¥{{task.award_price}}/人 × {{task.award_count || 0}}人
+      <view class="budget-info">
+        <view class="budget-row">
+          <text class="budget-label">预计总费用</text>
+          <text class="budget-total">¥{{task.total_budget || 0}}</text>
+        </view>
+        <view class="budget-row">
+          <text class="budget-label">基础奖励</text>
+          <text class="budget-value">¥{{task.unit_price}}/人 × {{task.total_count || 0}}人</text>
+        </view>
+        <view class="budget-row" wx:if="{{task.award_price > 0}}">
+          <text class="budget-label">入围奖励</text>
+          <text class="budget-value">¥{{task.award_price}}/人 × {{task.award_count || 0}}人</text>
+        </view>
+        <view class="budget-row">
+          <text class="budget-label">已冻结</text>
+          <text class="budget-value frozen">¥{{task.frozen_amount || 0}}</text>
+        </view>
+        <view class="budget-row">
+          <text class="budget-label">已支付</text>
+          <text class="budget-value paid">¥{{task.paid_amount || 0}}</text>
+        </view>
       </view>
     </mp-cell>
   </mp-cells>

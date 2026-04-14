@@ -103,6 +103,24 @@
       </view>
     </view>
 
+    <!-- 预算预览 -->
+    <view class="budget-preview">
+      <view class="budget-title">预算预览</view>
+      <view class="budget-row">
+        <text class="budget-label">基础奖励</text>
+        <text class="budget-value">¥{{baseTotal}}</text>
+      </view>
+      <view class="budget-row" wx:if="{{award_price > 0}}">
+        <text class="budget-label">入围奖励</text>
+        <text class="budget-value">¥{{awardTotal}}</text>
+      </view>
+      <view class="budget-row budget-total">
+        <text class="budget-label">预计总费用</text>
+        <text class="budget-value total">¥{{totalBudget}}</text>
+      </view>
+      <view class="budget-hint">发布任务后，总金额将从您的账户余额中扣除</view>
+    </view>
+
     <!-- 提交按钮 -->
     <view class="submit-section">
       <button class="weui-btn weui-btn_primary" bindtap="handleSubmit">发布任务</button>
