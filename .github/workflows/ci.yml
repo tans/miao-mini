@@ -23,19 +23,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Download WeChat DevTools
-        run: |
-          wget -q https://servicewechat.com/wxa-dev/logicmgmt_mp_build/latest/build.yml -O build.yml
-          echo "Build config downloaded"
-
       - name: Preview
-        uses: wechat-mini-program/minigame-actions/preview@v1
+        uses: crazyurus/miniprogram-action@2.0.0
         with:
-          type: miniProgram
+          action_type: preview
           appid: ${{ secrets.MINI_APPID }}
-          private-key: ${{ secrets.MINI_PRIVATE_KEY }}
-          version: ${{ github.run_number }}
-          desc: 'Preview from CI'
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
 
   upload:
     name: Upload
@@ -55,10 +49,10 @@ jobs:
         run: npm ci
 
       - name: Upload
-        uses: wechat-mini-program/minigame-actions/upload@v1
+        uses: crazyurus/miniprogram-action@2.0.0
         with:
-          type: miniProgram
+          action_type: upload
           appid: ${{ secrets.MINI_APPID }}
-          private-key: ${{ secrets.MINI_PRIVATE_KEY }}
           version: ${{ github.run_number }}.0
-          desc: ${{ github.event.head_commit.message }}
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
