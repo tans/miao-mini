@@ -128,8 +128,24 @@ Page({
   async handleSubmit() {
     const { title, description, unit_price, total_count, deadline, video_duration, creative_style, materials } = this.data;
 
-    if (!title || !description || !unit_price || !total_count || !deadline) {
-      wx.showToast({ title: '请填写必填项', icon: 'none' });
+    if (!title) {
+      wx.showToast({ title: '请填写任务标题', icon: 'none' });
+      return;
+    }
+    if (!description) {
+      wx.showToast({ title: '请填写详细描述', icon: 'none' });
+      return;
+    }
+    if (!unit_price) {
+      wx.showToast({ title: '请填写基础奖励', icon: 'none' });
+      return;
+    }
+    if (!total_count) {
+      wx.showToast({ title: '请填写报名人数上限', icon: 'none' });
+      return;
+    }
+    if (!deadline) {
+      wx.showToast({ title: '请填写截止日期', icon: 'none' });
       return;
     }
 
