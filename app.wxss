@@ -1,5 +1,5 @@
 /* 创意喵全局样式 - 引入weui基础样式库 */
-@import 'miniprogram_dist/weui-wxss/dist/style/weui.wxss';
+@import 'styles/weui.wxss';
 
 /* WeUI 主题色覆盖 - 使用weui默认颜色变量 */
 page {
