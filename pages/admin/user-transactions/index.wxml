@@ -1,0 +1,34 @@
+<view class="container">
+  <view class="header">
+    <text class="header-text">共 {{total}} 条记录</text>
+  </view>
+
+  <view class="transaction-list">
+    <block wx:for="{{transactions}}" wx:key="id">
+      <view class="transaction-item">
+        <view class="tx-main">
+          <view class="tx-type type-{{item.type}}">{{item.type_str}}</view>
+          <view class="tx-remark">{{item.remark}}</view>
+          <view class="tx-time">{{item.created_at}}</view>
+        </view>
+        <view class="tx-amount {{item.amount >= 0 ? 'positive' : 'negative'}}">
+          {{item.amount >= 0 ? '+' : ''}}{{item.amount}}
+        </view>
+        <view class="tx-balance">
+          <text class="balance-label">余额</text>
+          <text class="balance-value">{{item.balance_after}}</text>
+        </view>
+      </view>
+    </block>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore && transactions.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+    <view class="empty" wx:if="{{!loading && transactions.length === 0}}">
+      <text>暂无交易记录</text>
+    </view>
+  </view>
+</view>

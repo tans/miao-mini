@@ -1,0 +1,97 @@
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.header {
+  background: #fff;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.header-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.transaction-list {
+  padding: 20rpx;
+}
+
+.transaction-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  display: flex;
+  align-items: center;
+}
+
+.tx-main {
+  flex: 1;
+}
+
+.tx-type {
+  display: inline-block;
+  font-size: 26rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  margin-bottom: 8rpx;
+}
+
+.type-1 { background: #e3f2fd; color: #1976d2; }
+.type-2 { background: #fff3e0; color: #f57c00; }
+.type-3 { background: #e8eaf6; color: #5c6bc0; }
+.type-4 { background: #e8f5e9; color: #388e3c; }
+.type-5 { background: #f3e5f5; color: #7b1fa2; }
+.type-6 { background: #ffebee; color: #d32f2f; }
+.type-7 { background: #e0f2f1; color: #00796b; }
+.type-8 { background: #fafafa; color: #616161; }
+
+.tx-remark {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.tx-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.tx-amount {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin: 0 30rpx;
+}
+
+.tx-amount.positive {
+  color: #07c160;
+}
+
+.tx-amount.negative {
+  color: #f44336;
+}
+
+.tx-balance {
+  text-align: right;
+}
+
+.balance-label {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.balance-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.loading, .no-more, .empty {
+  text-align: center;
+  padding: 60rpx;
+  color: #999;
+  font-size: 28rpx;
+}

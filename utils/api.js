@@ -306,6 +306,35 @@ const Api = {
     const qs = q.length ? '?' + q.join('&') : '';
     return this.request('GET', '/works' + qs, null, true);
   },
+
+  // Admin - User Management
+  getAdminUsers(params = {}) {
+    const q = [];
+    if (params.is_admin !== undefined) q.push(`is_admin=${params.is_admin}`);
+    if (params.status) q.push(`status=${params.status}`);
+    if (params.keyword) q.push(`keyword=${encodeURIComponent(params.keyword)}`);
+    if (params.limit) q.push(`limit=${params.limit}`);
+    if (params.offset) q.push(`offset=${params.offset}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/admin/users' + qs);
+  },
+
+  updateUserStatus(id, status) {
+    return this.request('PUT', `/admin/users/${id}/status`, { status });
+  },
+
+  updateUserBalance(id, change, reason) {
+    return this.request('PUT', `/admin/users/${id}/balance`, { change, reason });
+  },
+
+  getAdminUserTransactions(userId, params = {}) {
+    const q = [];
+    if (params.type) q.push(`type=${params.type}`);
+    if (params.page) q.push(`page=${params.page}`);
+    if (params.limit) q.push(`limit=${params.limit}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', `/admin/users/${userId}/transactions` + qs);
+  },
 };
 
 module.exports = Api;

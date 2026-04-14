@@ -1,0 +1,76 @@
+const Api = require('../../../utils/api');
+
+Page({
+  data: {
+    users: [],
+    loading: false,
+    keyword: '',
+    page: 1,
+    limit: 20,
+    hasMore: true,
+  },
+
+  onLoad() {
+    this.loadUsers();
+  },
+
+  onShow() {
+    // Refresh on show to catch changes
+    if (this.data.users.length > 0) {
+      this.refreshUsers();
+    }
+  },
+
+  onPullDownRefresh() {
+    this.refreshUsers();
+  },
+
+  refreshUsers() {
+    this.setData({ page: 1, users: [], hasMore: true });
+    this.loadUsers();
+  },
+
+  loadUsers() {
+    if (this.data.loading || !this.data.hasMore) return;
+
+    this.setData({ loading: true });
+
+    Api.getAdminUsers({
+      is_admin: false,
+      keyword: this.data.keyword,
+      limit: this.data.limit,
+      offset: (this.data.page - 1) * this.data.limit,
+    })
+      .then((res) => {
+        const users = res.data || [];
+        this.setData({
+          users: this.data.page === 1 ? users : [...this.data.users, ...users],
+          hasMore: users.length >= this.data.limit,
+          page: this.data.page + 1,
+          loading: false,
+        });
+        wx.stopPullDownRefresh();
+      })
+      .catch(() => {
+        this.setData({ loading: false });
+        wx.stopPullDownRefresh();
+      });
+  },
+
+  onSearch(e) {
+    const keyword = e.detail.value || '';
+    this.setData({ keyword, page: 1, users: [], hasMore: true });
+    this.loadUsers();
+  },
+
+  onUserTap(e) {
+    const { id } = e.currentTarget.dataset;
+    wx.navigateTo({
+      url: `/pages/admin/user-detail/index?id=${id}`,
+    });
+  },
+
+  onReachBottom() {
+    this.loadUsers();
+  },
+});
