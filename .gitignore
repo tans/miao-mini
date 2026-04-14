@@ -1,7 +1,5 @@
 node_modules/
 .env
-*.key
-private.*
 !.gitkeep
 .omx/
 scripts/upload.js

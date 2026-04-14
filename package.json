@@ -11,5 +11,8 @@
     "sharp": "^0.34.5",
     "svg2png": "^4.1.1",
     "weui-miniprogram": "^1.5.6"
+  },
+  "devDependencies": {
+    "miniprogram-ci": "^2.1.31"
   }
 }
