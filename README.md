@@ -48,7 +48,7 @@ npm install
 1. 打开 [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)
 2. 选择「导入项目」
 3. 选择本目录
-4. AppID: `wxf830863afde621eb`（或你的 AppID）
+4. AppID: `wx902124d67fa60b0e`（或你的 AppID）
 5. 完成导入
 
 ### 4. 配置后端地址
