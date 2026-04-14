@@ -3,3 +3,4 @@ node_modules/
 !.gitkeep
 .omx/
 scripts/upload.js
+miniprogram_npm/
