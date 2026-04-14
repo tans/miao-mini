@@ -20,9 +20,10 @@ Page({
   loadUser() {
     this.setData({ loading: true });
     // Get all users and find the one with matching id
-    Api.getAdminUsers({ limit: 1000 })
+    Api.getAdminUsers({ page: 1, page_size: 1000 })
       .then((res) => {
-        const users = res.data || [];
+        const data = res.data || {};
+        const users = data.users || [];
         const user = users.find((u) => u.id === this.data.userId);
         this.setData({ user, loading: false });
       })

@@ -4,9 +4,9 @@ Page({
   data: {
     users: [],
     loading: false,
-    keyword: '',
+    search: '',
     page: 1,
-    limit: 20,
+    pageSize: 20,
     hasMore: true,
   },
 
@@ -36,16 +36,16 @@ Page({
     this.setData({ loading: true });
 
     Api.getAdminUsers({
-      is_admin: false,
-      keyword: this.data.keyword,
-      limit: this.data.limit,
-      offset: (this.data.page - 1) * this.data.limit,
+      page: this.data.page,
+      page_size: this.data.pageSize,
+      search: this.data.search,
     })
       .then((res) => {
-        const users = res.data || [];
+        const data = res.data || {};
+        const users = data.users || [];
         this.setData({
           users: this.data.page === 1 ? users : [...this.data.users, ...users],
-          hasMore: users.length >= this.data.limit,
+          hasMore: users.length >= this.data.pageSize,
           page: this.data.page + 1,
           loading: false,
         });
@@ -58,8 +58,8 @@ Page({
   },
 
   onSearch(e) {
-    const keyword = e.detail.value || '';
-    this.setData({ keyword, page: 1, users: [], hasMore: true });
+    const search = e.detail.value || '';
+    this.setData({ search, page: 1, users: [], hasMore: true });
     this.loadUsers();
   },
 

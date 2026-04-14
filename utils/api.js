@@ -310,11 +310,11 @@ const Api = {
   // Admin - User Management
   getAdminUsers(params = {}) {
     const q = [];
-    if (params.is_admin !== undefined) q.push(`is_admin=${params.is_admin}`);
+    if (params.page) q.push(`page=${params.page}`);
+    if (params.page_size) q.push(`page_size=${params.page_size}`);
+    if (params.role) q.push(`role=${params.role}`);
     if (params.status) q.push(`status=${params.status}`);
-    if (params.keyword) q.push(`keyword=${encodeURIComponent(params.keyword)}`);
-    if (params.limit) q.push(`limit=${params.limit}`);
-    if (params.offset) q.push(`offset=${params.offset}`);
+    if (params.search) q.push(`search=${encodeURIComponent(params.search)}`);
     const qs = q.length ? '?' + q.join('&') : '';
     return this.request('GET', '/admin/users' + qs);
   },
