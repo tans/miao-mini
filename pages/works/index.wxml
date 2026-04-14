@@ -8,9 +8,15 @@
     </view>
   </view>
 
-  <view class="works-list" wx:if="{{works.length > 0}}">
+  <!-- 空状态 -->
+  <mp-msg type="info" title="暂无灵感" wx:if="{{!loading && works.length === 0}}" />
+
+  <!-- 作品网格 - 使用mp-grids -->
+  <mp-grids wx:if="{{works.length > 0}}">
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
-      <image class="work-cover" src="{{item.cover_url || item.image}}" mode="aspectFill"/>
+      <view class="work-cover-wrap">
+        <image class="work-cover" src="{{item.cover_url || item.image}}" mode="aspectFill"/>
+      </view>
       <view class="work-info">
         <text class="work-title">{{item.title}}</text>
         <view class="work-author">
@@ -19,13 +25,10 @@
         </view>
       </view>
     </view>
-  </view>
-
-  <view class="empty-state" wx:if="{{!loading && works.length === 0}}">
-    <text>暂无灵感</text>
-  </view>
+  </mp-grids>
 
   <view class="loading-more" wx:if="{{loading}}">
+    <mp-loading type="circle"></mp-loading>
     <text>加载中...</text>
   </view>
 </view>

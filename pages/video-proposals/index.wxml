@@ -11,33 +11,37 @@
     >{{item === 'all' ? '全部' : item === 'pending' ? '待审核' : item === 'passed' ? '已采纳' : '已拒绝'}}</text>
   </view>
 
-  <!-- 提案列表 -->
-  <view wx:if="{{filteredClaims.length === 0}}" class="empty-state">
-    <text class="empty-icon">📭</text>
-    <text class="empty-desc">暂无提案</text>
-  </view>
+  <!-- 空状态 -->
+  <mp-msg type="info" title="暂无提案" wx:if="{{filteredClaims.length === 0}}" />
 
-  <view wx:for="{{filteredClaims}}" wx:key="id" class="card proposal-card">
-    <view class="task-label">投递于：{{item.task_title || '任务'}}</view>
-    <view class="proposal-header">
-      <view class="creator-info">
-        <view class="avatar">{{item.creator_name ? item.creator_name[0] : '创'}}</view>
-        <view>
-          <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
-          <text class="submit-time">{{item.submitted_at ? item.submitted_at.substring(0, 10) : ''}}</text>
+  <!-- 提案列表 -->
+  <mp-cells wx:if="{{filteredClaims.length > 0}}">
+    <mp-cell wx:for="{{filteredClaims}}" wx:key="id">
+      <view slot="title">
+        <view class="proposal-card">
+          <view class="task-label">投递于：{{item.task_title || '任务'}}</view>
+          <view class="proposal-header">
+            <view class="creator-info">
+              <view class="avatar">{{item.creator_name ? item.creator_name[0] : '创'}}</view>
+              <view>
+                <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
+                <text class="submit-time">{{item.submitted_at ? item.submitted_at.substring(0, 10) : ''}}</text>
+              </view>
+            </view>
+            <text class="proposal-status task-status {{item.status === 2 ? 'completed' : 'pending'}}">
+              {{getClaimStatusText(item.status)}}
+            </text>
+          </view>
+          <text wx:if="{{item.content}}" class="proposal-content">{{item.content}}</text>
+          <view class="proposal-footer">
+            <text class="proposal-price">¥{{item.unit_price}}</text>
+            <view class="proposal-actions" wx:if="{{item.status === 1}}">
+              <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
+              <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
+            </view>
+          </view>
         </view>
       </view>
-      <text class="proposal-status task-status {{item.status === 2 ? 'completed' : 'pending'}}">
-        {{getClaimStatusText(item.status)}}
-      </text>
-    </view>
-    <text wx:if="{{item.content}}" class="proposal-content">{{item.content}}</text>
-    <view class="proposal-footer">
-      <text class="proposal-price">¥{{item.unit_price}}</text>
-      <view class="proposal-actions" wx:if="{{item.status === 1}}">
-        <button class="btn btn-secondary btn-sm" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
-        <button class="btn btn-primary btn-sm" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
-      </view>
-    </view>
-  </view>
+    </mp-cell>
+  </mp-cells>
 </view>

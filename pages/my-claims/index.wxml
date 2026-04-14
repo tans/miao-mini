@@ -21,9 +21,8 @@
     </mp-cell>
   </mp-cells>
 
-  <view class="empty-state" wx:if="{{!loading && claims.length === 0}}">
-    <text>暂无认领记录</text>
-  </view>
+  <!-- 空状态 -->
+  <mp-msg type="info" title="暂无认领记录" wx:if="{{!loading && claims.length === 0}}" />
 
   <!-- 提交弹窗 - 使用 WeUI Dialog -->
   <mp-dialog title="提交作品" show="{{showSubmitModal}}" bindbuttontap="onDialogTap" buttons="{{dialogButtons}}">

@@ -1,19 +1,22 @@
 <view class="transactions-container">
-  <view class="transaction-list" wx:if="{{transactions.length > 0}}">
-    <view class="transaction-item" wx:for="{{transactions}}" wx:key="id">
-      <view class="trans-left">
+  <!-- 空状态 -->
+  <mp-msg type="info" title="暂无交易记录" wx:if="{{!loading && transactions.length === 0}}" />
+
+  <!-- 交易记录列表 -->
+  <mp-cells wx:if="{{transactions.length > 0}}">
+    <mp-cell wx:for="{{transactions}}" wx:key="id">
+      <view slot="title">
         <text class="trans-type">{{item.type_text}}</text>
         <text class="trans-time">{{item.created_at}}</text>
       </view>
-      <text class="trans-amount {{item.amount > 0 ? 'income' : 'expense'}}">
+      <text class="trans-amount {{item.amount > 0 ? 'income' : 'expense'}}" slot="footer">
         {{item.amount > 0 ? '+' : ''}}{{item.amount}}
       </text>
-    </view>
-  </view>
-  <view class="empty-state" wx:if="{{!loading && transactions.length === 0}}">
-    <text>暂无交易记录</text>
-  </view>
+    </mp-cell>
+  </mp-cells>
+
   <view class="loading-more" wx:if="{{loading}}">
+    <mp-loading type="circle"></mp-loading>
     <text>加载中...</text>
   </view>
 </view>

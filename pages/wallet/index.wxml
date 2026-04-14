@@ -21,19 +21,20 @@
       <text class="section-title">交易记录</text>
     </view>
 
-    <view wx:if="{{transactions.length === 0}}" class="empty-state">
-      <text class="empty-icon">📭</text>
-      <text class="empty-desc">暂无交易记录</text>
-    </view>
+    <!-- 空状态 -->
+    <mp-msg type="info" title="暂无交易记录" wx:if="{{transactions.length === 0}}" />
 
-    <view wx:for="{{transactions}}" wx:key="id" class="transaction-item">
-      <view class="trans-left">
-        <text class="trans-type">{{item.type_text || '其他'}}</text>
-        <text class="trans-time">{{item.created_at ? item.created_at.substring(0, 10) : ''}}</text>
-      </view>
-      <text class="trans-amount {{item.amount >= 0 ? 'income' : 'expense'}}">
-        {{item.amount >= 0 ? '+' : ''}}{{item.amount}}
-      </text>
-    </view>
+    <!-- 交易记录列表 -->
+    <mp-cells wx:if="{{transactions.length > 0}}">
+      <mp-cell wx:for="{{transactions}}" wx:key="id">
+        <view slot="title">
+          <text class="trans-type">{{item.type_text || '其他'}}</text>
+          <text class="trans-time">{{item.created_at ? item.created_at.substring(0, 10) : ''}}</text>
+        </view>
+        <text class="trans-amount {{item.amount >= 0 ? 'income' : 'expense'}}" slot="footer">
+          {{item.amount >= 0 ? '+' : ''}}{{item.amount}}
+        </text>
+      </mp-cell>
+    </mp-cells>
   </view>
 </view>

@@ -17,13 +17,14 @@
     <text class="section-title">我的发布</text>
   </view>
 
-  <view wx:if="{{tasks.length === 0}}" class="empty-state">
-    <text class="empty-icon">📭</text>
-    <text class="empty-desc">您还没有发布任务</text>
-    <button class="weui-btn weui-btn_primary" bindtap="goCreateTask">发布第一个任务</button>
-  </view>
+  <!-- 空状态 -->
+  <mp-msg type="info" title="您还没有发布任务" wx:if="{{tasks.length === 0}}">
+    <view slot="handle">
+      <button class="weui-btn weui-btn_primary" bindtap="goCreateTask">发布第一个任务</button>
+    </view>
+  </mp-msg>
 
-  <mp-cells>
+  <mp-cells wx:if="{{tasks.length > 0}}">
     <mp-cell wx:for="{{tasks}}" wx:key="id" link bindtap="goTaskDetail" data-id="{{item.id}}">
       <view slot="title" class="task-cell">
         <text class="task-title">{{item.title}}</text>

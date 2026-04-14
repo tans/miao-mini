@@ -85,4 +85,4 @@
 </view>
 
 <!-- 空状态 -->
-<mp-msg type="warn" msg="暂无任务信息" wx:if="{{!task}}" />
+<mp-msg type="warn" title="暂无任务信息" wx:if="{{!task}}" />

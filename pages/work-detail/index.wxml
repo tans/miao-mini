@@ -4,15 +4,19 @@
     <video wx:if="{{work.video}}" class="work-video" src="{{work.video}}" controls/>
   </view>
 
-  <view class="work-info-card">
-    <text class="work-title">{{work.title || '作品'}}</text>
-    <view class="work-author">
-      <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/home.png'}}"/>
-      <text class="author-name">{{work.creator_name || '创作者'}}</text>
-    </view>
-  </view>
+  <mp-cells>
+    <mp-cell>
+      <view slot="title">
+        <text class="work-title">{{work.title || '作品'}}</text>
+        <view class="work-author">
+          <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/home.png'}}"/>
+          <text class="author-name">{{work.creator_name || '创作者'}}</text>
+        </view>
+      </view>
+    </mp-cell>
+  </mp-cells>
 
   <view class="action-bar">
-    <button class="action-btn share-btn" open-type="share">分享</button>
+    <button class="weui-btn weui-btn_primary" open-type="share">分享</button>
   </view>
 </view>

@@ -1,18 +1,15 @@
 <view class="settings-container">
-  <view class="menu-list">
-    <view class="menu-item" bindtap="goProfile">
-      <text class="menu-text">个人信息</text>
-      <text class="menu-arrow">></text>
-    </view>
-    <view class="menu-item" bindtap="goHelp">
-      <text class="menu-text">帮助中心</text>
-      <text class="menu-arrow">></text>
-    </view>
-    <view class="menu-item" bindtap="goAbout">
-      <text class="menu-text">关于我们</text>
-      <text class="menu-arrow">></text>
-    </view>
-  </view>
+  <mp-cells>
+    <mp-cell link bindtap="goProfile" value="个人信息" hover>
+      <text slot="icon" class="menu-icon">👤</text>
+    </mp-cell>
+    <mp-cell link bindtap="goHelp" value="帮助中心" hover>
+      <text slot="icon" class="menu-icon">❓</text>
+    </mp-cell>
+    <mp-cell link bindtap="goAbout" value="关于我们" hover>
+      <text slot="icon" class="menu-icon">ℹ️</text>
+    </mp-cell>
+  </mp-cells>
 
   <view class="version">版本 {{version}}</view>
 </view>
