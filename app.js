@@ -14,9 +14,7 @@ App({
     // 检测运行环境：只有微信开发者工具才用 localhost
     const info = wx.getDeviceInfo();
     const isDevtools = info.platform === 'devtools';
-    this.globalData.apiBase = isDevtools
-      ? 'http://localhost:8888/api/v1'
-      : 'https://miao-test.clawos.cc/api/v1';
+    this.globalData.apiBase = 'https://miao-test.clawos.cc/api/v1';
 
     // 读取缓存（同步），已登录则直接用缓存，未登录则静默登录
     const token = wx.getStorageSync("miao_token");

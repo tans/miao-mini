@@ -41,8 +41,8 @@
   <!-- 空状态 -->
   <mp-msg type="info" title="暂无相关任务" wx:if="{{displayTasks.length === 0 && !loading}}" />
 
-  <!-- 两列任务网格 - 使用mp-grids -->
-  <mp-grids wx:if="{{displayTasks.length > 0}}">
+  <!-- 两列任务网格 -->
+  <view class="task-grid" wx:if="{{displayTasks.length > 0}}">
     <view
       wx:for="{{displayTasks}}" wx:key="id"
       class="task-card-grid"
@@ -72,7 +72,7 @@
         </view>
       </view>
     </view>
-  </mp-grids>
+  </view>
 
   <view wx:if="{{hasMore && activeIndustry === '' && displayTasks.length > 0}}" class="load-more">
     <button class="weui-btn weui-btn_default" bindtap="loadMore" disabled="{{loading}}">
