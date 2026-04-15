@@ -1,16 +1,25 @@
 const ci = require('miniprogram-ci');
 const path = require('path');
+const fs = require('fs');
 
 async function upload() {
   const projectPath = path.resolve(__dirname, '..');
-  const privateKeyPath = process.env.PRIVATE_KEY_PATH;
+
+  // Read appid from project.config.json if not set
+  let appid = process.env.MINI_APPID;
+  if (!appid) {
+    const projectConfig = JSON.parse(fs.readFileSync(path.join(projectPath, 'project.config.json'), 'utf-8'));
+    appid = projectConfig.appid;
+  }
+
+  const privateKeyPath = process.env.PRIVATE_KEY_PATH || path.resolve(__dirname, '..', 'private.key');
 
   const project = new ci.Project({
+    appid,
     appid: process.env.MINI_APPID,
     type: 'miniProgram',
     projectPath,
     privateKeyPath,
-    ignores: ['node_modules/**/*'],
   });
 
   const uploadResult = await ci.upload({

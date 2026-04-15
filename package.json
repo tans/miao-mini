@@ -4,7 +4,8 @@
   "description": "连接商家与创作者的视频任务撮合平台",
   "scripts": {
     "dev": "npx serve . -p 3000",
-    "start": "npx serve . -p 3000"
+    "start": "npx serve . -p 3000",
+    "upload": "node scripts/ci-upload.js"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
