@@ -130,6 +130,11 @@ const Api = {
     return this.request('PUT', '/users/me', data);
   },
 
+  bindPhone(detail) {
+    // detail: { code, encryptedData, iv } from getPhoneNumber
+    return this.request('POST', '/users/bind-phone', detail);
+  },
+
   // 上传图片到服务器，返回永久 URL（string）
   uploadImage(tempFilePath) {
     return new Promise((resolve, reject) => {

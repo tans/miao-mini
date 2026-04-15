@@ -87,6 +87,25 @@
   white-space: nowrap;
 }
 
+/* 手机授权按钮 */
+.phone-btn {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 15px;
+  color: #999;
+  text-align: left;
+}
+
+.phone-btn.phone-btn_active {
+  color: #333;
+}
+
+.phone-btn::after {
+  border: none;
+}
+
 .divider {
   height: 1px;
   background: #f0f0f0;

@@ -48,8 +48,23 @@ Page({
     this.setData({ nickname: e.detail.value }, () => this._checkDirty());
   },
 
-  onPhoneInput(e) {
-    this.setData({ phone: e.detail.value }, () => this._checkDirty());
+  async onGetPhoneNumber(e) {
+    if (e.detail.errMsg !== 'getPhoneNumber:ok') {
+      if (e.detail.errMsg !== 'cancel') {
+        wx.showToast({ title: '授权失败', icon: 'none' });
+      }
+      return;
+    }
+    try {
+      wx.showLoading({ title: '授权中...' });
+      await Api.bindPhone(e.detail);
+      wx.hideLoading();
+      wx.showToast({ title: '授权成功', icon: 'success' });
+      this.loadProfile();
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '授权失败', icon: 'none' });
+    }
   },
 
   _checkDirty() {
