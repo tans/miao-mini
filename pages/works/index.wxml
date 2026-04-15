@@ -11,21 +11,21 @@
   <!-- 空状态 -->
   <mp-msg type="info" title="暂无灵感" wx:if="{{!loading && works.length === 0}}" />
 
-  <!-- 作品网格 - 使用mp-grids -->
-  <mp-grids wx:if="{{works.length > 0}}">
+  <!-- 作品网格 -->
+  <view class="works-grid" wx:if="{{works.length > 0}}">
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
       <view class="work-cover-wrap">
         <image class="work-cover" src="{{item.cover_url || item.image}}" mode="aspectFill"/>
       </view>
       <view class="work-info">
-        <text class="work-title">{{item.title}}</text>
+        <text class="work-title">{{item.task_title || item.title}}</text>
         <view class="work-author">
           <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/home.png'}}"/>
           <text class="author-name">{{item.creator_name || '创作者'}}</text>
         </view>
       </view>
     </view>
-  </mp-grids>
+  </view>
 
   <view class="loading-more" wx:if="{{loading}}">
     <mp-loading type="circle"></mp-loading>

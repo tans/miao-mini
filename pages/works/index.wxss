@@ -44,9 +44,12 @@
   margin-top: 12px;
 }
 
-/* 作品网格 - 使用weui-grids */
-.weui-grids {
-  padding: 8px;
+/* 作品网格 - 使用flex布局 */
+.works-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 12px;
 }
 
 .work-card {
@@ -56,6 +59,7 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   margin: 0;
   padding: 0;
+  width: calc(50% - 6px);
 }
 
 .work-card .work-cover-wrap {
