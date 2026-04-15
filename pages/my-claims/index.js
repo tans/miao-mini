@@ -35,7 +35,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getMyClaims({ page: 1 });
-      const claims = res.data && res.data.data || [];
+      const claims = res.data || [];
       this.setData({ claims, filteredClaims: claims });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
