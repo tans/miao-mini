@@ -44,6 +44,13 @@ Page({
     this.loadClaims().finally(() => wx.stopPullDownRefresh());
   },
 
+  onShow() {
+    // 从提交作品页返回时，刷新认领列表
+    if (this.data.claims.length > 0) {
+      this.loadClaims();
+    }
+  },
+
   async loadClaims() {
     if (this.data.loading) return;
     this.setData({ loading: true });

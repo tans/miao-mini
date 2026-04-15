@@ -22,6 +22,30 @@ Page({
     this.loadTaskDetail(options.id);
   },
 
+  onShow() {
+    // 从提交作品页返回时，刷新认领状态
+    if (this.data.task) {
+      this.refreshClaimStatus();
+    }
+  },
+
+  async refreshClaimStatus() {
+    const { task } = this.data;
+    if (!task) return;
+    try {
+      const claimRes = await Api.getClaimByTaskId(task.id);
+      const myClaim = claimRes.data;
+      const hasClaimed = myClaim && (myClaim.status === 1 || myClaim.status === 2);
+      const claimStatus = myClaim ? myClaim.status : 0;
+      this.setData({ myClaim, hasClaimed, claimStatus });
+      if (this.data.isMyTask) {
+        this.loadTaskClaims(task.id);
+      }
+    } catch (e) {
+      // 忽略刷新错误
+    }
+  },
+
   async loadTaskDetail(taskId) {
     wx.showLoading({ title: '加载中...' });
     try {
