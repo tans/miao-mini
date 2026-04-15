@@ -3,13 +3,29 @@ const app = getApp();
 
 Page({
   data: {
-    version: '1.0.0',
+    displayText: 'v1.0.0',
   },
 
   onLoad() {
-    this.setData({
-      version: wx.getAccountInfoSync().miniProgram.version || '1.0.0',
-    });
+    this.updateDisplayText();
+  },
+
+  onShow() {
+    this.updateDisplayText();
+  },
+
+  updateDisplayText() {
+    const lastUpload = wx.getStorageSync('lastUploadTime');
+    let displayText = 'v1.0.0';
+    if (lastUpload) {
+      const date = new Date(lastUpload);
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      displayText = `最后上传 ${month}-${day} ${hours}:${minutes}`;
+    }
+    this.setData({ displayText });
   },
 
   goProfile() {

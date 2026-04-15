@@ -147,6 +147,8 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
+              // 保存上传时间
+              wx.setStorageSync('lastUploadTime', new Date().toISOString());
               // Ensure URL is absolute for WeChat image component
               const url = data.data.url;
               if (url.startsWith('/')) {
@@ -191,6 +193,8 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
+              // 保存上传时间
+              wx.setStorageSync('lastUploadTime', new Date().toISOString());
               // Ensure URL is absolute for WeChat video component
               const url = data.data.url;
               if (url.startsWith('/')) {

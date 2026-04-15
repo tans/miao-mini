@@ -11,5 +11,5 @@
     </mp-cell>
   </mp-cells>
 
-  <view class="version">版本 {{version}}</view>
+  <view class="version">{{displayText}}</view>
 </view>
