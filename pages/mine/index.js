@@ -12,30 +12,36 @@ Page({
     const isLoggedIn = app.isLoggedIn();
     this.setData({ isLoggedIn });
     if (isLoggedIn) {
-      const user = app.getUser();
-      this.setData({ user });
-      this.loadWallet();
+      this.loadUserAndWallet();
     } else {
       this.setData({ user: null, balance: '0.00' });
       // 触发静默登录
       app.silentLogin().then(() => {
         this.setData({ isLoggedIn: app.isLoggedIn() });
         if (app.isLoggedIn()) {
-          this.setData({ user: app.getUser() });
-          this.loadWallet();
+          this.loadUserAndWallet();
         }
       });
     }
   },
 
-  async loadWallet() {
+  async loadUserAndWallet() {
     try {
-      const res = await Api.getWallet();
-      const wallet = res.data || {};
-      this.setData({ balance: (wallet.balance || 0).toFixed(2) });
+      const [userRes, walletRes] = await Promise.all([
+        Api.getMe(),
+        Api.getWallet()
+      ]);
+      const user = userRes.data || {};
+      const wallet = walletRes.data || {};
+      // 更新全局用户缓存
+      app.setAuth(app.getToken(), user);
+      this.setData({
+        user,
+        balance: (wallet.balance || 0).toFixed(2)
+      });
     } catch (err) {
       if (err.message !== '登录已过期') {
-        wx.showToast({ title: '余额加载失败', icon: 'none' });
+        wx.showToast({ title: '加载失败', icon: 'none' });
       }
     }
   },
