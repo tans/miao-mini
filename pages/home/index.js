@@ -37,7 +37,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const { sort, page } = this.data;
-      const res = await Api.getTasks({ page, limit: 20, sort, status: 1 });
+      const res = await Api.getTasks({ page, limit: 20, sort });
       const newTasks = res.data?.data || [];
 
       const rawTasks = page === 1 ? newTasks : [...this.data.tasks, ...newTasks];

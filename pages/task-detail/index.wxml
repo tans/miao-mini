@@ -97,8 +97,9 @@
   </mp-cells>
 
   <!-- 接单按钮 -->
-  <view class="action-bar" wx:if="{{canClaim}}">
-    <button class="weui-btn weui-btn_primary weui-btn_block" bindtap="claimTask">立即接单</button>
+  <view class="action-bar" wx:if="{{canClaim || claimReason}}">
+    <button class="weui-btn weui-btn_primary weui-btn_block {{canClaim ? '' : 'weui-btn_disabled'}}" bindtap="{{canClaim ? 'claimTask' : ''}}" disabled="{{!canClaim}}">{{canClaim ? '立即接单' : '无法领取'}}</button>
+    <view class="claim-reason" wx:if="{{!canClaim && claimReason}}">{{claimReason}}</view>
   </view>
 </view>
 
