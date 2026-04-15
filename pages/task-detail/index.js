@@ -8,7 +8,8 @@ Page({
     task: null,
     claims: [],
     isMyTask: false,
-    canClaim: false
+    canClaim: false,
+    claimReason: ''
   },
 
   onLoad(options) {
@@ -31,10 +32,25 @@ Page({
       const user = app.getUser();
       const taskStatus = typeof task.status === 'number' ? task.status : parseInt(task.status, 10);
       const isMyTask = user && task.business_id === user.id;
-      // 已上线(status=2)且用户是创作者且不是任务创建者时可接单
-      const canClaim = !isMyTask && user && user.role === 'creator' && taskStatus === 2;
 
-      this.setData({ task, isMyTask, canClaim });
+      let claimReason = '';
+      let canClaim = false;
+
+      if (!user) {
+        claimReason = '请先登录';
+      } else if (isMyTask) {
+        claimReason = '无法接自己的任务';
+      } else if (user.role !== 'creator') {
+        claimReason = '仅创作者可接单';
+      } else if (taskStatus !== 2) {
+        claimReason = '任务未开放领取';
+      } else if (task.remaining_count <= 0) {
+        claimReason = '名额已满';
+      } else {
+        canClaim = true;
+      }
+
+      this.setData({ task, isMyTask, canClaim, claimReason });
 
       if (isMyTask) {
         this.loadTaskClaims(taskId);
