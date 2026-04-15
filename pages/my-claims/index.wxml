@@ -9,15 +9,23 @@
 
   <!-- 认领列表 -->
   <mp-cells wx:if="{{claims.length > 0}}">
-    <mp-cell wx:for="{{filteredClaims}}" wx:key="id" link bindtap="goTaskDetail" data-id="{{item.task_id}}">
-      <view slot="title">
+    <mp-cell wx:for="{{filteredClaims}}" wx:key="id">
+      <view slot="title" bindtap="goTaskDetail" data-id="{{item.task_id}}">
         <text class="claim-task-title">{{item.task_title || '任务' + item.task_id}}</text>
         <view class="claim-body">
           <text class="claim-price">¥{{item.unit_price || 0}}</text>
           <text class="claim-time">{{item.created_at}}</text>
         </view>
       </view>
-      <text class="claim-status status-{{item.status}}" slot="footer">{{getClaimStatusText(item.status)}}</text>
+      <view slot="footer" class="claim-actions">
+        <!-- 待提交状态：显示提交和放弃按钮 -->
+        <view wx:if="{{item.status === 1}}" class="claim-btns">
+          <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" bindtap="showSubmitModal">提交</button>
+          <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" bindtap="cancelClaim">放弃</button>
+        </view>
+        <!-- 其他状态：只显示状态文本 -->
+        <text wx:else class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
+      </view>
     </mp-cell>
   </mp-cells>
 

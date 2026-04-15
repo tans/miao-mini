@@ -15,14 +15,29 @@ Page({
     dialogButtons: [{ text: '取消', action: 'cancel' }, { text: '提交', type: 'primary', action: 'confirm' }]
   },
 
-  onLoad() {
+  onLoad(options) {
     if (!app.isLoggedIn()) {
       app.silentLogin().then(() => {
-        if (app.isLoggedIn()) this.loadClaims();
+        if (app.isLoggedIn()) {
+          this.loadClaims();
+          // 处理跳转参数
+          if (options.claimId && options.action === 'submit') {
+            this.autoShowSubmitModal(options.claimId);
+          }
+        }
       });
       return;
     }
     this.loadClaims();
+    // 处理跳转参数
+    if (options.claimId && options.action === 'submit') {
+      this.autoShowSubmitModal(options.claimId);
+    }
+  },
+
+  // 自动显示提交弹窗（从任务详情页跳转过来时）
+  autoShowSubmitModal(claimId) {
+    this.setData({ showSubmitModal: true, submitClaimId: claimId, submitUrl: '', submitNote: '' });
   },
 
   onPullDownRefresh() {
@@ -98,5 +113,28 @@ Page({
     } finally {
       wx.hideLoading();
     }
+  },
+
+  // 取消/放弃认领
+  async cancelClaim(e) {
+    const { claimId } = e.currentTarget.dataset;
+    wx.showModal({
+      title: '确认放弃',
+      content: '确定要放弃该任务吗？放弃后将释放名额',
+      success: async (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '取消中...' });
+          try {
+            await Api.cancelClaim(claimId);
+            wx.showToast({ title: '已取消认领', icon: 'success' });
+            this.loadClaims();
+          } catch (err) {
+            wx.showToast({ title: err.message || '取消失败', icon: 'none' });
+          } finally {
+            wx.hideLoading();
+          }
+        }
+      }
+    });
   }
 });

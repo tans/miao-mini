@@ -275,6 +275,18 @@ const Api = {
     return this.request('PUT', `/creator/claim/${claimId}/submit`, data);
   },
 
+  cancelClaim(claimId) {
+    return this.request('DELETE', `/creator/claim/${claimId}`);
+  },
+
+  getClaimById(claimId) {
+    return this.request('GET', `/creator/claim/${claimId}`);
+  },
+
+  getClaimByTaskId(taskId) {
+    return this.request('GET', `/creator/claim/by-task/${taskId}`);
+  },
+
   // Wallet
   getWallet() {
     return this.request('GET', '/creator/wallet');

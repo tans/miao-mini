@@ -10,7 +10,9 @@ Page({
     materials: [],
     isMyTask: false,
     canClaim: false,
-    claimReason: ''
+    claimReason: '',
+    myClaim: null,      // 当前用户对该任务的认领记录
+    hasClaimed: false,   // 是否已认领（待提交状态）
   },
 
   onLoad(options) {
@@ -49,7 +51,29 @@ Page({
         canClaim = true;
       }
 
-      this.setData({ task, materials: task.materials || [], isMyTask, canClaim, claimReason });
+      // 检查当前用户是否已认领该任务
+      let myClaim = null;
+      let hasClaimed = false;
+      if (user && !isMyTask) {
+        try {
+          const claimRes = await Api.getClaimByTaskId(taskId);
+          myClaim = claimRes.data;
+          // 只有待提交状态的认领才算已认领
+          hasClaimed = myClaim && myClaim.status === 1;
+        } catch (e) {
+          // 忽略错误，继续显示领取按钮
+        }
+      }
+
+      this.setData({
+        task,
+        materials: task.materials || [],
+        isMyTask,
+        canClaim,
+        claimReason,
+        myClaim,
+        hasClaimed
+      });
 
       if (isMyTask) {
         this.loadTaskClaims(taskId);
@@ -85,15 +109,21 @@ Page({
     try {
       await Api.claimTask(task.id);
       wx.showToast({ title: '接单成功！', icon: 'success' });
-      // Reload task detail to update canClaim state and prevent duplicate claims
+      // Reload task detail to update claim state
       await this.loadTaskDetail(task.id);
-      setTimeout(() => {
-        wx.navigateTo({ url: '/pages/my-claims/index' });
-      }, 1500);
     } catch (err) {
       wx.showToast({ title: err.message || '接单失败', icon: 'none' });
     } finally {
       wx.hideLoading();
+    }
+  },
+
+  // 跳转到提交作品页面
+  goSubmitWork() {
+    const { myClaim } = this.data;
+    if (myClaim) {
+      // 跳转到我的认领页面，带上claimId和taskId参数
+      wx.navigateTo({ url: `/pages/my-claims/index?claimId=${myClaim.id}&action=submit` });
     }
   },
 

@@ -110,9 +110,12 @@
   </mp-cells>
 
   <!-- 接单按钮 -->
-  <view class="action-bar" wx:if="{{canClaim || claimReason}}">
-    <button class="weui-btn weui-btn_primary weui-btn_block {{canClaim ? '' : 'weui-btn_disabled'}}" bindtap="{{canClaim ? 'claimTask' : ''}}" disabled="{{!canClaim}}">{{canClaim ? '立即接单' : '无法领取'}}</button>
-    <view class="claim-reason" wx:if="{{!canClaim && claimReason}}">{{claimReason}}</view>
+  <view class="action-bar" wx:if="{{canClaim || claimReason || hasClaimed}}">
+    <!-- 已认领该任务，显示提交作品按钮 -->
+    <button class="weui-btn weui-btn_primary weui-btn_block" bindtap="goSubmitWork" wx:if="{{hasClaimed}}">提交作品</button>
+    <!-- 未认领，显示接单按钮 -->
+    <button class="weui-btn weui-btn_primary weui-btn_block {{canClaim ? '' : 'weui-btn_disabled'}}" bindtap="{{canClaim ? 'claimTask' : ''}}" disabled="{{!canClaim}}" wx:else>{{canClaim ? '立即接单' : '无法领取'}}</button>
+    <view class="claim-reason" wx:if="{{!canClaim && !hasClaimed && claimReason}}">{{claimReason}}</view>
   </view>
 </view>
 

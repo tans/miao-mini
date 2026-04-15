@@ -55,6 +55,17 @@
   border-radius: 10px;
 }
 
+.claim-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.claim-btns {
+  display: flex;
+  gap: 8px;
+}
+
 .status-0 { background: #fff7e6; color: #fa8c16; }
 .status-1 { background: #e6fff7; color: #07c160; }
 .status-2 { background: #e3f2fd; color: #2196f3; }
