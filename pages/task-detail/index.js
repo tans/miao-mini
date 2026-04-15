@@ -40,8 +40,6 @@ Page({
         claimReason = '请先登录';
       } else if (isMyTask) {
         claimReason = '无法接自己的任务';
-      } else if (user.role !== 'creator') {
-        claimReason = '仅创作者可接单';
       } else if (taskStatus !== 2) {
         claimReason = '任务未开放领取';
       } else if (task.remaining_count <= 0) {

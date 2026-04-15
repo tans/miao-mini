@@ -23,12 +23,7 @@ Page({
   },
 
   _initPage() {
-    const user = app.getUser();
-    if (user && user.role !== 'business') {
-      wx.showToast({ title: '只有商家才能查看提案', icon: 'none' });
-      wx.switchTab({ url: '/pages/home/index' });
-      return;
-    }
+    // 所有用户都有商家和创作者角色，无需角色检查
     this.loadProposals();
   },
 
