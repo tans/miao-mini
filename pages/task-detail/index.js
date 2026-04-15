@@ -6,6 +6,7 @@ const app = getApp();
 Page({
   data: {
     task: null,
+    loading: true,
     claims: [],
     materials: [],
     isMyTask: false,
@@ -30,6 +31,7 @@ Page({
       if (!task) {
         wx.showToast({ title: '任务不存在', icon: 'none' });
         setTimeout(() => wx.navigateBack(), 1500);
+        this.setData({ loading: false });
         return;
       }
 
@@ -76,7 +78,8 @@ Page({
         claimReason,
         myClaim,
         hasClaimed,
-        claimStatus
+        claimStatus,
+        loading: false
       });
 
       if (isMyTask) {
@@ -84,6 +87,7 @@ Page({
       }
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
+      this.setData({ loading: false });
     } finally {
       wx.hideLoading();
     }

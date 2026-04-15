@@ -1,4 +1,29 @@
 /* pages/task-detail/index.wxss */
+.skeleton-container {
+  padding: 16px;
+}
+
+.seleton-header, .skeleton-section {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.skeleton-header {
+  height: 120px;
+}
+
+.skeleton-section {
+  height: 80px;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .detail-container {
   padding-bottom: 80px;
 }

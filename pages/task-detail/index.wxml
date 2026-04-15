@@ -1,5 +1,14 @@
 <!--pages/task-detail/index.wxml-->
-<view class="detail-container" wx:if="{{task}}">
+<!-- Skeleton 加载状态 -->
+<view class="skeleton-container" wx:if="{{loading}}">
+  <view class="skeleton-header"></view>
+  <view class="skeleton-section"></view>
+  <view class="skeleton-section"></view>
+  <view class="skeleton-section"></view>
+</view>
+
+<!-- 内容区域 -->
+<view class="detail-container" wx:if="{{!loading && task}}">
   <!-- 任务头部 -->
   <view class="task-header-card">
     <view class="detail-title">{{task.title}}</view>
@@ -120,5 +129,5 @@
   </view>
 </view>
 
-<!-- 空状态 -->
-<mp-msg type="warn" title="暂无任务信息" wx:if="{{!task}}" />
+<!-- 空状态 - 仅在非加载且无任务时显示 -->
+<mp-msg type="warn" title="暂无任务信息" wx:if="{{!loading && !task}}" />
