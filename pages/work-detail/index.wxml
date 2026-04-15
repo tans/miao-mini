@@ -17,7 +17,7 @@
       <view slot="title">
         <text class="work-title">{{work.task_title || work.title || '作品'}}</text>
         <view class="work-author">
-          <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/home.png'}}"/>
+          <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
           <text class="author-name">{{work.creator_name || '创作者'}}</text>
         </view>
       </view>

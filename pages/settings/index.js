@@ -29,7 +29,7 @@ Page({
   },
 
   goHelp() {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/settings/help/index' });
   },
 
   goAbout() {

@@ -1,0 +1,32 @@
+<view class="help-container">
+  <view class="section">
+    <view class="section-title">创作者等级说明</view>
+    <view class="level-table">
+      <view class="level-header">
+        <text class="col-level">等级</text>
+        <text class="col-daily">每日认领</text>
+        <text class="col-commission">佣金比例</text>
+        <text class="col-margin">保证金</text>
+      </view>
+      <view class="level-row" wx:for="{{levels}}" wx:key="name">
+        <view class="col-level">
+          <text class="level-icon">{{item.icon}}</text>
+          <text class="level-name">{{item.name}}</text>
+        </view>
+        <text class="col-daily">{{item.dailyLimit}}个</text>
+        <text class="col-commission">{{item.commission}}</text>
+        <text class="col-margin">{{item.margin}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">等级规则</view>
+    <view class="rule-list">
+      <view class="rule-item" wx:for="{{rules}}" wx:key="*this">
+        <text class="rule-bullet">•</text>
+        <text class="rule-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+</view>

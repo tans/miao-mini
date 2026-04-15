@@ -20,7 +20,7 @@
       <view class="work-info">
         <text class="work-title">{{item.task_title || item.title}}</text>
         <view class="work-author">
-          <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/home.png'}}"/>
+          <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
           <text class="author-name">{{item.creator_name || '创作者'}}</text>
         </view>
       </view>

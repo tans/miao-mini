@@ -1,11 +1,15 @@
 <view class="mine-container">
   <!-- 用户信息卡片 -->
   <view class="user-card" bindtap="goProfile">
-    <image class="avatar" src="{{user.avatar || '/assets/icons/home.png'}}"/>
+    <image class="avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}"/>
     <view class="user-info">
       <text class="nickname">{{user.nickname || user.username || '未登录'}}</text>
       <text class="role-tag" wx:if="{{user.role === 'business'}}">商家</text>
       <text class="role-tag" wx:elif="{{user.role === 'creator'}}">创作者</text>
+      <view class="level-badge" wx:if="{{user.role === 'creator' && user.level > 0}}">
+        <text class="level-icon">{{user.level === 4 ? '💎' : user.level === 3 ? '🥇' : user.level === 2 ? '🥈' : '🪙'}}</text>
+        <text class="level-text">{{user.level_name}}</text>
+      </view>
     </view>
     <text class="user-card-arrow">></text>
   </view>
