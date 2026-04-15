@@ -130,8 +130,9 @@ Page({
   goSubmitWork() {
     const { myClaim } = this.data;
     if (myClaim) {
-      // 跳转到我的认领页面，带上claimId和taskId参数
-      wx.navigateTo({ url: `/pages/my-claims/index?claimId=${myClaim.id}&action=submit` });
+      wx.navigateTo({
+        url: `/pages/submit-work/index?claimId=${myClaim.id}&taskId=${myClaim.task_id}`
+      });
     }
   },
 

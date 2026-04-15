@@ -79,7 +79,8 @@ Page({
   },
 
   showSubmitModal(e) {
-    this.setData({ showSubmitModal: true, submitClaimId: e.currentTarget.dataset.claimId, submitUrl: '', submitNote: '' });
+    const claimId = e.currentTarget.dataset.claimId;
+    wx.navigateTo({ url: `/pages/submit-work/index?claimId=${claimId}` });
   },
 
   hideSubmitModal() {
