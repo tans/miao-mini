@@ -85,6 +85,8 @@ Page({
     try {
       await Api.claimTask(task.id);
       wx.showToast({ title: '接单成功！', icon: 'success' });
+      // Reload task detail to update canClaim state and prevent duplicate claims
+      await this.loadTaskDetail(task.id);
       setTimeout(() => {
         wx.navigateTo({ url: '/pages/my-claims/index' });
       }, 1500);
