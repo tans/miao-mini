@@ -12,10 +12,7 @@
     "pages/create-task/index",
     "pages/video-proposals/index",
     "pages/wallet/index",
-    "pages/settings/profile/index",
-    "pages/admin/user-list/index",
-    "pages/admin/user-detail/index",
-    "pages/admin/user-transactions/index"
+    "pages/settings/profile/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
