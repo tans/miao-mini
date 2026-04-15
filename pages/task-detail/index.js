@@ -13,6 +13,7 @@ Page({
     claimReason: '',
     myClaim: null,      // 当前用户对该任务的认领记录
     hasClaimed: false,   // 是否已认领（待提交状态）
+    claimStatus: 0,     // 认领状态：0=未认领, 1=待提交, 2=待验收, 3=已完成
   },
 
   onLoad(options) {
@@ -54,12 +55,14 @@ Page({
       // 检查当前用户是否已认领该任务
       let myClaim = null;
       let hasClaimed = false;
+      let claimStatus = 0;
       if (user && !isMyTask) {
         try {
           const claimRes = await Api.getClaimByTaskId(taskId);
           myClaim = claimRes.data;
-          // 只有待提交状态的认领才算已认领
-          hasClaimed = myClaim && myClaim.status === 1;
+          // 认领状态：1=待提交, 2=待验收, 3=已完成
+          hasClaimed = myClaim && (myClaim.status === 1 || myClaim.status === 2);
+          claimStatus = myClaim ? myClaim.status : 0;
         } catch (e) {
           // 忽略错误，继续显示领取按钮
         }
@@ -72,7 +75,8 @@ Page({
         canClaim,
         claimReason,
         myClaim,
-        hasClaimed
+        hasClaimed,
+        claimStatus
       });
 
       if (isMyTask) {

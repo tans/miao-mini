@@ -63,7 +63,8 @@ Page({
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab;
     this.setData({ activeTab: tab });
-    const statusMap = { all: null, pending: 0, submitted: 1, completed: 2 };
+    // ClaimStatus: 1=待提交, 2=待验收, 3=已完成
+    const statusMap = { all: null, pending: 1, submitted: 2, completed: 3 };
     const status = statusMap[tab];
     const filtered = status === null ? this.data.claims : this.data.claims.filter(c => c.status === status);
     this.setData({ filteredClaims: filtered });
