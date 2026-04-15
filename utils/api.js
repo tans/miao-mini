@@ -96,13 +96,11 @@ const Api = {
             resolve(data);
           } else {
             const msg = (data && data.message) || '请求失败';
-            wx.showToast({ title: msg, icon: 'none' });
             reject(new Error(msg));
           }
         },
         fail: (err) => {
           const msg = err && (err.message || err.errMsg) || '网络请求失败';
-          wx.showToast({ title: msg, icon: 'none' });
           reject(new Error(msg));
         }
       });
