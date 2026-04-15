@@ -1,18 +1,33 @@
 <view class="work-detail-container">
-  <view class="work-media">
-    <image wx:if="{{work.image}}" class="work-image" src="{{work.image}}" mode="widthFix"/>
-    <video wx:if="{{work.video}}" class="work-video" src="{{work.video}}" controls/>
+  <!-- 素材展示 -->
+  <view class="work-media" wx:if="{{materials.length > 0}}">
+    <block wx:for="{{materials}}" wx:key="id">
+      <image wx:if="{{item.file_type === 'image'}}" class="work-image" src="{{item.file_path}}" mode="widthFix" bindtap="previewMaterial" data-url="{{item.file_path}}"/>
+      <video wx:if="{{item.file_type === 'video'}}" class="work-video" src="{{item.file_path}}" controls/>
+    </block>
+  </view>
+
+  <!-- 封面图兜底 -->
+  <view class="work-media" wx:elif="{{work.cover_url || work.image}}">
+    <image class="work-image" src="{{work.cover_url || work.image}}" mode="widthFix"/>
   </view>
 
   <mp-cells>
     <mp-cell>
       <view slot="title">
-        <text class="work-title">{{work.title || '作品'}}</text>
+        <text class="work-title">{{work.task_title || work.title || '作品'}}</text>
         <view class="work-author">
           <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/home.png'}}"/>
           <text class="author-name">{{work.creator_name || '创作者'}}</text>
         </view>
       </view>
+    </mp-cell>
+  </mp-cells>
+
+  <!-- 创作说明 -->
+  <mp-cells title="创作说明" wx:if="{{work.content}}">
+    <mp-cell>
+      <text class="work-content">{{work.content}}</text>
     </mp-cell>
   </mp-cells>
 

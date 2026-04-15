@@ -7,6 +7,7 @@ Page({
   data: {
     task: null,
     claims: [],
+    materials: [],
     isMyTask: false,
     canClaim: false,
     claimReason: ''
@@ -48,7 +49,7 @@ Page({
         canClaim = true;
       }
 
-      this.setData({ task, isMyTask, canClaim, claimReason });
+      this.setData({ task, materials: task.materials || [], isMyTask, canClaim, claimReason });
 
       if (isMyTask) {
         this.loadTaskClaims(taskId);
@@ -115,5 +116,10 @@ Page({
 
   getStatusClass(status) {
     return getStatusClass(status);
+  },
+
+  previewMaterial(e) {
+    const url = e.currentTarget.dataset.url;
+    wx.previewImage({ urls: [url], current: url });
   }
 });

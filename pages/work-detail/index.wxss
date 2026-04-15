@@ -60,3 +60,9 @@
   border: none;
   font-size: 15px;
 }
+
+.work-content {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+}

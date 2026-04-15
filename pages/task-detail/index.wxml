@@ -63,6 +63,19 @@
     </mp-cell>
   </mp-cells>
 
+  <!-- 素材 -->
+  <mp-cells title="素材" wx:if="{{materials.length > 0}}">
+    <mp-cell wx:for="{{materials}}" wx:key="id">
+      <view class="material-item">
+        <image wx:if="{{item.file_type === 'image'}}" class="material-thumb" src="{{item.file_path}}" mode="aspectFill" bindtap="previewMaterial" data-url="{{item.file_path}}"/>
+        <video wx:if="{{item.file_type === 'video'}}" class="material-video" src="{{item.file_path}}" controls/>
+        <view class="material-info">
+          <text class="material-name">{{item.file_name}}</text>
+        </view>
+      </view>
+    </mp-cell>
+  </mp-cells>
+
   <!-- 收到的提案 -->
   <mp-cells title="收到的提案" wx:if="{{isMyTask}}">
     <block wx:if="{{claims.length === 0}}">
