@@ -1,5 +1,6 @@
 const Api = require('../../utils/api.js');
 const app = getApp();
+const buildInfo = require('../../build-info.js');
 
 Page({
   data: {
@@ -15,17 +16,15 @@ Page({
   },
 
   updateDisplayText() {
-    const lastUpload = wx.getStorageSync('lastUploadTime');
-    let displayText = 'v1.0.0';
-    if (lastUpload) {
-      const date = new Date(lastUpload);
+    const uploadTime = buildInfo.uploadTime;
+    if (uploadTime) {
+      const date = new Date(uploadTime);
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
-      displayText = `最后上传 ${month}-${day} ${hours}:${minutes}`;
+      this.setData({ displayText: `${month}-${day} ${hours}:${minutes}` });
     }
-    this.setData({ displayText });
   },
 
   goProfile() {
