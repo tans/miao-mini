@@ -56,6 +56,10 @@
   margin-top: 2px;
 }
 
+.role-tag.creator {
+  background: rgba(7,193,96,0.1);
+}
+
 .level-badge {
   display: inline-flex;
   align-items: center;
