@@ -21,7 +21,7 @@
   position: relative;
   width: 100%;
   height: calc(100vh - 52px - env(safe-area-inset-bottom));
-  background: #111;
+  background: #000;
   overflow: hidden;
 }
 
@@ -29,6 +29,7 @@
   width: 100%;
   height: 100%;
   display: block;
+  background: #000;
 }
 
 .tap-layer {

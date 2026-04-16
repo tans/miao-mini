@@ -24,14 +24,14 @@
               show-play-btn="{{false}}"
               show-fullscreen-btn="{{false}}"
               enable-play-gesture="{{false}}"
-              objectFit="cover"
+              objectFit="contain"
             ></video>
 
             <image
               wx:elif="{{item.heroMedia && item.heroMedia.url}}"
               class="hero-media"
               src="{{item.heroMedia.url}}"
-              mode="aspectFill"
+              mode="aspectFit"
               bindtap="previewMaterial"
               data-url="{{item.heroMedia.url}}"
             />
