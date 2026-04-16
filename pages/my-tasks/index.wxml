@@ -12,28 +12,28 @@
     </view>
   </view>
 
-  <!-- 我发布的 -->
+  <!-- 我参与的 -->
   <view class="section-header">
-    <text class="section-title">我的发布</text>
+    <text class="section-title">我参与的任务</text>
   </view>
 
   <!-- 空状态 -->
-  <mp-msg type="info" title="您还没有发布任务" wx:if="{{tasks.length === 0}}">
-    <view slot="handle">
-      <button class="weui-btn weui-btn_primary" bindtap="goCreateTask">发布第一个任务</button>
-    </view>
+  <mp-msg type="info" title="您还没有参与任何任务" wx:if="{{tasks.length === 0}}">
   </mp-msg>
 
   <mp-cells wx:if="{{tasks.length > 0}}">
-    <mp-cell wx:for="{{tasks}}" wx:key="id" link bindtap="goTaskDetail" data-id="{{item.id}}">
+    <mp-cell wx:for="{{tasks}}" wx:key="id" link bindtap="goTaskDetail" data-id="{{item.task_id}}">
+      <view slot="icon" wx:if="{{item.thumbnail}}">
+        <image class="task-thumb" src="{{item.thumbnail}}" mode="aspectFill" />
+      </view>
       <view slot="title" class="task-cell">
-        <text class="task-title">{{item.title}}</text>
+        <text class="task-title">{{item.task_title || '任务' + item.task_id}}</text>
         <view class="task-meta">
-          <text>📅 {{item.deadline ? item.deadline.substring(0, 10) : '不限'}}</text>
-          <text class="task-budget">¥{{item.total_budget || item.unit_price}}</text>
+          <text>📅 {{item.deadline ? formatDate(item.deadline) : '不限'}}</text>
+          <text class="task-budget">¥{{item.unit_price || 0}}</text>
         </view>
       </view>
-      <text class="task-status {{getStatusClass(item.status)}}" slot="footer">{{getStatusText(item.status)}}</text>
+      <text class="task-status status-{{item.status}}" slot="footer">{{getClaimStatusText(item.status)}}</text>
     </mp-cell>
   </mp-cells>
 </view>
