@@ -9,9 +9,13 @@ Page({
     loadingMore: false,
     hasMore: true,
     page: 1,
+    navTop: 56,
+    pageSideInset: 12,
+    overlayBottom: 12,
   },
 
   onLoad(e) {
+    this.setupViewportLayout();
     this.workId = Number(e.id || 0);
     this.videoContexts = {};
     if (this.workId) {
@@ -30,6 +34,37 @@ Page({
       path: `/pages/work-detail/index?id=${current?.id || this.workId || ''}`,
       imageUrl: current?.posterUrl || '',
     };
+  },
+
+  setupViewportLayout() {
+    let navTop = 56;
+    let pageSideInset = 12;
+    let overlayBottom = 12;
+
+    try {
+      const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
+      const menuButton = wx.getMenuButtonBoundingClientRect
+        ? wx.getMenuButtonBoundingClientRect()
+        : null;
+
+      const windowWidth = Number(windowInfo.windowWidth || 375);
+      const statusBarHeight = Number(windowInfo.statusBarHeight || 0);
+
+      pageSideInset = Math.max(10, Math.round(windowWidth * 0.032));
+      overlayBottom = Math.max(10, Math.round(windowWidth * 0.024));
+
+      if (menuButton && menuButton.top) {
+        navTop = Math.max(statusBarHeight + 6, Math.round(menuButton.top));
+      } else if (statusBarHeight) {
+        navTop = statusBarHeight + 12;
+      }
+    } catch (err) {}
+
+    this.setData({
+      navTop,
+      pageSideInset,
+      overlayBottom,
+    });
   },
 
   async bootstrapFeed(id) {
