@@ -29,9 +29,6 @@
     <mp-cell link bindtap="goMyTasks" value="我发布的任务" hover>
       <text slot="icon" class="menu-icon">📝</text>
     </mp-cell>
-    <mp-cell link bindtap="goTransactions" value="收益明细" hover>
-      <text slot="icon" class="menu-icon">💰</text>
-    </mp-cell>
     <mp-cell link bindtap="goSettings" value="设置" hover>
       <text slot="icon" class="menu-icon">⚙️</text>
     </mp-cell>

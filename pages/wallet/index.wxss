@@ -27,6 +27,32 @@
   opacity: 0.8;
 }
 
+.frozen-card {
+  display: flex;
+  background: #fff;
+  padding: 16px 24px;
+  margin-bottom: 12px;
+}
+
+.frozen-item {
+  flex: 1;
+  text-align: center;
+}
+
+.frozen-label {
+  font-size: 12px;
+  color: #666;
+  display: block;
+}
+
+.frozen-amount {
+  font-size: 16px;
+  font-weight: 600;
+  color: #FF9800;
+  display: block;
+  margin-top: 4px;
+}
+
 .income-stats {
   display: flex;
   background: #fff;

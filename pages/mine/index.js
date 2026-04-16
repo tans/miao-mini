@@ -94,12 +94,6 @@ Page({
     });
   },
 
-  goTransactions() {
-    this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/transactions/index' });
-    });
-  },
-
   goSettings() {
     this._ensureLogin(() => {
       wx.navigateTo({ url: '/pages/settings/index' });

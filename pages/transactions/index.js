@@ -28,7 +28,19 @@ Page({
     try {
       const res = await Api.getTransactions();
       const transData = res.data && res.data.transactions || [];
-      const typeMap = { 1: '充值', 2: '提现', 3: '任务收入', 4: '冻结', 5: '解冻' };
+      const typeMap = {
+        1: '充值',
+        2: '提现',
+        3: '冻结',
+        4: '解冻',
+        5: '任务收入',
+        6: '提现',
+        7: '退保证金',
+        8: '平台抽成',
+        9: '参与奖励',
+        10: '采纳奖励',
+        11: '平台收入'
+      };
       const transactions = transData.map(t => ({
         ...t,
         type_text: typeMap[t.type] || '其他'

@@ -5,6 +5,8 @@ const app = getApp();
 Page({
   data: {
     balance: 0,
+    frozenAmount: 0,
+    marginFrozen: 0,
     totalIncome: 0,
     transactions: [],
     loading: false,
@@ -44,6 +46,8 @@ Page({
 
       this.setData({
         balance: wallet.balance || 0,
+        frozenAmount: wallet.frozen_amount || 0,
+        marginFrozen: wallet.margin_frozen || 0,
         totalIncome: wallet.total_income || 0,
         transactions,
       });
@@ -56,7 +60,19 @@ Page({
   },
 
   getTransTypeText(type) {
-    const map = { 1: '充值', 2: '提现', 3: '任务收入', 4: '冻结', 5: '解冻' };
+    const map = {
+      1: '充值',
+      2: '提现',
+      3: '冻结',
+      4: '解冻',
+      5: '任务收入',
+      6: '提现',
+      7: '退保证金',
+      8: '平台抽成',
+      9: '参与奖励',
+      10: '采纳奖励',
+      11: '平台收入'
+    };
     return map[type] || '其他';
   }
 });
