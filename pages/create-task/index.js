@@ -47,7 +47,6 @@ Page({
       { prop: 'description', rules: [{ required: true, message: '请填写详细描述' }] },
       { prop: 'unit_price', rules: [{ required: true, message: '请填写基础奖励' }, { validator: (val) => val >= 2, message: '基础奖励至少2元' }] },
       { prop: 'total_count', rules: [{ required: true, message: '请填写报名人数上限' }, { validator: (val) => val >= 10, message: '报名人数至少10人' }] },
-      { prop: 'deadline', rules: [{ required: true, message: '请填写截止日期' }] },
     ],
     formData: {}
   },
@@ -62,14 +61,13 @@ Page({
         }
       });
     }
-    // 设置截止日期范围：最早3天后，最晚30天后
+    // 设置截止日期范围：最早3天后，最晚30天后（仅在用户选择时显示）
     const today = new Date();
     const minDate = new Date(today);
     minDate.setDate(today.getDate() + 3);
     const maxDate = new Date(today);
     maxDate.setDate(today.getDate() + 30);
     this.setData({
-      deadline: minDate.toISOString().split('T')[0],
       minDeadline: minDate.toISOString().split('T')[0],
       maxDeadline: maxDate.toISOString().split('T')[0]
     });
@@ -216,10 +214,6 @@ Page({
     }
     if (!total_count) {
       wx.showToast({ title: '请填写报名人数上限', icon: 'none' });
-      return;
-    }
-    if (!deadline) {
-      wx.showToast({ title: '请填写截止日期', icon: 'none' });
       return;
     }
 
