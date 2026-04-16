@@ -86,11 +86,7 @@
             <text class="author-name">{{item.creator_name || '创作者'}}</text>
           </view>
           <view class="work-like-count">
-            <view class="like-icon">
-              <view class="like-icon-core"></view>
-              <view class="like-icon-left"></view>
-              <view class="like-icon-right"></view>
-            </view>
+            <text class="like-icon">&#10084;</text>
             <text class="like-count-value">{{item.likesCount}}</text>
           </view>
         </view>

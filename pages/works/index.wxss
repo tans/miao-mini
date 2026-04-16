@@ -319,39 +319,11 @@
 }
 
 .like-icon {
-  position: relative;
-  width: 11px;
-  height: 10px;
+  font-size: 13px;
+  line-height: 1;
+  color: #ff5a6b;
   flex-shrink: 0;
-}
-
-.like-icon-core {
-  position: absolute;
-  left: 3px;
-  top: 4px;
-  width: 5px;
-  height: 5px;
-  background: #ff5a6b;
-  transform: rotate(45deg);
-  border-radius: 2px;
-}
-
-.like-icon-left,
-.like-icon-right {
-  position: absolute;
-  top: 1px;
-  width: 6px;
-  height: 6px;
-  background: #ff5a6b;
-  border-radius: 50%;
-}
-
-.like-icon-left {
-  left: 0;
-}
-
-.like-icon-right {
-  right: 0;
+  transform: translateY(1px);
 }
 
 .like-count-value {
