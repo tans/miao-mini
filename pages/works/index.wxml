@@ -71,7 +71,7 @@
           <text class="fallback-summary">{{item.fallbackSummary}}</text>
           <text class="fallback-title">{{item.task_title || item.title}}</text>
         </view>
-        <view class="cover-tap-mask" wx:if="{{item.isVideo}}" data-id="{{item.id}}" bindtap="goWorkDetail"></view>
+        <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
         <view class="media-badge" wx:if="{{item.isVideo}}">视频</view>
       </view>
       <view class="work-info">

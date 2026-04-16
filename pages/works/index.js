@@ -50,6 +50,7 @@ Page({
   },
 
   onLoad() {
+    this.navigating = false;
     this.loadWorks();
   },
 
@@ -126,8 +127,18 @@ Page({
   },
 
   goWorkDetail(e) {
+    if (this.navigating) return;
     const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/work-detail/index?id=${id}` });
+    if (!id) return;
+    this.navigating = true;
+    wx.navigateTo({
+      url: `/pages/work-detail/index?id=${id}`,
+      complete: () => {
+        setTimeout(() => {
+          this.navigating = false;
+        }, 400);
+      },
+    });
   },
 
   normalizeWork(item = {}) {
