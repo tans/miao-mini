@@ -178,6 +178,12 @@
   color: #999;
 }
 
+.card-tag-label {
+  font-size: 20rpx;
+  color: #999;
+  margin-right: 4rpx;
+}
+
 /* 风格标签 */
 .card-style-tags {
   display: flex;

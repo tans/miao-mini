@@ -70,11 +70,13 @@
         <text class="card-title">{{item.title}}</text>
         <!-- 行业标签 -->
         <view class="card-tags" wx:if="{{item.industryArray.length > 0}}">
+          <text class="card-tag-label">行业类别</text>
           <text class="card-tag">{{item.industryArray[0]}}</text>
           <text wx:if="{{item.industryArray.length > 1}}" class="card-tag-more">+{{item.industryArray.length - 1}}</text>
         </view>
         <!-- 风格标签 -->
         <view class="card-style-tags" wx:if="{{item.styleArray.length > 0}}">
+          <text class="card-tag-label">视频风格</text>
           <text class="card-style-tag" wx:for="{{item.styleArray}}" wx:key="index" wx:for-item="style">{{style}}</text>
         </view>
         <!-- 价格和报名信息一行，左右对齐 -->
