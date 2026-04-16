@@ -209,5 +209,44 @@ Page({
   previewMaterial(e) {
     const url = e.currentTarget.dataset.url;
     wx.previewImage({ urls: [url], current: url });
+  },
+
+  downloadMaterial(e) {
+    const url = e.currentTarget.dataset.url;
+    const name = e.currentTarget.dataset.name || '素材';
+    wx.showLoading({ title: '下载中...' });
+    wx.downloadFile({
+      url: url,
+      success(res) {
+        wx.hideLoading();
+        if (res.statusCode === 200) {
+          wx.saveFileToDisk({
+            filePath: res.tempFilePath,
+            success() {
+              wx.showToast({ title: '保存成功', icon: 'success' });
+            },
+            fail(err) {
+              // 兼容不支持保存到磁盘的情况，改为打开文件
+              wx.openDocument({
+                filePath: res.tempFilePath,
+                showMenu: true,
+                success() {
+                  wx.showToast({ title: '已打开', icon: 'success' });
+                },
+                fail() {
+                  wx.showToast({ title: '下载失败', icon: 'none' });
+                }
+              });
+            }
+          });
+        } else {
+          wx.showToast({ title: '下载失败', icon: 'none' });
+        }
+      },
+      fail() {
+        wx.hideLoading();
+        wx.showToast({ title: '下载失败', icon: 'none' });
+      }
+    });
   }
 });

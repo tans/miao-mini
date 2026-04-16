@@ -82,6 +82,17 @@
   padding: 6px 0;
 }
 
+.budget-row_highlight {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  margin: 0 -16px;
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.budget-row_minor {
+  opacity: 0.7;
+}
+
 .budget-label {
   font-size: 13px;
   color: #666;
@@ -90,6 +101,12 @@
 .budget-value {
   font-size: 13px;
   color: #333;
+}
+
+.budget-highlight {
+  font-size: 15px;
+  font-weight: 600;
+  color: #07c160;
 }
 
 .budget-total {
@@ -248,15 +265,11 @@
 
 .material-info {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
-.material-name {
-  font-size: 13px;
-  color: #666;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.material-download {
+  font-size: 12px;
+  padding: 4px 12px;
 }

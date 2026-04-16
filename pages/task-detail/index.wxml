@@ -27,26 +27,22 @@
   </mp-cells>
 
   <!-- 预算 -->
-  <mp-cells title="预算">
+  <mp-cells title="奖励说明">
     <mp-cell>
       <view class="budget-info">
-        <view class="budget-row">
-          <text class="budget-label">预计总费用</text>
-          <text class="budget-total">¥{{task.total_budget || 0}}</text>
-        </view>
-        <view class="budget-row">
+        <view class="budget-row budget-row_highlight">
           <text class="budget-label">基础奖励</text>
-          <text class="budget-value">¥{{task.unit_price}}/人 × {{task.total_count || 0}}人</text>
+          <text class="budget-value budget-highlight">¥{{task.unit_price}}/人 × {{task.total_count || 0}}人</text>
         </view>
-        <view class="budget-row" wx:if="{{task.award_price > 0}}">
+        <view class="budget-row budget-row_highlight" wx:if="{{task.award_price > 0}}">
           <text class="budget-label">入围奖励</text>
-          <text class="budget-value">¥{{task.award_price}}/人 × {{task.award_count || 0}}人</text>
+          <text class="budget-value budget-highlight">¥{{task.award_price}}/人 × {{task.award_count || 0}}人</text>
         </view>
-        <view class="budget-row">
-          <text class="budget-label">已冻结</text>
-          <text class="budget-value frozen">¥{{task.frozen_amount || 0}}</text>
+        <view class="budget-row budget-row_minor">
+          <text class="budget-label">预计总费用</text>
+          <text class="budget-value budget-total">¥{{task.total_budget || 0}}</text>
         </view>
-        <view class="budget-row">
+        <view class="budget-row budget-row_minor" wx:if="{{task.paid_amount > 0}}">
           <text class="budget-label">已支付</text>
           <text class="budget-value paid">¥{{task.paid_amount || 0}}</text>
         </view>
@@ -73,13 +69,13 @@
   </mp-cells>
 
   <!-- 素材 -->
-  <mp-cells title="素材" wx:if="{{materials.length > 0}}">
+  <mp-cells title="任务素材" wx:if="{{materials.length > 0}}">
     <mp-cell wx:for="{{materials}}" wx:key="id">
       <view class="material-item">
         <image wx:if="{{item.file_type === 'image'}}" class="material-thumb" src="{{item.file_path}}" mode="aspectFill" bindtap="previewMaterial" data-url="{{item.file_path}}"/>
         <video wx:if="{{item.file_type === 'video'}}" class="material-video" src="{{item.file_path}}" controls/>
         <view class="material-info">
-          <text class="material-name">{{item.file_name}}</text>
+          <button class="weui-btn weui-btn_mini weui-btn_default material-download" data-url="{{item.file_path}}" data-name="{{item.file_name}}" bindtap="downloadMaterial">下载素材</button>
         </view>
       </view>
     </mp-cell>
