@@ -21,6 +21,8 @@ const TAG_OPTIONS = [
 ];
 
 const COVER_THEME_COUNT = 6;
+const SEARCH_BAR_TOGGLE_DISTANCE = 36;
+const SEARCH_BAR_SHOW_AT_TOP = 24;
 
 function createFallbackCover(seedText, description) {
   const text = (description || seedText || '').replace(/\s+/g, ' ').trim();
@@ -42,6 +44,7 @@ Page({
     sort: 'latest',
     keyword: '',
     searchValue: '',
+    searchBarHidden: false,
     activeTag: '全部',
     tags: TAG_OPTIONS,
     page: 1,
@@ -51,7 +54,50 @@ Page({
 
   onLoad() {
     this.navigating = false;
+    this._resetSearchBarScrollState();
     this.loadWorks();
+  },
+
+  onPageScroll(e) {
+    const scrollTop = Math.max((e && e.scrollTop) || 0, 0);
+
+    if (scrollTop <= SEARCH_BAR_SHOW_AT_TOP) {
+      if (this.data.searchBarHidden) {
+        this.setData({ searchBarHidden: false });
+      }
+      this._resetSearchBarScrollState(scrollTop);
+      return;
+    }
+
+    const delta = scrollTop - this._lastScrollTop;
+    this._lastScrollTop = scrollTop;
+
+    if (Math.abs(delta) < 2) {
+      return;
+    }
+
+    const direction = delta > 0 ? 'down' : 'up';
+    if (direction !== this._scrollDirection) {
+      this._scrollDirection = direction;
+      this._scrollAnchorTop = scrollTop;
+      return;
+    }
+
+    const travelled = Math.abs(scrollTop - this._scrollAnchorTop);
+    if (travelled < SEARCH_BAR_TOGGLE_DISTANCE) {
+      return;
+    }
+
+    if (direction === 'down' && !this.data.searchBarHidden) {
+      this.setData({ searchBarHidden: true });
+      this._scrollAnchorTop = scrollTop;
+      return;
+    }
+
+    if (direction === 'up' && this.data.searchBarHidden) {
+      this.setData({ searchBarHidden: false });
+      this._scrollAnchorTop = scrollTop;
+    }
   },
 
   onPullDownRefresh() {
@@ -84,6 +130,12 @@ Page({
     if (!this.data.searchValue && !this.data.keyword) return;
     this.setData({ searchValue: '', keyword: '' });
     this.resetAndLoad();
+  },
+
+  _resetSearchBarScrollState(scrollTop = 0) {
+    this._lastScrollTop = scrollTop;
+    this._scrollAnchorTop = scrollTop;
+    this._scrollDirection = '';
   },
 
   switchTag(e) {

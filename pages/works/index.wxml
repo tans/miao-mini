@@ -1,6 +1,6 @@
 <view class="works-container">
   <view class="works-header">
-    <view class="search-bar">
+    <view class="search-bar {{searchBarHidden ? 'search-bar-hidden' : ''}}">
       <view class="search-input-wrap">
         <view class="search-field">
           <text class="search-icon">搜</text>
