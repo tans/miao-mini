@@ -110,6 +110,11 @@ Page({
     const materials = Array.isArray(item.materials) ? item.materials : [];
     const firstMaterial = materials[0] || null;
     const coverType = item.cover_type || (firstMaterial && firstMaterial.file_type) || 'image';
+    const previewVideoSrc =
+      item.cover_url ||
+      item.image ||
+      (firstMaterial && firstMaterial.file_path) ||
+      '';
 
     let displayCover = '';
     if (coverType === 'video') {
@@ -132,6 +137,7 @@ Page({
       coverType,
       isVideo: coverType === 'video',
       displayCover,
+      previewVideoSrc,
       likesCount: Number(item.likes || 0),
     };
   },

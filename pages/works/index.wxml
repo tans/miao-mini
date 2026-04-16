@@ -50,10 +50,26 @@
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
       <view class="work-cover-wrap">
         <image wx:if="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
-        <view wx:else class="work-cover work-cover-placeholder {{item.isVideo ? 'video' : ''}}">
-          <view class="placeholder-chip" wx:if="{{item.isVideo}}">点击进入播放</view>
-          <text class="placeholder-text">{{item.isVideo ? '视频作品' : '作品封面'}}</text>
+        <video
+          wx:elif="{{item.isVideo && item.previewVideoSrc}}"
+          class="work-cover work-video-preview"
+          src="{{item.previewVideoSrc}}"
+          objectFit="cover"
+          autoplay="{{false}}"
+          loop="{{false}}"
+          muted="{{true}}"
+          controls="{{false}}"
+          show-center-play-btn="{{false}}"
+          show-play-btn="{{false}}"
+          show-fullscreen-btn="{{false}}"
+          show-mute-btn="{{false}}"
+          enable-play-gesture="{{false}}"
+          enable-progress-gesture="{{false}}"
+        ></video>
+        <view wx:else class="work-cover work-cover-placeholder">
+          <text class="placeholder-text">作品封面</text>
         </view>
+        <view class="cover-tap-mask" wx:if="{{item.isVideo}}" data-id="{{item.id}}" bindtap="goWorkDetail"></view>
         <view class="media-badge" wx:if="{{item.isVideo}}">视频</view>
       </view>
       <view class="work-info">

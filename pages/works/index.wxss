@@ -162,26 +162,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  color: #fff;
-  background: linear-gradient(160deg, #1f2329, #444b55);
-}
-
-.work-cover-placeholder.video {
-  background: linear-gradient(160deg, #1c1f28, #59606d);
-}
-
-.placeholder-chip {
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  font-size: 12px;
-  line-height: 1;
+  color: #6b7280;
+  background: linear-gradient(160deg, #f1f3f8, #dfe5ef);
 }
 
 .placeholder-text {
   font-size: 14px;
   font-weight: 600;
+}
+
+.work-video-preview {
+  background: linear-gradient(160deg, #f1f3f8, #dde4ef);
+}
+
+.cover-tap-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: transparent;
 }
 
 .media-badge {
@@ -197,6 +195,7 @@
   font-size: 12px;
   line-height: 22px;
   text-align: center;
+  z-index: 3;
 }
 
 .work-info {
