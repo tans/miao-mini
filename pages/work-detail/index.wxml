@@ -1,5 +1,4 @@
-<view class="work-detail-container">
-  <!-- 素材展示 -->
+﻿<view class="work-detail-container">
   <view class="work-media" wx:if="{{materials.length > 0}}">
     <block wx:for="{{materials}}" wx:key="id">
       <image wx:if="{{item.file_type === 'image'}}" class="work-image" src="{{item.file_path}}" mode="widthFix" bindtap="previewMaterial" data-url="{{item.file_path}}"/>
@@ -7,7 +6,6 @@
     </block>
   </view>
 
-  <!-- 封面图兜底 -->
   <view class="work-media" wx:elif="{{work.cover_url || work.image}}">
     <image class="work-image" src="{{work.cover_url || work.image}}" mode="widthFix"/>
   </view>
@@ -24,7 +22,11 @@
     </mp-cell>
   </mp-cells>
 
-  <!-- 创作说明 -->
+  <mp-cells wx:if="{{work}}">
+    <mp-cell title="浏览数" value="{{work.views || 0}}"></mp-cell>
+    <mp-cell title="点赞数" value="{{work.likes || 0}}"></mp-cell>
+  </mp-cells>
+
   <mp-cells title="创作说明" wx:if="{{work.content}}">
     <mp-cell>
       <text class="work-content">{{work.content}}</text>
@@ -32,6 +34,9 @@
   </mp-cells>
 
   <view class="action-bar">
-    <button class="weui-btn weui-btn_primary" open-type="share">分享</button>
+    <button class="like-btn {{isLiked ? 'active' : ''}}" bindtap="toggleLike" loading="{{liking}}">
+      {{isLiked ? '已点赞' : '点赞'}} {{work.likes || 0}}
+    </button>
+    <button class="share-btn" open-type="share">分享</button>
   </view>
 </view>

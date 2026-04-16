@@ -1,27 +1,26 @@
-<view class="works-container">
+﻿<view class="works-container">
   <view class="works-header">
-    <text class="works-title">灵感</text>
+    <text class="works-title">鐏垫劅</text>
     <view class="sort-tabs">
-      <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">最新</text>
-      <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">最多点赞</text>
-      <text class="tab {{sort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">最多浏览</text>
+      <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">鏈€鏂?</text>
+      <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">鏈€澶氱偣璧?</text>
+      <text class="tab {{sort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">鏈€澶氭祻瑙?</text>
     </view>
   </view>
 
-  <!-- 空状态 -->
-  <mp-msg type="info" title="暂无灵感" wx:if="{{!loading && works.length === 0}}" />
+  <mp-msg type="info" title="鏆傛棤鐏垫劅" wx:if="{{!loading && works.length === 0}}" />
 
-  <!-- 作品网格 -->
   <view class="works-grid" wx:if="{{works.length > 0}}">
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
       <view class="work-cover-wrap">
-        <image class="work-cover" src="{{item.cover_url || item.image}}" mode="aspectFill"/>
+        <video wx:if="{{item.cover_type === 'video'}}" class="work-cover" src="{{item.cover_url || item.image}}" objectFit="cover" controls="{{false}}" muted></video>
+        <image wx:else class="work-cover" src="{{item.cover_url || item.image}}" mode="aspectFill"/>
       </view>
       <view class="work-info">
         <text class="work-title">{{item.task_title || item.title}}</text>
         <view class="work-author">
           <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
-          <text class="author-name">{{item.creator_name || '创作者'}}</text>
+          <text class="author-name">{{item.creator_name || '鍒涗綔鑰?'}}</text>
         </view>
       </view>
     </view>
@@ -29,6 +28,7 @@
 
   <view class="loading-more" wx:if="{{loading}}">
     <mp-loading type="circle"></mp-loading>
-    <text>加载中...</text>
+    <text>鍔犺浇涓?..</text>
   </view>
 </view>
+
