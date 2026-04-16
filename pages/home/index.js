@@ -5,8 +5,8 @@ const app = getApp();
 // 计算倒计时字符串
 function formatCountdown(endAt) {
   if (!endAt) return '';
-  // 处理 ISO 格式时间 (2026-04-16T08:52:25Z)
-  const end = new Date(endAt.replace(/-/g, '/'));
+  const end = new Date(endAt);
+  if (isNaN(end.getTime())) return ''; // 无效日期不显示
   const now = Date.now();
   const diff = end - now;
   if (diff <= 0) return ''; // 过期不显示
