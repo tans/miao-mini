@@ -51,10 +51,10 @@
   </mp-cells>
 
   <!-- 标签 -->
-  <mp-cells title="标签" wx:if="{{task.industries.length > 0}}">
+  <mp-cells title="标签" wx:if="{{industryArray.length > 0}}">
     <mp-cell>
       <view class="task-tags">
-        <text wx:for="{{task.industries}}" wx:key="index" class="tag video">{{item}}</text>
+        <text wx:for="{{industryArray}}" wx:key="index" class="tag video">{{item}}</text>
       </view>
     </mp-cell>
   </mp-cells>

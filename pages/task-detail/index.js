@@ -115,9 +115,20 @@ Page({
 
       const remainingSlots = Math.max(0, 3 - pendingCount);
 
+      // 解析 industries 从逗号分隔字符串为数组
+      let industryArray = [];
+      if (task.industries) {
+        if (typeof task.industries === 'string') {
+          industryArray = task.industries.split(',').map(s => s.trim()).filter(s => s);
+        } else if (Array.isArray(task.industries)) {
+          industryArray = task.industries;
+        }
+      }
+
       this.setData({
         task,
         materials: task.materials || [],
+        industryArray, // 用于渲染标签
         isMyTask,
         canClaim,
         claimReason,
