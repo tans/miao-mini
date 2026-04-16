@@ -12,7 +12,7 @@
       <!-- 视频/图片上传 -->
       <view class="materials-section">
         <view class="section-title">作品素材 <text class="required">*</text></view>
-        <view class="section-hint">支持上传视频和图片，第一个必须是图片</view>
+        <view class="section-hint">请上传作品</view>
 
         <view class="materials-grid">
           <view wx:for="{{materials}}" wx:key="index" class="material-item">
