@@ -334,7 +334,9 @@ const Api = {
 
   getWorks(params = {}) {
     const q = [];
-    if (params.sort) q.push(`sort=${params.sort}`);
+    if (params.sort) q.push(`sort=${encodeURIComponent(params.sort)}`);
+    if (params.keyword) q.push(`keyword=${encodeURIComponent(params.keyword)}`);
+    if (params.tag) q.push(`tag=${encodeURIComponent(params.tag)}`);
     if (params.page) q.push(`page=${params.page}`);
     if (params.limit) q.push(`limit=${params.limit}`);
     const qs = q.length ? '?' + q.join('&') : '';
