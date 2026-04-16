@@ -28,6 +28,47 @@ Page({
     if (!app.isLoggedIn()) {
       app.silentLogin();
     }
+    // 如果是编辑已提交的任务，加载已有数据
+    if (options.claimId) {
+      this.loadClaimData(options.claimId);
+    }
+  },
+
+  async loadClaimData(claimId) {
+    try {
+      const res = await Api.getClaimById(claimId);
+      const claim = res.data;
+      if (!claim) return;
+
+      let description = '';
+      let video_url = '';
+      let materials = [];
+
+      // 解析 content：格式为 "描述\n视频链接：url"
+      if (claim.content) {
+        const videoUrlMatch = claim.content.match(/视频链接：(.+)/);
+        if (videoUrlMatch) {
+          description = claim.content.replace(/视频链接：.+/, '').trim();
+          video_url = videoUrlMatch[1].trim();
+        } else {
+          description = claim.content;
+        }
+      }
+
+      // 解析 materials
+      if (claim.materials && claim.materials.length > 0) {
+        materials = claim.materials.map(m => ({
+          url: m.file_path,
+          fileName: m.file_name,
+          fileType: m.file_type,
+          fileSize: m.file_size || 0,
+        }));
+      }
+
+      this.setData({ description, video_url, materials });
+    } catch (err) {
+      console.error('加载认领数据失败', err);
+    }
   },
 
   onDescInput(e) {
