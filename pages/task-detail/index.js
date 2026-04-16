@@ -253,7 +253,9 @@ Page({
     try {
       await Api.reviewClaim(claimId, result);
       wx.showToast({ title: result === 1 ? '已采纳' : '已拒绝', icon: 'success' });
-      this.loadTaskClaims(this.data.task.id);
+      if (this.data.task) {
+        this.loadSubmissions(this.data.task.id);
+      }
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
     }

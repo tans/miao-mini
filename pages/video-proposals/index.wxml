@@ -118,7 +118,7 @@
       <!-- Panel Footer - 操作按钮 -->
       <view class="weui-panel__ft" wx:if="{{item.canReview}}">
         <view class="action-group">
-          <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
+          <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" data-result="2" bindtap="reviewClaim">拒绝</button>
           <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
         </view>
       </view>

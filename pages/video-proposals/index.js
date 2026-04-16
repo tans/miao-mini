@@ -107,11 +107,15 @@ Page({
   async reviewClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     const result = Number(e.currentTarget.dataset.result);
+    if (!claimId || ![1, 2].includes(result)) {
+      wx.showToast({ title: '参数错误', icon: 'none' });
+      return;
+    }
 
     try {
       await Api.reviewClaim(claimId, result);
       wx.showToast({ title: result === 1 ? '已采纳' : '已拒绝', icon: 'success' });
-      this.loadProposals();
+      await this.loadProposals();
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
     }
