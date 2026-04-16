@@ -52,7 +52,9 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getTask(taskId);
+      console.log('getTask response:', res);
       const task = res.data;
+      console.log('task data:', task);
 
       if (!task) {
         wx.showToast({ title: '任务不存在', icon: 'none' });
@@ -131,7 +133,8 @@ Page({
         this.loadTaskClaims(taskId);
       }
     } catch (err) {
-      wx.showToast({ title: '加载失败', icon: 'none' });
+      console.error('loadTaskDetail error:', err);
+      wx.showToast({ title: '加载失败: ' + (err.message || '未知错误'), icon: 'none', duration: 3000 });
       this.setData({ loading: false });
     } finally {
       wx.hideLoading();
