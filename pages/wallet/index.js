@@ -62,7 +62,7 @@ Page({
   getTransTypeText(type) {
     const map = {
       1: '充值',
-      2: '提现',
+      2: '消费',
       3: '冻结',
       4: '解冻',
       5: '任务收入',

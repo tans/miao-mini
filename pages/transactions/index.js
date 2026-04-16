@@ -30,7 +30,7 @@ Page({
       const transData = res.data && res.data.transactions || [];
       const typeMap = {
         1: '充值',
-        2: '提现',
+        2: '消费',
         3: '冻结',
         4: '解冻',
         5: '任务收入',
