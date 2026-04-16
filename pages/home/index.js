@@ -18,6 +18,14 @@ function formatCountdown(endAt) {
   return minutes + '分钟';
 }
 
+// 刷新所有任务的倒计时显示
+function refreshCountdowns(tasks) {
+  return tasks.map(t => ({
+    ...t,
+    countdown: formatCountdown(t.end_at)
+  }));
+}
+
 Page({
   data: {
     tasks: [],          // 从服务端拉取的所有任务（当前排序+分页的全量缓存）
@@ -33,7 +41,11 @@ Page({
 
   onLoad() {
     this._initialized = false;
-    this.loadTasks().then(() => { this._initialized = true; });
+    this._countdownTimer = null;
+    this.loadTasks().then(() => {
+      this._initialized = true;
+      this._startCountdownTimer();
+    });
   },
 
   onShow() {
@@ -41,6 +53,37 @@ Page({
       this.setData({ page: 1, hasMore: true, tasks: [], displayTasks: [] });
       this.loadTasks();
     }
+    // 页面可见时刷新倒计时
+    this._refreshCountdowns();
+  },
+
+  onHide() {
+    this._stopCountdownTimer();
+  },
+
+  onUnload() {
+    this._stopCountdownTimer();
+  },
+
+  _startCountdownTimer() {
+    // 每分钟刷新一次倒计时
+    if (this._countdownTimer) return;
+    this._countdownTimer = setInterval(() => {
+      this._refreshCountdowns();
+    }, 60000);
+  },
+
+  _stopCountdownTimer() {
+    if (this._countdownTimer) {
+      clearInterval(this._countdownTimer);
+      this._countdownTimer = null;
+    }
+  },
+
+  _refreshCountdowns() {
+    const tasks = refreshCountdowns(this.data.tasks);
+    const displayTasks = this._filterByIndustry(tasks, this.data.activeIndustry);
+    this.setData({ tasks, displayTasks });
   },
 
   onPullDownRefresh() {
