@@ -11,8 +11,8 @@
   <mp-cells wx:if="{{claims.length > 0}}">
     <mp-cell wx:for="{{filteredClaims}}" wx:key="id">
       <view slot="title" bindtap="goTaskDetail" data-id="{{item.task_id}}">
-        <text class="claim-task-title">{{item.task_title || '任务' + item.task_id}}</text>
-        <view class="watermark-row">
+        <view class="title-row">
+          <text class="claim-task-title">{{item.task_title || '任务' + item.task_id}}</text>
           <text class="watermark-badge watermark-{{item.status}}">{{item.status === 1 ? '待提交' : item.status === 2 ? '待验收' : '已完成'}}</text>
         </view>
         <view class="claim-body">
