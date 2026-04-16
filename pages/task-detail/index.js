@@ -98,6 +98,8 @@ Page({
           claimStatus = myClaim ? myClaim.status : 0;
         } catch (e) {
           // 忽略错误，继续显示领取按钮
+          // 如果获取认领状态失败，不允许接单，避免重复认领
+          canClaim = false;
         }
 
         // 如果未认领当前任务，检查是否有太多待提交任务
