@@ -2,13 +2,13 @@
 <view class="proposals-container">
   <!-- 过滤器 -->
   <view class="filter-tabs">
-    <text
+    <view
       wx:for="{{filters}}"
-      wx:key="index"
-      class="filter-btn {{activeFilter === item ? 'active' : ''}}"
-      data-filter="{{item}}"
+      wx:key="key"
+      class="filter-btn {{activeFilter === item.key ? 'active' : ''}}"
+      data-filter="{{item.key}}"
       bindtap="switchFilter"
-    >{{item === 'all' ? '全部' : item === 'pending' ? '待审核' : item === 'passed' ? '已采纳' : '已拒绝'}}</text>
+    >{{item.label}}</view>
   </view>
 
   <!-- 空状态 -->
@@ -17,26 +17,57 @@
     <text class="empty-desc">暂无提案</text>
   </view>
 
-  <!-- 提案列表 -->
-  <view wx:if="{{filteredClaims.length > 0}}" class="proposals-list">
-    <view class="proposal-card" wx:for="{{filteredClaims}}" wx:key="id">
-      <text class="task-label">投递于：{{item.task_title || '任务'}}</text>
-      <view class="proposal-header">
-        <view class="creator-info">
-          <view class="avatar">{{item.creator_name ? item.creator_name[0] : '创'}}</view>
-          <view>
-            <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
-            <text class="submit-time">{{item.submitted_at ? item.submitted_at.substring(0, 10) : ''}}</text>
+  <!-- 提案列表 - 使用 WeUI Panel 风格 -->
+  <view class="proposals-list" wx:if="{{filteredClaims.length > 0}}">
+    <view class="weui-panel" wx:for="{{filteredClaims}}" wx:key="id">
+      <!-- Panel Header -->
+      <view class="weui-panel__hd">
+        <text class="task-title">{{item.task_title || '任务'}}</text>
+        <view class="status-badge status-{{item.statusClass}}">
+          <text>{{item.statusText}}</text>
+        </view>
+      </view>
+
+      <!-- Panel Body -->
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <!-- 创作者信息 -->
+          <view class="info-row creator-row">
+            <view class="creator-info">
+              <view class="avatar">{{item.creatorInitial}}</view>
+              <view class="creator-details">
+                <text class="creator-name">{{item.creatorName}}</text>
+                <text class="submit-time">{{item.displayDate || '未提交时间'}}</text>
+              </view>
+            </view>
+            <text class="proposal-price">¥{{item.displayPrice}}</text>
+          </view>
+
+          <view class="proposal-preview">
+            <view class="preview-row">
+              <text class="preview-label">状态</text>
+              <text class="preview-value preview-status">{{item.statusText}}</text>
+            </view>
+            <view class="preview-row">
+              <text class="preview-label">提交时间</text>
+              <text class="preview-value">{{item.displayDate || '--'}}</text>
+            </view>
+            <view class="preview-row">
+              <text class="preview-label">提案报价</text>
+              <text class="preview-value preview-price">¥{{item.displayPrice}}</text>
+            </view>
+          </view>
+
+          <view wx:if="{{item.hasContent}}" class="proposal-content">
+            <text class="content-label">提案内容</text>
+            <text class="content-text">{{item.content}}</text>
           </view>
         </view>
-        <text class="proposal-status task-status {{item.status === 2 ? 'completed' : 'pending'}}">
-          {{getClaimStatusText(item.status)}}
-        </text>
       </view>
-      <text wx:if="{{item.content}}" class="proposal-content">{{item.content}}</text>
-      <view class="proposal-footer">
-        <text class="proposal-price">¥{{item.unit_price}}</text>
-        <view class="proposal-actions" wx:if="{{item.status === 1}}">
+
+      <!-- Panel Footer - 操作按钮 -->
+      <view class="weui-panel__ft" wx:if="{{item.canReview}}">
+        <view class="action-group">
           <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
           <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
         </view>

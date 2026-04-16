@@ -1,18 +1,29 @@
 // pages/video-proposals/index.js
 const Api = require('../../utils/api.js');
-const { getClaimStatusText } = require('../../utils/util.js');
 const app = getApp();
+
+const FILTERS = [
+  { key: 'all', label: '全部' },
+  { key: 'pending', label: '待审核' },
+  { key: 'passed', label: '已采纳' },
+  { key: 'rejected', label: '已拒绝' }
+];
 
 Page({
   data: {
     allClaims: [],
     filteredClaims: [],
     activeFilter: 'all',
-    filters: ['all', 'pending', 'passed', 'rejected'],
-    loading: false
+    filters: FILTERS,
+    loading: false,
+    taskId: ''
   },
 
-  onLoad() {
+  onLoad(options = {}) {
+    this.setData({
+      taskId: options.taskId || ''
+    });
+
     if (!app.isLoggedIn()) {
       app.silentLogin().then(() => {
         if (app.isLoggedIn()) this._initPage();
@@ -41,19 +52,25 @@ Page({
     if (this.data.loading) return;
     this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
+
     try {
       const allClaims = [];
       let page = 1;
       let hasMore = true;
       const maxPages = 5; // 限制最多5页，避免过多请求
+      const selectedTaskId = this.data.taskId ? String(this.data.taskId) : '';
 
       // 分页获取所有商家任务及其提案
       while (hasMore && page <= maxPages) {
-        const tasksRes = await Api.getMyBusinessTasks({ page, status: 2 });
+        const tasksRes = await Api.getMyBusinessTasks({ page });
         const tasks = tasksRes.data || [];
         if (tasks.length === 0) break;
 
-        const claimsPromises = tasks.map(task =>
+        const visibleTasks = selectedTaskId
+          ? tasks.filter(task => String(task.id) === selectedTaskId)
+          : tasks;
+
+        const claimsPromises = visibleTasks.map(task =>
           Api.getTaskClaims(task.id).catch(() => ({ data: [] }))
         );
         const claimsResults = await Promise.all(claimsPromises);
@@ -61,7 +78,10 @@ Page({
         claimsResults.forEach((res, i) => {
           const claims = res.data || [];
           claims.forEach(c => {
-            allClaims.push({ ...c, task_title: tasks[i].title });
+            allClaims.push(this.formatClaim({
+              ...c,
+              task_title: visibleTasks[i].title
+            }));
           });
         });
 
@@ -69,7 +89,8 @@ Page({
         page++;
       }
 
-      this.setData({ allClaims, filteredClaims: allClaims });
+      this.setData({ allClaims });
+      this.applyFilter(this.data.activeFilter);
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
@@ -80,17 +101,13 @@ Page({
 
   switchFilter(e) {
     const filter = e.currentTarget.dataset.filter;
-    this.setData({ activeFilter: filter });
-    // status: 1=待验收, 2=已完成 (验收通过), 5=已退回
-    const filterMap = { 'pending': 1, 'passed': 2, 'rejected': 5 };
-    const filtered = filter === 'all'
-      ? this.data.allClaims
-      : this.data.allClaims.filter(c => c.status === filterMap[filter]);
-    this.setData({ filteredClaims: filtered });
+    this.applyFilter(filter);
   },
 
   async reviewClaim(e) {
-    const { claimId, result } = e.currentTarget.dataset;
+    const { claimId } = e.currentTarget.dataset;
+    const result = Number(e.currentTarget.dataset.result);
+
     try {
       await Api.reviewClaim(claimId, result);
       wx.showToast({ title: result === 1 ? '已采纳' : '已拒绝', icon: 'success' });
@@ -101,6 +118,64 @@ Page({
   },
 
   getClaimStatusText(status) {
-    return getClaimStatusText(status);
+    const statusMap = {
+      1: '待提交',
+      2: '待审核',
+      3: '已采纳',
+      4: '已取消',
+      5: '已拒绝'
+    };
+
+    return statusMap[status] || `未知(${status})`;
+  },
+
+  applyFilter(filter) {
+    const filteredClaims = filter === 'all'
+      ? this.data.allClaims
+      : this.data.allClaims.filter(item => item.filterKey === filter);
+
+    this.setData({
+      activeFilter: filter,
+      filteredClaims
+    });
+  },
+
+  formatClaim(claim) {
+    const status = Number(claim.status);
+    const creatorName = claim.creator_name || '匿名创作者';
+    const submittedAt = claim.submitted_at || claim.updated_at || claim.created_at || '';
+
+    return {
+      ...claim,
+      status,
+      creatorName,
+      creatorInitial: creatorName.slice(0, 1),
+      displayDate: submittedAt ? submittedAt.substring(0, 16).replace('T', ' ') : '',
+      displayPrice: Number(claim.unit_price || 0).toFixed(2),
+      statusText: this.getClaimStatusText(status),
+      statusClass: this.getClaimStatusClass(status),
+      filterKey: this.getFilterKey(status),
+      canReview: status === 2,
+      hasContent: !!claim.content
+    };
+  },
+
+  getClaimStatusClass(status) {
+    const statusClassMap = {
+      1: 'draft',
+      2: 'pending',
+      3: 'passed',
+      4: 'cancelled',
+      5: 'rejected'
+    };
+
+    return statusClassMap[status] || 'draft';
+  },
+
+  getFilterKey(status) {
+    if (status === 2) return 'pending';
+    if (status === 3) return 'passed';
+    if (status === 4 || status === 5) return 'rejected';
+    return 'all';
   }
 });

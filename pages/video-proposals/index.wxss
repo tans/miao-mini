@@ -2,17 +2,19 @@
 .proposals-container {
   min-height: 100vh;
   background: #f5f5f5;
-  padding-bottom: 20px;
 }
 
+/* 过滤器标签栏 */
 .filter-tabs {
   display: flex;
+  flex-wrap: wrap;
   background: #fff;
   padding: 12px 16px;
   gap: 8px;
   position: sticky;
   top: 0;
   z-index: 10;
+  border-bottom: 1rpx solid #e5e5e5;
 }
 
 .filter-btn {
@@ -29,130 +31,232 @@
   color: #fff;
 }
 
-.proposal-card {
+/* 提案列表 */
+.proposals-list {
+  padding: 16rpx;
+}
+
+/* WeUI Panel 风格 */
+.weui-panel {
   background: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 8px 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
 }
 
-.task-label {
-  font-size: 12px;
-  color: #999;
-  margin-bottom: 10px;
-  display: block;
-}
-
-.proposal-header {
+.weui-panel__hd {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  padding: 24rpx 24rpx 16rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.weui-panel__hd .task-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  margin-right: 16rpx;
+}
+
+/* 状态徽章 */
+.status-badge {
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  white-space: nowrap;
+}
+
+.status-badge.status-draft {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.status-badge.status-pending {
+  background: #FFF2E8;
+  color: #EF8802;
+}
+
+.status-badge.status-passed {
+  background: #E8F4FF;
+  color: #1890ff;
+}
+
+.status-badge.status-cancelled,
+.status-badge.status-rejected {
+  background: #FFF0F0;
+  color: #FF4D4F;
+}
+
+/* Panel Body */
+.weui-panel__bd {
+  padding: 20rpx 24rpx;
+}
+
+.weui-media-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.creator-row {
+  margin-bottom: 8rpx;
 }
 
 .creator-info {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16rpx;
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
+  width: 64rpx;
+  height: 64rpx;
   border-radius: 50%;
   background: #EF8802;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 28rpx;
   font-weight: 600;
+}
+
+.creator-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
 }
 
 .creator-name {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 28rpx;
+  font-weight: 500;
   color: #333;
-  display: block;
 }
 
 .submit-time {
-  font-size: 12px;
+  font-size: 22rpx;
   color: #999;
-  display: block;
-  margin-top: 2px;
-}
-
-.proposal-status {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-
-.proposal-status.pending {
-  color: #FF9800;
-  border: 1px solid #FF9800;
-  background: transparent;
-}
-
-.proposal-status.completed {
-  color: #2196F3;
-  border: 1px solid #2196F3;
-  background: transparent;
-}
-
-.proposal-content {
-  color: #666;
-  font-size: 14px;
-  display: block;
-  margin-bottom: 12px;
-  line-height: 1.6;
-}
-
-.proposal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 12px;
-  border-top: 1px solid #f0f0f0;
 }
 
 .proposal-price {
-  font-weight: 700;
-  color: #EF8802;
-  font-size: 16px;
-}
-
-.proposal-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 13px;
+  font-size: 36rpx;
   font-weight: 600;
-  text-align: center;
+  color: #EF8802;
+}
+
+.proposal-preview {
+  margin-top: 8rpx;
+  background: #fafafa;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.preview-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 16rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  gap: 16rpx;
+}
+
+.preview-row:last-child {
+  border-bottom: none;
+}
+
+.preview-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.preview-value {
+  flex: 1;
+  text-align: right;
+  font-size: 24rpx;
+  color: #333;
+}
+
+.preview-status {
+  color: #EF8802;
+}
+
+.preview-price {
+  font-weight: 600;
+}
+
+.proposal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  padding: 16rpx;
+  background: #fafafa;
+  border-radius: 8rpx;
+  margin-top: 8rpx;
+}
+
+.content-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.content-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Panel Footer */
+.weui-panel__ft {
+  padding: 16rpx 24rpx 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+/* WeUI 按钮调整 */
+.weui-btn_mini {
+  font-size: 24rpx;
+  padding: 0 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  border-radius: 8rpx;
+}
+
+.weui-btn_primary {
+  background: #EF8802;
+}
+
+.weui-btn_primary:active {
+  background: #d97b00;
+}
+
+.weui-btn_default {
+  background: #fff;
+  color: #666;
+  border: 1rpx solid #e5e5e5;
+}
+
+.weui-btn_default::after,
+.weui-btn_primary::after {
   border: none;
 }
 
-.btn-primary {
-  background: #EF8802;
-  color: #fff;
-}
-
-.btn-primary:not(.btn-disabled):active {
-  background: #D66E00;
-}
-
-.btn-secondary {
-  background: #f0f0f0;
-  color: #666;
-}
-
+/* 空状态 */
 .empty-state {
   text-align: center;
   padding: 80px 20px;
