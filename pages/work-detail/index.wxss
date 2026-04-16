@@ -81,23 +81,27 @@
   backdrop-filter: blur(10px);
 }
 
-.share-btn {
-  border: none;
+.share-hit-btn {
+  width: 36px;
+  height: 36px;
   padding: 0;
   margin: 0;
   min-width: 0;
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
-  border-radius: 50%;
+  border: none;
+  background: transparent;
+  border-radius: 0;
   box-sizing: border-box;
-  overflow: hidden;
-  line-height: 36px;
-  text-align: center;
+  overflow: visible;
+  line-height: 1;
 }
 
-.share-btn::after {
+.share-hit-btn::after {
   border: none;
+}
+
+.share-visual-btn {
+  width: 36px;
+  height: 36px;
 }
 
 .bottom-panel {

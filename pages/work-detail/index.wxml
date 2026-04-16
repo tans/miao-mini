@@ -43,7 +43,9 @@
             </view>
 
             <view class="circle-btn top-back-btn" style="top: {{navTop}}px; left: {{actionEdgeInset}}px;" bindtap="goBack">‹</view>
-            <button class="circle-btn share-btn top-share-btn" style="top: {{navTop}}px; right: {{actionEdgeInset}}px;" open-type="share">↗</button>
+            <button class="top-share-btn share-hit-btn" style="top: {{navTop}}px; right: {{actionEdgeInset}}px;" open-type="share">
+              <view class="circle-btn share-visual-btn">↗</view>
+            </button>
 
             <view class="bottom-panel" style="left: {{pageSideInset}}px; right: {{pageSideInset}}px; bottom: {{overlayBottom}}px;">
               <view class="author-row">
