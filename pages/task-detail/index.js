@@ -260,7 +260,11 @@ Page({
   },
 
   goReviewProposals() {
-    wx.navigateTo({ url: '/pages/video-proposals/index' });
+    const taskId = this.data.task && this.data.task.id;
+    const url = taskId
+      ? `/pages/video-proposals/index?taskId=${taskId}`
+      : '/pages/video-proposals/index';
+    wx.navigateTo({ url });
   },
 
   getStatusText(status) {

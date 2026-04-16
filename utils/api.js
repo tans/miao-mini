@@ -265,7 +265,8 @@ const Api = {
   },
 
   reviewClaim(claimId, result) {
-    // result: 1=閫氳繃, 0=閫€鍥?    return this.request('PUT', `/business/claim/${claimId}/review`, { result });
+    // result: 1=通过, 0=拒绝
+    return this.request('PUT', `/business/claim/${claimId}/review`, { result });
   },
 
   // Creator

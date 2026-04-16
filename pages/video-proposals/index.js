@@ -144,6 +144,17 @@ Page({
     const status = Number(claim.status);
     const creatorName = claim.creator_name || '匿名创作者';
     const submittedAt = claim.submitted_at || claim.updated_at || claim.created_at || '';
+    const materials = Array.isArray(claim.materials) ? claim.materials : [];
+    const imageMaterials = materials.filter(item => item.file_type === 'image' && item.file_path);
+    const videoMaterials = materials.filter(item => item.file_type === 'video' && item.file_path);
+    const previewImages = imageMaterials.map(item => item.file_path);
+    const fallbackPoster = imageMaterials.length > 0 ? imageMaterials[0].file_path : '';
+    const previewVideos = videoMaterials.map(item => ({
+      url: item.file_path,
+      poster: item.thumbnail_path || fallbackPoster
+    }));
+    const videoLink = this.extractVideoLink(claim.content);
+    const contentText = this.extractContentText(claim.content);
 
     return {
       ...claim,
@@ -156,8 +167,52 @@ Page({
       statusClass: this.getClaimStatusClass(status),
       filterKey: this.getFilterKey(status),
       canReview: status === 2,
-      hasContent: !!claim.content
+      contentText,
+      hasContent: !!contentText,
+      hasMaterials: previewImages.length > 0 || previewVideos.length > 0,
+      previewImages,
+      previewVideos,
+      imageCount: previewImages.length,
+      videoCount: previewVideos.length,
+      videoLink
     };
+  },
+
+  extractContentText(content) {
+    if (!content) return '';
+    return content
+      .split('\n')
+      .filter(line => line && !/^视频链接：/.test(line))
+      .join('\n')
+      .trim();
+  },
+
+  extractVideoLink(content) {
+    if (!content) return '';
+    const match = content.match(/视频链接：(.+)/);
+    return match ? match[1].trim() : '';
+  },
+
+  previewImages(e) {
+    const { current, claimIndex } = e.currentTarget.dataset;
+    const claim = this.data.filteredClaims[Number(claimIndex)];
+    const images = claim && Array.isArray(claim.previewImages) ? claim.previewImages : [];
+    if (images.length === 0) return;
+    wx.previewImage({
+      current: current || images[0],
+      urls: images
+    });
+  },
+
+  copyVideoLink(e) {
+    const { url } = e.currentTarget.dataset;
+    if (!url) return;
+    wx.setClipboardData({
+      data: url,
+      success: () => {
+        wx.showToast({ title: '链接已复制', icon: 'success' });
+      }
+    });
   },
 
   getClaimStatusClass(status) {

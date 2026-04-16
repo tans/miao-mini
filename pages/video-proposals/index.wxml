@@ -19,7 +19,7 @@
 
   <!-- 提案列表 - 使用 WeUI Panel 风格 -->
   <view class="proposals-list" wx:if="{{filteredClaims.length > 0}}">
-    <view class="weui-panel" wx:for="{{filteredClaims}}" wx:key="id">
+    <view class="weui-panel" wx:for="{{filteredClaims}}" wx:key="id" wx:for-index="claimIndex">
       <!-- Panel Header -->
       <view class="weui-panel__hd">
         <text class="task-title">{{item.task_title || '任务'}}</text>
@@ -60,7 +60,57 @@
 
           <view wx:if="{{item.hasContent}}" class="proposal-content">
             <text class="content-label">提案内容</text>
-            <text class="content-text">{{item.content}}</text>
+            <text class="content-text">{{item.contentText}}</text>
+          </view>
+
+          <view wx:if="{{item.hasMaterials}}" class="proposal-content">
+            <view class="content-header">
+              <text class="content-label">作品素材</text>
+              <text class="content-meta">图片 {{item.imageCount}} · 视频 {{item.videoCount}}</text>
+            </view>
+
+            <scroll-view
+              wx:if="{{item.previewImages.length > 0}}"
+              class="material-scroll"
+              scroll-x
+              enable-flex
+            >
+              <view class="material-row">
+                <image
+                  wx:for="{{item.previewImages}}"
+                  wx:key="*this"
+                  wx:for-item="imageUrl"
+                  class="material-thumb"
+                  src="{{imageUrl}}"
+                  mode="aspectFill"
+                  data-current="{{imageUrl}}"
+                  data-claim-index="{{claimIndex}}"
+                  bindtap="previewImages"
+                />
+              </view>
+            </scroll-view>
+
+            <view wx:if="{{item.previewVideos.length > 0}}" class="video-list">
+              <video
+                wx:for="{{item.previewVideos}}"
+                wx:key="url"
+                wx:for-item="videoItem"
+                class="proposal-video"
+                src="{{videoItem.url}}"
+                poster="{{videoItem.poster}}"
+                controls
+                enable-play-gesture="{{true}}"
+                show-center-play-btn="{{true}}"
+              />
+            </view>
+          </view>
+
+          <view wx:if="{{item.videoLink}}" class="proposal-content">
+            <view class="content-header">
+              <text class="content-label">视频链接</text>
+              <text class="link-action" data-url="{{item.videoLink}}" bindtap="copyVideoLink">复制</text>
+            </view>
+            <text class="content-text">{{item.videoLink}}</text>
           </view>
         </view>
       </view>
