@@ -53,24 +53,9 @@
       </view>
     </view>
 
-    <view class="side-actions">
-      <view class="side-action" bindtap="toggleLike">
-        <view class="side-icon {{isLiked ? 'active' : ''}}">♥</view>
-        <text class="side-text">{{likeCountText}}</text>
-      </view>
-      <view class="side-action">
-        <view class="side-icon">☆</view>
-        <text class="side-text">{{viewCountText}}</text>
-      </view>
-      <button class="side-action side-share" open-type="share">
-        <view class="side-icon">↗</view>
-        <text class="side-text">分享</text>
-      </button>
-    </view>
-
     <view class="comment-bar">
       <view class="comment-input">说点什么...</view>
-      <view class="comment-action">
+      <view class="comment-action" bindtap="toggleLike">
         <text class="comment-icon">♥</text>
         <text class="comment-count">{{likeCountText}}</text>
       </view>
