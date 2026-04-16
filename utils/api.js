@@ -259,6 +259,10 @@ const Api = {
     return this.request('GET', `/business/tasks/${taskId}/claims`);
   },
 
+  getTaskSignups(taskId) {
+    return this.request('GET', `/business/tasks/${taskId}/signups`);
+  },
+
   reviewClaim(claimId, result) {
     // result: 1=通过, 0=退回
     return this.request('PUT', `/business/claim/${claimId}/review`, { result });

@@ -7,7 +7,7 @@ Page({
   data: {
     task: null,
     loading: true,
-    claims: [],
+    signups: [],
     materials: [],
     isMyTask: false,
     canClaim: false,
@@ -41,7 +41,7 @@ Page({
       const claimStatus = myClaim ? myClaim.status : 0;
       this.setData({ myClaim, hasClaimed, claimStatus });
       if (this.data.isMyTask) {
-        this.loadTaskClaims(task.id);
+        this.loadSignups(task.id);
       }
     } catch (e) {
       // 忽略刷新错误
@@ -142,7 +142,7 @@ Page({
       });
 
       if (isMyTask) {
-        this.loadTaskClaims(taskId);
+        this.loadSignups(taskId);
       }
     } catch (err) {
       console.error('loadTaskDetail error:', err);
@@ -153,12 +153,12 @@ Page({
     }
   },
 
-  async loadTaskClaims(taskId) {
+  async loadSignups(taskId) {
     try {
-      const res = await Api.getTaskClaims(taskId);
-      this.setData({ claims: res.data || [] });
+      const res = await Api.getTaskSignups(taskId);
+      this.setData({ signups: res.data || [] });
     } catch (err) {
-      console.error('加载提案失败', err);
+      console.error('加载报名列表失败', err);
     }
   },
 

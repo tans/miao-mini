@@ -81,44 +81,30 @@
     </mp-cell>
   </mp-cells>
 
-  <!-- 收到的提案 -->
-  <view class="review-section" wx:if="{{isMyTask}}">
-    <view class="section-header">
-      <text class="section-title">收到的提案</text>
-      <button class="btn-review" bindtap="goReviewProposals">审核投稿</button>
-    </view>
-  </view>
-  <mp-cells title="提案列表" wx:if="{{isMyTask}}">
-    <block wx:if="{{claims.length === 0}}">
+  <!-- 报名列表 -->
+  <mp-cells title="报名列表" wx:if="{{signups.length > 0}}">
+    <mp-cell wx:for="{{signups}}" wx:key="id">
+      <view class="signup-card">
+        <view class="signup-info">
+          <image class="signup-avatar" src="{{item.creator_avatar}}" mode="aspectFill" wx:if="{{item.creator_avatar}}"/>
+          <view class="avatar-sm" wx:else>{{item.creator_name ? item.creator_name[0] : '创'}}</view>
+          <view class="signup-detail">
+            <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
+            <text class="signup-time">{{item.created_at}}</text>
+          </view>
+        </view>
+      </view>
+    </mp-cell>
+  </mp-cells>
+  <block wx:if="{{signups.length === 0 && isMyTask}}">
+    <mp-cells title="报名列表">
       <mp-cell>
         <view class="empty-state">
-          <text class="empty-desc">暂无提案</text>
+          <text class="empty-desc">暂无报名</text>
         </view>
       </mp-cell>
-    </block>
-    <block wx:else>
-      <mp-cell wx:for="{{claims}}" wx:key="id">
-        <view class="proposal-card">
-          <view class="proposal-header">
-            <view class="creator-info">
-              <view class="avatar-sm">{{item.creator_name ? item.creator_name[0] : '创'}}</view>
-              <view>
-                <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
-                <text class="proposal-status task-status {{item.status === 2 ? 'completed' : 'pending'}}">
-                  {{getClaimStatusText(item.status)}}
-                </text>
-              </view>
-            </view>
-          </view>
-          <text class="proposal-content">{{item.content || '暂无说明'}}</text>
-          <view class="proposal-actions" wx:if="{{item.status === 2}}">
-            <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" data-result="0" bindtap="reviewClaim">拒绝</button>
-            <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</button>
-          </view>
-        </view>
-      </mp-cell>
-    </block>
-  </mp-cells>
+    </mp-cells>
+  </block>
 
   <!-- 接单按钮 -->
   <view class="action-bar" wx:if="{{canClaim || claimReason || hasClaimed}}">
