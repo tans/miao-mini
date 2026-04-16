@@ -17,11 +17,11 @@
         <view class="materials-grid">
           <view wx:for="{{materials}}" wx:key="index" class="material-item">
             <image wx:if="{{item.fileType === 'image'}}" class="material-thumb" src="{{item.url}}" mode="aspectFill" bindtap="previewMaterial" data-url="{{item.url}}"/>
-            <video wx:else class="material-thumb" src="{{item.url}}" bindtap="previewMaterial" data-url="{{item.url}}" show-center-play-btn="{{true}}"/>
+            <video wx:else class="material-thumb" src="{{item.url}}" show-center-play-btn="{{true}}" show-play-btn="{{true}}" enable-play-gesture="{{true}}"/>
             <view class="material-delete" bindtap="deleteMaterial" data-index="{{index}}">✕</view>
           </view>
 
-          <view wx:if="{{materials.length < 9}}" class="material-add" bindtap="addMaterial">
+          <view wx:if="{{materials.length < 2}}" class="material-add" bindtap="addMaterial">
             <text class="material-add-icon">+</text>
             <text class="material-add-label">添加素材</text>
           </view>

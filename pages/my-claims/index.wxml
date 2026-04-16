@@ -7,38 +7,65 @@
     <text class="tab {{activeTab === 'completed' ? 'active' : ''}}" data-tab="completed" bindtap="switchTab">已完成</text>
   </view>
 
-  <!-- 认领列表 -->
-  <mp-cells wx:if="{{claims.length > 0}}">
-    <mp-cell wx:for="{{filteredClaims}}" wx:key="id">
-      <view slot="title" bindtap="goTaskDetail" data-id="{{item.task_id}}">
-        <view class="title-row">
-          <text class="claim-task-title">{{item.task_title || '任务' + item.task_id}}</text>
-          <text class="watermark-badge watermark-{{item.status}}">{{item.status === 1 ? '待提交' : item.status === 2 ? '待验收' : '已完成'}}</text>
-        </view>
-        <view class="claim-body">
-          <text class="claim-price">¥{{item.unit_price || 0}}</text>
-          <text class="claim-time">{{item.created_at}}</text>
+  <!-- 认领列表 - 使用 WeUI Panel 风格 -->
+  <view class="claims-list" wx:if="{{filteredClaims.length > 0}}">
+    <view class="weui-panel" wx:for="{{filteredClaims}}" wx:key="id">
+      <!-- Panel Header -->
+      <view class="weui-panel__hd">
+        <text class="task-title" bindtap="goTaskDetail" data-id="{{item.task_id}}">{{item.task_title || '任务' + item.task_id}}</text>
+        <view class="status-badge status-{{item.status}}">
+          <text>{{item.status === 1 ? '待提交' : item.status === 2 ? '待验收' : item.status === 3 ? '已完成' : '已失效'}}</text>
         </view>
       </view>
-      <view slot="footer" class="claim-actions">
+
+      <!-- Panel Body -->
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="info-row">
+            <view class="info-item">
+              <text class="label">任务ID</text>
+              <text class="value">{{item.task_id}}</text>
+            </view>
+            <view class="info-item">
+              <text class="label">赏金</text>
+              <text class="value price">¥{{item.unit_price || 0}}</text>
+            </view>
+          </view>
+          <view class="info-row">
+            <view class="info-item">
+              <text class="label">领取时间</text>
+              <text class="value">{{item.created_at}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Panel Footer - 操作按钮 -->
+      <view class="weui-panel__ft">
         <!-- 待提交状态：显示提交和放弃按钮 -->
-        <view wx:if="{{item.status === 1}}" class="claim-btns">
-          <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" bindtap="showSubmitModal">提交</button>
-          <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" bindtap="cancelClaim">放弃</button>
+        <view wx:if="{{item.status === 1}}" class="action-group">
+          <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" bindtap="showSubmitModal">提交作品</button>
+          <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" bindtap="cancelClaim">放弃任务</button>
         </view>
-        <!-- 待验收状态：显示状态和修改链接 -->
-        <view wx:if="{{item.status === 2}}" class="claim-status-with-action">
-          <text class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
-          <text class="modify-link" bindtap="showSubmitModal" data-claim-id="{{item.id}}">修改</text>
+        <!-- 待验收状态：显示修改链接 -->
+        <view wx:if="{{item.status === 2}}" class="action-group">
+          <text class="status-text">等待商家验收中</text>
+          <text class="modify-link" bindtap="showSubmitModal" data-claim-id="{{item.id}}">修改作品</text>
         </view>
-        <!-- 其他状态：只显示状态文本 -->
-        <text wx:elif="{{item.status > 2}}" class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
+        <!-- 已完成状态 -->
+        <view wx:if="{{item.status === 3}}" class="action-group">
+          <text class="status-text success">已完成，赏金已到账</text>
+        </view>
       </view>
-    </mp-cell>
-  </mp-cells>
+    </view>
+  </view>
 
   <!-- 空状态 -->
-  <mp-msg type="info" title="暂无认领记录" wx:if="{{!loading && claims.length === 0}}" />
+  <view class="empty-state" wx:if="{{!loading && filteredClaims.length === 0}}">
+    <mp-msg type="info" title="暂无认领记录">
+      <view slot="desc">快去首页领取感兴趣的任务吧</view>
+    </mp-msg>
+  </view>
 
   <!-- 提交弹窗 - 使用 WeUI Dialog -->
   <mp-dialog title="提交作品" show="{{showSubmitModal}}" bindbuttontap="onDialogTap" buttons="{{dialogButtons}}">

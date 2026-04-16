@@ -3,127 +3,197 @@
   background: #f5f5f5;
 }
 
+/* Tab 标签栏 */
 .tabs {
   background: #fff;
   display: flex;
   padding: 12px 16px;
-  gap: 20px;
+  gap: 24px;
   position: sticky;
   top: 0;
   z-index: 10;
+  border-bottom: 1rpx solid #e5e5e5;
 }
 
 .tab {
-  font-size: 14px;
+  font-size: 15px;
   color: #999;
-  padding-bottom: 4px;
+  padding-bottom: 8rpx;
+  position: relative;
 }
 
 .tab.active {
   color: #EF8802;
   font-weight: 500;
-  border-bottom: 2px solid #EF8802;
 }
 
-.claim-task-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: #333;
-  position: relative;
-  z-index: 1;
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32rpx;
+  height: 6rpx;
+  background: #EF8802;
+  border-radius: 3rpx;
 }
 
-.title-row {
+/* 认领列表 */
+.claims-list {
+  padding: 16rpx;
+}
+
+/* WeUI Panel 风格 */
+.weui-panel {
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.weui-panel__hd {
   display: flex;
   align-items: center;
-  gap: 8px;
-  position: relative;
-  z-index: 1;
+  justify-content: space-between;
+  padding: 24rpx 24rpx 16rpx;
+  border-bottom: 1rpx solid #f5f5f5;
 }
 
-.watermark-badge {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 2px;
-  border: 1px solid;
+.weui-panel__hd .task-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  margin-right: 16rpx;
 }
 
-.watermark-1 {
-  color: #ff4d4f;
-  border-color: #ff4d4f;
-  opacity: 0.6;
+/* 状态徽章 */
+.status-badge {
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  white-space: nowrap;
 }
 
-.watermark-2 {
+.status-badge.status-1 {
+  background: #FFF2E8;
+  color: #EF8802;
+}
+
+.status-badge.status-2 {
+  background: #E8F4FF;
   color: #1890ff;
-  border-color: #1890ff;
-  opacity: 0.6;
 }
 
-.watermark-3 {
+.status-badge.status-3 {
+  background: #F5F5F5;
   color: #999;
-  border-color: #999;
-  opacity: 0.6;
 }
 
-.claim-body {
+.status-badge.status-4,
+.status-badge.status-5 {
+  background: #F5F5F5;
+  color: #999;
+}
+
+/* Panel Body */
+.weui-panel__bd {
+  padding: 20rpx 24rpx;
+}
+
+.weui-media-box {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 12rpx;
 }
 
-.claim-price {
-  font-size: 16px;
+.info-row {
+  display: flex;
+  gap: 32rpx;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.info-item .label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.info-item .value {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.info-item .value.price {
+  font-size: 32rpx;
   font-weight: 600;
   color: #EF8802;
 }
 
-.claim-time {
-  font-size: 12px;
-  color: #999;
-  display: none;
+/* Panel Footer */
+.weui-panel__ft {
+  padding: 16rpx 24rpx 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.claim-status {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  display: none;
-}
-
-.claim-status-with-action {
+.action-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16rpx;
+}
+
+.status-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.status-text.success {
+  color: #52c41a;
 }
 
 .modify-link {
-  font-size: 12px;
+  font-size: 26rpx;
   color: #576b95;
   text-decoration: underline;
 }
 
-.claim-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.claim-btns {
-  display: flex;
-  gap: 8px;
-}
-
-.status-0 { background: #fff7e6; color: #fa8c16; }
-.status-1 { background: #fff3e0; color: #EF8802; }
-.status-2 { background: #e3f2fd; color: #2196f3; }
-
+/* 空状态 */
 .empty-state {
-  text-align: center;
-  padding: 60px 0;
-  color: #999;
-  font-size: 14px;
+  padding: 120rpx 0;
 }
 
+/* 提交弹窗 */
 .dialog-content {
-  padding: 12px 0;
+  padding: 12rpx 0;
+}
+
+/* WeUI 按钮调整 */
+.weui-btn_mini {
+  font-size: 24rpx;
+  padding: 0 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  border-radius: 8rpx;
+}
+
+.weui-btn_primary {
+  background: #EF8802;
+}
+
+.weui-btn_primary:active {
+  background: #d97b00;
+}
+
+.weui-btn_default {
+  background: #fff;
+  color: #666;
+  border: 1rpx solid #e5e5e5;
 }

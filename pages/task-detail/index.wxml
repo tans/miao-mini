@@ -106,6 +106,36 @@
     </mp-cells>
   </block>
 
+  <!-- 投稿列表 -->
+  <mp-cells title="投稿列表" wx:if="{{submissions.length > 0}}">
+    <mp-cell wx:for="{{submissions}}" wx:key="id">
+      <view class="submission-card">
+        <view class="submission-info">
+          <image class="submission-avatar" src="{{item.creator_avatar}}" mode="aspectFill" wx:if="{{item.creator_avatar}}"/>
+          <view class="avatar-sm" wx:else>{{item.creator_name ? item.creator_name[0] : '创'}}</view>
+          <view class="submission-detail">
+            <text class="creator-name">{{item.creator_name || '匿名创作者'}}</text>
+            <text class="submission-time">{{item.submitted_at ? item.submitted_at : item.created_at}}</text>
+          </view>
+        </view>
+        <view class="submission-status">
+          <view class="status-stamp {{isAdopted(item.status) ? 'adopted' : 'rejected'}}">
+            {{isAdopted(item.status) ? '已采纳' : '未采纳'}}
+          </view>
+        </view>
+      </view>
+    </mp-cell>
+  </mp-cells>
+  <block wx:if="{{submissions.length === 0 && isMyTask}}">
+    <mp-cells title="投稿列表">
+      <mp-cell>
+        <view class="empty-state">
+          <text class="empty-desc">暂无投稿</text>
+        </view>
+      </mp-cell>
+    </mp-cells>
+  </block>
+
   <!-- 接单按钮 -->
   <view class="action-bar" wx:if="{{canClaim || claimReason || hasClaimed}}">
     <!-- 已认领该任务，根据状态显示不同按钮 -->

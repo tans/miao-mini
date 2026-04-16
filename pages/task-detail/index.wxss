@@ -304,3 +304,63 @@
   font-size: 13px;
   font-weight: 600;
 }
+
+/* 投稿列表 */
+.submission-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.submission-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.submission-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.submission-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.submission-time {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.submission-status {
+  margin-left: 12px;
+}
+
+/* 印章样式状态 */
+.status-stamp {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  transform: rotate(-5deg);
+  border: 2px solid;
+}
+
+.status-stamp.adopted {
+  color: #10b981;
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.status-stamp.rejected {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}

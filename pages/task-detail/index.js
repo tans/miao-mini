@@ -8,6 +8,7 @@ Page({
     task: null,
     loading: true,
     signups: [],
+    submissions: [],  // 投稿列表（已提交的认领）
     materials: [],
     isMyTask: false,
     canClaim: false,
@@ -42,6 +43,7 @@ Page({
       this.setData({ myClaim, hasClaimed, claimStatus });
       if (this.data.isMyTask) {
         this.loadSignups(task.id);
+        this.loadSubmissions(task.id);
       }
     } catch (e) {
       // 忽略刷新错误
@@ -143,6 +145,7 @@ Page({
 
       if (isMyTask) {
         this.loadSignups(taskId);
+        this.loadSubmissions(taskId);
       }
     } catch (err) {
       console.error('loadTaskDetail error:', err);
@@ -159,6 +162,22 @@ Page({
       this.setData({ signups: res.data || [] });
     } catch (err) {
       console.error('加载报名列表失败', err);
+    }
+  },
+
+  async loadSubmissions(taskId) {
+    try {
+      const res = await Api.getTaskClaims(taskId);
+      console.log('getTaskClaims response:', res);
+      // 只显示已提交的投稿（状态 >= 2，待验收或已完成）
+      const submissions = (res.data || []).filter(c => {
+        const status = typeof c.status === 'number' ? c.status : parseInt(c.status, 10);
+        return status >= 2;
+      });
+      console.log('filtered submissions:', submissions);
+      this.setData({ submissions });
+    } catch (err) {
+      console.error('加载投稿列表失败', err);
     }
   },
 
@@ -252,6 +271,11 @@ Page({
 
   getStatusClass(status) {
     return getStatusClass(status);
+  },
+
+  isAdopted(status) {
+    const s = typeof status === 'number' ? status : parseInt(status, 10);
+    return s === 3;
   },
 
   previewMaterial(e) {
