@@ -17,7 +17,6 @@
       </view>
       <button class="search-btn" size="mini" bindtap="onSearchConfirm">
         <text class="search-btn-icon">搜</text>
-        <text>搜索</text>
       </button>
     </view>
 
