@@ -12,7 +12,8 @@ Page({
     navTop: 56,
     pageSideInset: 12,
     overlayBottom: 12,
-    actionEdgeInset: 10,
+    leftActionInset: 10,
+    rightActionInset: 2,
   },
 
   onLoad(e) {
@@ -41,7 +42,8 @@ Page({
     let navTop = 56;
     let pageSideInset = 12;
     let overlayBottom = 12;
-    let actionEdgeInset = 10;
+    let leftActionInset = 10;
+    let rightActionInset = 2;
 
     try {
       const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
@@ -54,12 +56,11 @@ Page({
 
       pageSideInset = Math.max(10, Math.round(windowWidth * 0.032));
       overlayBottom = Math.max(10, Math.round(windowWidth * 0.024));
-      actionEdgeInset = 10;
+      leftActionInset = 10;
+      rightActionInset = 2;
 
-      if (menuButton && menuButton.left && menuButton.right) {
-        const leftGap = Math.max(8, Math.round(menuButton.left));
-        const rightGap = Math.max(8, Math.round(windowWidth - menuButton.right));
-        actionEdgeInset = Math.min(leftGap, rightGap, 12);
+      if (menuButton && menuButton.left) {
+        leftActionInset = Math.min(Math.max(8, Math.round(menuButton.left)), 12);
       }
 
       if (menuButton && menuButton.top) {
@@ -73,7 +74,8 @@ Page({
       navTop,
       pageSideInset,
       overlayBottom,
-      actionEdgeInset,
+      leftActionInset,
+      rightActionInset,
     });
   },
 
