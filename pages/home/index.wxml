@@ -15,6 +15,10 @@
       class="sort-item {{sort === 'price_asc' ? 'active' : ''}}"
       bindtap="setSort" data-sort="price_asc"
     >价格最低</view>
+    <view
+      class="sort-item {{sort === 'mine' ? 'active' : ''}}"
+      bindtap="setSort" data-sort="mine"
+    >我的</view>
   </view>
 
   <!-- 行业筛选标签 -->
@@ -34,8 +38,8 @@
 
   <!-- 任务数量 -->
   <view class="section-header">
-    <text class="section-title">{{activeIndustry ? activeIndustry : '全部任务'}}</text>
-    <text class="section-count">{{displayTasks.length}}{{hasMore && activeIndustry === '' ? '+' : ''}}个</text>
+    <text class="section-title">{{sort === 'mine' ? '我的任务' : (activeIndustry ? activeIndustry : '全部任务')}}</text>
+    <text class="section-count">{{displayTasks.length}}{{hasMore && activeIndustry === '' && sort !== 'mine' ? '+' : ''}}个</text>
   </view>
 
   <!-- 空状态 -->

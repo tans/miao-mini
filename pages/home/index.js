@@ -54,7 +54,12 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const { sort, page } = this.data;
-      const res = await Api.getTasks({ page, limit: 20, sort });
+      // For "mine" sort, send auth if user is logged in
+      const params = { page, limit: 20, sort };
+      if (sort === 'mine' && app.isLoggedIn()) {
+        params.noAuth = false;
+      }
+      const res = await Api.getTasks(params);
       const newTasks = res.data?.data || [];
 
       const rawTasks = page === 1 ? newTasks : [...this.data.tasks, ...newTasks];
@@ -126,6 +131,11 @@ Page({
   setSort(e) {
     const sort = e.currentTarget.dataset.sort;
     if (sort === this.data.sort) return;
+    // "我的"排序需要登录
+    if (sort === 'mine' && !app.isLoggedIn()) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return;
+    }
     this.setData({ sort, page: 1, tasks: [], displayTasks: [], activeIndustry: '' });
     this.loadTasks();
   },
