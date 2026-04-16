@@ -17,26 +17,19 @@
           <text class="claim-time">{{item.created_at}}</text>
         </view>
       </view>
-      <view slot="footer" class="claim-actions claim-btns">
+      <view slot="footer" class="claim-actions">
         <!-- 待提交状态：显示提交和放弃按钮 -->
-        <view wx:if="{{item.status === 1}}" class="claim-item-wrapper">
+        <view wx:if="{{item.status === 1}}" class="claim-btns">
           <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" bindtap="showSubmitModal">提交</button>
           <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" bindtap="cancelClaim">放弃</button>
-          <text class="watermark-red watermark-bg">待提交</text>
         </view>
         <!-- 待验收状态：显示状态和修改链接 -->
-        <view wx:if="{{item.status === 2}}" class="claim-item-wrapper">
-          <view class="claim-status-with-action">
-            <text class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
-            <text class="modify-link" bindtap="showSubmitModal" data-claim-id="{{item.id}}">修改</text>
-          </view>
-          <text class="watermark-blue watermark-bg">待验收</text>
-        </view>
-        <!-- 已完成状态 -->
-        <view wx:if="{{item.status === 3}}" class="claim-item-wrapper">
+        <view wx:if="{{item.status === 2}}" class="claim-status-with-action">
           <text class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
-          <text class="watermark-gray watermark-bg">已完成</text>
+          <text class="modify-link" bindtap="showSubmitModal" data-claim-id="{{item.id}}">修改</text>
         </view>
+        <!-- 其他状态：只显示状态文本 -->
+        <text wx:elif="{{item.status > 2}}" class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
       </view>
     </mp-cell>
   </mp-cells>
