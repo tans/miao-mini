@@ -14,7 +14,7 @@
     <view class="detail-title">{{task.title}}</view>
     <view class="detail-meta">
       <text>👤 {{task.business_name || '商家'}}</text>
-      <text>📅 {{task.deadline ? task.deadline.substring(0, 10) : '不限'}}</text>
+      <text>📅 {{task.end_at ? task.end_at.substring(0, 10) : '不限'}}</text>
       <text class="task-status {{getStatusClass(task.status)}}">{{getStatusText(task.status)}}</text>
     </view>
   </view>
