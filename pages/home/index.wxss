@@ -62,7 +62,7 @@
 }
 
 .industry-tag.active {
-  background: rgba(7, 193, 96, 0.1);
+  background: rgba(239, 136, 2, 0.1);
   color: #EF8802;
   font-weight: 600;
 }
@@ -268,5 +268,5 @@
   padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(7, 193, 96, 0.4);
+  box-shadow: 0 4px 12px rgba(239, 136, 2, 0.4);
 }
