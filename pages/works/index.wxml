@@ -2,18 +2,20 @@
   <view class="works-header">
     <view class="search-bar">
       <view class="search-input-wrap">
-        <text class="search-icon">搜</text>
-        <input
-          class="search-input"
-          value="{{searchValue}}"
-          placeholder="搜索标题、创作者、内容"
-          confirm-type="search"
-          bindinput="onSearchInput"
-          bindconfirm="onSearchConfirm"
-        />
-        <text class="search-clear" wx:if="{{searchValue}}" bindtap="clearSearch">清空</text>
+        <view class="search-field">
+          <text class="search-icon">搜</text>
+          <input
+            class="search-input"
+            value="{{searchValue}}"
+            placeholder="搜索标题、创作者、内容"
+            confirm-type="search"
+            bindinput="onSearchInput"
+            bindconfirm="onSearchConfirm"
+          />
+          <text class="search-clear" wx:if="{{searchValue}}" bindtap="clearSearch">清空</text>
+        </view>
         <button class="search-btn" bindtap="onSearchConfirm">
-          <text class="search-btn-icon">搜</text>
+          <text class="search-btn-label">搜索</text>
         </button>
       </view>
     </view>
