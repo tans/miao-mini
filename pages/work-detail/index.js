@@ -14,6 +14,7 @@ Page({
     overlayBottom: 0,
     leftActionInset: 10,
     rightActionInset: 8,
+    showCommentPanel: false,
   },
 
   onLoad(e) {
@@ -31,6 +32,7 @@ Page({
   onUnload() {
     this.clearMediaTapTimer();
     this.clearLikeBurstTimer();
+    this.closeCommentPanel();
     this.pauseAllVideos();
   },
 
@@ -83,6 +85,14 @@ Page({
       clearTimeout(this.likeBurstTimer);
       this.likeBurstTimer = null;
     }
+  },
+
+  openCommentPanel() {
+    this.setData({ showCommentPanel: true });
+  },
+
+  closeCommentPanel() {
+    this.setData({ showCommentPanel: false });
   },
 
   async bootstrapFeed(id) {
@@ -354,6 +364,7 @@ Page({
 
     this.clearMediaTapTimer();
     this.clearLikeBurstTimer();
+    this.closeCommentPanel();
     this.pauseAllVideos();
     this.setData({ currentIndex });
     this.ensureLikeStatus(this.data.feedItems[currentIndex], currentIndex);
