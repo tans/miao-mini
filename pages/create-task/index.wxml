@@ -3,9 +3,9 @@
   <mp-form-page title="发布任务" subtitle="填写任务信息">
     <mp-form id="taskForm" rules="{{rules}}" models="{{formData}}">
       <!-- 任务标题 -->
-      <mp-cells title="任务标题" footer="简洁描述任务需求">
+      <mp-cells title="任务标题" footer="简洁描述任务需求，如某某餐饮探店短视频">
         <mp-cell prop="title" show-error>
-          <input class="weui-input" placeholder="简洁描述任务需求" value="{{title}}" bindinput="onTitleInput"/>
+          <input class="weui-input" placeholder="简洁描述任务需求，如某某餐饮探店短视频" value="{{title}}" bindinput="onTitleInput"/>
         </mp-cell>
       </mp-cells>
 
