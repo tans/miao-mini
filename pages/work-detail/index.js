@@ -3,61 +3,97 @@ const app = getApp();
 
 Page({
   data: {
-    work: null,
-    materials: [],
-    isLiked: false,
-    liking: false,
-    heroMedia: null,
-    posterUrl: '',
-    viewCountText: '0',
-    likeCountText: '0',
-    commentCountText: '0',
-    detailTags: [],
-    locationText: '',
+    feedItems: [],
+    currentIndex: 0,
+    loading: false,
+    loadingMore: false,
+    hasMore: true,
+    page: 1,
   },
 
   onLoad(e) {
-    if (e.id) {
-      this.workId = e.id;
-      this.loadWork(e.id);
+    this.workId = Number(e.id || 0);
+    this.videoContexts = {};
+    if (this.workId) {
+      this.bootstrapFeed(this.workId);
     }
   },
 
+  onUnload() {
+    this.pauseAllVideos();
+  },
+
   onShareAppMessage() {
-    const work = this.data.work || {};
+    const current = this.getCurrentItem();
     return {
-      title: work.title || work.task_title || '创意喵灵感',
-      path: `/pages/work-detail/index?id=${work.id || this.workId || ''}`,
-      imageUrl: this.data.posterUrl || '',
+      title: current?.title || current?.task_title || '创意喵灵感',
+      path: `/pages/work-detail/index?id=${current?.id || this.workId || ''}`,
+      imageUrl: current?.posterUrl || '',
     };
   },
 
-  async loadWork(id) {
+  async bootstrapFeed(id) {
+    this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
-      const res = await Api.getWork(id);
-      const work = res.data || {};
-      const materials = Array.isArray(work.materials) ? work.materials : [];
-      const heroMedia = this.pickHeroMedia(work, materials);
-      const posterUrl = this.pickPoster(work, materials, heroMedia);
+      const currentRes = await Api.getWork(id);
+      const currentWork = this.normalizeWork(currentRes.data || {});
+
+      const listRes = await Api.getWorks({ sort: 'latest', page: 1, limit: 10 });
+      const list = (listRes.data?.data || []).map((item) => this.normalizeWork(item));
+
+      const merged = this.mergeFeed(currentWork, list);
+      const currentIndex = Math.max(0, merged.findIndex((item) => item.id === currentWork.id));
 
       this.setData({
-        work,
-        materials,
-        heroMedia,
-        posterUrl,
-        viewCountText: this.formatCount(work.views),
-        likeCountText: this.formatCount(work.likes),
-        commentCountText: this.formatCount(work.comments || 0),
-        detailTags: Array.isArray(work.tags) ? work.tags.slice(0, 3) : [],
-        locationText: this.pickLocation(work),
+        feedItems: merged,
+        currentIndex,
+        hasMore: (listRes.data?.data || []).length >= 10,
+        page: 1,
+        loading: false,
       });
-      await this.loadLikeStatus(id);
+
+      await this.ensureLikeStatus(merged[currentIndex], currentIndex);
+      setTimeout(() => this.playCurrentVideo(), 80);
     } catch (err) {
+      this.setData({ loading: false });
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
       wx.hideLoading();
     }
+  },
+
+  mergeFeed(currentWork, list) {
+    const merged = [];
+    const seen = new Set();
+    [currentWork, ...list].forEach((item) => {
+      if (!item || !item.id || seen.has(item.id)) return;
+      seen.add(item.id);
+      merged.push(item);
+    });
+    return merged;
+  },
+
+  normalizeWork(work = {}) {
+    const materials = Array.isArray(work.materials) ? work.materials : [];
+    const heroMedia = this.pickHeroMedia(work, materials);
+    const posterUrl = this.pickPoster(work, materials, heroMedia);
+    const tags = Array.isArray(work.tags) ? work.tags.slice(0, 3) : [];
+    const comments = Number(work.comments || 0);
+
+    return {
+      ...work,
+      materials,
+      heroMedia,
+      posterUrl,
+      detailTags: tags,
+      locationText: tags[0] || '创意喵灵感',
+      likeCountText: this.formatCount(work.likes),
+      viewCountText: this.formatCount(work.views),
+      commentCountText: this.formatCount(comments),
+      isLiked: !!work.is_liked,
+      paused: false,
+    };
   },
 
   pickHeroMedia(work, materials) {
@@ -89,38 +125,73 @@ Page({
 
     const imageUrl = work.cover_url || work.image || '';
     return {
-      type: 'image',
+      type: imageUrl ? 'image' : '',
       url: imageUrl,
       thumbnail: imageUrl,
     };
   },
 
   pickPoster(work, materials, heroMedia) {
-    if (heroMedia && heroMedia.thumbnail) return heroMedia.thumbnail;
+    if (heroMedia?.thumbnail) return heroMedia.thumbnail;
     if (work.thumbnail_path) return work.thumbnail_path;
     const imageMaterial = materials.find((item) => item.file_type === 'image' && item.file_path);
     return imageMaterial ? imageMaterial.file_path : (work.cover_url || work.image || '');
   },
 
-  async loadLikeStatus(id) {
-    if (!app.isLoggedIn()) {
-      await app.silentLogin();
+  getCurrentItem() {
+    return this.data.feedItems[this.data.currentIndex] || null;
+  },
+
+  getVideoContext(id) {
+    if (!id) return null;
+    if (!this.videoContexts[id]) {
+      this.videoContexts[id] = wx.createVideoContext(`feed-video-${id}`, this);
     }
-    if (!app.isLoggedIn()) {
-      this.setData({ isLiked: false });
-      return;
-    }
-    try {
-      const res = await Api.getWorkLikeStatus(id);
-      this.setData({ isLiked: !!(res.data && res.data.is_liked) });
-    } catch (err) {
-      this.setData({ isLiked: false });
+    return this.videoContexts[id];
+  },
+
+  pauseAllVideos() {
+    (this.data.feedItems || []).forEach((item) => {
+      if (item.heroMedia?.type === 'video') {
+        const ctx = this.getVideoContext(item.id);
+        if (ctx) ctx.pause();
+      }
+    });
+  },
+
+  playCurrentVideo() {
+    const current = this.getCurrentItem();
+    if (!current || current.heroMedia?.type !== 'video') return;
+    const ctx = this.getVideoContext(current.id);
+    if (ctx) {
+      ctx.play();
+      this.updateFeedItem(this.data.currentIndex, { paused: false });
     }
   },
 
+  async ensureLikeStatus(item, index) {
+    if (!item || !item.id) return;
+    if (!app.isLoggedIn()) {
+      await app.silentLogin();
+    }
+    if (!app.isLoggedIn()) return;
+    try {
+      const res = await Api.getWorkLikeStatus(item.id);
+      this.updateFeedItem(index, { isLiked: !!(res.data && res.data.is_liked) });
+    } catch (err) {}
+  },
+
+  updateFeedItem(index, patch) {
+    if (index < 0) return;
+    const key = `feedItems[${index}]`;
+    const next = { ...this.data.feedItems[index], ...patch };
+    this.setData({ [key]: next });
+  },
+
   async toggleLike() {
-    const { work, isLiked, liking } = this.data;
-    if (!work || !work.id || liking) return;
+    const index = this.data.currentIndex;
+    const current = this.getCurrentItem();
+    if (!current || !current.id) return;
 
     if (!app.isLoggedIn()) {
       await app.silentLogin();
@@ -130,19 +201,67 @@ Page({
       return;
     }
 
-    this.setData({ liking: true });
     try {
-      const res = isLiked ? await Api.unlikeWork(work.id) : await Api.likeWork(work.id);
-      const likes = res.data && typeof res.data.likes === 'number' ? res.data.likes : (work.likes || 0);
-      this.setData({
+      const res = current.isLiked ? await Api.unlikeWork(current.id) : await Api.likeWork(current.id);
+      const likes = res.data && typeof res.data.likes === 'number' ? res.data.likes : (current.likes || 0);
+      this.updateFeedItem(index, {
         isLiked: !!(res.data && res.data.is_liked),
-        work: { ...work, likes },
+        likes,
         likeCountText: this.formatCount(likes),
       });
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
-    } finally {
-      this.setData({ liking: false });
+    }
+  },
+
+  togglePlay() {
+    const index = this.data.currentIndex;
+    const current = this.getCurrentItem();
+    if (!current || current.heroMedia?.type !== 'video') return;
+    const ctx = this.getVideoContext(current.id);
+    if (!ctx) return;
+
+    if (current.paused) {
+      ctx.play();
+      this.updateFeedItem(index, { paused: false });
+    } else {
+      ctx.pause();
+      this.updateFeedItem(index, { paused: true });
+    }
+  },
+
+  handleSwiperChange(e) {
+    const currentIndex = Number(e.detail.current || 0);
+    if (currentIndex === this.data.currentIndex) return;
+
+    this.pauseAllVideos();
+    this.setData({ currentIndex });
+    this.ensureLikeStatus(this.data.feedItems[currentIndex], currentIndex);
+    setTimeout(() => this.playCurrentVideo(), 60);
+
+    if (currentIndex >= this.data.feedItems.length - 3) {
+      this.loadMoreWorks();
+    }
+  },
+
+  async loadMoreWorks() {
+    if (this.data.loadingMore || !this.data.hasMore) return;
+    this.setData({ loadingMore: true });
+    try {
+      const nextPage = this.data.page + 1;
+      const res = await Api.getWorks({ sort: 'latest', page: nextPage, limit: 10 });
+      const incoming = (res.data?.data || []).map((item) => this.normalizeWork(item));
+      const exists = new Set(this.data.feedItems.map((item) => item.id));
+      const appended = incoming.filter((item) => item.id && !exists.has(item.id));
+
+      this.setData({
+        feedItems: [...this.data.feedItems, ...appended],
+        page: nextPage,
+        hasMore: incoming.length >= 10,
+        loadingMore: false,
+      });
+    } catch (err) {
+      this.setData({ loadingMore: false });
     }
   },
 
@@ -166,12 +285,5 @@ Page({
       return `${(count / 10000).toFixed(1).replace(/\.0$/, '')}w`;
     }
     return String(count);
-  },
-
-  pickLocation(work = {}) {
-    if (Array.isArray(work.tags) && work.tags.length) {
-      return work.tags[0];
-    }
-    return '创意喵灵感';
   },
 });

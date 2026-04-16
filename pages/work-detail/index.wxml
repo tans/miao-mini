@@ -1,95 +1,97 @@
-<view class="detail-page" wx:if="{{work}}">
-  <view class="hero-stage">
-    <video
-      wx:if="{{heroMedia && heroMedia.type === 'video'}}"
-      class="hero-media"
-      src="{{heroMedia.url}}"
-      poster="{{posterUrl}}"
-      autoplay
-      loop
-      controls
-      show-center-play-btn="{{false}}"
-      objectFit="cover"
-    ></video>
+<view class="detail-page" wx:if="{{feedItems.length > 0}}">
+  <swiper
+    class="feed-swiper"
+    vertical
+    circular="{{false}}"
+    current="{{currentIndex}}"
+    bindchange="handleSwiperChange"
+  >
+    <block wx:for="{{feedItems}}" wx:key="id">
+      <swiper-item>
+        <view class="hero-stage">
+          <video
+            wx:if="{{item.heroMedia && item.heroMedia.type === 'video'}}"
+            id="feed-video-{{item.id}}"
+            class="hero-media"
+            src="{{item.heroMedia.url}}"
+            poster="{{item.posterUrl}}"
+            autoplay="{{index === currentIndex && !item.paused}}"
+            loop
+            muted="{{false}}"
+            controls="{{false}}"
+            show-center-play-btn="{{false}}"
+            show-play-btn="{{false}}"
+            show-fullscreen-btn="{{false}}"
+            enable-play-gesture="{{false}}"
+            objectFit="cover"
+          ></video>
 
-    <image
-      wx:elif="{{heroMedia && heroMedia.url}}"
-      class="hero-media"
-      src="{{heroMedia.url}}"
-      mode="aspectFill"
-      bindtap="previewMaterial"
-      data-url="{{heroMedia.url}}"
-    />
+          <image
+            wx:elif="{{item.heroMedia && item.heroMedia.url}}"
+            class="hero-media"
+            src="{{item.heroMedia.url}}"
+            mode="aspectFill"
+            bindtap="previewMaterial"
+            data-url="{{item.heroMedia.url}}"
+          />
 
-    <view class="hero-mask"></view>
+          <view class="hero-mask"></view>
 
-    <view class="top-actions">
-      <view class="circle-btn" bindtap="goBack">‹</view>
-      <view class="top-actions-right">
-        <button class="circle-btn share-btn" open-type="share">↗</button>
-      </view>
-    </view>
-
-    <view class="bottom-panel">
-      <view class="author-row">
-        <view class="author-left">
-          <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/avatar-default.jpg'}}" />
-          <view class="author-meta">
-            <text class="author-name">{{work.creator_name || '创作者'}}</text>
-            <text class="author-tip">创意喵灵感库 · 已关注</text>
-          </view>
-        </view>
-      </view>
-
-      <view class="content-block">
-        <view class="tag-row" wx:if="{{detailTags.length > 0}}">
-          <text class="detail-tag" wx:for="{{detailTags}}" wx:key="index">{{item}}</text>
-        </view>
-        <text class="detail-title">{{work.task_title || work.title || '灵感详情'}}</text>
-        <text class="detail-content" wx:if="{{work.content}}">{{work.content}}</text>
-        <view class="meta-row">
-          <text class="meta-location">{{locationText}}</text>
-        </view>
-      </view>
-    </view>
-
-    <view class="comment-bar">
-      <view class="comment-input">说点什么...</view>
-      <view class="comment-action" bindtap="toggleLike">
-        <text class="comment-icon">♥</text>
-        <text class="comment-count">{{likeCountText}}</text>
-      </view>
-      <view class="comment-action">
-        <text class="comment-icon">☆</text>
-        <text class="comment-count">{{viewCountText}}</text>
-      </view>
-      <view class="comment-action">
-        <text class="comment-icon">◔</text>
-        <text class="comment-count">{{commentCountText}}</text>
-      </view>
-    </view>
-  </view>
-
-  <view class="materials-panel" wx:if="{{materials.length > 1}}">
-    <view class="panel-title">更多素材</view>
-    <scroll-view class="materials-scroll" scroll-x enable-flex>
-      <view class="materials-row">
-        <block wx:for="{{materials}}" wx:key="id">
-          <view class="material-card">
-            <image
-              wx:if="{{item.file_type === 'image'}}"
-              class="material-thumb"
-              src="{{item.file_path}}"
-              mode="aspectFill"
-              bindtap="previewMaterial"
-              data-url="{{item.file_path}}"
-            />
-            <view wx:else class="material-video">
-              <video class="material-thumb" src="{{item.file_path}}" poster="{{item.thumbnail_path}}" objectFit="cover"></video>
+          <view class="tap-layer" bindtap="togglePlay">
+            <view class="play-indicator" wx:if="{{item.heroMedia && item.heroMedia.type === 'video' && item.paused}}">
+              ▶
             </view>
           </view>
-        </block>
-      </view>
-    </scroll-view>
-  </view>
+
+          <view class="top-actions">
+            <view class="circle-btn" bindtap="goBack">‹</view>
+            <view class="top-actions-right">
+              <button class="circle-btn share-btn" open-type="share">↗</button>
+            </view>
+          </view>
+
+          <view class="bottom-panel">
+            <view class="author-row">
+              <view class="author-left">
+                <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}" />
+                <view class="author-meta">
+                  <text class="author-name">{{item.creator_name || '创作者'}}</text>
+                  <text class="author-tip">创意喵灵感库 · 已关注</text>
+                </view>
+              </view>
+            </view>
+
+            <view class="content-block">
+              <view class="tag-row" wx:if="{{item.detailTags.length > 0}}">
+                <text class="detail-tag" wx:for="{{item.detailTags}}" wx:key="index">{{item}}</text>
+              </view>
+              <text class="detail-title">{{item.task_title || item.title || '灵感详情'}}</text>
+              <text class="detail-content" wx:if="{{item.content}}">{{item.content}}</text>
+              <view class="meta-row">
+                <text class="meta-location">{{item.locationText}}</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="comment-bar">
+            <view class="comment-input">说点什么，视频长度不超过 60 秒</view>
+            <view class="comment-action" bindtap="toggleLike">
+              <text class="comment-icon {{item.isLiked ? 'active' : ''}}">♥</text>
+              <text class="comment-count">{{item.likeCountText}}</text>
+            </view>
+            <view class="comment-action">
+              <text class="comment-icon">↗</text>
+              <text class="comment-count">分享</text>
+            </view>
+            <view class="comment-action">
+              <text class="comment-icon">☆</text>
+              <text class="comment-count">{{item.viewCountText}}</text>
+            </view>
+          </view>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <view class="feed-loading" wx:if="{{loadingMore}}">加载更多灵感...</view>
 </view>
