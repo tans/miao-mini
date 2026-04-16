@@ -50,16 +50,19 @@
 .watermark-1 {
   color: #ff4d4f;
   border-color: #ff4d4f;
+  opacity: 0.6;
 }
 
 .watermark-2 {
   color: #1890ff;
   border-color: #1890ff;
+  opacity: 0.6;
 }
 
 .watermark-3 {
   color: #999;
   border-color: #999;
+  opacity: 0.6;
 }
 
 .claim-body {
