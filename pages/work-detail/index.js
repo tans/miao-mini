@@ -39,7 +39,7 @@ Page({
   },
 
   setupViewportLayout() {
-    let navTop = 56;
+    let navTop = 8;
     let pageSideInset = 12;
     let overlayBottom = 12;
     let leftActionInset = 10;
@@ -47,27 +47,13 @@ Page({
 
     try {
       const windowInfo = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
-      const menuButton = wx.getMenuButtonBoundingClientRect
-        ? wx.getMenuButtonBoundingClientRect()
-        : null;
 
       const windowWidth = Number(windowInfo.windowWidth || 375);
-      const statusBarHeight = Number(windowInfo.statusBarHeight || 0);
 
       pageSideInset = Math.max(10, Math.round(windowWidth * 0.032));
       overlayBottom = Math.max(10, Math.round(windowWidth * 0.024));
       leftActionInset = 10;
       rightActionInset = 8;
-
-      if (menuButton && menuButton.left) {
-        leftActionInset = Math.min(Math.max(8, Math.round(menuButton.left)), 12);
-      }
-
-      if (menuButton && menuButton.top) {
-        navTop = Math.max(statusBarHeight + 2, Math.round(menuButton.top) - 4);
-      } else if (statusBarHeight) {
-        navTop = statusBarHeight + 6;
-      }
     } catch (err) {}
 
     this.setData({
