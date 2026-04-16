@@ -59,6 +59,11 @@ Page({
     wx.navigateTo({ url: `/pages/task-detail/index?id=${taskId}` });
   },
 
+  goReviewTask(e) {
+    const taskId = e.currentTarget.dataset.id;
+    wx.navigateTo({ url: `/pages/video-proposals/index?taskId=${taskId}` });
+  },
+
   goCreateTask() {
     wx.navigateTo({ url: '/pages/create-task/index' });
   },

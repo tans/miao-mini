@@ -212,9 +212,25 @@
   align-items: center;
 }
 
+.action-group.dual {
+  width: 100%;
+  justify-content: center;
+  gap: 24rpx;
+}
+
 .action-link {
   font-size: 26rpx;
   color: #576b95;
+}
+
+.action-link.primary {
+  color: #EF8802;
+  font-weight: 600;
+}
+
+.action-divider {
+  color: #ddd;
+  font-size: 26rpx;
 }
 
 /* 空状态 */

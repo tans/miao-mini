@@ -179,6 +179,7 @@
       <text class="title-icon">📨</text>
       <text>投稿列表</text>
       <text class="section-count">{{submissions.length}}份</text>
+      <button class="review-btn" bindtap="goReviewProposals">审核作品</button>
     </view>
     <view class="section-content">
       <view wx:for="{{submissions}}" wx:key="id" class="submission-item">
