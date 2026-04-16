@@ -20,9 +20,9 @@
     <mp-cells title="奖励设置">
       <mp-cell prop="unit_price" show-error>
         <view slot="title" class="award-label">基础奖励 (元/人)</view>
-        <view class="slider-wrapper">
-          <slider min="2" max="100" step="1" value="{{unit_price}}" bindchange="onUnitPriceChange" show-value/>
-        </view>
+        <picker mode="selector" range="{{priceRange}}" value="{{unit_price_index}}" bindchange="onUnitPriceChange">
+          <view class="weui-input picker-value">{{unit_price}}元</view>
+        </picker>
       </mp-cell>
       <mp-cell prop="total_count" show-error>
         <view slot="title" class="award-label">报名人数上限</view>

@@ -217,6 +217,6 @@
   color: #333;
 }
 
-.slider-wrapper {
-  padding: 8px 0;
+.picker-value {
+  color: #333;
 }

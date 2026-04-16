@@ -6,7 +6,9 @@ Page({
   data: {
     title: '',
     description: '',
-    unit_price: '',
+    unit_price: 2,
+    unit_price_index: 0,
+    priceRange: Array.from({length: 99}, (_, i) => i + 2),
     total_count: '',
     award_price: '0',
     award_count: '0',
@@ -55,7 +57,12 @@ Page({
   },
 
   onUnitPriceChange(e) {
-    this.setData({ unit_price: e.detail.value });
+    const index = e.detail.value;
+    const priceRange = this.data.priceRange;
+    this.setData({
+      unit_price_index: index,
+      unit_price: priceRange[index]
+    });
     this.updateBudgetPreview();
   },
 
