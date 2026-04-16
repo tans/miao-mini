@@ -79,13 +79,15 @@
 }
 
 .proposal-status.pending {
-  background: #FFF3E0;
   color: #FF9800;
+  border: 1px solid #FF9800;
+  background: transparent;
 }
 
 .proposal-status.completed {
-  background: #E3F2FD;
   color: #2196F3;
+  border: 1px solid #2196F3;
+  background: transparent;
 }
 
 .proposal-content {
