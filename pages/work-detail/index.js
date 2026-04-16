@@ -64,9 +64,9 @@ Page({
       }
 
       if (menuButton && menuButton.top) {
-        navTop = Math.max(statusBarHeight + 6, Math.round(menuButton.top));
+        navTop = Math.max(statusBarHeight + 2, Math.round(menuButton.top) - 4);
       } else if (statusBarHeight) {
-        navTop = statusBarHeight + 12;
+        navTop = statusBarHeight + 6;
       }
     } catch (err) {}
 
