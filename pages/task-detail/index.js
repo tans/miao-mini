@@ -141,12 +141,12 @@ Page({
     try {
       await Api.claimTask(task.id);
       wx.showToast({ title: '接单成功！', icon: 'success', duration: 2000 });
+      wx.hideLoading();
       // Reload task detail to update claim state
       await this.loadTaskDetail(task.id);
     } catch (err) {
-      wx.showToast({ title: err.message || '接单失败', icon: 'none', duration: 3000 });
-    } finally {
       wx.hideLoading();
+      wx.showToast({ title: err.message || '接单失败', icon: 'none', duration: 3000 });
     }
   },
 

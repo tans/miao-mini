@@ -87,7 +87,6 @@ const Api = {
             try {
               data = JSON.parse(data);
             } catch (e) {
-              wx.showToast({ title: '服务器响应异常', icon: 'none' });
               reject(new Error('服务器响应异常'));
               return;
             }
