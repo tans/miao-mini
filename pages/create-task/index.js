@@ -9,9 +9,9 @@ Page({
     unit_price: 2,
     unit_price_index: 0,
     priceRange: Array.from({length: 99}, (_, i) => i + 2),
-    total_count: '',
-    award_price: '0',
-    award_count: '0',
+total_count: '10',
+    total_count_index: 0,
+    totalCountRange: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000
     deadline: '',
     video_duration: '15秒',
     creative_style: '种草推荐',
@@ -73,8 +73,13 @@ Page({
     this.updateBudgetPreview();
   },
 
-  onTotalCountInput(e) {
-    this.setData({ total_count: e.detail.value });
+  onTotalCountChange(e) {
+    const index = e.detail.value;
+    const range = this.data.totalCountRange;
+    this.setData({
+      total_count_index: index,
+      total_count: String(range[index])
+    });
     this.updateBudgetPreview();
   },
 

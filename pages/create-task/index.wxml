@@ -26,7 +26,9 @@
       </mp-cell>
       <mp-cell prop="total_count" show-error>
         <view slot="title" class="award-label">报名人数上限</view>
-        <input type="number" class="weui-input" placeholder="≥10人" value="{{total_count}}" bindinput="onTotalCountInput"/>
+        <picker mode="selector" range="{{totalCountRange}}" value="{{total_count_index}}" bindchange="onTotalCountChange">
+          <view class="weui-input picker-value">{{total_count}}人</view>
+        </picker>
       </mp-cell>
       <mp-cell>
         <view slot="title" class="award-label">入围奖励 (元/人)</view>
