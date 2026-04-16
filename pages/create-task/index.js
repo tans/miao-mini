@@ -11,7 +11,7 @@ Page({
     priceRange: Array.from({length: 99}, (_, i) => i + 2),
 total_count: '10',
     total_count_index: 0,
-    totalCountRange: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000
+    totalCountRange: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000],
     deadline: '',
     video_duration: '15秒',
     creative_style: '种草推荐',
