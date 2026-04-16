@@ -42,12 +42,8 @@
               <view class="play-indicator" wx:if="{{item.heroMedia && item.heroMedia.type === 'video' && item.paused}}">▶</view>
             </view>
 
-            <view class="top-actions" style="top: {{navTop}}px; left: {{pageSideInset}}px; right: {{pageSideInset}}px;">
-              <view class="circle-btn" bindtap="goBack">‹</view>
-              <view class="top-actions-right">
-                <button class="circle-btn share-btn" open-type="share">↗</button>
-              </view>
-            </view>
+            <view class="circle-btn top-back-btn" style="top: {{navTop}}px; left: {{actionEdgeInset}}px;" bindtap="goBack">&#8249;</view>
+            <button class="circle-btn share-btn top-share-btn" style="top: {{navTop}}px; right: {{actionEdgeInset}}px;" open-type="share">&#8599;</button>
 
             <view class="bottom-panel" style="left: {{pageSideInset}}px; right: {{pageSideInset}}px; bottom: {{overlayBottom}}px;">
               <view class="author-row">

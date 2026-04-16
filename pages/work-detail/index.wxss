@@ -61,17 +61,10 @@
   backdrop-filter: blur(10px);
 }
 
-.top-actions {
+.top-back-btn,
+.top-share-btn {
   position: absolute;
   z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.top-actions-right {
-  display: flex;
-  align-items: center;
 }
 
 .circle-btn {
