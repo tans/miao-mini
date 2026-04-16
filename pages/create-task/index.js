@@ -197,6 +197,28 @@ Page({
     this.setData({ materials });
   },
 
+  // 请求任务完成提醒订阅
+  requestTaskReminderSubscription() {
+    return new Promise((resolve) => {
+      // 模板ID：任务完成提醒（需要在微信小程序后台配置对应模板）
+      const templateId = 'AT0007'; // 任务通知模板
+
+      wx.requestSubscribeMessage({
+        tmplIds: [templateId],
+        success: (res) => {
+          // 用户允许或拒绝都继续，res[templateId] 为 accept/decline/reject/ban
+          console.log('订阅消息结果:', res);
+          resolve(res[templateId]);
+        },
+        fail: (err) => {
+          console.log('订阅消息失败:', err);
+          // 失败也继续，不阻塞发布流程
+          resolve('fail');
+        }
+      });
+    });
+  }
+
   async handleSubmit() {
     const { title, description, unit_price, total_count, deadline, video_duration, creative_style, materials } = this.data;
 
@@ -225,6 +247,24 @@ Page({
     if (materials[0].fileType !== 'image') {
       wx.showToast({ title: '第一个素材必须是图片', icon: 'none' });
       return;
+    }
+
+    // 弹出订阅提醒对话框
+    const modalRes = await new Promise((resolve) => {
+      wx.showModal({
+        title: '订阅任务完成提醒',
+        content: '任务截止后，您将收到1条通知，提醒您审核投稿。是否立即订阅？',
+        confirmText: '立即订阅',
+        cancelText: '稍后再说',
+        success: (res) => {
+          resolve(res); // res.confirm = true 表示用户点击了确认
+        }
+      });
+    });
+
+    // 如果用户点击了确认，发起订阅请求
+    if (modalRes.confirm) {
+      await this.requestTaskReminderSubscription();
     }
 
     wx.showLoading({ title: '发布中...' });
