@@ -43,7 +43,7 @@
             </view>
 
             <view class="circle-btn top-back-btn" style="top: {{navTop}}px; left: {{leftActionInset}}px;" bindtap="goBack">‹</view>
-            <view class="top-share-wrap" style="top: {{navTop}}px; right: 0;">
+            <view class="top-share-wrap" style="top: {{navTop}}px; right: {{rightActionInset}}px;">
               <view class="circle-btn share-visual-btn">↗</view>
               <button class="share-hit-btn" open-type="share"></button>
             </view>
