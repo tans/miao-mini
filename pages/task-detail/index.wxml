@@ -31,12 +31,12 @@
     <mp-cell>
       <view class="budget-info">
         <view class="budget-row budget-row_highlight">
-          <text class="budget-label">基础奖励</text>
+          <text class="budget-label">参与奖励</text>
           <text class="budget-value budget-highlight">¥{{task.unit_price}}/人 × {{task.total_count || 0}}人</text>
         </view>
         <view class="budget-row budget-row_highlight" wx:if="{{task.award_price > 0}}">
-          <text class="budget-label">入围奖励</text>
-          <text class="budget-value budget-highlight">¥{{task.award_price}}/人 × {{task.award_count || 0}}人</text>
+          <text class="budget-label">采纳奖励</text>
+          <text class="budget-value budget-highlight">¥{{task.award_price}}/人 × {{task.total_count || 0}}人</text>
         </view>
         <view class="budget-row budget-row_minor">
           <text class="budget-label">预计总费用</text>

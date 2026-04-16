@@ -19,7 +19,7 @@
       <!-- 奖励设置 -->
     <mp-cells title="奖励设置">
       <mp-cell prop="unit_price" show-error>
-        <view slot="title" class="award-label">基础奖励 (元/人)</view>
+        <view slot="title" class="award-label">参与奖励 (元/人)</view>
         <picker mode="selector" range="{{priceRange}}" value="{{unit_price_index}}" bindchange="onUnitPriceChange">
           <view class="weui-input picker-value">{{unit_price}}元</view>
         </picker>
@@ -31,14 +31,10 @@
         </picker>
       </mp-cell>
       <mp-cell>
-        <view slot="title" class="award-label">入围奖励 (元/人)</view>
+        <view slot="title" class="award-label">采纳奖励 (元/人)</view>
         <input type="number" class="weui-input" placeholder="≥8元" value="{{award_price}}" bindinput="onAwardPriceInput"/>
       </mp-cell>
-      <mp-cell>
-        <view slot="title" class="award-label">入围数量</view>
-        <input type="number" class="weui-input" placeholder="≥1人" value="{{award_count}}" bindinput="onAwardCountInput"/>
-      </mp-cell>
-    </mp-cells>
+      </mp-cells>
 
       <!-- 截止日期 -->
       <mp-cells title="截止日期" footer="截止日期最短为3天后，最长为30天后">
@@ -111,11 +107,11 @@
     <view class="budget-preview">
       <view class="budget-title">预算预览</view>
       <view class="budget-row">
-        <text class="budget-label">基础奖励</text>
+        <text class="budget-label">参与奖励</text>
         <text class="budget-value">¥{{baseTotal}}</text>
       </view>
       <view class="budget-row" wx:if="{{award_price > 0}}">
-        <text class="budget-label">入围奖励</text>
+        <text class="budget-label">采纳奖励</text>
         <text class="budget-value">¥{{awardTotal}}</text>
       </view>
       <view class="budget-row budget-total">

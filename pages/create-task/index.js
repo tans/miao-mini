@@ -88,19 +88,13 @@ total_count: '10',
     this.updateBudgetPreview();
   },
 
-  onAwardCountInput(e) {
-    this.setData({ award_count: e.detail.value });
-    this.updateBudgetPreview();
-  },
-
   updateBudgetPreview() {
     const unitPrice = parseFloat(this.data.unit_price) || 0;
     const totalCount = parseInt(this.data.total_count) || 0;
     const awardPrice = parseFloat(this.data.award_price) || 0;
-    const awardCount = parseInt(this.data.award_count) || 0;
 
     const baseTotal = unitPrice * totalCount;
-    const awardTotal = awardPrice * awardCount;
+    const awardTotal = awardPrice * totalCount;
     const total = baseTotal + awardTotal;
 
     this.setData({
@@ -218,7 +212,6 @@ total_count: '10',
         unit_price: Number(unit_price),
         total_count: Number(total_count),
         award_price: Number(this.data.award_price) || 0,
-        award_count: Number(this.data.award_count) || 0,
         deadline,
         video_duration,
         creative_style,
