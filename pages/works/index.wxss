@@ -88,6 +88,9 @@
   font-weight: 700;
   line-height: 22px;
   text-align: center;
+  transform: scale(1.5);
+  transform-origin: center;
+  margin: 0 auto;
 }
 
 .tag-scroll {
