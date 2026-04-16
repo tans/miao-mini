@@ -12,10 +12,10 @@
           bindconfirm="onSearchConfirm"
         />
         <text class="search-clear" wx:if="{{searchValue}}" bindtap="clearSearch">清空</text>
+        <button class="search-btn" bindtap="onSearchConfirm">
+          <text class="search-btn-icon">搜</text>
+        </button>
       </view>
-      <button class="search-btn" bindtap="onSearchConfirm">
-        <text class="search-btn-icon">搜</text>
-      </button>
     </view>
 
     <scroll-view class="tag-scroll" scroll-x enable-flex>
