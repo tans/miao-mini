@@ -57,9 +57,6 @@
               </view>
 
               <view class="content-block">
-                <view class="tag-row" wx:if="{{item.detailTags.length > 0}}">
-                  <text class="detail-tag" wx:for="{{item.detailTags}}" wx:key="index">{{item}}</text>
-                </view>
                 <text class="detail-title">{{item.task_title || item.title || '灵感详情'}}</text>
                 <text class="detail-content" wx:if="{{item.content}}">{{item.content}}</text>
                 <view class="meta-row" wx:if="{{item.locationText}}">
