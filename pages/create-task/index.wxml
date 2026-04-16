@@ -17,24 +17,24 @@
       </mp-cells>
 
       <!-- 奖励设置 -->
-      <mp-cells title="奖励设置">
-        <mp-cell prop="unit_price" show-error>
-          <view slot="title" class="weui-label">基础奖励 (元/人)</view>
-          <input type="number" class="weui-input" placeholder="≥2元" value="{{unit_price}}" bindinput="onUnitPriceInput"/>
-        </mp-cell>
-        <mp-cell prop="total_count" show-error>
-          <view slot="title" class="weui-label">报名人数上限</view>
-          <input type="number" class="weui-input" placeholder="≥10人" value="{{total_count}}" bindinput="onTotalCountInput"/>
-        </mp-cell>
-        <mp-cell>
-          <view slot="title" class="weui-label">入围奖励 (元/人)</view>
-          <input type="number" class="weui-input" placeholder="≥8元" value="{{award_price}}" bindinput="onAwardPriceInput"/>
-        </mp-cell>
-        <mp-cell>
-          <view slot="title" class="weui-label">入围数量</view>
-          <input type="number" class="weui-input" placeholder="≥1人" value="{{award_count}}" bindinput="onAwardCountInput"/>
-        </mp-cell>
-      </mp-cells>
+    <mp-cells title="奖励设置">
+      <mp-cell prop="unit_price" show-error>
+        <view slot="title" class="award-label">基础奖励 (元/人)</view>
+        <input type="number" class="weui-input" placeholder="≥2元" value="{{unit_price}}" bindinput="onUnitPriceInput"/>
+      </mp-cell>
+      <mp-cell prop="total_count" show-error>
+        <view slot="title" class="award-label">报名人数上限</view>
+        <input type="number" class="weui-input" placeholder="≥10人" value="{{total_count}}" bindinput="onTotalCountInput"/>
+      </mp-cell>
+      <mp-cell>
+        <view slot="title" class="award-label">入围奖励 (元/人)</view>
+        <input type="number" class="weui-input" placeholder="≥8元" value="{{award_price}}" bindinput="onAwardPriceInput"/>
+      </mp-cell>
+      <mp-cell>
+        <view slot="title" class="award-label">入围数量</view>
+        <input type="number" class="weui-input" placeholder="≥1人" value="{{award_count}}" bindinput="onAwardCountInput"/>
+      </mp-cell>
+    </mp-cells>
 
       <!-- 截止日期 -->
       <mp-cells title="截止日期">
