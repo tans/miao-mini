@@ -81,14 +81,11 @@ Page({
 
   // 添加素材
   async addMaterial() {
-    const { materials } = this.data;
-    const mustBeImage = materials.length === 0;
-
     try {
       const res = await new Promise((resolve, reject) => {
         wx.chooseMedia({
           count: 1,
-          mediaType: mustBeImage ? ['image'] : ['image', 'video'],
+          mediaType: ['image', 'video'],
           sourceType: ['album', 'camera'],
           success: resolve,
           fail: reject,
@@ -148,12 +145,6 @@ Page({
     // 内容至少要有素材或链接之一
     if (materials.length === 0 && !video_url) {
       wx.showToast({ title: '请上传素材或填写视频链接', icon: 'none' });
-      return;
-    }
-
-    // 第一个素材必须是图片
-    if (materials.length > 0 && materials[0].fileType !== 'image') {
-      wx.showToast({ title: '第一个素材必须是图片', icon: 'none' });
       return;
     }
 
