@@ -76,6 +76,21 @@
 .claim-btns {
   display: flex;
   gap: 8px;
+  position: relative;
+}
+
+.watermark-red {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-15deg);
+  font-size: 10px;
+  color: #ff4d4f;
+  border: 1px solid #ff4d4f;
+  padding: 1px 4px;
+  border-radius: 2px;
+  opacity: 0.7;
+  white-space: nowrap;
 }
 
 .status-0 { background: #fff7e6; color: #fa8c16; }
