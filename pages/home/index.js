@@ -2,6 +2,22 @@
 const Api = require('../../utils/api.js');
 const app = getApp();
 
+// 计算倒计时字符串
+function formatCountdown(endAt) {
+  if (!endAt) return '';
+  // 处理 ISO 格式时间 (2026-04-16T08:52:25Z)
+  const end = new Date(endAt.replace(/-/g, '/'));
+  const now = Date.now();
+  const diff = end - now;
+  if (diff <= 0) return '已截止';
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  if (days > 0) return days + '天' + hours + '小时';
+  if (hours > 0) return hours + '小时' + minutes + '分钟';
+  return minutes + '分钟';
+}
+
 Page({
   data: {
     tasks: [],          // 从服务端拉取的所有任务（当前排序+分页的全量缓存）
@@ -67,7 +83,8 @@ Page({
           cover: firstImage ? firstImage.file_path : '',
           styleArray,
           industryArray,
-          enrolled_count: (t.total_count || 0) - (t.remaining_count || 0)
+          enrolled_count: (t.total_count || 0) - (t.remaining_count || 0),
+          countdown: formatCountdown(t.end_at)
         };
       });
 

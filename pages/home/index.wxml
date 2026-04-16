@@ -1,22 +1,4 @@
 <!--pages/home/index.wxml-->
-<wxs module="utils">
-module.exports = {
-  formatCountdown: function(endAt) {
-    if (!endAt) return '';
-    var end = new Date(endAt.replace(/-/g, '/'));
-    var now = Date.now();
-    var diff = end - now;
-    if (diff <= 0) return '已截止';
-    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    if (days > 0) return days + '天' + hours + '小时';
-    if (hours > 0) return hours + '小时' + minutes + '分钟';
-    return minutes + '分钟';
-  }
-}
-</wxs>
-
 <view class="home-container">
 
   <!-- 排序栏 -->
@@ -78,7 +60,7 @@ module.exports = {
           <text class="placeholder-icon">🎬</text>
         </view>
         <!-- 截止时间倒计时标签 -->
-        <view class="card-countdown" wx:if="{{item.end_at}}">{{utils.formatCountdown(item.end_at)}}</view>
+        <view class="card-countdown" wx:if="{{item.countdown}}">{{item.countdown}}</view>
       </view>
       <view class="card-body">
         <text class="card-title">{{item.title}}</text>
