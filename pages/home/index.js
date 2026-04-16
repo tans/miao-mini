@@ -3,6 +3,11 @@ const Api = require('../../utils/api.js');
 const app = getApp();
 
 const COVER_THEME_COUNT = 6;
+const PLACEHOLDER_COVER_KEYWORDS = [
+  'task-placeholder.svg',
+  '/static/images/task-placeholder',
+  '/static/images/task_placeholder',
+];
 
 // 计算倒计时字符串
 function formatCountdown(endAt) {
@@ -40,6 +45,33 @@ function createFallbackCover(seedText, description) {
     themeClass: `cover-theme-${hash % COVER_THEME_COUNT}`,
     summary: (text || '创作说明').slice(0, 34),
   };
+}
+
+function isPlaceholderCover(path) {
+  if (!path || typeof path !== 'string') return false;
+  const normalized = path.toLowerCase();
+  return PLACEHOLDER_COVER_KEYWORDS.some((keyword) => normalized.includes(keyword));
+}
+
+function getTaskCover(materials = []) {
+  const safeMaterials = Array.isArray(materials) ? materials : [];
+  const firstRealImage = safeMaterials.find((material) => (
+    material &&
+    material.file_type === 'image' &&
+    material.file_path &&
+    !isPlaceholderCover(material.file_path)
+  ));
+
+  if (firstRealImage) {
+    return firstRealImage.file_path;
+  }
+
+  const firstVideo = safeMaterials.find((material) => material && material.file_type === 'video');
+  if (firstVideo) {
+    return firstVideo.thumbnail_path || firstVideo.poster_url || '';
+  }
+
+  return '';
 }
 
 Page({
@@ -122,7 +154,7 @@ Page({
       // 解析 creative_style 和 industries 从逗号分隔字符串为数组
       const allTasks = rawTasks.map(t => {
         const mats = t.materials || [];
-        const firstImage = mats.find(m => m.file_type === 'image');
+        const cover = getTaskCover(mats);
         // Parse creative_style from comma-separated string to array
         let styleArray = [];
         if (t.creative_style && typeof t.creative_style === 'string') {
@@ -143,7 +175,7 @@ Page({
         );
         return {
           ...t,
-          cover: firstImage ? firstImage.file_path : '',
+          cover,
           styleArray,
           industryArray,
           enrolled_count: (t.total_count || 0) - (t.remaining_count || 0),
