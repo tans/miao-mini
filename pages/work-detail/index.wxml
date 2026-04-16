@@ -1,42 +1,110 @@
-<view class="work-detail-container">
-  <view class="work-media" wx:if="{{materials.length > 0}}">
-    <block wx:for="{{materials}}" wx:key="id">
-      <image wx:if="{{item.file_type === 'image'}}" class="work-image" src="{{item.file_path}}" mode="widthFix" bindtap="previewMaterial" data-url="{{item.file_path}}"/>
-      <video wx:if="{{item.file_type === 'video'}}" class="work-video" src="{{item.file_path}}" controls/>
-    </block>
-  </view>
+<view class="detail-page" wx:if="{{work}}">
+  <view class="hero-stage">
+    <video
+      wx:if="{{heroMedia && heroMedia.type === 'video'}}"
+      class="hero-media"
+      src="{{heroMedia.url}}"
+      poster="{{posterUrl}}"
+      autoplay
+      loop
+      controls
+      show-center-play-btn="{{false}}"
+      objectFit="cover"
+    ></video>
 
-  <view class="work-media" wx:elif="{{work.cover_url || work.image}}">
-    <image class="work-image" src="{{work.cover_url || work.image}}" mode="widthFix"/>
-  </view>
+    <image
+      wx:elif="{{heroMedia && heroMedia.url}}"
+      class="hero-media"
+      src="{{heroMedia.url}}"
+      mode="aspectFill"
+      bindtap="previewMaterial"
+      data-url="{{heroMedia.url}}"
+    />
 
-  <mp-cells>
-    <mp-cell>
-      <view slot="title">
-        <text class="work-title">{{work.task_title || work.title || '作品'}}</text>
-        <view class="work-author">
-          <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
-          <text class="author-name">{{work.creator_name || '创作者'}}</text>
+    <view class="hero-mask"></view>
+
+    <view class="top-actions">
+      <view class="circle-btn" bindtap="goBack">‹</view>
+      <view class="top-actions-right">
+        <button class="circle-btn share-btn" open-type="share">↗</button>
+      </view>
+    </view>
+
+    <view class="bottom-panel">
+      <view class="author-row">
+        <view class="author-left">
+          <image class="author-avatar" src="{{work.creator_avatar || '/assets/icons/avatar-default.jpg'}}" />
+          <view class="author-meta">
+            <text class="author-name">{{work.creator_name || '创作者'}}</text>
+            <text class="author-tip">创意喵灵感库 · 已关注</text>
+          </view>
         </view>
       </view>
-    </mp-cell>
-  </mp-cells>
 
-  <mp-cells wx:if="{{work}}">
-    <mp-cell title="浏览数" value="{{work.views || 0}}"></mp-cell>
-    <mp-cell title="点赞数" value="{{work.likes || 0}}"></mp-cell>
-  </mp-cells>
+      <view class="content-block">
+        <view class="tag-row" wx:if="{{detailTags.length > 0}}">
+          <text class="detail-tag" wx:for="{{detailTags}}" wx:key="index">{{item}}</text>
+        </view>
+        <text class="detail-title">{{work.task_title || work.title || '灵感详情'}}</text>
+        <text class="detail-content" wx:if="{{work.content}}">{{work.content}}</text>
+        <view class="meta-row">
+          <text class="meta-location">{{locationText}}</text>
+        </view>
+      </view>
+    </view>
 
-  <mp-cells title="创作说明" wx:if="{{work.content}}">
-    <mp-cell>
-      <text class="work-content">{{work.content}}</text>
-    </mp-cell>
-  </mp-cells>
+    <view class="side-actions">
+      <view class="side-action" bindtap="toggleLike">
+        <view class="side-icon {{isLiked ? 'active' : ''}}">♥</view>
+        <text class="side-text">{{likeCountText}}</text>
+      </view>
+      <view class="side-action">
+        <view class="side-icon">☆</view>
+        <text class="side-text">{{viewCountText}}</text>
+      </view>
+      <button class="side-action side-share" open-type="share">
+        <view class="side-icon">↗</view>
+        <text class="side-text">分享</text>
+      </button>
+    </view>
 
-  <view class="action-bar">
-    <button class="like-btn {{isLiked ? 'active' : ''}}" bindtap="toggleLike" loading="{{liking}}">
-      {{isLiked ? '已点赞' : '点赞'}} {{work.likes || 0}}
-    </button>
-    <button class="share-btn" open-type="share">分享</button>
+    <view class="comment-bar">
+      <view class="comment-input">说点什么...</view>
+      <view class="comment-action">
+        <text class="comment-icon">♥</text>
+        <text class="comment-count">{{likeCountText}}</text>
+      </view>
+      <view class="comment-action">
+        <text class="comment-icon">☆</text>
+        <text class="comment-count">{{viewCountText}}</text>
+      </view>
+      <view class="comment-action">
+        <text class="comment-icon">◔</text>
+        <text class="comment-count">{{commentCountText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="materials-panel" wx:if="{{materials.length > 1}}">
+    <view class="panel-title">更多素材</view>
+    <scroll-view class="materials-scroll" scroll-x enable-flex>
+      <view class="materials-row">
+        <block wx:for="{{materials}}" wx:key="id">
+          <view class="material-card">
+            <image
+              wx:if="{{item.file_type === 'image'}}"
+              class="material-thumb"
+              src="{{item.file_path}}"
+              mode="aspectFill"
+              bindtap="previewMaterial"
+              data-url="{{item.file_path}}"
+            />
+            <view wx:else class="material-video">
+              <video class="material-thumb" src="{{item.file_path}}" poster="{{item.thumbnail_path}}" objectFit="cover"></video>
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
   </view>
 </view>
