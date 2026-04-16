@@ -9,7 +9,7 @@ Page({
     unit_price: 2,
     unit_price_index: 0,
     priceRange: Array.from({length: 99}, (_, i) => i + 2),
-total_count: '10',
+    total_count: '10',
     total_count_index: 0,
     totalCountRange: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000],
     deadline: '',
@@ -17,6 +17,26 @@ total_count: '10',
     creative_style: '种草推荐',
     durationOptions: ['15秒', '30秒', '60秒', '1-3分钟'],
     styleOptions: ['种草推荐', '开箱评测', '剧情故事', '日常记录'],
+    industry: '',
+    industry_index: 0,
+    industryOptions: [
+      { id: 1001, name: '餐饮美食', note: '餐饮门店、探店、美食宣传' },
+      { id: 1002, name: '酒店民宿', note: '酒店、民宿、文旅住宿宣传' },
+      { id: 1003, name: '本地生活', note: '美业、健身、家政、婚庆等服务' },
+      { id: 1004, name: '房产家居', note: '房产租售、装修、家居相关' },
+      { id: 1005, name: '家居家电', note: '家电、家居好物、日用百货' },
+      { id: 1006, name: '服饰穿搭', note: '服装、鞋包、穿搭种草' },
+      { id: 1007, name: '美妆护肤', note: '美妆、护肤、彩妆教程' },
+      { id: 1008, name: '母婴亲子', note: '母婴用品、育儿、亲子内容' },
+      { id: 1009, name: '数码科技', note: '数码、3C、科技产品测评' },
+      { id: 1010, name: '教育培训', note: '培训机构、课程、技能教学' },
+      { id: 1011, name: '汽车服务', note: '汽车保养、门店、用车内容' },
+      { id: 1012, name: '医疗健康', note: '健康科普、体检、理疗养生' },
+      { id: 1013, name: '金融理财', note: '理财、保险、财经知识科普' },
+      { id: 1014, name: '企业商务', note: '企业宣传、品牌、商务服务' },
+      { id: 1015, name: '电商零售', note: '电商带货、产品种草、商超' },
+      { id: 1099, name: '其他行业', note: '不属于以上类别的通用需求' }
+    ],
     materials: [],
     uploading: false,
     baseTotal: '0.00',
@@ -106,6 +126,15 @@ total_count: '10',
 
   onDeadlineChange(e) {
     this.setData({ deadline: e.detail.value });
+  },
+
+  onIndustryChange(e) {
+    const index = e.detail.value;
+    const industryOptions = this.data.industryOptions;
+    this.setData({
+      industry_index: index,
+      industry: industryOptions[index].name
+    });
   },
 
   selectDuration(e) {
@@ -215,7 +244,7 @@ total_count: '10',
         deadline,
         video_duration,
         creative_style,
-        industries: [],
+        industries: [this.data.industryOptions[this.data.industry_index].id],
         materials: materials.map((m, i) => ({
           file_name: m.fileName,
           file_path: m.url,

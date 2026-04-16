@@ -9,6 +9,15 @@
         </mp-cell>
       </mp-cells>
 
+      <!-- 所属行业 -->
+      <mp-cells title="所属行业">
+        <mp-cell>
+          <picker mode="selector" range="{{industryOptions}}" range-key="name" value="{{industry_index}}" bindchange="onIndustryChange">
+            <view class="weui-input picker-value">{{industry ? industry : '请选择所属行业'}}</view>
+          </picker>
+        </mp-cell>
+      </mp-cells>
+
       <!-- 详细描述 -->
       <mp-cells title="详细描述" footer="详细说明任务要求、交付标准、注意事项">
         <mp-cell prop="description" show-error>
