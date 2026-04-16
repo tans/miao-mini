@@ -74,7 +74,9 @@
           <text class="fallback-title">{{item.task_title || item.title}}</text>
         </view>
         <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
-        <view class="media-badge" wx:if="{{item.isVideo}}">视频</view>
+        <view class="media-badge" wx:if="{{item.isVideo}}">
+          <view class="media-play-icon"></view>
+        </view>
       </view>
       <view class="work-info">
         <text class="work-title">{{item.task_title || item.title}}</text>
@@ -83,7 +85,14 @@
             <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
             <text class="author-name">{{item.creator_name || '创作者'}}</text>
           </view>
-          <text class="work-like-count">点赞 {{item.likesCount}}</text>
+          <view class="work-like-count">
+            <view class="like-icon">
+              <view class="like-icon-core"></view>
+              <view class="like-icon-left"></view>
+              <view class="like-icon-right"></view>
+            </view>
+            <text class="like-count-value">{{item.likesCount}}</text>
+          </view>
         </view>
       </view>
     </view>

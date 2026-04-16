@@ -247,16 +247,25 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  min-width: 40px;
-  height: 22px;
-  padding: 0 8px;
-  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
   background: rgba(28, 31, 40, 0.72);
   color: #fff;
-  font-size: 12px;
-  line-height: 22px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 3;
+}
+
+.media-play-icon {
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 9px solid #fff;
+  margin-left: 3px;
 }
 
 .work-info {
@@ -303,10 +312,52 @@
 }
 
 .work-like-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   flex-shrink: 0;
+}
+
+.like-icon {
+  position: relative;
+  width: 14px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.like-icon-core {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 6px;
+  height: 6px;
+  background: #ef8802;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.like-icon-left,
+.like-icon-right {
+  position: absolute;
+  top: 1px;
+  width: 8px;
+  height: 8px;
+  background: #ef8802;
+  border-radius: 50%;
+}
+
+.like-icon-left {
+  left: 0;
+}
+
+.like-icon-right {
+  right: 0;
+}
+
+.like-count-value {
   font-size: 12px;
   color: #ef8802;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .loading-more {
