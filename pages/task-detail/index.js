@@ -15,6 +15,8 @@ Page({
     myClaim: null,      // 当前用户对该任务的认领记录
     hasClaimed: false,   // 是否已认领（待提交状态）
     claimStatus: 0,     // 认领状态：0=未认领, 1=待提交, 2=待验收, 3=已完成
+    pendingCount: 0,    // 当前用户已接单数量（待提交状态）
+    remainingSlots: 3,  // 剩余可接单数量
   },
 
   onLoad(options) {
@@ -94,10 +96,11 @@ Page({
         }
 
         // 如果未认领当前任务，检查是否有太多待提交任务
+        let pendingCount = 0;
         if (!hasClaimed && canClaim) {
           try {
             const claimsRes = await Api.getMyClaims();
-            const pendingCount = (claimsRes.data || []).filter(c => c.status === 1).length;
+            pendingCount = (claimsRes.data || []).filter(c => c.status === 1).length;
             if (pendingCount >= 3) {
               canClaim = false;
               claimReason = '已达未完成接单上限';
@@ -108,6 +111,8 @@ Page({
         }
       }
 
+      const remainingSlots = Math.max(0, 3 - pendingCount);
+
       this.setData({
         task,
         materials: task.materials || [],
@@ -115,6 +120,8 @@ Page({
         canClaim,
         claimReason,
         myClaim,
+        pendingCount,
+        remainingSlots,
         hasClaimed,
         claimStatus,
         loading: false
@@ -150,27 +157,49 @@ Page({
         return;
       }
     }
-    const { task } = this.data;
-    wx.showLoading({ title: '接单中...' });
-    try {
-      await Api.claimTask(task.id);
-      wx.hideLoading();
-      wx.showToast({ title: '接单成功！', icon: 'success', duration: 1500 });
-      // 获取新创建的认领ID，跳转到提交页面
-      const claimRes = await Api.getClaimByTaskId(task.id);
-      if (claimRes && claimRes.data && claimRes.data.id) {
-        setTimeout(() => {
-          wx.navigateTo({
-            url: `/pages/submit-work/index?claimId=${claimRes.data.id}&taskId=${task.id}`
-          });
-        }, 1500);
-      }
-      // Reload task detail to update claim state
-      await this.loadTaskDetail(task.id);
-    } catch (err) {
-      wx.hideLoading();
-      wx.showToast({ title: err.message || '接单失败', icon: 'none', duration: 3000 });
-    }
+    const { task, pendingCount, remainingSlots } = this.data;
+
+    // 显示二次确认弹窗
+    const isFull = remainingSlots <= 0;
+    const content = isFull
+      ? `目前您已接单${pendingCount}个，剩余${remainingSlots}个\n\n请先完结当前任务再接单`
+      : `目前您已接单${pendingCount}个，剩余${remainingSlots}个`;
+
+    const confirmTitle = isFull ? '无法接单' : '确认接单';
+
+    return new Promise((resolve) => {
+      wx.showModal({
+        title: confirmTitle,
+        content: content,
+        confirmText: isFull ? '我知道了' : '确认',
+        cancelText: '取消',
+        showCancel: !isFull,
+        success: async (res) => {
+          if (isFull) {
+            resolve();
+            return;
+          }
+          if (!res.confirm) {
+            resolve();
+            return;
+          }
+
+          // 用户确认接单
+          wx.showLoading({ title: '接单中...' });
+          try {
+            await Api.claimTask(task.id);
+            wx.hideLoading();
+            wx.showToast({ title: '接单成功！', icon: 'success', duration: 1500 });
+            // 不再跳转到提交作品页，仅刷新状态
+            await this.loadTaskDetail(task.id);
+          } catch (err) {
+            wx.hideLoading();
+            wx.showToast({ title: err.message || '接单失败', icon: 'none', duration: 3000 });
+          }
+          resolve();
+        }
+      });
+    });
   },
 
   // 跳转到提交作品页面
