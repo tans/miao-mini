@@ -59,6 +59,10 @@
 .share-btn {
   border: none;
   padding: 0;
+  min-width: 0;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
 }
 
 .share-btn::after,
