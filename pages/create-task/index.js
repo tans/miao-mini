@@ -42,10 +42,17 @@ Page({
         }
       });
     }
-    // 设置默认截止日期为30天后
-    const date = new Date();
-    date.setDate(date.getDate() + 30);
-    this.setData({ deadline: date.toISOString().split('T')[0] });
+    // 设置截止日期范围：最早3天后，最晚30天后
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + 3);
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 30);
+    this.setData({
+      deadline: minDate.toISOString().split('T')[0],
+      minDeadline: minDate.toISOString().split('T')[0],
+      maxDeadline: maxDate.toISOString().split('T')[0]
+    });
   },
 
   onTitleInput(e) {

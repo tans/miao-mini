@@ -39,9 +39,9 @@
     </mp-cells>
 
       <!-- 截止日期 -->
-      <mp-cells title="截止日期">
+      <mp-cells title="截止日期" footer="截止日期最短为3天后，最长为30天后">
         <mp-cell prop="deadline" show-error>
-          <picker mode="date" value="{{deadline}}" bindchange="onDeadlineChange">
+          <picker mode="date" value="{{deadline}}" start="{{minDeadline}}" end="{{maxDeadline}}" bindchange="onDeadlineChange">
             <view class="weui-input">{{deadline}}</view>
           </picker>
         </mp-cell>
