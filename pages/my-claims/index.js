@@ -57,7 +57,9 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getMyClaims({ page: 1 });
-      const claims = res.data || [];
+      let claims = res.data || [];
+      // 按状态排序：待提交(1) > 待验收(2) > 已完成(3)
+      claims.sort((a, b) => a.status - b.status);
       this.setData({ claims, filteredClaims: claims });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
