@@ -1,5 +1,7 @@
 /* pages/video-proposals/index.wxss */
 .proposals-container {
+  min-height: 100vh;
+  background: #f5f5f5;
   padding-bottom: 20px;
 }
 
@@ -8,36 +10,45 @@
   background: #fff;
   padding: 12px 16px;
   gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .filter-btn {
   padding: 6px 16px;
   border-radius: 16px;
   font-size: 13px;
-  color: #666;
+  color: #999;
   background: #f0f0f0;
+  transition: all 0.2s;
 }
 
 .filter-btn.active {
-  background: #FF2442;
+  background: #EF8802;
   color: #fff;
 }
 
 .proposal-card {
-  margin: 8px 16px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
 .task-label {
-  font-size: 13px;
+  font-size: 12px;
   color: #999;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  display: block;
 }
 
 .proposal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .creator-info {
@@ -50,7 +61,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #FF2442;
+  background: #EF8802;
   color: #fff;
   display: flex;
   align-items: center;
@@ -70,6 +81,7 @@
   font-size: 12px;
   color: #999;
   display: block;
+  margin-top: 2px;
 }
 
 .proposal-status {
@@ -94,18 +106,21 @@
   color: #666;
   font-size: 14px;
   display: block;
-  margin: 12px 0;
+  margin-bottom: 12px;
+  line-height: 1.6;
 }
 
 .proposal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .proposal-price {
   font-weight: 700;
-  color: #FF2442;
+  color: #EF8802;
   font-size: 16px;
 }
 
@@ -125,8 +140,12 @@
 }
 
 .btn-primary {
-  background: #FF2442;
+  background: #EF8802;
   color: #fff;
+}
+
+.btn-primary:not(.btn-disabled):active {
+  background: #D66E00;
 }
 
 .btn-secondary {
