@@ -4,6 +4,28 @@
   min-height: 100vh;
 }
 
+.hero-card {
+  background: linear-gradient(135deg, #ef8802, #ffb74d);
+  border-radius: 16px;
+  padding: 20px 18px;
+  margin-bottom: 12px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hero-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hero-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+
 .section {
   background: #fff;
   border-radius: 12px;
@@ -16,6 +38,49 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 12px;
+}
+
+.quick-list,
+.faq-list,
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quick-item,
+.faq-item,
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quick-item,
+.faq-item {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.quick-item:last-child,
+.faq-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.quick-title,
+.faq-question {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.quick-desc,
+.faq-answer,
+.contact-value {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
 }
 
 .level-table {
@@ -103,4 +168,9 @@
   color: #666;
   line-height: 1.5;
   flex: 1;
+}
+
+.contact-label {
+  font-size: 12px;
+  color: #999;
 }

@@ -1,41 +1,29 @@
 <view class="about-container">
-  <view class="section">
-    <view class="section-title">关于创意喵</view>
-    <view class="about-content">
-      <text class="about-text">创意喵是一个视频任务协作平台，连接商家与创作者，帮助商家快速完成内容生产，让创作者通过技能获得收益。</text>
-    </view>
+  <view class="hero-card">
+    <text class="hero-eyebrow">Creative Meow</text>
+    <text class="hero-title">关于创意喵</text>
+    <text class="hero-desc">创意喵是面向视频任务协作的轻量平台。商家发布清晰需求，创作者快速认领与交付，平台帮助你用更短链路完成内容生产与收益结算。</text>
   </view>
 
   <view class="section">
     <view class="section-title">平台特点</view>
     <view class="feature-list">
-      <view class="feature-item">
-        <text class="feature-icon">🎬</text>
+      <view class="feature-item" wx:for="{{highlights}}" wx:key="title">
+        <view class="feature-dot"></view>
         <view class="feature-info">
-          <text class="feature-title">视频任务</text>
-          <text class="feature-desc">商家发布需求，创作者快速认领与交付</text>
+          <text class="feature-title">{{item.title}}</text>
+          <text class="feature-desc">{{item.desc}}</text>
         </view>
       </view>
-      <view class="feature-item">
-        <text class="feature-icon">💰</text>
-        <view class="feature-info">
-          <text class="feature-title">收益结算</text>
-          <text class="feature-desc">任务完成即可结算，平台抽成低至10%</text>
-        </view>
-      </view>
-      <view class="feature-item">
-        <text class="feature-icon">🏆</text>
-        <view class="feature-info">
-          <text class="feature-title">等级体系</text>
-          <text class="feature-desc">青铜/白银/黄金/钻石，等级越高特权越多</text>
-        </view>
-      </view>
-      <view class="feature-item">
-        <text class="feature-icon">🔒</text>
-        <view class="feature-info">
-          <text class="feature-title">资金安全</text>
-          <text class="feature-desc">平台托管资金，保障双方权益</text>
-        </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">协作流程</view>
+    <view class="step-list">
+      <view class="step-item" wx:for="{{steps}}" wx:key="*this">
+        <text class="step-index">{{index + 1}}</text>
+        <text class="step-text">{{item}}</text>
       </view>
     </view>
   </view>
@@ -43,13 +31,9 @@
   <view class="section">
     <view class="section-title">联系与合作</view>
     <view class="contact-list">
-      <view class="contact-item">
-        <text class="contact-label">商务合作</text>
-        <text class="contact-value">business@chuangyimiao.com</text>
-      </view>
-      <view class="contact-item">
-        <text class="contact-label">客服邮箱</text>
-        <text class="contact-value">support@chuangyimiao.com</text>
+      <view class="contact-item" wx:for="{{contacts}}" wx:key="label">
+        <text class="contact-label">{{item.label}}</text>
+        <text class="contact-value">{{item.value}}</text>
       </view>
     </view>
   </view>

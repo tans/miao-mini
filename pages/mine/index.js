@@ -99,4 +99,12 @@ Page({
       wx.navigateTo({ url: '/pages/settings/index' });
     });
   },
+
+  goHelp() {
+    wx.navigateTo({ url: '/pages/settings/help/index' });
+  },
+
+  goAbout() {
+    wx.navigateTo({ url: '/pages/settings/about/index' });
+  },
 });

@@ -33,4 +33,13 @@
       <text slot="icon" class="menu-icon">⚙️</text>
     </mp-cell>
   </mp-cells>
+
+  <mp-cells title="平台信息" footer="">
+    <mp-cell link bindtap="goHelp" value="帮助中心" hover>
+      <text slot="icon" class="menu-icon">❓</text>
+    </mp-cell>
+    <mp-cell link bindtap="goAbout" value="关于我们" hover>
+      <text slot="icon" class="menu-icon">🐱</text>
+    </mp-cell>
+  </mp-cells>
 </view>
