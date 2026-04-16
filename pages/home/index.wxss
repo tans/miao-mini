@@ -166,7 +166,7 @@
 }
 
 .card-tag {
-  background: #e8f5e9;
+  background: #FFFBF3;
   color: #EF8802;
   font-size: 20rpx;
   padding: 2rpx 8rpx;
