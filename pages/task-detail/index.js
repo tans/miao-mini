@@ -140,8 +140,17 @@ Page({
     wx.showLoading({ title: '接单中...' });
     try {
       await Api.claimTask(task.id);
-      wx.showToast({ title: '接单成功！', icon: 'success', duration: 2000 });
       wx.hideLoading();
+      wx.showToast({ title: '接单成功！', icon: 'success', duration: 1500 });
+      // 获取新创建的认领ID，跳转到提交页面
+      const claimRes = await Api.getClaimByTaskId(task.id);
+      if (claimRes && claimRes.data && claimRes.data.id) {
+        setTimeout(() => {
+          wx.navigateTo({
+            url: `/pages/submit-work/index?claimId=${claimRes.data.id}&taskId=${task.id}`
+          });
+        }, 1500);
+      }
       // Reload task detail to update claim state
       await this.loadTaskDetail(task.id);
     } catch (err) {
