@@ -87,7 +87,7 @@
 
 .watermark-bg {
   position: absolute;
-  right: -24px;
+  left: -24px;
   top: 50%;
   transform: translateY(-50%) rotate(-15deg);
   font-size: 10px;
