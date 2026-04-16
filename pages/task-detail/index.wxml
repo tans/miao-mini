@@ -123,8 +123,10 @@
     <!-- 已认领该任务，根据状态显示不同按钮 -->
     <button class="weui-btn weui-btn_primary weui-btn_block" bindtap="goSubmitWork" wx:if="{{hasClaimed && claimStatus === 1}}">提交作品</button>
     <button class="weui-btn weui-btn_default weui-btn_block" wx:if="{{hasClaimed && claimStatus === 2}}" disabled>待验收</button>
-    <!-- 未认领，显示接单按钮 -->
-    <button class="weui-btn weui-btn_primary weui-btn_block {{canClaim ? '' : 'weui-btn_disabled'}}" bindtap="{{canClaim ? 'claimTask' : ''}}" disabled="{{!canClaim}}" wx:elif="{{!hasClaimed}}">{{canClaim ? '立即接单' : '无法领取'}}</button>
+    <view class="weui-btn weui-btn_default weui-btn_block" wx:if="{{hasClaimed && claimStatus === 3}}">已完成</view>
+    <view class="weui-btn weui-btn_default weui-btn_block" wx:if="{{hasClaimed && (claimStatus === 4 || claimStatus === 5)}}">已失效</view>
+    <!-- 未认领，显示接单按钮或原因 -->
+    <button class="weui-btn weui-btn_primary weui-btn_block" bindtap="claimTask" wx:if="{{!hasClaimed && canClaim}}">立即接单</button>
     <view class="claim-reason" wx:if="{{!canClaim && !hasClaimed && claimReason}}">{{claimReason}}</view>
   </view>
 </view>

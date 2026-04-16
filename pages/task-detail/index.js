@@ -92,6 +92,20 @@ Page({
         } catch (e) {
           // 忽略错误，继续显示领取按钮
         }
+
+        // 如果未认领当前任务，检查是否有太多待提交任务
+        if (!hasClaimed && canClaim) {
+          try {
+            const claimsRes = await Api.getMyClaims();
+            const pendingCount = (claimsRes.data || []).filter(c => c.status === 1).length;
+            if (pendingCount >= 3) {
+              canClaim = false;
+              claimReason = '已达未完成接单上限';
+            }
+          } catch (e) {
+            // 忽略错误，不影响接单判断
+          }
+        }
       }
 
       this.setData({
