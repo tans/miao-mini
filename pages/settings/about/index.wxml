@@ -1,0 +1,60 @@
+<view class="about-container">
+  <view class="section">
+    <view class="section-title">关于创意喵</view>
+    <view class="about-content">
+      <text class="about-text">创意喵是一个视频任务协作平台，连接商家与创作者，帮助商家快速完成内容生产，让创作者通过技能获得收益。</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">平台特点</view>
+    <view class="feature-list">
+      <view class="feature-item">
+        <text class="feature-icon">🎬</text>
+        <view class="feature-info">
+          <text class="feature-title">视频任务</text>
+          <text class="feature-desc">商家发布需求，创作者快速认领与交付</text>
+        </view>
+      </view>
+      <view class="feature-item">
+        <text class="feature-icon">💰</text>
+        <view class="feature-info">
+          <text class="feature-title">收益结算</text>
+          <text class="feature-desc">任务完成即可结算，平台抽成低至10%</text>
+        </view>
+      </view>
+      <view class="feature-item">
+        <text class="feature-icon">🏆</text>
+        <view class="feature-info">
+          <text class="feature-title">等级体系</text>
+          <text class="feature-desc">青铜/白银/黄金/钻石，等级越高特权越多</text>
+        </view>
+      </view>
+      <view class="feature-item">
+        <text class="feature-icon">🔒</text>
+        <view class="feature-info">
+          <text class="feature-title">资金安全</text>
+          <text class="feature-desc">平台托管资金，保障双方权益</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">联系与合作</view>
+    <view class="contact-list">
+      <view class="contact-item">
+        <text class="contact-label">商务合作</text>
+        <text class="contact-value">business@chuangyimiao.com</text>
+      </view>
+      <view class="contact-item">
+        <text class="contact-label">客服邮箱</text>
+        <text class="contact-value">support@chuangyimiao.com</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="copyright">
+    <text>© 2026 创意喵 All Rights Reserved</text>
+  </view>
+</view>

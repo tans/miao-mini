@@ -43,12 +43,4 @@ Page({
     wx.navigateTo({ url: '/pages/settings/profile/index' });
   },
 
-  goHelp() {
-    wx.navigateTo({ url: '/pages/settings/help/index' });
-  },
-
-  goAbout() {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
-  },
-
 });

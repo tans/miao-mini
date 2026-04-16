@@ -9,6 +9,8 @@
     "pages/my-tasks/index",
     "pages/transactions/index",
     "pages/settings/index",
+    "pages/settings/help/index",
+    "pages/settings/about/index",
     "pages/work-detail/index",
     "pages/create-task/index",
     "pages/video-proposals/index",
