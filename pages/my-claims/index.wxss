@@ -55,6 +55,18 @@
   border-radius: 10px;
 }
 
+.claim-status-with-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modify-link {
+  font-size: 12px;
+  color: #576b95;
+  text-decoration: underline;
+}
+
 .claim-actions {
   display: flex;
   align-items: center;

@@ -23,8 +23,13 @@
           <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" bindtap="showSubmitModal">提交</button>
           <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" bindtap="cancelClaim">放弃</button>
         </view>
+        <!-- 待验收状态：显示状态和修改链接 -->
+        <view wx:if="{{item.status === 2}}" class="claim-status-with-action">
+          <text class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
+          <text class="modify-link" bindtap="showSubmitModal" data-claim-id="{{item.id}}">修改</text>
+        </view>
         <!-- 其他状态：只显示状态文本 -->
-        <text wx:else class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
+        <text wx:elif="{{item.status > 2}}" class="claim-status status-{{item.status}}">{{getClaimStatusText(item.status)}}</text>
       </view>
     </mp-cell>
   </mp-cells>
