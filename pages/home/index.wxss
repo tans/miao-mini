@@ -108,6 +108,7 @@
   height: 240rpx;
   background: #f0f0f0;
   overflow: hidden;
+  position: relative;
 }
 
 .card-thumb {
@@ -126,6 +127,18 @@
 
 .placeholder-icon {
   font-size: 36rpx;
+}
+
+/* 截止时间倒计时标签 */
+.card-countdown {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 6rpx;
 }
 
 /* 卡片内容 */
@@ -149,7 +162,7 @@
   display: flex;
   align-items: center;
   gap: 4rpx;
-  margin-bottom: 8rpx;
+  margin-bottom: 6rpx;
 }
 
 .card-tag {
@@ -161,6 +174,45 @@
 }
 
 .card-tag-more {
+  font-size: 20rpx;
+  color: #999;
+}
+
+/* 风格标签 */
+.card-style-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rpx;
+  margin-bottom: 8rpx;
+}
+
+.card-style-tag {
+  background: #fff3e0;
+  color: #e65100;
+  font-size: 18rpx;
+  padding: 2rpx 6rpx;
+  border-radius: 4rpx;
+}
+
+/* 报名信息 */
+.card-enroll {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  margin-bottom: 6rpx;
+}
+
+.enroll-count {
+  font-size: 20rpx;
+  color: #666;
+}
+
+.enroll-sep {
+  font-size: 20rpx;
+  color: #ddd;
+}
+
+.remain-count {
   font-size: 20rpx;
   color: #999;
 }
@@ -177,107 +229,10 @@
   color: #EF8802;
 }
 
-.card-remain {
-  font-size: 20rpx;
-  color: #999;
-}
-
 /* 加载更多 */
 .load-more {
   text-align: center;
   padding: 16px;
-}
-
-/* 任务网格 - 使用weui-grids */
-.weui-grids {
-  padding: 8px;
-}
-
-.task-card-grid {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  margin: 0;
-  padding: 0;
-}
-
-.task-card-grid .card-thumb-wrap {
-  width: 100%;
-  height: 240rpx;
-  background: #f0f0f0;
-  overflow: hidden;
-}
-
-.task-card-grid .card-thumb {
-  width: 100%;
-  height: 100%;
-}
-
-.task-card-grid .card-thumb-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-}
-
-.task-card-grid .placeholder-icon {
-  font-size: 36rpx;
-}
-
-.task-card-grid .card-body {
-  padding: 10rpx 12rpx 12rpx;
-}
-
-.task-card-grid .card-title {
-  font-size: 26rpx;
-  font-weight: 600;
-  color: #222;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  line-height: 1.4;
-  margin-bottom: 6rpx;
-}
-
-.task-card-grid .card-tags {
-  display: flex;
-  align-items: center;
-  gap: 4rpx;
-  margin-bottom: 8rpx;
-}
-
-.task-card-grid .card-tag {
-  background: #e8f5e9;
-  color: #EF8802;
-  font-size: 20rpx;
-  padding: 2rpx 8rpx;
-  border-radius: 4rpx;
-}
-
-.task-card-grid .card-tag-more {
-  font-size: 20rpx;
-  color: #999;
-}
-
-.task-card-grid .card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.task-card-grid .card-price {
-  font-size: 28rpx;
-  font-weight: 700;
-  color: #EF8802;
-}
-
-.task-card-grid .card-remain {
-  font-size: 20rpx;
-  color: #999;
 }
 
 /* 空状态 */

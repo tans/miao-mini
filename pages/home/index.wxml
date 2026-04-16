@@ -1,4 +1,22 @@
 <!--pages/home/index.wxml-->
+<wxs module="utils">
+module.exports = {
+  formatCountdown: function(endAt) {
+    if (!endAt) return '';
+    var end = new Date(endAt.replace(/-/g, '/'));
+    var now = Date.now();
+    var diff = end - now;
+    if (diff <= 0) return '已截止';
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    if (days > 0) return days + '天' + hours + '小时';
+    if (hours > 0) return hours + '小时' + minutes + '分钟';
+    return minutes + '分钟';
+  }
+}
+</wxs>
+
 <view class="home-container">
 
   <!-- 排序栏 -->
@@ -59,16 +77,29 @@
         <view wx:else class="card-thumb-placeholder">
           <text class="placeholder-icon">🎬</text>
         </view>
+        <!-- 截止时间倒计时标签 -->
+        <view class="card-countdown" wx:if="{{item.end_at}}">{{utils.formatCountdown(item.end_at)}}</view>
       </view>
       <view class="card-body">
         <text class="card-title">{{item.title}}</text>
-        <view class="card-tags" wx:if="{{item.industries.length > 0}}">
-          <text class="card-tag">{{item.industries[0]}}</text>
-          <text wx:if="{{item.industries.length > 1}}" class="card-tag-more">+{{item.industries.length - 1}}</text>
+        <!-- 行业标签 -->
+        <view class="card-tags" wx:if="{{item.industryArray.length > 0}}">
+          <text class="card-tag">{{item.industryArray[0]}}</text>
+          <text wx:if="{{item.industryArray.length > 1}}" class="card-tag-more">+{{item.industryArray.length - 1}}</text>
         </view>
+        <!-- 风格标签 -->
+        <view class="card-style-tags" wx:if="{{item.styleArray.length > 0}}">
+          <text class="card-style-tag" wx:for="{{item.styleArray}}" wx:key="index" wx:for-item="style">{{style}}</text>
+        </view>
+        <!-- 报名信息 -->
+        <view class="card-enroll">
+          <text class="enroll-count">已报名{{item.enrolled_count}}人</text>
+          <text class="enroll-sep">|</text>
+          <text class="remain-count">剩{{item.remaining_count}}名</text>
+        </view>
+        <!-- 价格 -->
         <view class="card-footer">
           <text class="card-price">¥{{item.unit_price}}</text>
-          <text class="card-remain">剩{{item.remaining_count}}名</text>
         </view>
       </view>
     </view>
