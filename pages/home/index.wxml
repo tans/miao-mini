@@ -73,15 +73,14 @@
         <view class="card-style-tags" wx:if="{{item.styleArray.length > 0}}">
           <text class="card-style-tag" wx:for="{{item.styleArray}}" wx:key="index" wx:for-item="style">{{style}}</text>
         </view>
-        <!-- 报名信息 -->
-        <view class="card-enroll">
-          <text class="enroll-count">已报名{{item.enrolled_count}}人</text>
-          <text class="enroll-sep">|</text>
-          <text class="remain-count">剩{{item.remaining_count}}名</text>
-        </view>
-        <!-- 价格 -->
+        <!-- 价格和报名信息一行，左右对齐 -->
         <view class="card-footer">
           <text class="card-price">¥{{item.unit_price}}</text>
+          <view class="card-enroll">
+            <text class="enroll-count">已报名{{item.enrolled_count}}人</text>
+            <text class="enroll-sep">|</text>
+            <text class="remain-count">剩{{item.remaining_count}}名</text>
+          </view>
         </view>
       </view>
     </view>

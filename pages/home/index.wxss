@@ -199,7 +199,6 @@
   display: flex;
   align-items: center;
   gap: 6rpx;
-  margin-bottom: 6rpx;
 }
 
 .enroll-count {
