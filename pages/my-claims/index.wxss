@@ -33,6 +33,34 @@
   margin-bottom: 4px;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.watermark-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  border: 1px solid;
+}
+
+.watermark-1 {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.watermark-2 {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+.watermark-3 {
+  color: #999;
+  border-color: #999;
+}
+
 .claim-body {
   display: flex;
   gap: 12px;
