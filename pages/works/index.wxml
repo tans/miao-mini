@@ -13,7 +13,7 @@
         />
         <text class="search-clear" wx:if="{{searchValue}}" bindtap="clearSearch">清空</text>
       </view>
-      <button class="search-btn" size="mini" bindtap="onSearchConfirm">
+      <button class="search-btn" bindtap="onSearchConfirm">
         <text class="search-btn-icon">搜</text>
       </button>
     </view>
