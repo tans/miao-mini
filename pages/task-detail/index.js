@@ -86,6 +86,7 @@ Page({
       let myClaim = null;
       let hasClaimed = false;
       let claimStatus = 0;
+      let pendingCount = 0;
       if (user && !isMyTask) {
         try {
           const claimRes = await Api.getClaimByTaskId(taskId);
@@ -98,7 +99,7 @@ Page({
         }
 
         // 如果未认领当前任务，检查是否有太多待提交任务
-        let pendingCount = 0;
+        pendingCount = 0;
         if (!hasClaimed && canClaim) {
           try {
             const claimsRes = await Api.getMyClaims();
