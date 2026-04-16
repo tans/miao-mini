@@ -62,9 +62,19 @@
 }
 
 .top-back-btn,
-.top-share-btn {
+.top-share-wrap {
   position: absolute;
   z-index: 2;
+}
+
+.top-share-wrap {
+  width: calc(36px + env(safe-area-inset-right));
+  height: 36px;
+  padding-right: env(safe-area-inset-right);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .circle-btn {
@@ -82,17 +92,20 @@
 }
 
 .share-hit-btn {
-  width: 36px;
-  height: 36px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   padding: 0;
   margin: 0;
-  min-width: 0;
   border: none;
   background: transparent;
   border-radius: 0;
   box-sizing: border-box;
-  overflow: visible;
+  overflow: hidden;
   line-height: 1;
+  opacity: 0;
 }
 
 .share-hit-btn::after {
