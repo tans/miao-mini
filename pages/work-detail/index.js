@@ -11,7 +11,7 @@ Page({
     page: 1,
     navTop: 56,
     pageSideInset: 12,
-    overlayBottom: 12,
+    overlayBottom: 4,
     leftActionInset: 10,
     rightActionInset: 8,
   },
@@ -41,7 +41,7 @@ Page({
   setupViewportLayout() {
     let navTop = 8;
     let pageSideInset = 12;
-    let overlayBottom = 12;
+    let overlayBottom = 4;
     let leftActionInset = 10;
     let rightActionInset = 8;
 
@@ -51,7 +51,7 @@ Page({
       const windowWidth = Number(windowInfo.windowWidth || 375);
 
       pageSideInset = Math.max(10, Math.round(windowWidth * 0.032));
-      overlayBottom = Math.max(10, Math.round(windowWidth * 0.024));
+      overlayBottom = Math.max(4, Math.round(windowWidth * 0.012));
       leftActionInset = 10;
       rightActionInset = 8;
     } catch (err) {}

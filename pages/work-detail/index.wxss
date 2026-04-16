@@ -120,13 +120,13 @@
 .bottom-panel {
   position: absolute;
   z-index: 2;
-  padding: 20px 0 18px;
+  padding: 12px 0 10px;
 }
 
 .author-row {
   display: flex;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .author-left {
