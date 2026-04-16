@@ -273,3 +273,31 @@
   font-size: 12px;
   padding: 4px 12px;
 }
+
+.review-section {
+  background: #fff;
+  margin-bottom: 8px;
+}
+
+.review-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.review-section .section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.btn-review {
+  background: #07c160;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}

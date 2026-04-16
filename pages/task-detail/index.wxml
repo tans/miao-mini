@@ -82,7 +82,13 @@
   </mp-cells>
 
   <!-- 收到的提案 -->
-  <mp-cells title="收到的提案" wx:if="{{isMyTask}}">
+  <view class="review-section" wx:if="{{isMyTask}}">
+    <view class="section-header">
+      <text class="section-title">收到的提案</text>
+      <button class="btn-review" bindtap="goReviewProposals">审核投稿</button>
+    </view>
+  </view>
+  <mp-cells title="提案列表" wx:if="{{isMyTask}}">
     <block wx:if="{{claims.length === 0}}">
       <mp-cell>
         <view class="empty-state">

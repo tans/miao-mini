@@ -104,4 +104,8 @@ Page({
     const taskId = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/task-detail/index?id=${taskId}` });
   },
+
+  goCreateTask() {
+    wx.navigateTo({ url: '/pages/create-task/index' });
+  },
 });

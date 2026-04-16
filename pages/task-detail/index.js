@@ -194,6 +194,10 @@ Page({
     }
   },
 
+  goReviewProposals() {
+    wx.navigateTo({ url: '/pages/video-proposals/index' });
+  },
+
   getStatusText(status) {
     return getStatusText(status);
   },

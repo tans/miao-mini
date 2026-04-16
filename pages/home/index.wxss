@@ -296,3 +296,22 @@
   color: #999;
   font-size: 14px;
 }
+
+/* 发布任务悬浮按钮 */
+.fab-container {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  z-index: 100;
+}
+
+.fab {
+  background: #07c160;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(7, 193, 96, 0.4);
+}

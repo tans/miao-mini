@@ -1,6 +1,6 @@
 // pages/my-tasks/index.js
 const Api = require('../../utils/api.js');
-const { getClaimStatusText, formatDate } = require('../../utils/util.js');
+const { getStatusText, formatDate } = require('../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -37,35 +37,14 @@ Page({
   async loadData() {
     wx.showLoading({ title: '加载中...' });
     try {
-      const [claimsRes, walletRes] = await Promise.all([
-        Api.getMyClaims({ page: 1 }),
+      const [tasksRes, walletRes] = await Promise.all([
+        Api.getMyBusinessTasks({ page: 1 }),
         Api.getWallet()
       ]);
-      const claims = claimsRes.data || [];
-
-      // Fetch task details for each claim to get deadline and thumbnail
-      const tasksWithDetails = await Promise.all(
-        claims.map(async (claim) => {
-          try {
-            const taskRes = await Api.getTask(claim.task_id);
-            const task = taskRes.data || {};
-            return {
-              ...claim,
-              deadline: task.end_at || task.deadline || null,
-              thumbnail: (task.materials && task.materials.length > 0) ? task.materials[0].file_path : null
-            };
-          } catch (e) {
-            return {
-              ...claim,
-              deadline: null,
-              thumbnail: null
-            };
-          }
-        })
-      );
+      const tasks = tasksRes.data || [];
 
       this.setData({
-        tasks: tasksWithDetails,
+        tasks: tasks,
         balance: walletRes.data && walletRes.data.balance !== undefined ? Number(walletRes.data.balance).toFixed(2) : '0.00'
       });
     } catch (err) {
@@ -88,8 +67,8 @@ Page({
     wx.navigateTo({ url: '/pages/wallet/index' });
   },
 
-  getClaimStatusText(status) {
-    return getClaimStatusText(status);
+  getStatusText(status) {
+    return getStatusText(status);
   },
 
   formatDate(dateStr) {

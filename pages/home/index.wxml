@@ -80,4 +80,9 @@
     </button>
   </view>
 
+  <!-- 发布任务按钮 -->
+  <view class="fab-container">
+    <button class="fab" bindtap="goCreateTask">+ 发布任务</button>
+  </view>
+
 </view>
