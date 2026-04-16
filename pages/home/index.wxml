@@ -15,10 +15,6 @@
       class="sort-item {{sort === 'price_asc' ? 'active' : ''}}"
       bindtap="setSort" data-sort="price_asc"
     >价格最低</view>
-    <view
-      class="sort-item {{sort === 'mine' ? 'active' : ''}}"
-      bindtap="setSort" data-sort="mine"
-    >我的</view>
   </view>
 
   <!-- 行业筛选标签 -->
@@ -38,8 +34,8 @@
 
   <!-- 任务数量 -->
   <view class="section-header">
-    <text class="section-title">{{sort === 'mine' ? '我的任务' : (activeIndustry ? activeIndustry : '全部任务')}}</text>
-    <text class="section-count">{{displayTasks.length}}{{hasMore && activeIndustry === '' && sort !== 'mine' ? '+' : ''}}个</text>
+    <text class="section-title">{{activeIndustry ? activeIndustry : '全部任务'}}</text>
+    <text class="section-count">{{displayTasks.length}}{{hasMore && activeIndustry === '' ? '+' : ''}}个</text>
   </view>
 
   <!-- 空状态 -->
@@ -68,16 +64,14 @@
       </view>
       <view class="card-body">
         <text class="card-title">{{item.title}}</text>
-        <!-- 行业标签 -->
-        <view class="card-tags" wx:if="{{item.industryArray.length > 0}}">
-          <text class="card-tag-label">行业类别</text>
-          <text class="card-tag">{{item.industryArray[0]}}</text>
-          <text wx:if="{{item.industryArray.length > 1}}" class="card-tag-more">+{{item.industryArray.length - 1}}</text>
-        </view>
-        <!-- 风格标签 -->
-        <view class="card-style-tags" wx:if="{{item.styleArray.length > 0}}">
-          <text class="card-tag-label">视频风格</text>
-          <text class="card-style-tag" wx:for="{{item.styleArray}}" wx:key="index" wx:for-item="style">{{style}}</text>
+        <!-- 行业类别和视频风格一行，两端对齐 -->
+        <view class="card-tags-row" wx:if="{{item.industryArray.length > 0 || item.styleArray.length > 0}}">
+          <view class="card-tags-left">
+            <text class="card-tag" wx:for="{{item.industryArray}}" wx:key="index">{{item}}</text>
+          </view>
+          <view class="card-tags-right">
+            <text class="card-style-tag" wx:for="{{item.styleArray}}" wx:key="index" wx:for-item="style">{{style}}</text>
+          </view>
         </view>
         <!-- 价格和报名信息一行，左右对齐 -->
         <view class="card-footer">

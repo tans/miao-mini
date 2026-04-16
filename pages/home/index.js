@@ -9,11 +9,11 @@ function formatCountdown(endAt) {
   const end = new Date(endAt.replace(/-/g, '/'));
   const now = Date.now();
   const diff = end - now;
-  if (diff <= 0) return '已截止';
+  if (diff <= 0) return ''; // 过期不显示
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  if (days > 0) return days + '天'; // 只显示天数
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  if (days > 0) return days + '天' + hours + '小时';
   if (hours > 0) return hours + '小时' + minutes + '分钟';
   return minutes + '分钟';
 }
@@ -97,12 +97,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const { sort, page } = this.data;
-      // For "mine" sort, send auth if user is logged in
-      const params = { page, limit: 20, sort };
-      if (sort === 'mine' && app.isLoggedIn()) {
-        params.noAuth = false;
-      }
-      const res = await Api.getTasks(params);
+      const res = await Api.getTasks({ page, limit: 20, sort });
       const newTasks = res.data?.data || [];
 
       const rawTasks = page === 1 ? newTasks : [...this.data.tasks, ...newTasks];
@@ -174,11 +169,6 @@ Page({
   setSort(e) {
     const sort = e.currentTarget.dataset.sort;
     if (sort === this.data.sort) return;
-    // "我的"排序需要登录
-    if (sort === 'mine' && !app.isLoggedIn()) {
-      wx.showToast({ title: '请先登录', icon: 'none' });
-      return;
-    }
     this.setData({ sort, page: 1, tasks: [], displayTasks: [], activeIndustry: '' });
     this.loadTasks();
   },

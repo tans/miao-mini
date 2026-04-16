@@ -235,9 +235,7 @@ const Api = {
     if (params.sort) q.push(`sort=${params.sort}`);
     if (params.status != null) q.push(`status=${params.status}`);
     const qs = q.length ? '?' + q.join('&') : '';
-    // noAuth defaults to true, but for "mine" sort when logged in, we need auth
-    const noAuth = params.noAuth !== undefined ? params.noAuth : true;
-    return this.request('GET', '/tasks' + qs, null, noAuth);
+    return this.request('GET', '/tasks' + qs, null, true);
   },
 
   async getTask(id) {
