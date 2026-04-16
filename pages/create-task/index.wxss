@@ -216,3 +216,7 @@
   font-size: 14px;
   color: #333;
 }
+
+.slider-wrapper {
+  padding: 8px 0;
+}

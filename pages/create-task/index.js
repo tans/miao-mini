@@ -54,7 +54,7 @@ Page({
     this.setData({ description: e.detail.value });
   },
 
-  onUnitPriceInput(e) {
+  onUnitPriceChange(e) {
     this.setData({ unit_price: e.detail.value });
     this.updateBudgetPreview();
   },
