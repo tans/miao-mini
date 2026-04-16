@@ -36,8 +36,9 @@
               data-url="{{item.heroMedia.url}}"
             />
 
-            <view class="tap-layer" bindtap="togglePlay">
-              <view class="play-indicator" wx:if="{{item.heroMedia && item.heroMedia.type === 'video' && item.paused}}">▶</view>
+            <view class="tap-layer" wx:if="{{item.heroMedia && item.heroMedia.type === 'video'}}" bindtap="handleMediaTap">
+              <view class="play-indicator" wx:if="{{item.paused}}">▶</view>
+              <view class="like-burst" wx:if="{{item.showLikeBurst}}">♥</view>
             </view>
 
             <view class="circle-btn top-back-btn" style="top: {{navTop}}px; left: {{leftActionInset}}px;" bindtap="goBack">‹</view>
@@ -72,14 +73,10 @@
               <text class="comment-icon {{item.isLiked ? 'active' : ''}}">♥</text>
               <text class="comment-count">{{item.likeCountText}}</text>
             </view>
-            <view class="comment-action">
+            <button class="comment-action comment-share-btn" open-type="share">
               <text class="comment-icon">↗</text>
               <text class="comment-count">分享</text>
-            </view>
-            <view class="comment-action">
-              <text class="comment-icon">☆</text>
-              <text class="comment-count">{{item.viewCountText}}</text>
-            </view>
+            </button>
           </view>
         </view>
       </swiper-item>

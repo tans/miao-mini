@@ -17,6 +17,9 @@ Page({
   },
 
   onLoad(e) {
+    this.mediaTapTimer = null;
+    this.mediaTapAt = 0;
+    this.likeBurstTimer = null;
     this.setupViewportLayout();
     this.workId = Number(e.id || 0);
     this.videoContexts = {};
@@ -26,6 +29,8 @@ Page({
   },
 
   onUnload() {
+    this.clearMediaTapTimer();
+    this.clearLikeBurstTimer();
     this.pauseAllVideos();
   },
 
@@ -63,6 +68,21 @@ Page({
       leftActionInset,
       rightActionInset,
     });
+  },
+
+  clearMediaTapTimer() {
+    if (this.mediaTapTimer) {
+      clearTimeout(this.mediaTapTimer);
+      this.mediaTapTimer = null;
+    }
+    this.mediaTapAt = 0;
+  },
+
+  clearLikeBurstTimer() {
+    if (this.likeBurstTimer) {
+      clearTimeout(this.likeBurstTimer);
+      this.likeBurstTimer = null;
+    }
   },
 
   async bootstrapFeed(id) {
@@ -126,6 +146,7 @@ Page({
       commentCountText: this.formatCount(comments),
       isLiked: !!work.is_liked,
       paused: false,
+      showLikeBurst: false,
     };
   },
 
@@ -247,6 +268,70 @@ Page({
     }
   },
 
+  handleMediaTap() {
+    const current = this.getCurrentItem();
+    if (!current || current.heroMedia?.type !== 'video') return;
+
+    const now = Date.now();
+    if (this.mediaTapTimer) {
+      clearTimeout(this.mediaTapTimer);
+      this.mediaTapTimer = null;
+    }
+
+    if (this.mediaTapAt && now - this.mediaTapAt < 280) {
+      this.mediaTapAt = 0;
+      this.likeFromGesture();
+      return;
+    }
+
+    this.mediaTapAt = now;
+    this.mediaTapTimer = setTimeout(() => {
+      this.mediaTapTimer = null;
+      this.mediaTapAt = 0;
+      this.togglePlay();
+    }, 220);
+  },
+
+  async likeFromGesture() {
+    const index = this.data.currentIndex;
+    const current = this.getCurrentItem();
+    if (!current || !current.id) return;
+
+    if (current.isLiked) {
+      this.showLikeBurst();
+      return;
+    }
+
+    if (!app.isLoggedIn()) {
+      await app.silentLogin();
+    }
+    if (!app.isLoggedIn()) return;
+
+    try {
+      const res = await Api.likeWork(current.id);
+      const likes = res.data && typeof res.data.likes === 'number' ? res.data.likes : (current.likes || 0);
+      this.updateFeedItem(index, {
+        isLiked: true,
+        likes,
+        likeCountText: this.formatCount(likes),
+      });
+      this.showLikeBurst();
+    } catch (err) {}
+  },
+
+  showLikeBurst() {
+    const index = this.data.currentIndex;
+    const current = this.getCurrentItem();
+    if (!current || current.heroMedia?.type !== 'video') return;
+
+    this.clearLikeBurstTimer();
+    this.updateFeedItem(index, { showLikeBurst: true });
+    this.likeBurstTimer = setTimeout(() => {
+      this.updateFeedItem(index, { showLikeBurst: false });
+      this.likeBurstTimer = null;
+    }, 520);
+  },
+
   togglePlay() {
     const index = this.data.currentIndex;
     const current = this.getCurrentItem();
@@ -267,6 +352,8 @@ Page({
     const currentIndex = Number(e.detail.current || 0);
     if (currentIndex === this.data.currentIndex) return;
 
+    this.clearMediaTapTimer();
+    this.clearLikeBurstTimer();
     this.pauseAllVideos();
     this.setData({ currentIndex });
     this.ensureLikeStatus(this.data.feedItems[currentIndex], currentIndex);
