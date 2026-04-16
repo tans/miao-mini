@@ -76,6 +76,7 @@
 .claim-time {
   font-size: 12px;
   color: #999;
+  display: none;
 }
 
 .claim-status {
