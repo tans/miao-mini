@@ -120,7 +120,7 @@ Page({
       heroMedia,
       posterUrl,
       detailTags: tags,
-      locationText: tags[0] || '创意喵灵感',
+      locationText: tags[0] || '',
       likeCountText: this.formatCount(work.likes),
       viewCountText: this.formatCount(work.views),
       commentCountText: this.formatCount(comments),
