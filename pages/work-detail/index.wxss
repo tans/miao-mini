@@ -112,13 +112,13 @@
 .bottom-panel {
   position: absolute;
   z-index: 2;
-  padding: 12px 0 10px;
+  padding: 8px 0 6px;
 }
 
 .author-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .author-left {
@@ -173,10 +173,10 @@
 
 .detail-title {
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1.4;
-  margin-bottom: 8px;
+  line-height: 1.35;
+  margin-bottom: 6px;
 }
 
 .detail-content {
