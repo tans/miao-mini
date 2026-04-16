@@ -20,6 +20,22 @@ const TAG_OPTIONS = [
   '其他行业',
 ];
 
+const COVER_THEME_COUNT = 6;
+
+function createFallbackCover(seedText, description) {
+  const text = (description || seedText || '').replace(/\s+/g, ' ').trim();
+  let hash = 0;
+  const source = seedText || text || 'miao';
+  for (let i = 0; i < source.length; i += 1) {
+    hash = (hash * 31 + source.charCodeAt(i)) >>> 0;
+  }
+
+  return {
+    themeClass: `cover-theme-${hash % COVER_THEME_COUNT}`,
+    summary: (text || '创作说明').slice(0, 34),
+  };
+}
+
 Page({
   data: {
     works: [],
@@ -140,6 +156,11 @@ Page({
         '';
     }
 
+    const fallbackCover = createFallbackCover(
+      `${item.id || ''}-${item.title || ''}`,
+      item.content || item.title || ''
+    );
+
     return {
       ...item,
       coverType,
@@ -147,6 +168,8 @@ Page({
       displayCover,
       previewVideoSrc,
       likesCount: Number(item.likes || 0),
+      fallbackThemeClass: fallbackCover.themeClass,
+      fallbackSummary: fallbackCover.summary,
     };
   },
 });

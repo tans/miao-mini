@@ -2,6 +2,8 @@
 const Api = require('../../utils/api.js');
 const app = getApp();
 
+const COVER_THEME_COUNT = 6;
+
 // 计算倒计时字符串
 function formatCountdown(endAt) {
   if (!endAt) return '';
@@ -24,6 +26,20 @@ function refreshCountdowns(tasks) {
     ...t,
     countdown: formatCountdown(t.end_at)
   }));
+}
+
+function createFallbackCover(seedText, description) {
+  const text = (description || seedText || '').replace(/\s+/g, ' ').trim();
+  let hash = 0;
+  const source = seedText || text || 'miao';
+  for (let i = 0; i < source.length; i += 1) {
+    hash = (hash * 31 + source.charCodeAt(i)) >>> 0;
+  }
+
+  return {
+    themeClass: `cover-theme-${hash % COVER_THEME_COUNT}`,
+    summary: (text || '创作说明').slice(0, 34),
+  };
 }
 
 Page({
@@ -121,13 +137,19 @@ Page({
         } else if (Array.isArray(t.industries)) {
           industryArray = t.industries;
         }
+        const fallbackCover = createFallbackCover(
+          `${t.id || ''}-${t.title || ''}`,
+          t.description || t.creative_style || t.title || ''
+        );
         return {
           ...t,
           cover: firstImage ? firstImage.file_path : '',
           styleArray,
           industryArray,
           enrolled_count: (t.total_count || 0) - (t.remaining_count || 0),
-          countdown: formatCountdown(t.end_at)
+          countdown: formatCountdown(t.end_at),
+          fallbackThemeClass: fallbackCover.themeClass,
+          fallbackSummary: fallbackCover.summary,
         };
       });
 

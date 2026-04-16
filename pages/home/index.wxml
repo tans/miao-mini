@@ -56,8 +56,10 @@
           mode="aspectFill"
           lazy-load
         />
-        <view wx:else class="card-thumb-placeholder">
-          <text class="placeholder-icon">🎬</text>
+        <view wx:else class="card-thumb-fallback {{item.fallbackThemeClass}}">
+          <view class="fallback-badge">创作说明</view>
+          <text class="fallback-summary">{{item.fallbackSummary}}</text>
+          <text class="fallback-title">{{item.title}}</text>
         </view>
         <!-- 截止时间倒计时标签 -->
         <view class="card-countdown" wx:if="{{item.countdown}}">{{item.countdown}}</view>
