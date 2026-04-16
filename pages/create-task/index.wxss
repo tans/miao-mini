@@ -19,7 +19,7 @@
 }
 
 .chip.active {
-  background: #07c160;
+  background: #EF8802;
   color: #fff;
 }
 
@@ -198,7 +198,7 @@
 
 .budget-total .total {
   font-size: 18px;
-  color: #07c160;
+  color: #EF8802;
   font-weight: 600;
 }
 

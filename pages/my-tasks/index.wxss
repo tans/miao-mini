@@ -52,7 +52,7 @@
 .balance-amount {
   font-size: 16px;
   font-weight: 700;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .tabs {
@@ -125,7 +125,7 @@
 
 .task-status.passed, .task-status.status-3, .task-status.completed {
   background: #E8F5E9;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .task-status.status-4, .task-status.cancelled {
@@ -157,7 +157,7 @@
 
 .task-budget {
   font-weight: 700;
-  color: #07c160;
+  color: #EF8802;
   font-size: 15px;
 }
 
@@ -298,7 +298,7 @@
 }
 
 .btn-publish {
-  background: #07c160;
+  background: #EF8802;
   color: #fff;
   border: none;
   border-radius: 4px;

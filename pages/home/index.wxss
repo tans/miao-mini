@@ -22,7 +22,7 @@
 }
 
 .sort-item.active {
-  color: #07c160;
+  color: #EF8802;
   font-weight: 600;
 }
 
@@ -33,7 +33,7 @@
   left: 14px;
   right: 14px;
   height: 2px;
-  background: #07c160;
+  background: #EF8802;
   border-radius: 2px;
 }
 
@@ -63,7 +63,7 @@
 
 .industry-tag.active {
   background: rgba(7, 193, 96, 0.1);
-  color: #07c160;
+  color: #EF8802;
   font-weight: 600;
 }
 
@@ -154,7 +154,7 @@
 
 .card-tag {
   background: #e8f5e9;
-  color: #07c160;
+  color: #EF8802;
   font-size: 20rpx;
   padding: 2rpx 8rpx;
   border-radius: 4rpx;
@@ -174,7 +174,7 @@
 .card-price {
   font-size: 28rpx;
   font-weight: 700;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .card-remain {
@@ -252,7 +252,7 @@
 
 .task-card-grid .card-tag {
   background: #e8f5e9;
-  color: #07c160;
+  color: #EF8802;
   font-size: 20rpx;
   padding: 2rpx 8rpx;
   border-radius: 4rpx;
@@ -272,7 +272,7 @@
 .task-card-grid .card-price {
   font-size: 28rpx;
   font-weight: 700;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .task-card-grid .card-remain {
@@ -306,7 +306,7 @@
 }
 
 .fab {
-  background: #07c160;
+  background: #EF8802;
   color: #fff;
   border: none;
   border-radius: 24px;

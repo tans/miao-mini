@@ -48,7 +48,7 @@
 .role-tag {
   display: inline-block;
   font-size: 12px;
-  color: #07c160;
+  color: #EF8802;
   background: rgba(7,193,96,0.1);
   padding: 2px 8px;
   border-radius: 10px;
@@ -80,7 +80,7 @@
 }
 
 .wallet-card {
-  background: linear-gradient(135deg, #07c160, #4cd964);
+  background: linear-gradient(135deg, #EF8802, #FFAA33);
   border-radius: 12px;
   padding: 20px;
   display: flex;

@@ -62,7 +62,7 @@
 .budget-price {
   font-size: 28px;
   font-weight: 700;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .budget-award {
@@ -106,13 +106,13 @@
 .budget-highlight {
   font-size: 15px;
   font-weight: 600;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .budget-total {
   font-size: 20px;
   font-weight: 700;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .budget-value.frozen {
@@ -132,7 +132,7 @@
   display: inline-block;
   padding: 2px 8px;
   background: #e8f5e9;
-  color: #07c160;
+  color: #EF8802;
   border-radius: 4px;
   font-size: 12px;
   margin-right: 6px;
@@ -148,7 +148,7 @@
 
 .task-status.open, .task-status.online, .task-status.pending {
   background: #e8f5e9;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .task-status.in-progress, .task-status.submitted {
@@ -192,7 +192,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #07c160;
+  background: #EF8802;
   color: #fff;
   display: flex;
   align-items: center;
@@ -293,7 +293,7 @@
 }
 
 .btn-review {
-  background: #07c160;
+  background: #EF8802;
   color: #fff;
   border: none;
   border-radius: 4px;

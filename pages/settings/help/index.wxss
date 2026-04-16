@@ -93,7 +93,7 @@
 }
 
 .rule-bullet {
-  color: #07c160;
+  color: #EF8802;
   margin-right: 8px;
   font-size: 14px;
 }

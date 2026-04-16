@@ -3,17 +3,17 @@
 
 /* WeUI 主题色覆盖 - 使用weui默认颜色变量 */
 page {
-  --weui-THEME-color: #07c160;
-  --weui-BRAND-color: #07c160;
+  --weui-THEME-color: #EF8802;
+  --weui-BRAND-color: #EF8802;
 }
 
 /* 按钮主题色改为weui默认绿色 */
 .btn-primary {
-  background: #07c160;
+  background: #EF8802;
 }
 
 .btn-primary:not(.btn-disabled):active {
-  background: #059a4c;
+  background: #D66E00;
 }
 
 /* 表单样式覆盖 */
@@ -24,22 +24,22 @@ page {
 
 .form-input:focus,
 .form-textarea:focus {
-  border-color: #07c160;
-  box-shadow: 0 0 0 2px rgba(7, 193, 96, 0.1);
+  border-color: #EF8802;
+  box-shadow: 0 0 0 2px rgba(239, 136, 2, 0.1);
 }
 
 /* 标签 */
 .tag.video {
-  background: #e8f5e9;
-  color: #07c160;
+  background: #fff3e0;
+  color: #EF8802;
 }
 
 /* 状态标签 */
 .task-status.open,
 .task-status.online,
 .task-status.pending {
-  background: #e8f5e9;
-  color: #07c160;
+  background: #fff3e0;
+  color: #EF8802;
 }
 
 .task-status.in-progress,

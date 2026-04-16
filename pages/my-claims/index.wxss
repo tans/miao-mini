@@ -20,9 +20,9 @@
 }
 
 .tab.active {
-  color: #07c160;
+  color: #EF8802;
   font-weight: 500;
-  border-bottom: 2px solid #07c160;
+  border-bottom: 2px solid #EF8802;
 }
 
 .claim-task-title {
@@ -74,7 +74,7 @@
 .claim-price {
   font-size: 16px;
   font-weight: 600;
-  color: #07c160;
+  color: #EF8802;
 }
 
 .claim-time {
@@ -114,7 +114,7 @@
 }
 
 .status-0 { background: #fff7e6; color: #fa8c16; }
-.status-1 { background: #e6fff7; color: #07c160; }
+.status-1 { background: #fff3e0; color: #EF8802; }
 .status-2 { background: #e3f2fd; color: #2196f3; }
 
 .empty-state {
