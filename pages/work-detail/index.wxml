@@ -1,4 +1,4 @@
-﻿<view class="work-detail-container">
+<view class="work-detail-container">
   <view class="work-media" wx:if="{{materials.length > 0}}">
     <block wx:for="{{materials}}" wx:key="id">
       <image wx:if="{{item.file_type === 'image'}}" class="work-image" src="{{item.file_path}}" mode="widthFix" bindtap="previewMaterial" data-url="{{item.file_path}}"/>

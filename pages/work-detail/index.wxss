@@ -1,4 +1,4 @@
-﻿.work-detail-container {
+.work-detail-container {
   min-height: 100vh;
   background: #f5f5f5;
 }
