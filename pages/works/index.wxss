@@ -59,7 +59,7 @@
   background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   color: #fff;
   font-size: 13px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   border: none;
@@ -81,11 +81,13 @@
   height: 22px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.22);
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
   font-weight: 700;
+  line-height: 22px;
+  text-align: center;
 }
 
 .tag-scroll {
