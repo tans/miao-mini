@@ -1,7 +1,5 @@
 <view class="works-container">
   <view class="works-header">
-    <text class="works-title">灵感</text>
-
     <view class="search-bar">
       <view class="search-input-wrap">
         <text class="search-icon">搜</text>
@@ -68,8 +66,10 @@
           enable-play-gesture="{{false}}"
           enable-progress-gesture="{{false}}"
         ></video>
-        <view wx:else class="work-cover work-cover-placeholder">
-          <text class="placeholder-text">作品封面</text>
+        <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
+          <view class="fallback-badge">创作说明</view>
+          <text class="fallback-summary">{{item.fallbackSummary}}</text>
+          <text class="fallback-title">{{item.task_title || item.title}}</text>
         </view>
         <view class="cover-tap-mask" wx:if="{{item.isVideo}}" data-id="{{item.id}}" bindtap="goWorkDetail"></view>
         <view class="media-badge" wx:if="{{item.isVideo}}">视频</view>
