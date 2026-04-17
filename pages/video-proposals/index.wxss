@@ -237,6 +237,11 @@
   border: 1rpx solid #e5e5e5;
 }
 
+.action-btn.report {
+  background: #FF4D4F;
+  color: #fff;
+}
+
 .action-btn.accept {
   background: #EF8802;
   color: #fff;

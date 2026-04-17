@@ -160,14 +160,15 @@ Page({
   async reviewClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     const result = Number(e.currentTarget.dataset.result);
-    if (!claimId || ![1, 2].includes(result)) {
+    if (!claimId || ![1, 2, 3].includes(result)) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
 
     try {
       await Api.reviewClaim(claimId, result);
-      wx.showToast({ title: result === 1 ? '已采纳' : '已拒绝', icon: 'success' });
+      const msg = result === 1 ? '已采纳' : result === 2 ? '已拒绝' : '已举报';
+      wx.showToast({ title: msg, icon: 'success' });
       this._initPage();
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });

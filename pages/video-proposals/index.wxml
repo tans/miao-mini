@@ -76,6 +76,7 @@
         <text class="submit-time">{{item.displayDate}}</text>
         <view class="action-btns" wx:if="{{item.canReview}}">
           <text class="action-btn reject" data-claim-id="{{item.id}}" data-result="2" bindtap="reviewClaim">拒绝</text>
+          <text class="action-btn report" data-claim-id="{{item.id}}" data-result="3" bindtap="reviewClaim">举报</text>
           <text class="action-btn accept" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</text>
         </view>
       </view>
