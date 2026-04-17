@@ -59,16 +59,15 @@
             <text class="work-adopt-time">采纳时间：{{item.adoptedAtText}}</text>
             <text class="work-material-count">素材 {{item.materialCount}} 个</text>
           </view>
-        </view>
-
-        <view class="work-side" catchtap="noop">
-          <button
-            class="download-btn"
-            catchtap="downloadWorkMaterial"
-            data-url="{{item.downloadUrl}}"
-            data-type="{{item.downloadType}}"
-            disabled="{{!item.downloadUrl}}"
-          >下载</button>
+          <view class="work-actions" catchtap="noop">
+            <button
+              class="download-btn"
+              catchtap="downloadWorkMaterial"
+              data-url="{{item.downloadUrl}}"
+              data-type="{{item.downloadType}}"
+              disabled="{{!item.downloadUrl}}"
+            >下载</button>
+          </view>
         </view>
       </view>
     </view>
