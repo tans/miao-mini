@@ -8,6 +8,7 @@
     "pages/task-detail/index",
     "pages/creator/my-claims/index",
     "pages/creator/my-works/index",
+    "pages/creator/data/index",
     "pages/employer/my-tasks/index",
     "pages/transactions/index",
     "pages/settings/index",

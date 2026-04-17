@@ -1,0 +1,45 @@
+<view class="data-page">
+  <!-- 顶部标题 -->
+  <view class="page-header">
+    <text class="page-title">创作者数据</text>
+    <text class="page-subtitle">实时统计您的创作成果</text>
+  </view>
+
+  <!-- 第一行：三个统计卡片 -->
+  <view class="stats-row">
+    <view class="stat-card">
+      <text class="stat-value">{{totalClaims}}</text>
+      <text class="stat-label">累计报名</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-value">{{totalSubmitted}}</text>
+      <text class="stat-label">累计提交</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-value">{{totalAdopted}}</text>
+      <text class="stat-label">累计采纳</text>
+    </view>
+  </view>
+
+  <!-- 第二行：等级和佣金 -->
+  <view class="stats-row">
+    <view class="stat-card wide">
+      <view class="stat-content-row">
+        <view class="stat-left">
+          <text class="stat-value">{{currentLevelName}}</text>
+          <text class="stat-label">当前等级</text>
+        </view>
+        <view class="stat-arrow">→</view>
+        <view class="stat-right">
+          <text class="stat-value commission">{{commissionRate}}</text>
+          <text class="stat-label">当前佣金</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-tip" wx:if="{{loading}}">
+    <text>数据加载中...</text>
+  </view>
+</view>
