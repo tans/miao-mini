@@ -29,7 +29,8 @@
       <!-- Claim Header -->
       <view class="claim-header">
         <view class="creator-info">
-          <text class="creator-avatar">{{item.creatorInitial}}</text>
+          <image class="creator-avatar" wx:if="{{item.creatorAvatar}}" src="{{item.creatorAvatar}}" mode="aspectFill"/>
+          <text class="creator-avatar-text" wx:else>{{item.creatorInitial}}</text>
           <text class="creator-name">{{item.creatorName}}</text>
         </view>
         <view class="status-badge status-{{item.statusClass}}">{{item.statusText}}</view>
