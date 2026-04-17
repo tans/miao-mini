@@ -42,7 +42,7 @@
     <view class="panel-card">
       <view class="panel-item" bindtap="goAdoptedWorks">
         <text class="panel-item-icon">🏆</text>
-        <text class="panel-item-text">采纳作品库</text>
+        <text class="panel-item-text">作品仓库</text>
       </view>
       <view class="panel-item" bindtap="goMyTasks">
         <text class="panel-item-icon">📤</text>

@@ -19,7 +19,7 @@ function createFallbackCover(seedText, description) {
 Page({
   data: {
     works: [],
-    pageTitle: '采纳作品库',
+    pageTitle: '作品仓库',
     page: 1,
     loading: false,
     hasMore: true,
