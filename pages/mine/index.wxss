@@ -155,3 +155,10 @@
   font-size: 15px;
   margin-top: 12px;
 }
+
+.version {
+  text-align: center;
+  color: #ccc;
+  font-size: 12px;
+  margin-top: 24px;
+}

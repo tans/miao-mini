@@ -1,16 +1,19 @@
 const Api = require('../../utils/api.js');
 const app = getApp();
+const buildInfo = require('../../build-info.js');
 
 Page({
   data: {
     user: null,
     balance: '0.00',
-    isLoggedIn: false
+    isLoggedIn: false,
+    displayText: ''
   },
 
   onShow() {
     const isLoggedIn = app.isLoggedIn();
     this.setData({ isLoggedIn });
+    this.updateDisplayText();
     if (isLoggedIn) {
       this.loadUserAndWallet();
     } else {
@@ -43,6 +46,18 @@ Page({
       if (err.message !== '登录已过期') {
         wx.showToast({ title: '加载失败', icon: 'none' });
       }
+    }
+  },
+
+  updateDisplayText() {
+    const uploadTime = buildInfo.uploadTime;
+    if (uploadTime) {
+      const date = new Date(uploadTime);
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      this.setData({ displayText: `${month}-${day} ${hours}:${minutes}` });
     }
   },
 
@@ -91,12 +106,6 @@ Page({
       // 所有用户都有商家和创作者角色，可以访问任意作品页面
       // 根据当前角色设置决定跳转，这里改为都显示提案页（商家视角）
       wx.navigateTo({ url: '/pages/video-proposals/index' });
-    });
-  },
-
-  goSettings() {
-    this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/settings/index' });
     });
   },
 
