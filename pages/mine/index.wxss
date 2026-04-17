@@ -275,15 +275,15 @@
   margin-top: 24px;
 }
 
-/* 辅助链接 */
-.辅助-links {
+/* Helper Links */
+.helper-links {
   background: #fff;
   border-radius: 12px;
   margin-top: 12px;
   overflow: hidden;
 }
 
-.辅助-link-item {
+.helper-link-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -291,16 +291,16 @@
   border-bottom: 1px solid #f0f0f0;
 }
 
-.辅助-link-item:last-child {
+.helper-link-item:last-child {
   border-bottom: none;
 }
 
-.辅助-link-text {
+.helper-link-text {
   font-size: 14px;
   color: #333;
 }
 
-.辅助-link-arrow {
+.helper-link-arrow {
   color: #ccc;
   font-size: 14px;
 }

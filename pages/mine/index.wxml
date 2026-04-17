@@ -87,11 +87,11 @@
     </view>
   </view>
 
-  <!-- 辅助链接 -->
-  <view class="辅助-links">
-    <view class="辅助-link-item" bindtap="goHelp">
-      <text class="辅助-link-text">帮助中心</text>
-      <text class="辅助-link-arrow">></text>
+  <!-- Helper Links -->
+  <view class="helper-links">
+    <view class="helper-link-item" bindtap="goHelp">
+      <text class="helper-link-text">帮助中心</text>
+      <text class="helper-link-arrow">></text>
     </view>
   </view>
 
