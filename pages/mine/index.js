@@ -7,7 +7,16 @@ Page({
     user: null,
     balance: '0.00',
     isLoggedIn: false,
-    displayText: ''
+    displayText: '',
+    creatorStats: {
+      level: 0,
+      level_name: '试用创作者',
+      adopted_count: 0,
+      daily_limit: 3,
+      commission_rate: '10%',
+      next_level_name: '新手创作者',
+      need_count: 1
+    }
   },
 
   onShow() {
@@ -16,6 +25,7 @@ Page({
     this.updateDisplayText();
     if (isLoggedIn) {
       this.loadUserAndWallet();
+      this.loadCreatorStats();
     } else {
       this.setData({ user: null, balance: '0.00' });
       // 触发静默登录
@@ -23,6 +33,7 @@ Page({
         this.setData({ isLoggedIn: app.isLoggedIn() });
         if (app.isLoggedIn()) {
           this.loadUserAndWallet();
+          this.loadCreatorStats();
         }
       });
     }
@@ -46,6 +57,49 @@ Page({
       if (err.message !== '登录已过期') {
         wx.showToast({ title: '加载失败', icon: 'none' });
       }
+    }
+  },
+
+  async loadCreatorStats() {
+    try {
+      const res = await Api.getCreatorStats();
+      const stats = res.data || {};
+      // 计算升级所需
+      const levelConfig = [
+        { level: 0, need: 1, next: '新手创作者' },
+        { level: 1, need: 5, next: '活跃创作者' },
+        { level: 2, need: 20, next: '优质创作者' },
+        { level: 3, need: 50, next: '金牌创作者' },
+        { level: 4, need: 100, next: '特约创作者' },
+        { level: 5, need: null, next: null }
+      ];
+      const adopted = stats.adopted_count || 0;
+      let nextLevel = null;
+      let needCount = 0;
+      for (const cfg of levelConfig) {
+        if (cfg.level === stats.level) {
+          nextLevel = cfg.next;
+          needCount = cfg.need ? cfg.need - adopted : 0;
+          break;
+        }
+      }
+      // 每日投稿上限
+      const dailyLimits = [3, 8, 15, 30, 50, 999];
+      const commissionRates = ['10%', '10%', '10%', '5%', '5%', '3%'];
+      const levelNameMap = ['试用创作者', '新手创作者', '活跃创作者', '优质创作者', '金牌创作者', '特约创作者'];
+      this.setData({
+        creatorStats: {
+          level: stats.level || 0,
+          level_name: levelNameMap[stats.level] || '试用创作者',
+          adopted_count: adopted,
+          daily_limit: dailyLimits[stats.level] || 3,
+          commission_rate: commissionRates[stats.level] || '10%',
+          next_level_name: nextLevel,
+          need_count: Math.max(0, needCount)
+        }
+      });
+    } catch (err) {
+      // 使用默认数据
     }
   },
 
@@ -98,6 +152,31 @@ Page({
   goMyTasks() {
     this._ensureLogin(() => {
       wx.navigateTo({ url: '/pages/my-tasks/index' });
+    });
+  },
+
+  goRequirements() {
+    this._ensureLogin(() => {
+      wx.switchTab({ url: '/pages/home/index' });
+    });
+  },
+
+  goPublishTask() {
+    this._ensureLogin(() => {
+      wx.navigateTo({ url: '/pages/create-task/index' });
+    });
+  },
+
+  goAdoptedWorks() {
+    this._ensureLogin(() => {
+      wx.navigateTo({ url: '/pages/works/index' });
+    });
+  },
+
+  goCreatorLevel() {
+    this._ensureLogin(() => {
+      // 创作者等级详情页，暂跳转到帮助页面
+      wx.navigateTo({ url: '/pages/settings/help/index' });
     });
   },
 
