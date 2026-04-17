@@ -220,6 +220,14 @@
   min-width: 56px;
 }
 
+.comment-view-action {
+  min-width: 62px;
+}
+
+.comment-view-label {
+  font-size: 12px;
+}
+
 .comment-share-hit-btn {
   position: absolute;
   inset: 0;
