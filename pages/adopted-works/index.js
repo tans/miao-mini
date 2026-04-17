@@ -1,4 +1,5 @@
 const Api = require('../../utils/api.js');
+const app = getApp();
 
 const COVER_THEME_COUNT = 6;
 
@@ -27,16 +28,15 @@ Page({
 
   onLoad() {
     this.navigating = false;
+    this.initialized = false;
   },
 
   onShow() {
-    if (this.data.works.length === 0) {
-      this.resetAndLoad();
-    }
+    this.bootstrap();
   },
 
   onPullDownRefresh() {
-    this.resetAndLoad().then(() => wx.stopPullDownRefresh());
+    this.bootstrap(true).finally(() => wx.stopPullDownRefresh());
   },
 
   onReachBottom() {
@@ -49,6 +49,25 @@ Page({
   async resetAndLoad() {
     this.setData({ works: [], page: 1, hasMore: true });
     await this.loadWorks();
+  },
+
+  async bootstrap(force = false) {
+    if (this.initialized && !force) return;
+    const loggedIn = await this.ensureLogin();
+    if (!loggedIn) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return;
+    }
+    this.initialized = true;
+    if (force || this.data.works.length === 0) {
+      await this.resetAndLoad();
+    }
+  },
+
+  async ensureLogin() {
+    if (app.isLoggedIn()) return true;
+    await app.silentLogin();
+    return app.isLoggedIn();
   },
 
   async loadWorks() {
