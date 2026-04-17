@@ -7,7 +7,7 @@
     </view>
     <view class="task-meta">
       <text class="meta-item">赏金: ¥{{task.unit_price || 0}}</text>
-      <text class="meta-item">截止: {{task.end_at || '不限'}}</text>
+      <text class="meta-item">截止: {{task.end_at ? task.end_at.substring(0, 10) : '不限'}}</text>
       <text class="meta-item">报名: {{task.signup_count || 0}}</text>
     </view>
   </view>
