@@ -48,14 +48,6 @@
             </view>
 
             <view class="bottom-panel" style="left: {{pageSideInset}}px; right: {{pageSideInset}}px; bottom: {{overlayBottom}}px;">
-              <view class="author-row">
-                <view class="author-left">
-                  <view class="author-meta">
-                    <text class="author-name">{{item.creator_name || '创作�?}}</text>
-                  </view>
-                </view>
-              </view>
-
               <view class="content-block">
                 <text class="detail-title">{{item.task_title || item.title || '灵感详情'}}</text>
                 <text class="detail-content" wx:if="{{item.content}}">{{item.content}}</text>
@@ -83,6 +75,9 @@
 
   <view class="feed-loading" wx:if="{{loadingMore}}">加载更多灵感...</view>
 </view>
+
+
+
 
 
 

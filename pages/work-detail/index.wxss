@@ -144,29 +144,6 @@
   padding: 8px 0 6px;
 }
 
-.author-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-.author-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.author-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.author-name {
-  font-size: 14px;
-  font-weight: 600;
-}
-
 .content-block {
   max-width: 100%;
   padding-right: 8px;
@@ -279,6 +256,7 @@
   color: rgba(255, 255, 255, 0.86);
   font-size: 12px;
 }
+
 
 
 
