@@ -190,9 +190,9 @@ Page({
     });
   },
 
-  goCreatorLevel() {
+  goCreatorData() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/creator/level/index' });
+      wx.navigateTo({ url: '/pages/creator/data/index' });
     });
   },
 

@@ -12,7 +12,7 @@
   <view class="panel-section">
     <view class="panel-label">创作者面板</view>
     <view class="panel-card">
-      <view class="panel-item" bindtap="goCreatorLevel">
+      <view class="panel-item" bindtap="goCreatorData">
         <text class="panel-item-icon">📊</text>
         <text class="panel-item-text">创作数据</text>
       </view>
