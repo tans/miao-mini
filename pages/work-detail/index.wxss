@@ -213,10 +213,15 @@
 .comment-icon {
   font-size: 18px;
   color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
 }
 
 .comment-icon.active {
   color: #ff4d6d;
+}
+
+.comment-like-icon {
+  font-size: 24px;
 }
 
 .comment-count {
@@ -229,11 +234,29 @@
 }
 
 .comment-view-action {
-  min-width: 62px;
+  min-width: 54px;
 }
 
-.comment-view-label {
-  font-size: 12px;
+.comment-eye-icon {
+  width: 18px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px 999px 999px 999px / 80% 80% 80% 80%;
+  box-sizing: border-box;
+}
+
+.comment-eye-pupil {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.comment-share-icon {
+  font-size: 20px;
 }
 
 .comment-share-hit-btn {

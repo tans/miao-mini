@@ -60,16 +60,17 @@
             </view>
             <view class="comment-actions">
               <view class="comment-action" bindtap="toggleLike">
-                <text class="comment-icon {{item.isLiked ? 'active' : ''}}">♥</text>
+                <text class="comment-icon comment-like-icon {{item.isLiked ? 'active' : ''}}">♥</text>
                 <text class="comment-count">{{item.likeCountText}}</text>
               </view>
               <view class="comment-action comment-view-action">
-                <text class="comment-icon comment-view-label">浏览</text>
+                <view class="comment-eye-icon">
+                  <view class="comment-eye-pupil"></view>
+                </view>
                 <text class="comment-count">{{item.viewCountText}}</text>
               </view>
               <view class="comment-action comment-share-action">
-                <text class="comment-icon">↗</text>
-                <text class="comment-count">分享</text>
+                <text class="comment-icon comment-share-icon">↗</text>
                 <button class="comment-share-hit-btn" open-type="share"></button>
               </view>
             </view>
