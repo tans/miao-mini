@@ -110,5 +110,41 @@
         <text class="detail-sheet-author-name">{{currentDetailItem.creator_name || '创作者'}}</text>
       </view>
     </view>
+    <view class="detail-sheet-section" wx:if="{{currentDetailItem.materials && currentDetailItem.materials.length > 0}}">
+      <text class="detail-sheet-label">{{entryMode === 'adopted' ? '采纳作品素材' : '作品素材'}}</text>
+      <view class="detail-material-list">
+        <view class="detail-material-item" wx:for="{{currentDetailItem.materials}}" wx:key="id">
+          <view class="detail-material-main">
+            <image
+              wx:if="{{item.file_type === 'image'}}"
+              class="detail-material-thumb"
+              src="{{item.thumbnail_path || item.file_path}}"
+              mode="aspectFill"
+              bindtap="previewMaterial"
+              data-url="{{item.file_path}}"
+            />
+            <view wx:else class="detail-material-thumb detail-material-video-thumb">视频</view>
+            <view class="detail-material-meta">
+              <text class="detail-material-name">{{item.file_name || '作品素材'}}</text>
+              <text class="detail-material-type">{{item.file_type === 'video' ? '视频' : '图片'}}</text>
+            </view>
+          </view>
+          <view class="detail-material-actions">
+            <button
+              wx:if="{{item.file_type === 'image'}}"
+              class="detail-material-btn detail-material-preview-btn"
+              bindtap="previewMaterial"
+              data-url="{{item.file_path}}"
+            >查看</button>
+            <button
+              class="detail-material-btn detail-material-download-btn"
+              bindtap="downloadMaterial"
+              data-url="{{item.file_path}}"
+              data-type="{{item.file_type}}"
+            >下载</button>
+          </view>
+        </view>
+      </view>
+    </view>
   </scroll-view>
 </view>

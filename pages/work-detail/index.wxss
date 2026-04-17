@@ -402,6 +402,87 @@
   color: rgba(255, 255, 255, 0.92);
 }
 
+.detail-material-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-material-item {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.detail-material-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-material-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.detail-material-video-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 13px;
+}
+
+.detail-material-meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-material-name {
+  font-size: 14px;
+  color: #fff;
+  word-break: break-all;
+}
+
+.detail-material-type {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.detail-material-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.detail-material-btn {
+  margin: 0;
+  padding: 0 14px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.detail-material-btn::after {
+  border: none;
+}
+
+.detail-material-preview-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.detail-material-download-btn {
+  background: #ef8802;
+  color: #fff;
+}
+
 @keyframes detail-sheet-up {
   from {
     transform: translateY(100%);

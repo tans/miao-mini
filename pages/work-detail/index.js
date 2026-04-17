@@ -6,6 +6,7 @@ Page({
     feedItems: [],
     currentIndex: 0,
     currentDetailItem: null,
+    entryMode: 'public',
     detailPanelVisible: false,
     loading: false,
     loadingMore: false,
@@ -24,6 +25,7 @@ Page({
     this.likeBurstTimer = null;
     this.setupViewportLayout();
     this.workId = Number(e.id || 0);
+    this.setData({ entryMode: e.mode === 'adopted' ? 'adopted' : 'public' });
     this.videoContexts = {};
     if (this.workId) {
       this.bootstrapFeed(this.workId);
@@ -94,7 +96,8 @@ Page({
       const currentRes = await Api.getWork(id);
       const currentWork = this.normalizeWork(currentRes.data || {});
 
-      const listRes = await Api.getWorks({ sort: 'latest', page: 1, limit: 10 });
+      const requestApi = this.data.entryMode === 'adopted' ? Api.getBusinessWorks.bind(Api) : Api.getWorks.bind(Api);
+      const listRes = await requestApi({ sort: 'latest', page: 1, limit: 10 });
       const list = (listRes.data?.data || []).map((item) => this.normalizeWork(item));
 
       const merged = this.mergeFeed(currentWork, list);
@@ -374,7 +377,8 @@ Page({
     this.setData({ loadingMore: true });
     try {
       const nextPage = this.data.page + 1;
-      const res = await Api.getWorks({ sort: 'latest', page: nextPage, limit: 10 });
+      const requestApi = this.data.entryMode === 'adopted' ? Api.getBusinessWorks.bind(Api) : Api.getWorks.bind(Api);
+      const res = await requestApi({ sort: 'latest', page: nextPage, limit: 10 });
       const incoming = (res.data?.data || []).map((item) => this.normalizeWork(item));
       const exists = new Set(this.data.feedItems.map((item) => item.id));
       const appended = incoming.filter((item) => item.id && !exists.has(item.id));
@@ -393,7 +397,87 @@ Page({
   previewMaterial(e) {
     const url = e.currentTarget.dataset.url;
     if (!url) return;
-    wx.previewImage({ urls: [url], current: url });
+    const current = this.getCurrentItem();
+    const materials = Array.isArray(current?.materials) ? current.materials : [];
+    const imageUrls = materials
+      .filter((item) => item && item.file_type === 'image' && item.file_path)
+      .map((item) => item.file_path);
+    wx.previewImage({
+      urls: imageUrls.length > 0 ? imageUrls : [url],
+      current: url,
+    });
+  },
+
+  downloadMaterial(e) {
+    const url = e.currentTarget.dataset.url;
+    const type = e.currentTarget.dataset.type || '';
+    if (!url) return;
+
+    wx.showLoading({ title: '下载中...' });
+    wx.downloadFile({
+      url,
+      success: (res) => {
+        if (res.statusCode !== 200) {
+          wx.hideLoading();
+          wx.showToast({ title: '下载失败', icon: 'none' });
+          return;
+        }
+
+        if (type === 'image' && wx.saveImageToPhotosAlbum) {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              wx.hideLoading();
+              wx.showToast({ title: '已保存到相册', icon: 'success' });
+            },
+            fail: () => this.fallbackOpenDownloadedFile(res.tempFilePath),
+          });
+          return;
+        }
+
+        if (type === 'video' && wx.saveVideoToPhotosAlbum) {
+          wx.saveVideoToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              wx.hideLoading();
+              wx.showToast({ title: '已保存到相册', icon: 'success' });
+            },
+            fail: () => this.fallbackOpenDownloadedFile(res.tempFilePath),
+          });
+          return;
+        }
+
+        this.fallbackOpenDownloadedFile(res.tempFilePath);
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showToast({ title: '下载失败', icon: 'none' });
+      },
+    });
+  },
+
+  fallbackOpenDownloadedFile(filePath) {
+    wx.saveFileToDisk({
+      filePath,
+      success: () => {
+        wx.hideLoading();
+        wx.showToast({ title: '保存成功', icon: 'success' });
+      },
+      fail: () => {
+        wx.openDocument({
+          filePath,
+          showMenu: true,
+          success: () => {
+            wx.hideLoading();
+            wx.showToast({ title: '已打开', icon: 'success' });
+          },
+          fail: () => {
+            wx.hideLoading();
+            wx.showToast({ title: '下载失败', icon: 'none' });
+          },
+        });
+      },
+    });
   },
 
   openDetailPanel() {

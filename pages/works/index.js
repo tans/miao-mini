@@ -1,4 +1,5 @@
 const Api = require('../../utils/api.js');
+const app = getApp();
 
 const TAG_OPTIONS = [
   '全部',
@@ -41,6 +42,8 @@ function createFallbackCover(seedText, description) {
 Page({
   data: {
     works: [],
+    worksMode: 'public',
+    worksModeLabel: '灵感',
     sort: 'latest',
     keyword: '',
     searchValue: '',
@@ -55,7 +58,18 @@ Page({
   onLoad() {
     this.navigating = false;
     this._resetSearchBarScrollState();
-    this.loadWorks();
+  },
+
+  onShow() {
+    const nextMode = app.getWorksMode ? app.getWorksMode() : 'public';
+    const worksMode = nextMode === 'adopted' ? 'adopted' : 'public';
+    const worksModeLabel = worksMode === 'adopted' ? '采纳作品库' : '灵感';
+    const modeChanged = worksMode !== this.data.worksMode;
+
+    this.setData({ worksMode, worksModeLabel });
+    if (modeChanged || this.data.works.length === 0) {
+      this.resetAndLoad();
+    }
   },
 
   onPageScroll(e) {
@@ -152,13 +166,30 @@ Page({
     this.resetAndLoad();
   },
 
+  switchWorksMode() {
+    const nextMode = this.data.worksMode === 'adopted' ? 'public' : 'adopted';
+    if (app.setWorksMode) {
+      app.setWorksMode(nextMode);
+    }
+    this.setData({
+      worksMode: nextMode,
+      worksModeLabel: nextMode === 'adopted' ? '采纳作品库' : '灵感',
+      searchValue: '',
+      keyword: '',
+      activeTag: '全部',
+      sort: 'latest',
+    });
+    this.resetAndLoad();
+  },
+
   async loadWorks() {
     if (this.data.loading) return;
 
     this.setData({ loading: true });
     try {
       const tag = this.data.activeTag === '全部' ? '' : this.data.activeTag;
-      const res = await Api.getWorks({
+      const requestApi = this.data.worksMode === 'adopted' ? Api.getBusinessWorks.bind(Api) : Api.getWorks.bind(Api);
+      const res = await requestApi({
         sort: this.data.sort,
         keyword: this.data.keyword,
         tag,
@@ -184,7 +215,7 @@ Page({
     if (!id) return;
     this.navigating = true;
     wx.navigateTo({
-      url: `/pages/work-detail/index?id=${id}`,
+      url: `/pages/work-detail/index?id=${id}&mode=${this.data.worksMode}`,
       complete: () => {
         setTimeout(() => {
           this.navigating = false;

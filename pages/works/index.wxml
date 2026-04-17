@@ -1,5 +1,9 @@
 <view class="works-container">
   <view class="works-header">
+    <view class="works-mode-banner">
+      <text>{{worksModeLabel}}</text>
+      <text class="works-mode-switch" bindtap="switchWorksMode">{{worksMode === 'adopted' ? '看公共灵感' : '看采纳作品库'}}</text>
+    </view>
     <view class="search-bar {{searchBarHidden ? 'search-bar-hidden' : ''}}">
       <view class="search-input-wrap">
         <view class="search-field">

@@ -14,6 +14,22 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
+.works-mode-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #20242c;
+}
+
+.works-mode-switch {
+  font-size: 12px;
+  font-weight: 500;
+  color: #ef8802;
+}
+
 .search-bar {
   max-height: 56px;
   margin-bottom: 12px;

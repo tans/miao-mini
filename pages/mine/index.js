@@ -186,6 +186,7 @@ Page({
 
   goAdoptedWorks() {
     this._ensureLogin(() => {
+      app.setWorksMode('adopted');
       wx.switchTab({ url: '/pages/works/index' });
     });
   },
