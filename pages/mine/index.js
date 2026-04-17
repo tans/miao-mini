@@ -198,9 +198,7 @@ Page({
 
   goWorks() {
     this._ensureLogin(() => {
-      // 所有用户都有商家和创作者角色，可以访问任意作品页面
-      // 根据当前角色设置决定跳转，这里改为都显示提案页（商家视角）
-      wx.navigateTo({ url: '/pages/video-proposals/index' });
+      wx.navigateTo({ url: '/pages/my-works/index' });
     });
   },
 

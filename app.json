@@ -6,6 +6,7 @@
     "pages/mine/index",
     "pages/task-detail/index",
     "pages/my-claims/index",
+    "pages/my-works/index",
     "pages/my-tasks/index",
     "pages/transactions/index",
     "pages/settings/index",
