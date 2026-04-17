@@ -68,14 +68,9 @@
           </view>
 
           <view class="comment-bar" style="padding-left: {{pageSideInset}}px; padding-right: {{pageSideInset}}px;">
-            <view class="comment-input">说点什么...</view>
             <view class="comment-action" bindtap="toggleLike">
               <text class="comment-icon {{item.isLiked ? 'active' : ''}}">♥</text>
               <text class="comment-count">{{item.likeCountText}}</text>
-            </view>
-            <view class="comment-action comment-panel-btn" bindtap="openCommentPanel">
-              <text class="comment-icon">✎</text>
-              <text class="comment-count">评论区</text>
             </view>
           </view>
         </view>
@@ -84,14 +79,4 @@
   </swiper>
 
   <view class="feed-loading" wx:if="{{loadingMore}}">加载更多灵感...</view>
-
-  <view wx:if="{{showCommentPanel}}" class="comment-sheet-mask" bindtap="closeCommentPanel"></view>
-  <view wx:if="{{showCommentPanel}}" class="comment-sheet">
-    <view class="comment-sheet-handle"></view>
-    <view class="comment-sheet-header">
-      <text class="comment-sheet-title">评论区</text>
-      <view class="comment-sheet-close" bindtap="closeCommentPanel">关闭</view>
-    </view>
-    <view class="comment-sheet-empty">暂无评论，来抢个沙发</view>
-  </view>
 </view>

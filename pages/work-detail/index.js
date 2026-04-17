@@ -14,7 +14,6 @@ Page({
     overlayBottom: 0,
     leftActionInset: 10,
     rightActionInset: 8,
-    showCommentPanel: false,
   },
 
   onLoad(e) {
@@ -32,7 +31,6 @@ Page({
   onUnload() {
     this.clearMediaTapTimer();
     this.clearLikeBurstTimer();
-    this.closeCommentPanel();
     this.pauseAllVideos();
   },
 
@@ -87,14 +85,6 @@ Page({
     }
   },
 
-  openCommentPanel() {
-    this.setData({ showCommentPanel: true });
-  },
-
-  closeCommentPanel() {
-    this.setData({ showCommentPanel: false });
-  },
-
   async bootstrapFeed(id) {
     this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
@@ -142,7 +132,6 @@ Page({
     const heroMedia = this.pickHeroMedia(work, materials);
     const posterUrl = this.pickPoster(work, materials, heroMedia);
     const tags = Array.isArray(work.tags) ? work.tags.slice(0, 3) : [];
-    const comments = Number(work.comments || 0);
 
     return {
       ...work,
@@ -153,7 +142,6 @@ Page({
       locationText: tags[0] || '',
       likeCountText: this.formatCount(work.likes),
       viewCountText: this.formatCount(work.views),
-      commentCountText: this.formatCount(comments),
       isLiked: !!work.is_liked,
       paused: false,
       showLikeBurst: false,
@@ -364,7 +352,6 @@ Page({
 
     this.clearMediaTapTimer();
     this.clearLikeBurstTimer();
-    this.closeCommentPanel();
     this.pauseAllVideos();
     this.setData({ currentIndex });
     this.ensureLikeStatus(this.data.feedItems[currentIndex], currentIndex);
