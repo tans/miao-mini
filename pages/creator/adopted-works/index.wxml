@@ -1,50 +1,12 @@
 <view class="works-container">
   <view class="works-header">
     <text class="works-title">{{pageTitle}}</text>
-    <view class="search-bar {{searchBarHidden ? 'search-bar-hidden' : ''}}">
-      <view class="search-input-wrap">
-        <view class="search-field">
-          <text class="search-icon">搜</text>
-          <input
-            class="search-input"
-            value="{{searchValue}}"
-            placeholder="搜索标题、创作者、内容"
-            confirm-type="search"
-            bindinput="onSearchInput"
-            bindconfirm="onSearchConfirm"
-          />
-          <text class="search-clear" wx:if="{{searchValue}}" bindtap="clearSearch">清空</text>
-        </view>
-        <button class="search-btn" bindtap="onSearchConfirm">
-          <text class="search-btn-label">搜索</text>
-        </button>
-      </view>
-    </view>
-
-    <scroll-view class="tag-scroll" scroll-x enable-flex>
-      <view class="tag-list">
-        <view
-          wx:for="{{tags}}"
-          wx:key="*this"
-          class="tag-chip {{activeTag === item ? 'active' : ''}}"
-          data-tag="{{item}}"
-          bindtap="switchTag"
-        >
-          {{item}}
-        </view>
-      </view>
-    </scroll-view>
 
     <view class="sort-tabs">
       <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">最新发布</text>
       <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">点赞最多</text>
       <text class="tab {{sort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">浏览最多</text>
     </view>
-  </view>
-
-  <view class="active-filters" wx:if="{{keyword || activeTag !== '全部'}}">
-    <text class="filter-pill" wx:if="{{keyword}}">搜索: {{keyword}}</text>
-    <text class="filter-pill" wx:if="{{activeTag !== '全部'}}">标签: {{activeTag}}</text>
   </view>
 
   <mp-msg type="info" title="暂无采纳作品" wx:if="{{!loading && works.length === 0}}" />
