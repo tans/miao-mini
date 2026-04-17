@@ -1,4 +1,4 @@
-const Api = require('../../utils/api.js');
+const Api = require('../../../utils/api.js');
 const app = getApp();
 
 const FILTERS = [

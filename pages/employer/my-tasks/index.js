@@ -1,6 +1,6 @@
 // pages/my-tasks/index.js
-const Api = require('../../utils/api.js');
-const { getStatusText, formatDate } = require('../../utils/util.js');
+const Api = require('../../../utils/api.js');
+const { getStatusText, formatDate } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -61,11 +61,11 @@ Page({
 
   goReviewTask(e) {
     const taskId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/video-proposals/index?taskId=${taskId}` });
+    wx.navigateTo({ url: `/pages/employer/video-proposals/index?taskId=${taskId}` });
   },
 
   goCreateTask() {
-    wx.navigateTo({ url: '/pages/create-task/index' });
+    wx.navigateTo({ url: '/pages/employer/create-task/index' });
   },
 
   goWallet() {

@@ -1,6 +1,6 @@
 // pages/video-proposals/index.js
 // 商家审核作品页面
-const Api = require('../../utils/api.js');
+const Api = require('../../../utils/api.js');
 const app = getApp();
 
 Page({

@@ -248,7 +248,7 @@ Page({
     const { myClaim } = this.data;
     if (myClaim) {
       wx.navigateTo({
-        url: `/pages/submit-work/index?claimId=${myClaim.id}&taskId=${myClaim.task_id}`
+        url: `/pages/creator/submit-work/index?claimId=${myClaim.id}&taskId=${myClaim.task_id}`
       });
     }
   },
@@ -269,8 +269,8 @@ Page({
   goReviewProposals() {
     const taskId = this.data.task && this.data.task.id;
     const url = taskId
-      ? `/pages/video-proposals/index?taskId=${taskId}`
-      : '/pages/video-proposals/index';
+      ? `/pages/employer/video-proposals/index?taskId=${taskId}`
+      : '/pages/employer/video-proposals/index';
     wx.navigateTo({ url });
   },
 

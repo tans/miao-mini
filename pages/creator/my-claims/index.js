@@ -1,5 +1,5 @@
-const Api = require('../../utils/api.js');
-const { getClaimStatusText } = require('../../utils/util.js');
+const Api = require('../../../utils/api.js');
+const { getClaimStatusText } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -89,7 +89,7 @@ Page({
 
   showSubmitModal(e) {
     const claimId = e.currentTarget.dataset.claimId;
-    wx.navigateTo({ url: `/pages/submit-work/index?claimId=${claimId}` });
+    wx.navigateTo({ url: `/pages/creator/submit-work/index?claimId=${claimId}` });
   },
 
   hideSubmitModal() {

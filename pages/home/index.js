@@ -247,6 +247,6 @@ Page({
   },
 
   goCreateTask() {
-    wx.navigateTo({ url: '/pages/create-task/index' });
+    wx.navigateTo({ url: '/pages/employer/create-task/index' });
   },
 });

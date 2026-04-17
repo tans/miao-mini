@@ -168,37 +168,37 @@ Page({
 
   goMyTasks() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/my-tasks/index' });
+      wx.navigateTo({ url: '/pages/employer/my-tasks/index' });
     });
   },
 
   goMyClaims() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/my-claims/index' });
+      wx.navigateTo({ url: '/pages/creator/my-claims/index' });
     });
   },
 
   goPublishTask() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/create-task/index' });
+      wx.navigateTo({ url: '/pages/employer/create-task/index' });
     });
   },
 
   goAdoptedWorks() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/adopted-works/index' });
+      wx.navigateTo({ url: '/pages/creator/adopted-works/index' });
     });
   },
 
   goCreatorLevel() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/creator-level/index' });
+      wx.navigateTo({ url: '/pages/creator/level/index' });
     });
   },
 
   goWorks() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/my-works/index' });
+      wx.navigateTo({ url: '/pages/creator/my-works/index' });
     });
   },
 

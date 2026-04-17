@@ -1,5 +1,5 @@
 // pages/create-task/index.js
-const Api = require('../../utils/api.js');
+const Api = require('../../../utils/api.js');
 const app = getApp();
 
 Page({
@@ -323,7 +323,7 @@ Page({
       });
       wx.showToast({ title: '发布成功！', icon: 'success' });
       setTimeout(() => {
-        wx.navigateTo({ url: '/pages/my-tasks/index' });
+        wx.navigateTo({ url: '/pages/employer/my-tasks/index' });
       }, 1500);
     } catch (err) {
       const msg = err && err.message || '发布失败';

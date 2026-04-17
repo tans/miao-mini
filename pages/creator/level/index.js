@@ -72,7 +72,7 @@ Page({
   },
 
   async loadCreatorStats() {
-    const Api = require('../../utils/api.js');
+    const Api = require('../../../utils/api.js');
     const app = getApp();
     try {
       const res = await Api.getCreatorStats();
