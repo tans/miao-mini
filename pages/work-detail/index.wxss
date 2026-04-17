@@ -239,18 +239,18 @@
 
 .comment-eye-icon {
   width: 18px;
-  height: 12px;
+  height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid rgba(255, 255, 255, 0.9);
-  border-radius: 999px 999px 999px 999px / 80% 80% 80% 80%;
+  border-radius: 999px;
   box-sizing: border-box;
 }
 
 .comment-eye-pupil {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.9);
 }
