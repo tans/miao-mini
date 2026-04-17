@@ -186,7 +186,7 @@ Page({
 
   goAdoptedWorks() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/works/index' });
+      wx.switchTab({ url: '/pages/works/index' });
     });
   },
 
