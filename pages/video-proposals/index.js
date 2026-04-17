@@ -1,14 +1,7 @@
 // pages/video-proposals/index.js
-// 商家审核单一任务的提案页面
+// 商家审核作品页面
 const Api = require('../../utils/api.js');
 const app = getApp();
-
-const FILTERS = [
-  { key: 'all', label: '全部' },
-  { key: 'pending', label: '待审核' },
-  { key: 'passed', label: '已采纳' },
-  { key: 'rejected', label: '已拒绝' }
-];
 
 Page({
   data: {
@@ -16,7 +9,12 @@ Page({
     claims: [],
     filteredClaims: [],
     activeFilter: 'all',
-    filters: FILTERS,
+    filters: [
+      { key: 'all', label: '全部' },
+      { key: 'pending', label: '待审核' },
+      { key: 'passed', label: '已采纳' },
+      { key: 'rejected', label: '已拒绝' }
+    ],
     loading: false,
     taskId: ''
   },
@@ -30,6 +28,8 @@ Page({
       setTimeout(() => wx.navigateBack(), 1500);
       return;
     }
+
+    wx.setNavigationBarTitle({ title: '作品审核' });
 
     if (!app.isLoggedIn()) {
       app.silentLogin().then(() => {
