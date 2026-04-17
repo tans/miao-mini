@@ -119,6 +119,28 @@
     </view>
   </view>
 
+  <!-- 即梦合拍 -->
+  <view class="section-card jimeng-card" wx:if="{{task.jimeng_link}}">
+    <view class="section-title">
+      <text class="title-icon">✨</text>
+      <text>即梦合拍</text>
+    </view>
+    <view class="section-content">
+      <view class="jimeng-invite">快来即梦，跟 {{task.business_name || '大师兄'}} 一起合拍整活！😆</view>
+      <view class="jimeng-link-row">
+        <text class="jimeng-label">链接：</text>
+        <text class="jimeng-link" selectable="true">{{task.jimeng_link}}</text>
+        <button class="copy-btn" data-copy="{{task.jimeng_link}}" bindtap="copyText">复制</button>
+      </view>
+      <view class="jimeng-code-row" wx:if="{{task.jimeng_code}}">
+        <text class="jimeng-label">验证码：</text>
+        <text class="jimeng-code" selectable="true">{{task.jimeng_code}}</text>
+        <button class="copy-btn" data-copy="{{task.jimeng_code}}" bindtap="copyText">复制</button>
+      </view>
+      <view class="jimeng-hint">⚠️ 链接有效期48小时，请尽快完成合拍</view>
+    </view>
+  </view>
+
   <!-- 商家信息 - 仅商家端显示 -->
   <view class="section-card merchant-section" wx:if="{{isMyTask}}">
     <view class="section-title">

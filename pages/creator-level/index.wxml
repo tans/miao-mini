@@ -1,0 +1,100 @@
+<view class="level-page">
+  <view class="page-header">
+    <text class="page-title">创作者积分体系</text>
+    <text class="page-subtitle">等级越高，权益越好，佣金越低</text>
+  </view>
+
+  <!-- 等级表格 -->
+  <view class="level-table">
+    <view class="table-header">
+      <text class="col-level">等级</text>
+      <text class="col-condition">升级条件</text>
+      <text class="col-daily">每日投稿</text>
+      <text class="col-commission">佣金</text>
+    </view>
+    <view class="level-row {{item.level === currentLevel ? 'current' : ''}}" wx:for="{{levels}}" wx:key="level">
+      <view class="col-level">
+        <text class="level-icon">{{item.icon}}</text>
+        <view class="level-info">
+          <text class="level-name">{{item.name}}</text>
+          <text class="level-current" wx:if="{{item.level === currentLevel}}">当前</text>
+        </view>
+      </view>
+      <text class="col-condition">累计{{item.condition}}采纳</text>
+      <text class="col-daily">{{item.dailyLimit}}</text>
+      <text class="col-commission {{item.commission === '3%' || item.commission === '5%' ? 'low' : ''}}">{{item.commission}}</text>
+    </view>
+  </view>
+
+  <!-- 当前等级权益 -->
+  <view class="current-card" wx:if="{{currentLevel < 6}}">
+    <view class="card-header">
+      <text class="card-title">我的当前等级</text>
+    </view>
+    <view class="current-info">
+      <text class="current-icon">{{levels[currentLevel].icon}}</text>
+      <text class="current-name">{{levels[currentLevel].name}}</text>
+    </view>
+    <view class="current-stats">
+      <view class="stat-item">
+        <text class="stat-value">{{currentAdoptedCount}}</text>
+        <text class="stat-label">累计采纳</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{levels[currentLevel].dailyLimit}}</text>
+        <text class="stat-label">每日投稿</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{levels[currentLevel].commission}}</text>
+        <text class="stat-label">平台佣金</text>
+      </view>
+    </view>
+    <view class="next-hint" wx:if="{{currentLevel < 5}}">
+      <text>再获得{{levels[currentLevel + 1].condition.replace('≥', '') - currentAdoptedCount}}个采纳，即可升级为{{levels[currentLevel + 1].name}}</text>
+    </view>
+  </view>
+
+  <!-- 等级权益详情 -->
+  <view class="section">
+    <view class="section-title">各等级权益说明</view>
+    <view class="privilege-list">
+      <view class="privilege-item" wx:for="{{levels}}" wx:key="level">
+        <view class="privilege-header">
+          <text class="privilege-icon">{{item.icon}}</text>
+          <text class="privilege-name">{{item.name}}</text>
+          <text class="privilege-commission">{{item.commission}}佣金</text>
+        </view>
+        <view class="privilege-detail">
+          <text class="privilege-condition">升级条件：累计{{item.condition}}采纳</text>
+          <text class="privilege-limit">每日投稿上限：{{item.dailyLimit}}</text>
+        </view>
+        <view class="privilege-tags">
+          <text class="privilege-tag" wx:for="{{item.privileges}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提现规则 -->
+  <view class="section">
+    <view class="section-title">提现规则</view>
+    <view class="rule-content">
+      <text class="rule-item">• 账户可提现金额满50元方可发起提现</text>
+      <text class="rule-item">• 提现时系统自动扣除对应等级佣金</text>
+      <text class="rule-item">• 实际到账金额 = 可提现金额 × (1 − 佣金比例)</text>
+      <text class="rule-item">• 稿件审核通过后，赏金立即进入可提现余额</text>
+    </view>
+  </view>
+
+  <!-- 违规处罚 -->
+  <view class="section">
+    <view class="section-title">违规处罚与降级规则</view>
+    <view class="rule-content">
+      <text class="rule-item">• 恶意投稿（抄袭、搬运、灌水、乱做、无意义内容）被投诉且核实成立</text>
+      <text class="rule-item">• 超过5次被投诉将永久封禁投稿权限</text>
+      <text class="rule-item">• 正常质量不佳、未中标、风格不符等非恶意情况，不降级、不处罚</text>
+    </view>
+  </view>
+</view>

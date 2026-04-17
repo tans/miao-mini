@@ -39,6 +39,8 @@ Page({
     ],
     materials: [],
     uploading: false,
+    jimeng_link: '',
+    jimeng_code: '',
     baseTotal: '0.00',
     awardTotal: '0.00',
     totalBudget: '0.00',
@@ -145,6 +147,14 @@ Page({
     this.setData({ creative_style: value });
   },
 
+  onJimengLinkInput(e) {
+    this.setData({ jimeng_link: e.detail.value });
+  },
+
+  onJimengCodeInput(e) {
+    this.setData({ jimeng_code: e.detail.value });
+  },
+
   // 添加素材
   async addMaterial() {
     const { materials } = this.data;
@@ -216,7 +226,7 @@ Page({
   },
 
   async handleSubmit() {
-    const { title, description, unit_price, total_count, deadline, video_duration, creative_style, materials } = this.data;
+    const { title, description, unit_price, total_count, deadline, video_duration, creative_style, materials, jimeng_link, jimeng_code } = this.data;
 
     if (!title) {
       wx.showToast({ title: '请填写任务标题', icon: 'none' });
@@ -282,6 +292,8 @@ Page({
           file_type: m.fileType,
           sort_order: i,
         })),
+        jimeng_link,
+        jimeng_code,
       });
       wx.showToast({ title: '发布成功！', icon: 'success' });
       setTimeout(() => {

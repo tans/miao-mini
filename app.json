@@ -10,6 +10,7 @@
     "pages/transactions/index",
     "pages/settings/index",
     "pages/settings/help/index",
+    "pages/creator-level/index",
     "pages/settings/about/index",
     "pages/work-detail/index",
     "pages/create-task/index",

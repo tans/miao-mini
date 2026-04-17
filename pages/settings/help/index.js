@@ -15,16 +15,18 @@ Page({
       }
     ],
     levels: [
-      { icon: '🪙', name: '青铜', dailyLimit: '3个', commission: '20%', margin: '冻结10元' },
-      { icon: '🥈', name: '白银', dailyLimit: '10个', commission: '15%', margin: '无' },
-      { icon: '🥇', name: '黄金', dailyLimit: '20个', commission: '12%', margin: '无' },
-      { icon: '💎', name: '钻石', dailyLimit: '50个', commission: '10%', margin: '无' },
+      { icon: '🪙', name: '试用创作者', condition: '0', dailyLimit: '3条', commission: '10%' },
+      { icon: '📝', name: '新手创作者', condition: '≥1', dailyLimit: '8条', commission: '10%' },
+      { icon: '🌟', name: '活跃创作者', condition: '≥5', dailyLimit: '15条', commission: '10%' },
+      { icon: '🏅', name: '优质创作者', condition: '≥20', dailyLimit: '30条', commission: '10%' },
+      { icon: '👑', name: '金牌创作者', condition: '≥50', dailyLimit: '50条', commission: '5%' },
+      { icon: '💎', name: '特约创作者', condition: '≥100', dailyLimit: '无上限', commission: '3%' },
     ],
     rules: [
-      '只有白银及以上等级才能认领任务',
-      '青铜用户需要冻结10元保证金才能认领',
-      '等级越高，每日可认领的任务数量越多，平台抽成越低',
-      '等级由行为分（-1000~+2000）和交易分（0~500）综合决定',
+      '等级由累计采纳数（作品被商家录用/入围次数）自动升级',
+      '等级越高，每日可投稿的任务数量越多，平台抽成越低',
+      '超过5次恶意投稿被投诉将永久封禁投稿权限',
+      '正常质量不佳、未中标、风格不符等非恶意情况，不降级、不处罚',
     ],
     faqs: [
       {

@@ -328,5 +328,18 @@ Page({
         wx.showToast({ title: '下载失败', icon: 'none' });
       }
     });
+  },
+
+  copyText(e) {
+    const text = e.currentTarget.dataset.copy;
+    wx.setClipboardData({
+      data: text,
+      success() {
+        wx.showToast({ title: '已复制', icon: 'success' });
+      },
+      fail() {
+        wx.showToast({ title: '复制失败', icon: 'none' });
+      }
+    });
   }
 });

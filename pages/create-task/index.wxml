@@ -112,6 +112,22 @@
       </view>
     </view>
 
+    <!-- 即梦合拍 -->
+    <view class="jimeng-section">
+      <view class="section-title">即梦合拍 <text class="optional">(选填)</text></view>
+      <view class="section-hint">商家提供即梦合拍邀约链接和验证码，创作者可完成合拍任务</view>
+      <mp-cells>
+        <mp-cell>
+          <view slot="title" class="jimeng-label">合拍链接</view>
+          <input class="weui-input" placeholder="即梦合拍邀约链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput"/>
+        </mp-cell>
+        <mp-cell>
+          <view slot="title" class="jimeng-label">验证码</view>
+          <input class="weui-input" placeholder="如 AA8661" value="{{jimeng_code}}" bindinput="onJimengCodeInput"/>
+        </mp-cell>
+      </mp-cells>
+    </view>
+
     <!-- 预算预览 -->
     <view class="budget-preview">
       <view class="budget-title">预算预览</view>

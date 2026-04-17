@@ -186,7 +186,7 @@ Page({
 
   goCreatorLevel() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/settings/help/index' });
+      wx.navigateTo({ url: '/pages/creator-level/index' });
     });
   },
 
