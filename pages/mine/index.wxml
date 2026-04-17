@@ -44,23 +44,26 @@
     <text class="wallet-arrow">></text>
   </view>
 
-  <!-- 功能列表 - 任务发布者视角 -->
-  <view class="biz-stats-card">
-    <view class="biz-stats-title">指标</view>
-    <view class="biz-stats-row">
-      <view class="biz-stat-item">
-        <text class="biz-stat-value">{{bizStats.accepted_count || 0}}</text>
-        <text class="biz-stat-label">接受邀约数</text>
+  <!-- 商家面板卡片 -->
+  <view class="merchant-panel-card">
+    <view class="merchant-panel-header">
+      <text class="merchant-panel-icon">🏪</text>
+      <text class="merchant-panel-title">商家面板</text>
+    </view>
+    <view class="merchant-panel-stats">
+      <view class="merchant-stat-item">
+        <text class="merchant-stat-value">{{bizStats.accepted_count || 0}}</text>
+        <text class="merchant-stat-label">接受邀约数</text>
       </view>
-      <view class="biz-stat-divider"></view>
-      <view class="biz-stat-item">
-        <text class="biz-stat-value">{{bizStats.pending_count || 0}}</text>
-        <text class="biz-stat-label">待审核作品数</text>
+      <view class="merchant-stat-divider"></view>
+      <view class="merchant-stat-item">
+        <text class="merchant-stat-value">{{bizStats.pending_count || 0}}</text>
+        <text class="merchant-stat-label">待审核作品数</text>
       </view>
-      <view class="biz-stat-divider"></view>
-      <view class="biz-stat-item">
-        <text class="biz-stat-value">{{bizStats.adopted_count || 0}}</text>
-        <text class="biz-stat-label">采纳作品数</text>
+      <view class="merchant-stat-divider"></view>
+      <view class="merchant-stat-item">
+        <text class="merchant-stat-value">{{bizStats.adopted_count || 0}}</text>
+        <text class="merchant-stat-label">采纳作品数</text>
       </view>
     </view>
   </view>
