@@ -172,6 +172,12 @@ Page({
     });
   },
 
+  goMyClaims() {
+    this._ensureLogin(() => {
+      wx.navigateTo({ url: '/pages/my-claims/index' });
+    });
+  },
+
   goPublishTask() {
     this._ensureLogin(() => {
       wx.navigateTo({ url: '/pages/create-task/index' });
