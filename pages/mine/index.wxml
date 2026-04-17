@@ -8,91 +8,57 @@
     <text class="user-card-arrow">></text>
   </view>
 
-  <!-- 创作者等级卡片 -->
-  <view class="level-card" bindtap="goCreatorLevel">
-    <view class="level-header">
-      <text class="level-icon">{{creatorStats.level === 4 ? '💎' : creatorStats.level === 3 ? '🥇' : creatorStats.level === 2 ? '🥈' : creatorStats.level >= 5 ? '👑' : '🪙'}}</text>
-      <text class="level-name">{{creatorStats.level_name}}</text>
-    </view>
-    <view class="level-stats">
-      <view class="stat-item">
-        <text class="stat-value">{{creatorStats.adopted_count || 0}}</text>
-        <text class="stat-label">累计采纳</text>
+  <!-- 创作者面板 -->
+  <view class="panel-section">
+    <view class="panel-label">创作者面板</view>
+    <view class="panel-card">
+      <view class="panel-item" bindtap="goCreatorLevel">
+        <text class="panel-item-icon">📊</text>
+        <text class="panel-item-text">创作数据</text>
       </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-value">{{creatorStats.daily_limit || 0}}</text>
-        <text class="stat-label">今日投稿</text>
+      <view class="panel-item" bindtap="goMyClaims">
+        <text class="panel-item-icon">📋</text>
+        <text class="panel-item-text">我报名的任务</text>
       </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-value">{{creatorStats.commission_rate || '10%'}}</text>
-        <text class="stat-label">平台佣金</text>
+      <view class="panel-item" bindtap="goWorks">
+        <text class="panel-item-icon">🎬</text>
+        <text class="panel-item-text">我提交的作品</text>
       </view>
-    </view>
-    <view class="level-progress" wx:if="{{creatorStats.next_level_name}}">
-      <text class="progress-text">升级到{{creatorStats.next_level_name}}还需{{creatorStats.need_count}}个采纳</text>
     </view>
   </view>
 
-  <!-- 钱包卡片 -->
-  <view class="wallet-card" bindtap="goWallet">
-    <view class="wallet-left">
-      <text class="wallet-label">钱包余额</text>
+  <!-- 钱包入口 -->
+  <view class="wallet-row" bindtap="goWallet">
+    <text class="wallet-label">钱包余额</text>
+    <view class="wallet-right">
       <text class="wallet-balance">¥{{balance || '0.00'}}</text>
+      <text class="wallet-arrow">></text>
     </view>
-    <text class="wallet-arrow">></text>
   </view>
 
-  <!-- 商家面板卡片 -->
-  <view class="merchant-panel-card">
-    <view class="merchant-panel-header">
-      <text class="merchant-panel-icon">🏪</text>
-      <text class="merchant-panel-title">商家面板</text>
-    </view>
-    <view class="merchant-panel-stats">
-      <view class="merchant-stat-item">
-        <text class="merchant-stat-value">{{bizStats.accepted_count || 0}}</text>
-        <text class="merchant-stat-label">接受邀约数</text>
+  <!-- 商家面板 -->
+  <view class="panel-section">
+    <view class="panel-label">商家面板</view>
+    <view class="panel-card">
+      <view class="panel-item" bindtap="goAdoptedWorks">
+        <text class="panel-item-icon">🏆</text>
+        <text class="panel-item-text">采纳作品库</text>
       </view>
-      <view class="merchant-stat-divider"></view>
-      <view class="merchant-stat-item">
-        <text class="merchant-stat-value">{{bizStats.pending_count || 0}}</text>
-        <text class="merchant-stat-label">待审核作品数</text>
+      <view class="panel-item" bindtap="goMyTasks">
+        <text class="panel-item-icon">📤</text>
+        <text class="panel-item-text">我发布的任务</text>
       </view>
-      <view class="merchant-stat-divider"></view>
-      <view class="merchant-stat-item">
-        <text class="merchant-stat-value">{{bizStats.adopted_count || 0}}</text>
-        <text class="merchant-stat-label">采纳作品数</text>
+      <view class="panel-item" bindtap="goPublishTask">
+        <text class="panel-item-icon">🚀</text>
+        <text class="panel-item-text">马上发布</text>
       </view>
     </view>
   </view>
 
-  <view class="card-grid">
-    <view class="grid-card" bindtap="goAdoptedWorks">
-      <text class="grid-icon">🏆</text>
-      <text class="grid-text">采纳作品库</text>
-    </view>
-    <view class="grid-card" bindtap="goMyClaims">
-      <text class="grid-icon">📋</text>
-      <text class="grid-text">我报名的任务</text>
-    </view>
-    <view class="grid-card" bindtap="goMyTasks">
-      <text class="grid-icon">📤</text>
-      <text class="grid-text">我发布的任务</text>
-    </view>
-    <view class="grid-card" bindtap="goPublishTask">
-      <text class="grid-icon">🚀</text>
-      <text class="grid-text">发布任务</text>
-    </view>
-  </view>
-
-  <!-- Helper Links -->
-  <view class="helper-links">
-    <view class="helper-link-item" bindtap="goHelp">
-      <text class="helper-link-text">帮助中心</text>
-      <text class="helper-link-arrow">></text>
-    </view>
+  <!-- 帮助中心 -->
+  <view class="help-row" bindtap="goHelp">
+    <text class="help-text">帮助中心</text>
+    <text class="help-arrow">></text>
   </view>
 
   <view class="version">{{displayText}}</view>
