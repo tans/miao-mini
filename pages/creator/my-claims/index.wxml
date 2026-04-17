@@ -34,7 +34,7 @@
           <view class="info-row">
             <view class="info-item">
               <text class="label">领取时间</text>
-              <text class="value">{{item.created_at}}</text>
+              <text class="value">{{formatDateTime(item.created_at)}}</text>
             </view>
           </view>
         </view>

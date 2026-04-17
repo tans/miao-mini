@@ -7,7 +7,7 @@
     <mp-cell wx:for="{{transactions}}" wx:key="id">
       <view slot="title">
         <text class="trans-type">{{item.type_text}}</text>
-        <text class="trans-time">{{item.created_at}}</text>
+        <text class="trans-time">{{formatDateTime(item.created_at)}}</text>
       </view>
       <text class="trans-amount {{item.amount > 0 ? 'income' : 'expense'}}" slot="footer">
         {{item.amount > 0 ? '+' : ''}}{{item.amount}}

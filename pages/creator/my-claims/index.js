@@ -1,5 +1,5 @@
 const Api = require('../../../utils/api.js');
-const { getClaimStatusText } = require('../../../utils/util.js');
+const { getClaimStatusText, formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -147,5 +147,9 @@ Page({
         }
       }
     });
+  },
+
+  formatDateTime(dateStr) {
+    return formatDateTime(dateStr);
   }
 });

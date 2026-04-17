@@ -1,4 +1,5 @@
 const Api = require('../../utils/api.js');
+const { formatDateTime } = require('../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -52,5 +53,9 @@ Page({
       this.setData({ loading: false });
       wx.hideLoading();
     }
+  },
+
+  formatDateTime(dateStr) {
+    return formatDateTime(dateStr);
   }
 });

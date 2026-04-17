@@ -3,6 +3,14 @@
 const enums = require('./enums');
 
 /**
+ * 格式化日期时间，最多显示 YYYY-MM-DD HH:mm
+ */
+function formatDateTime(dateStr) {
+  if (!dateStr) return '';
+  return dateStr.substring(0, 16).replace('T', ' ');
+}
+
+/**
  * 格式化日期
  */
 function formatDate(dateStr) {
@@ -50,6 +58,7 @@ function getClaimStatusText(status) {
 
 module.exports = {
   formatDate,
+  formatDateTime,
   formatPrice,
   getStatusText,
   getClaimStatusText,

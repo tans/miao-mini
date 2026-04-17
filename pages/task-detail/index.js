@@ -1,6 +1,6 @@
 // pages/task-detail/index.js
 const Api = require('../../utils/api.js');
-const { getStatusText, getClaimStatusText, getStatusClass } = require('../../utils/util.js');
+const { getStatusText, getClaimStatusText, getStatusClass, formatDateTime } = require('../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -346,5 +346,9 @@ Page({
         wx.showToast({ title: '复制失败', icon: 'none' });
       }
     });
+  },
+
+  formatDateTime(dateStr) {
+    return formatDateTime(dateStr);
   }
 });

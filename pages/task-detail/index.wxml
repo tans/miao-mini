@@ -179,7 +179,7 @@
           <view class="avatar-placeholder" wx:else>{{item.creator_name ? item.creator_name[0] : '创'}}</view>
           <view class="user-detail">
             <text class="user-name">{{item.creator_name || '匿名创作者'}}</text>
-            <text class="user-time">{{item.created_at}}</text>
+            <text class="user-time">{{formatDateTime(item.created_at)}}</text>
           </view>
         </view>
       </view>
@@ -210,7 +210,7 @@
           <view class="avatar-placeholder" wx:else>{{item.creator_name ? item.creator_name[0] : '创'}}</view>
           <view class="user-detail">
             <text class="user-name">{{item.creator_name || '匿名创作者'}}</text>
-            <text class="user-time">{{item.submitted_at ? item.submitted_at : item.created_at}}</text>
+            <text class="user-time">{{formatDateTime(item.submitted_at ? item.submitted_at : item.created_at)}}</text>
           </view>
         </view>
         <view class="status-badge-small {{isAdopted(item.status) ? 'adopted' : 'pending'}}">
