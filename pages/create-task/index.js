@@ -39,6 +39,7 @@ Page({
     ],
     materials: [],
     uploading: false,
+    jimeng_raw: '',
     jimeng_link: '',
     jimeng_code: '',
     baseTotal: '0.00',
@@ -153,6 +154,31 @@ Page({
 
   onJimengCodeInput(e) {
     this.setData({ jimeng_code: e.detail.value });
+  },
+
+  onJimengRawInput(e) {
+    const raw = e.detail.value;
+    // 解析链接：从文本中提取 URL
+    const urlMatch = raw.match(/https?:\/\/[^\s]+/);
+    const link = urlMatch ? urlMatch[0] : '';
+
+    // 解析验证码：提取连续的大写字母+数字组合（通常4-6位）
+    const codeMatch = raw.match(/[A-Z0-9]{4,8}/);
+    let code = '';
+    if (codeMatch) {
+      // 排除 URL 中的匹配
+      const urlIdx = raw.indexOf(link);
+      const codeIdx = raw.indexOf(codeMatch[0]);
+      if (codeIdx !== -1 && (urlIdx === -1 || codeIdx < urlIdx || codeIdx > urlIdx + link.length)) {
+        code = codeMatch[0];
+      }
+    }
+
+    this.setData({
+      jimeng_raw: raw,
+      jimeng_link: link,
+      jimeng_code: code,
+    });
   },
 
   // 添加素材

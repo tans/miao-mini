@@ -115,17 +115,20 @@
     <!-- 即梦合拍 -->
     <view class="jimeng-section">
       <view class="section-title">即梦合拍 <text class="optional">(选填)</text></view>
-      <view class="section-hint">商家提供即梦合拍邀约链接和验证码，创作者可完成合拍任务</view>
-      <mp-cells>
-        <mp-cell>
-          <view slot="title" class="jimeng-label">合拍链接</view>
-          <input class="weui-input" placeholder="即梦合拍邀约链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput"/>
-        </mp-cell>
-        <mp-cell>
-          <view slot="title" class="jimeng-label">验证码</view>
-          <input class="weui-input" placeholder="如 AA8661" value="{{jimeng_code}}" bindinput="onJimengCodeInput"/>
-        </mp-cell>
-      </mp-cells>
+      <view class="section-hint">直接粘贴即梦合拍邀约文案，系统自动解析链接和验证码</view>
+      <view class="jimeng-input-area">
+        <textarea class="jimeng-textarea" placeholder="粘贴即梦合拍邀约文案，如：快来即梦，跟 大师兄 一起合拍整活！😆 https://m.jimeng.jianying.com/s/f6kTkjlzvAc/?t=0 AA8661" value="{{jimeng_raw}}" bindinput="onJimengRawInput" />
+        <view class="jimeng-preview" wx:if="{{jimeng_link || jimeng_code}}">
+          <view class="preview-row" wx:if="{{jimeng_link}}">
+            <text class="preview-label">链接：</text>
+            <text class="preview-value">{{jimeng_link}}</text>
+          </view>
+          <view class="preview-row" wx:if="{{jimeng_code}}">
+            <text class="preview-label">验证码：</text>
+            <text class="preview-value">{{jimeng_code}}</text>
+          </view>
+        </view>
+      </view>
     </view>
 
     <!-- 预算预览 -->
