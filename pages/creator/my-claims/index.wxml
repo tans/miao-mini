@@ -23,18 +23,22 @@
         <view class="weui-media-box weui-media-box_text">
           <view class="info-row">
             <view class="info-item">
-              <text class="label">任务ID</text>
-              <text class="value">{{item.task_id}}</text>
-            </view>
-            <view class="info-item">
-              <text class="label">赏金</text>
+              <text class="label">基础奖金</text>
               <text class="value price">¥{{item.unit_price || 0}}</text>
+            </view>
+            <view class="info-item" wx:if="{{item.award_price > 0}}">
+              <text class="label">采纳奖金</text>
+              <text class="value price award">+¥{{item.award_price}}</text>
             </view>
           </view>
           <view class="info-row">
             <view class="info-item">
-              <text class="label">领取时间</text>
+              <text class="label">报名日期</text>
               <text class="value">{{formatDateTime(item.created_at)}}</text>
+            </view>
+            <view class="info-item" wx:if="{{item.end_at}}">
+              <text class="label">截止日期</text>
+              <text class="value">{{item.end_at.substring(0, 10)}}</text>
             </view>
           </view>
         </view>

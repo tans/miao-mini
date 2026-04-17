@@ -136,6 +136,10 @@
   color: #EF8802;
 }
 
+.info-item .value.price.award {
+  color: #52c41a;
+}
+
 /* Panel Footer */
 .weui-panel__ft {
   padding: 16rpx 24rpx 20rpx;
