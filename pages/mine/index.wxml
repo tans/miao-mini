@@ -8,6 +8,15 @@
     <text class="user-card-arrow">></text>
   </view>
 
+  <!-- 钱包入口 -->
+  <view class="wallet-row" bindtap="goWallet">
+    <text class="wallet-label">钱包余额</text>
+    <view class="wallet-right">
+      <text class="wallet-balance">¥{{balance || '0.00'}}</text>
+      <text class="wallet-arrow">></text>
+    </view>
+  </view>
+
   <!-- 创作者面板 -->
   <view class="panel-section">
     <view class="panel-label">创作者面板</view>
@@ -24,15 +33,6 @@
         <text class="panel-item-icon">🎬</text>
         <text class="panel-item-text">我提交的作品</text>
       </view>
-    </view>
-  </view>
-
-  <!-- 钱包入口 -->
-  <view class="wallet-row" bindtap="goWallet">
-    <text class="wallet-label">钱包余额</text>
-    <view class="wallet-right">
-      <text class="wallet-balance">¥{{balance || '0.00'}}</text>
-      <text class="wallet-arrow">></text>
     </view>
   </view>
 
