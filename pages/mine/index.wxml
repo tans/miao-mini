@@ -44,20 +44,28 @@
     <text class="wallet-arrow">></text>
   </view>
 
-  <!-- 功能列表 -->
+  <!-- 功能列表 - 任务发布者视角 -->
+  <view class="biz-stats-card">
+    <view class="biz-stats-title">指标</view>
+    <view class="biz-stats-row">
+      <view class="biz-stat-item">
+        <text class="biz-stat-value">{{bizStats.accepted_count || 0}}</text>
+        <text class="biz-stat-label">接受邀约数</text>
+      </view>
+      <view class="biz-stat-divider"></view>
+      <view class="biz-stat-item">
+        <text class="biz-stat-value">{{bizStats.pending_count || 0}}</text>
+        <text class="biz-stat-label">待审核作品数</text>
+      </view>
+      <view class="biz-stat-divider"></view>
+      <view class="biz-stat-item">
+        <text class="biz-stat-value">{{bizStats.adopted_count || 0}}</text>
+        <text class="biz-stat-label">采纳作品数</text>
+      </view>
+    </view>
+  </view>
+
   <view class="card-grid">
-    <view class="grid-card" bindtap="goMyClaims">
-      <text class="grid-icon">📋</text>
-      <text class="grid-text">我接受的任务</text>
-    </view>
-    <view class="grid-card" bindtap="goRequirements">
-      <text class="grid-icon">📝</text>
-      <text class="grid-text">需求</text>
-    </view>
-    <view class="grid-card" bindtap="goPublishTask">
-      <text class="grid-icon">🚀</text>
-      <text class="grid-text">发布任务</text>
-    </view>
     <view class="grid-card" bindtap="goAdoptedWorks">
       <text class="grid-icon">🏆</text>
       <text class="grid-text">采纳作品库</text>
@@ -65,6 +73,10 @@
     <view class="grid-card" bindtap="goMyTasks">
       <text class="grid-icon">📤</text>
       <text class="grid-text">我发布的任务</text>
+    </view>
+    <view class="grid-card" bindtap="goPublishTask">
+      <text class="grid-icon">🚀</text>
+      <text class="grid-text">发布任务</text>
     </view>
     <view class="grid-card" bindtap="goHelp">
       <text class="grid-icon">❓</text>

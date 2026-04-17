@@ -16,6 +16,11 @@ Page({
       commission_rate: '10%',
       next_level_name: '新手创作者',
       need_count: 1
+    },
+    bizStats: {
+      accepted_count: 0,
+      pending_count: 0,
+      adopted_count: 0
     }
   },
 
@@ -26,6 +31,7 @@ Page({
     if (isLoggedIn) {
       this.loadUserAndWallet();
       this.loadCreatorStats();
+      this.loadBusinessStats();
     } else {
       this.setData({ user: null, balance: '0.00' });
       // 触发静默登录
@@ -34,6 +40,7 @@ Page({
         if (app.isLoggedIn()) {
           this.loadUserAndWallet();
           this.loadCreatorStats();
+          this.loadBusinessStats();
         }
       });
     }
@@ -103,6 +110,22 @@ Page({
     }
   },
 
+  async loadBusinessStats() {
+    try {
+      const res = await Api.getBusinessStats();
+      const stats = res.data || {};
+      this.setData({
+        bizStats: {
+          accepted_count: stats.accepted_count || 0,
+          pending_count: stats.pending_count || 0,
+          adopted_count: stats.adopted_count || 0
+        }
+      });
+    } catch (err) {
+      // 使用默认数据
+    }
+  },
+
   updateDisplayText() {
     const uploadTime = buildInfo.uploadTime;
     if (uploadTime) {
@@ -143,21 +166,9 @@ Page({
     });
   },
 
-  goMyClaims() {
-    this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/my-claims/index' });
-    });
-  },
-
   goMyTasks() {
     this._ensureLogin(() => {
       wx.navigateTo({ url: '/pages/my-tasks/index' });
-    });
-  },
-
-  goRequirements() {
-    this._ensureLogin(() => {
-      wx.switchTab({ url: '/pages/home/index' });
     });
   },
 
@@ -175,7 +186,6 @@ Page({
 
   goCreatorLevel() {
     this._ensureLogin(() => {
-      // 创作者等级详情页，暂跳转到帮助页面
       wx.navigateTo({ url: '/pages/settings/help/index' });
     });
   },
