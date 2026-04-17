@@ -41,7 +41,7 @@ function createFallbackCover(seedText, description) {
 Page({
   data: {
     works: [],
-    pageTitle: '灵感',
+    pageTitle: '采纳作品库',
     sort: 'latest',
     keyword: '',
     searchValue: '',
@@ -164,7 +164,7 @@ Page({
     this.setData({ loading: true });
     try {
       const tag = this.data.activeTag === '全部' ? '' : this.data.activeTag;
-      const res = await Api.getWorks({
+      const res = await Api.getBusinessWorks({
         sort: this.data.sort,
         keyword: this.data.keyword,
         tag,
@@ -190,7 +190,7 @@ Page({
     if (!id) return;
     this.navigating = true;
     wx.navigateTo({
-      url: `/pages/work-detail/index?id=${id}&mode=public`,
+      url: `/pages/work-detail/index?id=${id}&mode=adopted`,
       complete: () => {
         setTimeout(() => {
           this.navigating = false;

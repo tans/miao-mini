@@ -47,7 +47,7 @@
     <text class="filter-pill" wx:if="{{activeTag !== '全部'}}">标签: {{activeTag}}</text>
   </view>
 
-  <mp-msg type="info" title="暂无灵感内容" wx:if="{{!loading && works.length === 0}}" />
+  <mp-msg type="info" title="暂无采纳作品" wx:if="{{!loading && works.length === 0}}" />
 
   <view class="works-grid" wx:if="{{works.length > 0}}">
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
