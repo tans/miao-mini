@@ -88,6 +88,16 @@ Page({
       });
     } catch (err) {
       this.setData({ loading: false });
+      if (err && err.message === '登录已过期') {
+        app.clearAuth();
+        this.initialized = false;
+        const relogged = await this.ensureLogin();
+        if (relogged) {
+          this.initialized = true;
+          await this.resetAndLoad();
+          return;
+        }
+      }
       wx.showToast({ title: '加载失败', icon: 'none' });
     }
   },

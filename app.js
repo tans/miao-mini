@@ -40,7 +40,7 @@ App({
     // 已有登录中的请求，等待它
     if (this._loginPromise) return this._loginPromise;
     // 正在登录中
-    if (this._loginLock) return;
+    if (this._loginLock) return this._loginPromise;
 
     this._loginLock = true;
     this._loginPromise = this._doSilentLogin()
