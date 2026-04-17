@@ -76,7 +76,7 @@ Page({
         const claimsResults = await Promise.all(claimsPromises);
 
         claimsResults.forEach((res, i) => {
-          const claims = res.data || [];
+          const claims = (res.data || []).filter(c => Number(c.status) !== 1);
           claims.forEach(c => {
             allClaims.push(this.formatClaim({
               ...c,
@@ -160,6 +160,12 @@ Page({
     const videoLink = this.extractVideoLink(claim.content);
     const contentText = this.extractContentText(claim.content);
 
+    const firstMaterial = materials[0] || {};
+    const coverType = firstMaterial.file_type || 'image';
+    const displayCover = coverType === 'video'
+      ? (firstMaterial.thumbnail_path || firstMaterial.file_path || '')
+      : (firstMaterial.thumbnail_path || firstMaterial.file_path || '');
+
     return {
       ...claim,
       status,
@@ -178,7 +184,10 @@ Page({
       previewVideos,
       imageCount: previewImages.length,
       videoCount: previewVideos.length,
-      videoLink
+      videoLink,
+      coverType,
+      isVideo: coverType === 'video',
+      displayCover
     };
   },
 

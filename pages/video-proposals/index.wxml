@@ -22,27 +22,28 @@
     <view class="weui-panel" wx:for="{{filteredClaims}}" wx:key="id" wx:for-index="claimIndex">
       <!-- Panel Header -->
       <view class="weui-panel__hd">
-        <text class="task-title">{{item.task_title || '任务'}}</text>
-        <view class="status-badge status-{{item.statusClass}}">
-          <text>{{item.statusText}}</text>
+        <view class="card-cover-wrap">
+          <image wx:if="{{item.displayCover}}" class="card-cover" src="{{item.displayCover}}" mode="aspectFill"/>
+          <view wx:if="{{item.isVideo}}" class="card-cover-play"></view>
+        </view>
+        <view class="header-info">
+          <text class="task-title">{{item.task_title || '任务'}}</text>
+          <view class="status-badge status-{{item.statusClass}}">
+            <text>{{item.statusText}}</text>
+          </view>
+        </view>
+        <view class="header-creator">
+          <view class="avatar">{{item.creatorInitial}}</view>
+          <view class="creator-details">
+            <text class="creator-name">{{item.creatorName}}</text>
+            <text class="submit-time">{{item.displayDate || '未提交时间'}}</text>
+          </view>
         </view>
       </view>
 
       <!-- Panel Body -->
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_text">
-          <!-- 创作者信息 -->
-          <view class="info-row creator-row">
-            <view class="creator-info">
-              <view class="avatar">{{item.creatorInitial}}</view>
-              <view class="creator-details">
-                <text class="creator-name">{{item.creatorName}}</text>
-                <text class="submit-time">{{item.displayDate || '未提交时间'}}</text>
-              </view>
-            </view>
-            <text class="proposal-price">¥{{item.displayPrice}}</text>
-          </view>
-
           <view class="proposal-preview">
             <view class="preview-row">
               <text class="preview-label">状态</text>
@@ -53,7 +54,7 @@
               <text class="preview-value">{{item.displayDate || '--'}}</text>
             </view>
             <view class="preview-row">
-              <text class="preview-label">提案报价</text>
+              <text class="preview-label">采纳奖励</text>
               <text class="preview-value preview-price">¥{{item.displayPrice}}</text>
             </view>
           </view>
