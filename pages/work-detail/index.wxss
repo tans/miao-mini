@@ -82,20 +82,9 @@
   backdrop-filter: blur(10px);
 }
 
-.top-back-btn,
-.top-share-wrap {
+.top-back-btn {
   position: absolute;
   z-index: 2;
-}
-
-.top-share-wrap {
-  width: calc(36px + env(safe-area-inset-right));
-  height: 36px;
-  padding-right: env(safe-area-inset-right);
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .circle-btn {
@@ -110,32 +99,6 @@
   font-size: 22px;
   line-height: 1;
   backdrop-filter: blur(10px);
-}
-
-.share-hit-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: transparent;
-  border-radius: 0;
-  box-sizing: border-box;
-  overflow: hidden;
-  line-height: 1;
-  opacity: 0;
-}
-
-.share-hit-btn::after {
-  border: none;
-}
-
-.share-visual-btn {
-  width: 36px;
-  height: 36px;
 }
 
 .bottom-panel {
@@ -224,11 +187,19 @@
 }
 
 .comment-action {
+  position: relative;
   min-width: 42px;
   display: flex;
   align-items: center;
   gap: 3px;
   justify-content: center;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .comment-icon {
@@ -243,6 +214,28 @@
 .comment-count {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.9);
+}
+
+.comment-share-action {
+  min-width: 56px;
+}
+
+.comment-share-hit-btn {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  line-height: 1;
+  opacity: 0;
+}
+
+.comment-share-hit-btn::after {
+  border: none;
 }
 
 .feed-loading {
