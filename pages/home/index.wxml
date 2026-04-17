@@ -77,7 +77,10 @@
         </view>
         <!-- 价格和报名信息一行，左右对齐 -->
         <view class="card-footer">
-          <text class="card-price">¥{{item.unit_price}}</text>
+          <view class="card-price-wrap">
+            <text class="card-price">¥{{item.unit_price}}</text>
+            <text class="card-award" wx:if="{{item.award_price > 0}}">+¥{{item.award_price}}采纳</text>
+          </view>
           <view class="card-enroll">
             <text class="enroll-count">已报名{{item.enrolled_count}}人</text>
             <text class="enroll-sep">|</text>

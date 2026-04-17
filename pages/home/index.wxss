@@ -264,6 +264,18 @@
   color: #EF8802;
 }
 
+.card-price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.card-award {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #52c41a;
+}
+
 /* 加载更多 */
 .load-more {
   text-align: center;
