@@ -116,6 +116,95 @@ Page({
     });
   },
 
+  noop() {},
+
+  downloadWorkMaterial(e) {
+    const url = e.currentTarget.dataset.url;
+    const type = e.currentTarget.dataset.type || '';
+    if (!url) {
+      wx.showToast({ title: '暂无可下载素材', icon: 'none' });
+      return;
+    }
+
+    wx.showLoading({ title: '下载中...' });
+    wx.downloadFile({
+      url,
+      success: (res) => {
+        if (res.statusCode !== 200) {
+          wx.hideLoading();
+          wx.showToast({ title: '下载失败', icon: 'none' });
+          return;
+        }
+
+        if (type === 'image' && wx.saveImageToPhotosAlbum) {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              wx.hideLoading();
+              wx.showToast({ title: '已保存到相册', icon: 'success' });
+            },
+            fail: () => this.fallbackOpenDownloadedFile(res.tempFilePath),
+          });
+          return;
+        }
+
+        if (type === 'video' && wx.saveVideoToPhotosAlbum) {
+          wx.saveVideoToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              wx.hideLoading();
+              wx.showToast({ title: '已保存到相册', icon: 'success' });
+            },
+            fail: () => this.fallbackOpenDownloadedFile(res.tempFilePath),
+          });
+          return;
+        }
+
+        this.fallbackOpenDownloadedFile(res.tempFilePath);
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showToast({ title: '下载失败', icon: 'none' });
+      },
+    });
+  },
+
+  fallbackOpenDownloadedFile(filePath) {
+    wx.saveFileToDisk({
+      filePath,
+      success: () => {
+        wx.hideLoading();
+        wx.showToast({ title: '保存成功', icon: 'success' });
+      },
+      fail: () => {
+        wx.openDocument({
+          filePath,
+          showMenu: true,
+          success: () => {
+            wx.hideLoading();
+            wx.showToast({ title: '已打开', icon: 'success' });
+          },
+          fail: () => {
+            wx.hideLoading();
+            wx.showToast({ title: '下载失败', icon: 'none' });
+          },
+        });
+      },
+    });
+  },
+
+  formatDateTime(value) {
+    if (!value) return '暂无';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    const hour = `${date.getHours()}`.padStart(2, '0');
+    const minute = `${date.getMinutes()}`.padStart(2, '0');
+    return `${year}-${month}-${day} ${hour}:${minute}`;
+  },
+
   normalizeWork(item = {}) {
     const materials = Array.isArray(item.materials) ? item.materials : [];
     const firstMaterial = materials[0] || null;
@@ -146,14 +235,27 @@ Page({
       `${item.id || ''}-${item.title || ''}`,
       item.content || item.title || ''
     );
+    const adoptedAt =
+      item.review_at ||
+      item.accepted_at ||
+      item.adopted_at ||
+      item.published_at ||
+      item.updated_at ||
+      item.created_at ||
+      '';
 
     return {
       ...item,
+      materials,
       coverType,
       isVideo: coverType === 'video',
       displayCover,
       previewVideoSrc,
       likesCount: Number(item.likes || 0),
+      materialCount: materials.length,
+      downloadUrl: (firstMaterial && firstMaterial.file_path) || previewVideoSrc || displayCover || '',
+      downloadType: (firstMaterial && firstMaterial.file_type) || coverType,
+      adoptedAtText: this.formatDateTime(adoptedAt),
       fallbackThemeClass: fallbackCover.themeClass,
       fallbackSummary: fallbackCover.summary,
     };
