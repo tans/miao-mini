@@ -160,8 +160,13 @@ Page({
 
   async loadSignups(taskId) {
     try {
-      const res = await Api.getTaskSignups(taskId);
-      this.setData({ signups: res.data || [] });
+      const res = await Api.getTaskClaims(taskId);
+      // 只显示已报名但未提交的认领（状态 = 1）
+      const signups = (res.data || []).filter(c => {
+        const status = typeof c.status === 'number' ? c.status : parseInt(c.status, 10);
+        return status === 1;
+      });
+      this.setData({ signups });
     } catch (err) {
       console.error('加载报名列表失败', err);
     }

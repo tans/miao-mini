@@ -84,6 +84,7 @@ Page({
     const contentText = this.extractContentText(claim.content);
     const videoLink = this.extractVideoLink(claim.content);
     const creatorName = claim.creator_name || '匿名创作者';
+    const creatorAvatar = claim.creator_avatar || '';
 
     const firstMaterial = materials[0] || {};
     const coverType = firstMaterial.file_type || 'image';
@@ -95,6 +96,7 @@ Page({
       ...claim,
       status,
       creatorName,
+      creatorAvatar,
       creatorInitial: creatorName.slice(0, 1),
       displayDate: (claim.submitted_at || claim.updated_at || '').substring(0, 16).replace('T', ' '),
       displayPrice: Number(claim.unit_price || 0).toFixed(2),
