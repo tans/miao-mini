@@ -5,6 +5,8 @@ Page({
   data: {
     feedItems: [],
     currentIndex: 0,
+    currentDetailItem: null,
+    detailPanelVisible: false,
     loading: false,
     loadingMore: false,
     hasMore: true,
@@ -101,6 +103,7 @@ Page({
       this.setData({
         feedItems: merged,
         currentIndex,
+        currentDetailItem: merged[currentIndex] || null,
         hasMore: (listRes.data?.data || []).length >= 10,
         page: 1,
         loading: false,
@@ -353,7 +356,11 @@ Page({
     this.clearMediaTapTimer();
     this.clearLikeBurstTimer();
     this.pauseAllVideos();
-    this.setData({ currentIndex });
+    this.setData({
+      currentIndex,
+      currentDetailItem: this.data.feedItems[currentIndex] || null,
+      detailPanelVisible: false,
+    });
     this.ensureLikeStatus(this.data.feedItems[currentIndex], currentIndex);
     setTimeout(() => this.playCurrentVideo(), 60);
 
@@ -388,6 +395,22 @@ Page({
     if (!url) return;
     wx.previewImage({ urls: [url], current: url });
   },
+
+  openDetailPanel() {
+    const current = this.getCurrentItem();
+    if (!current) return;
+    this.setData({
+      currentDetailItem: current,
+      detailPanelVisible: true,
+    });
+  },
+
+  closeDetailPanel() {
+    if (!this.data.detailPanelVisible) return;
+    this.setData({ detailPanelVisible: false });
+  },
+
+  noop() {},
 
   goBack() {
     if (getCurrentPages().length > 1) {

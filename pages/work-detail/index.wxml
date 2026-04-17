@@ -44,8 +44,8 @@
             <view class="circle-btn top-back-btn" style="top: {{navTop}}px; left: {{leftActionInset}}px;" bindtap="goBack">‹</view>
             <view class="bottom-panel" style="left: {{pageSideInset}}px; right: {{pageSideInset}}px; bottom: {{overlayBottom}}px;">
               <view class="content-block">
-                <text class="detail-title">{{item.task_title || item.title || '灵感详情'}}</text>
-                <text class="detail-content" wx:if="{{item.content}}">{{item.content}}</text>
+                <text class="detail-title detail-trigger" bindtap="openDetailPanel">{{item.task_title || item.title || '灵感详情'}}</text>
+                <text class="detail-content detail-trigger" wx:if="{{item.content}}" bindtap="openDetailPanel">{{item.content}}</text>
                 <view class="meta-row" wx:if="{{item.locationText}}">
                   <text class="meta-location">{{item.locationText}}</text>
                 </view>
@@ -80,4 +80,34 @@
   </swiper>
 
   <view class="feed-loading" wx:if="{{loadingMore}}">加载更多灵感...</view>
+</view>
+
+<view class="detail-sheet-mask" wx:if="{{detailPanelVisible}}" bindtap="closeDetailPanel"></view>
+<view class="detail-sheet {{detailPanelVisible ? 'show' : ''}}" wx:if="{{detailPanelVisible}}" catchtap="noop">
+  <view class="detail-sheet-handle"></view>
+  <view class="detail-sheet-header">
+    <text class="detail-sheet-title">作品详情</text>
+    <text class="detail-sheet-close" bindtap="closeDetailPanel">关闭</text>
+  </view>
+  <scroll-view class="detail-sheet-body" scroll-y>
+    <view class="detail-sheet-section">
+      <text class="detail-sheet-label">标题</text>
+      <text class="detail-sheet-main">{{currentDetailItem.task_title || currentDetailItem.title || '灵感详情'}}</text>
+    </view>
+    <view class="detail-sheet-section" wx:if="{{currentDetailItem.content}}">
+      <text class="detail-sheet-label">创作说明</text>
+      <text class="detail-sheet-text">{{currentDetailItem.content}}</text>
+    </view>
+    <view class="detail-sheet-section" wx:if="{{currentDetailItem.locationText}}">
+      <text class="detail-sheet-label">标签</text>
+      <text class="detail-sheet-tag">{{currentDetailItem.locationText}}</text>
+    </view>
+    <view class="detail-sheet-section">
+      <text class="detail-sheet-label">创作者</text>
+      <view class="detail-sheet-author">
+        <image class="detail-sheet-author-avatar" src="{{currentDetailItem.creator_avatar || '/assets/icons/avatar-default.jpg'}}" />
+        <text class="detail-sheet-author-name">{{currentDetailItem.creator_name || '创作者'}}</text>
+      </view>
+    </view>
+  </scroll-view>
 </view>
