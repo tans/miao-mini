@@ -37,22 +37,21 @@
             />
 
             <view class="tap-layer" wx:if="{{item.heroMedia && item.heroMedia.type === 'video'}}" bindtap="handleMediaTap">
-              <view class="play-indicator" wx:if="{{item.paused}}">▶</view>
-              <view class="like-burst" wx:if="{{item.showLikeBurst}}">♥</view>
+              <view class="play-indicator" wx:if="{{item.paused}}">�?/view>
+              <view class="like-burst" wx:if="{{item.showLikeBurst}}">�?/view>
             </view>
 
-            <view class="circle-btn top-back-btn" style="top: {{navTop}}px; left: {{leftActionInset}}px;" bindtap="goBack">‹</view>
+            <view class="circle-btn top-back-btn" style="top: {{navTop}}px; left: {{leftActionInset}}px;" bindtap="goBack">�?/view>
             <view class="top-share-wrap" style="top: {{navTop}}px; right: {{rightActionInset}}px;">
-              <view class="circle-btn share-visual-btn">↗</view>
+              <view class="circle-btn share-visual-btn">�?/view>
               <button class="share-hit-btn" open-type="share"></button>
             </view>
 
             <view class="bottom-panel" style="left: {{pageSideInset}}px; right: {{pageSideInset}}px; bottom: {{overlayBottom}}px;">
               <view class="author-row">
                 <view class="author-left">
-                  <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}" />
                   <view class="author-meta">
-                    <text class="author-name">{{item.creator_name || '创作者'}}</text>
+                    <text class="author-name">{{item.creator_name || '创作�?}}</text>
                   </view>
                 </view>
               </view>
@@ -66,10 +65,14 @@
               </view>
             </view>
           </view>
-
+
           <view class="comment-bar" style="padding-left: {{pageSideInset}}px; padding-right: {{pageSideInset}}px;">
+            <view class="comment-author">
+              <image class="comment-author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}" />
+              <text class="comment-author-name">{{item.creator_name || '创作�?}}</text>
+            </view>
             <view class="comment-action" bindtap="toggleLike">
-              <text class="comment-icon {{item.isLiked ? 'active' : ''}}">♥</text>
+              <text class="comment-icon {{item.isLiked ? 'active' : ''}}">�?/text>
               <text class="comment-count">{{item.likeCountText}}</text>
             </view>
           </view>
@@ -80,3 +83,6 @@
 
   <view class="feed-loading" wx:if="{{loadingMore}}">加载更多灵感...</view>
 </view>
+
+
+
