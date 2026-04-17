@@ -10,6 +10,8 @@ Page({
     currentLevel: 0,      // 当前等级
     currentLevelName: '试用创作者',
     commissionRate: '10%', // 当前佣金
+    reportCount: 0,       // 被举报次数
+    reportWarning: false, // 举报预警（≥3次时显示）
     loading: false
   },
 
@@ -41,7 +43,8 @@ Page({
     try {
       await Promise.all([
         this.loadCreatorStats(),
-        this.loadClaimsStats()
+        this.loadClaimsStats(),
+        this.loadUserInfo()
       ]);
     } catch (err) {
       // ignore
@@ -77,6 +80,20 @@ Page({
       this.setData({
         totalClaims,
         totalSubmitted
+      });
+    } catch (err) {
+      // ignore
+    }
+  },
+
+  async loadUserInfo() {
+    try {
+      const res = await Api.getMe();
+      const user = res.data || {};
+      const reportCount = user.report_count || 0;
+      this.setData({
+        reportCount,
+        reportWarning: reportCount >= 3  // 3次及以上显示预警
       });
     } catch (err) {
       // ignore

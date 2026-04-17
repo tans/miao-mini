@@ -29,22 +29,10 @@ Page({
     try {
       const res = await Api.getTransactions();
       const transData = res.data && res.data.transactions || [];
-      const typeMap = {
-        1: '充值',
-        2: '消费',
-        3: '冻结',
-        4: '解冻',
-        5: '任务收入',
-        6: '提现',
-        7: '退保证金',
-        8: '平台抽成',
-        9: '参与奖励',
-        10: '采纳奖励',
-        11: '平台收入'
-      };
+      // 使用服务器返回的 type_str，不再前端硬编码映射
       const transactions = transData.map(t => ({
         ...t,
-        type_text: typeMap[t.type] || '其他'
+        type_text: t.type_str || '其他'
       }));
       this.setData({ transactions });
     } catch (err) {

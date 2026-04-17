@@ -38,6 +38,26 @@
     </view>
   </view>
 
+  <!-- 被举报次数 -->
+  <view class="stats-row" wx:if="{{reportCount > 0 || reportWarning}}">
+    <view class="stat-card wide {{reportWarning ? 'warning' : ''}}">
+      <view class="stat-content-row">
+        <view class="stat-left">
+          <text class="stat-value {{reportWarning ? 'warning-text' : ''}}">{{reportCount}}</text>
+          <text class="stat-label">被举报次数</text>
+        </view>
+        <view class="stat-right" wx:if="{{reportWarning}}">
+          <text class="stat-value warning-text">⚠️ 已达到{{reportCount}}/5</text>
+          <text class="stat-label warning-text">被举报过多将无法提交作品</text>
+        </view>
+        <view class="stat-right" wx:else>
+          <text class="stat-value">{{5 - reportCount}}次</text>
+          <text class="stat-label">还能被举报</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!-- 加载状态 -->
   <view class="loading-tip" wx:if="{{loading}}">
     <text>数据加载中...</text>
