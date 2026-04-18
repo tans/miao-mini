@@ -21,10 +21,6 @@
   <view class="panel-section">
     <view class="panel-label">创作者面板</view>
     <view class="panel-card">
-      <view class="panel-item" bindtap="goCreatorData">
-        <text class="panel-item-icon">📊</text>
-        <text class="panel-item-text">创作数据</text>
-      </view>
       <view class="panel-item" bindtap="goMyClaims">
         <text class="panel-item-icon">📋</text>
         <text class="panel-item-text">我报名的任务</text>
@@ -33,6 +29,10 @@
         <text class="panel-item-icon">🎬</text>
         <text class="panel-item-text">我提交的作品</text>
       </view>
+      <view class="panel-item" bindtap="goCreatorData">
+        <text class="panel-item-icon">📊</text>
+        <text class="panel-item-text">创作数据</text>
+      </view>
     </view>
   </view>
 
@@ -40,13 +40,13 @@
   <view class="panel-section">
     <view class="panel-label">商家面板</view>
     <view class="panel-card">
-      <view class="panel-item" bindtap="goAdoptedWorks">
-        <text class="panel-item-icon">🏆</text>
-        <text class="panel-item-text">作品仓库</text>
-      </view>
       <view class="panel-item" bindtap="goMyTasks">
         <text class="panel-item-icon">📤</text>
         <text class="panel-item-text">我发布的任务</text>
+      </view>
+      <view class="panel-item" bindtap="goAdoptedWorks">
+        <text class="panel-item-icon">🏆</text>
+        <text class="panel-item-text">作品仓库</text>
       </view>
       <view class="panel-item" bindtap="goPublishTask">
         <text class="panel-item-icon">🚀</text>
