@@ -58,8 +58,8 @@ Page({
     try {
       const res = await Api.getMyClaims({ page: 1 });
       let claims = res.data || [];
-      // 按状态排序：待提交(1) > 待验收(2) > 已完成(3)
-      claims.sort((a, b) => a.status - b.status);
+      // 按认领时间倒序：最近报名的任务放最前
+      claims.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       this.setData({ claims, filteredClaims: claims });
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
