@@ -28,7 +28,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getTransactions();
-      const transData = res.data && res.data.transactions || [];
+      const transData = res.data && res.data.data || [];
       // 使用服务器返回的 type_str，不再前端硬编码映射
       const transactions = transData.map(t => ({
         ...t,

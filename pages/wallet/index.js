@@ -40,7 +40,7 @@ Page({
       const wallet = walletRes.data || {};
       const transData = transRes.data || {};
       // 使用服务器返回的 type_str，不再前端硬编码映射
-      const transactions = (transData.transactions || []).map(t => ({
+      const transactions = (transData.data || []).map(t => ({
         ...t,
         type_text: t.type_str || '其他'
       }));
