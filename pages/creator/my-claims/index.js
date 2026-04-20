@@ -12,7 +12,10 @@ Page({
     submitClaimId: null,
     submitUrl: '',
     submitNote: '',
-    dialogButtons: [{ text: '取消', action: 'cancel' }, { text: '提交', type: 'primary', action: 'confirm' }]
+    dialogButtons: [{ text: '取消', action: 'cancel' }, { text: '提交', type: 'primary', action: 'confirm' }],
+    currentFilter: 'active',
+    userLevel: 'Lv3优质创作者',
+    dailyLimit: 8
   },
 
   onLoad(options) {
@@ -20,7 +23,6 @@ Page({
       app.silentLogin().then(() => {
         if (app.isLoggedIn()) {
           this.loadClaims();
-          // 处理跳转参数
           if (options.claimId && options.action === 'submit') {
             this.autoShowSubmitModal(options.claimId);
           }
@@ -29,13 +31,11 @@ Page({
       return;
     }
     this.loadClaims();
-    // 处理跳转参数
     if (options.claimId && options.action === 'submit') {
       this.autoShowSubmitModal(options.claimId);
     }
   },
 
-  // 自动显示提交弹窗（从任务详情页跳转过来时）
   autoShowSubmitModal(claimId) {
     this.setData({ showSubmitModal: true, submitClaimId: claimId, submitUrl: '', submitNote: '' });
   },
@@ -45,7 +45,6 @@ Page({
   },
 
   onShow() {
-    // 从提交作品页返回时，刷新认领列表
     if (this.data.claims.length > 0) {
       this.loadClaims();
     }
@@ -57,30 +56,79 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getMyClaims({ page: 1 });
-      let claims = res.data || [];
-      // 按认领时间倒序：最近报名的任务放最前
+      let claims = (res.data || []).map(c => this.calculateRemainingTime(c));
       claims.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      this.setData({ claims, filteredClaims: claims });
+      this.setData({ claims, loading: false });
+      this.applyFilter(this.data.currentFilter);
     } catch (err) {
+      this.setData({ loading: false });
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
-      this.setData({ loading: false });
       wx.hideLoading();
     }
   },
 
-  switchTab(e) {
-    const tab = e.currentTarget.dataset.tab;
-    this.setData({ activeTab: tab });
-    // ClaimStatus: 1=待提交, 2=待验收, 3=已完成
-    const statusMap = { all: null, pending: 1, submitted: 2, completed: 3 };
-    const status = statusMap[tab];
-    const filtered = status === null ? this.data.claims : this.data.claims.filter(c => c.status === status);
+  calculateRemainingTime(claim) {
+    const now = Date.now();
+    const endAt = claim.end_at ? new Date(claim.end_at).getTime() : now + 86400000 * 7;
+    const diff = endAt - now;
+
+    let remainingTimeDisplay = '0秒';
+    let remainingTimeClass = 'ended';
+
+    if (diff > 0) {
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+
+      if (days > 0) {
+        remainingTimeDisplay = `${days}天${hours}小时${minutes}分`;
+      } else if (hours > 0) {
+        remainingTimeDisplay = `${hours}小时${minutes}分${seconds}秒`;
+      } else if (minutes > 0) {
+        remainingTimeDisplay = `${minutes}分${seconds}秒`;
+      } else {
+        remainingTimeDisplay = `${seconds}秒`;
+      }
+      remainingTimeClass = 'active';
+    }
+
+    return {
+      ...claim,
+      remainingTimeDisplay,
+      remainingTimeClass
+    };
+  },
+
+  switchFilter(e) {
+    const filter = e.currentTarget.dataset.filter;
+    this.setData({ currentFilter: filter });
+    this.applyFilter(filter);
+  },
+
+  applyFilter(filter) {
+    let filtered = this.data.claims;
+    if (filter === 'active') {
+      filtered = this.data.claims.filter(c => c.status === 1);
+    } else if (filter === 'ended') {
+      filtered = this.data.claims.filter(c => c.status !== 1);
+    }
     this.setData({ filteredClaims: filtered });
   },
 
+  goBack() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
+  },
+
   goTaskDetail(e) {
-    wx.navigateTo({ url: `/pages/task-detail/index?id=${e.currentTarget.dataset.id}` });
+    const taskId = e.currentTarget.dataset.task || e.currentTarget.dataset.id;
+    wx.navigateTo({ url: `/pages/task-detail/index?id=${taskId}` });
+  },
+
+  goSubmitWork(e) {
+    const claimId = e.currentTarget.dataset.claim;
+    wx.navigateTo({ url: `/pages/creator/submit-work/index?claimId=${claimId}` });
   },
 
   getClaimStatusText(status) {
@@ -126,7 +174,6 @@ Page({
     }
   },
 
-  // 取消/放弃认领
   async cancelClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     wx.showModal({

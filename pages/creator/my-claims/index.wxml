@@ -1,64 +1,55 @@
 <view class="claims-container">
-  <!-- Tab 标签 -->
-  <view class="tabs">
-    <text class="tab {{activeTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部</text>
-    <text class="tab {{activeTab === 'pending' ? 'active' : ''}}" data-tab="pending" bindtap="switchTab">待提交</text>
-    <text class="tab {{activeTab === 'submitted' ? 'active' : ''}}" data-tab="submitted" bindtap="switchTab">待验收</text>
-    <text class="tab {{activeTab === 'completed' ? 'active' : ''}}" data-tab="completed" bindtap="switchTab">已完成</text>
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <text class="status-time">9:41</text>
+    <view class="status-icons">
+      <view class="signal-icon"></view>
+      <view class="wifi-icon"></view>
+      <view class="battery-icon"></view>
+    </view>
   </view>
 
-  <!-- 认领列表 - 使用 WeUI Panel 风格 -->
+  <!-- 标题栏 -->
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">
+      <image src="/assets/icons/back.png" class="back-icon" />
+    </view>
+    <text class="page-title">我的报名</text>
+    <view class="message-btn">
+      <image src="/assets/icons/message.png" class="message-icon" />
+    </view>
+  </view>
+
+  <!-- 筛选标签 -->
+  <view class="filter-tabs">
+    <view class="filter-tab {{currentFilter === 'active' ? 'active' : ''}}" data-filter="active" bindtap="switchFilter">
+      <text>征稿中</text>
+    </view>
+    <view class="filter-tab {{currentFilter === 'ended' ? 'active' : ''}}" data-filter="ended" bindtap="switchFilter">
+      <text>已截止</text>
+    </view>
+  </view>
+
+  <!-- 报名列表 -->
   <view class="claims-list" wx:if="{{filteredClaims.length > 0}}">
-    <view class="weui-panel" wx:for="{{filteredClaims}}" wx:key="id">
-      <!-- Panel Header -->
-      <view class="weui-panel__hd">
-        <text class="task-title" bindtap="goTaskDetail" data-id="{{item.task_id}}">{{item.task_title || '任务' + item.task_id}}</text>
-        <view class="status-badge status-{{item.status}}">
-          <text>{{item.status === 1 ? '待提交' : item.status === 2 ? '待验收' : item.status === 3 ? '已完成' : '已失效'}}</text>
+    <view class="claim-card {{item.status === 1 ? 'card-active' : 'card-ended'}}" wx:for="{{filteredClaims}}" wx:key="id">
+      <view class="card-main">
+        <view class="card-info">
+          <text class="task-title">{{item.task_title || '任务' + item.task_id}}</text>
+          <text class="deadline-text">投稿截止时间 {{item.end_at || '2026-04-18 10:26'}}</text>
+        </view>
+        <view class="status-tag {{item.status === 1 ? 'tag-active' : 'tag-ended'}}">
+          <text>{{item.status === 1 ? '征稿中' : '已截止'}}</text>
         </view>
       </view>
 
-      <!-- Panel Body -->
-      <view class="weui-panel__bd">
-        <view class="weui-media-box weui-media-box_text">
-          <view class="info-row">
-            <view class="info-item">
-              <text class="label">基础奖金</text>
-              <text class="value price">¥{{item.unit_price || 0}}</text>
-            </view>
-            <view class="info-item" wx:if="{{item.award_price > 0}}">
-              <text class="label">采纳奖金</text>
-              <text class="value price award">+¥{{item.award_price}}</text>
-            </view>
-          </view>
-          <view class="info-row">
-            <view class="info-item">
-              <text class="label">报名日期</text>
-              <text class="value">{{formatDateTime(item.created_at)}}</text>
-            </view>
-            <view class="info-item" wx:if="{{item.end_at}}">
-              <text class="label">截止日期</text>
-              <text class="value">{{item.end_at.substring(0, 10)}}</text>
-            </view>
-          </view>
+      <view class="card-footer">
+        <view class="time-remaining">
+          <text class="time-label">剩余：</text>
+          <text class="time-value {{item.remainingTimeClass}}">{{item.remainingTimeDisplay}}</text>
         </view>
-      </view>
-
-      <!-- Panel Footer - 操作按钮 -->
-      <view class="weui-panel__ft">
-        <!-- 待提交状态：显示提交和放弃按钮 -->
-        <view wx:if="{{item.status === 1}}" class="action-group">
-          <button class="weui-btn weui-btn_mini weui-btn_primary" data-claim-id="{{item.id}}" bindtap="showSubmitModal">提交作品</button>
-          <button class="weui-btn weui-btn_mini weui-btn_default" data-claim-id="{{item.id}}" bindtap="cancelClaim">放弃任务</button>
-        </view>
-        <!-- 待验收状态：显示修改链接 -->
-        <view wx:if="{{item.status === 2}}" class="action-group">
-          <text class="status-text">等待商家验收中</text>
-          <text class="modify-link" bindtap="showSubmitModal" data-claim-id="{{item.id}}">修改作品</text>
-        </view>
-        <!-- 已完成状态 -->
-        <view wx:if="{{item.status === 3}}" class="action-group">
-          <text class="status-text success">已完成，赏金已到账</text>
+        <view class="action-btn {{item.status === 1 ? 'btn-submit' : 'btn-ended'}}" bindtap="{{item.status === 1 ? 'goSubmitWork' : 'goTaskDetail'}}" data-claim="{{item.id}}" data-task="{{item.task_id}}">
+          <text>{{item.status === 1 ? '立即交稿' : '查看详情'}}</text>
         </view>
       </view>
     </view>
@@ -66,22 +57,22 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!loading && filteredClaims.length === 0}}">
-    <mp-msg type="info" title="暂无认领记录">
-      <view slot="desc">快去首页领取感兴趣的任务吧</view>
-    </mp-msg>
+    <view class="empty-icon">📋</view>
+    <text class="empty-text">暂无报名</text>
+    <text class="empty-hint">快去首页领取感兴趣的任务吧</text>
   </view>
 
-  <!-- 提交弹窗 - 使用 WeUI Dialog -->
-  <mp-dialog title="提交作品" show="{{showSubmitModal}}" bindbuttontap="onDialogTap" buttons="{{dialogButtons}}">
-    <view class="dialog-content">
-      <mp-cells>
-        <mp-cell>
-          <input class="weui-input" placeholder="请输入视频链接" value="{{submitUrl}}" bindinput="onSubmitUrlInput"/>
-        </mp-cell>
-        <mp-cell>
-          <input class="weui-input" placeholder="备注（选填）" value="{{submitNote}}" bindinput="onSubmitNoteInput"/>
-        </mp-cell>
-      </mp-cells>
+  <!-- 安全提醒 -->
+  <view class="safety-card" wx:if="{{filteredClaims.length > 0}}">
+    <view class="safety-header">
+      <image src="/assets/icons/safety-icon.png" class="safety-logo" />
+      <text class="safety-brand">创意喵</text>
+      <text class="safety-title">安全提醒</text>
     </view>
-  </mp-dialog>
+    <view class="safety-content">
+      <text class="safety-text">平台保障内容质量，每个创作者同时最多可报名 3 个任务，您当前的创作者等级为：</text>
+      <text class="safety-highlight">{{userLevel || 'Lv3优质创作者'}}，</text>
+      <text class="safety-text">每日最多可报名 {{dailyLimit || 8}} 次。请合理安排创作时间。</text>
+    </view>
+  </view>
 </view>
