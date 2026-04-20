@@ -2,9 +2,15 @@
 <view class="home-container">
   <!-- 顶部渐变区域 -->
   <view class="header-gradient">
-    <view class="header-title-wrap">
-      <text class="header-title">创意喵｜AI视频众包撮合平台</text>
-      <text class="header-subtitle">双向信用管控 100%资金托管</text>
+    <view class="header-top">
+      <view class="header-title-wrap">
+        <text class="header-title">创意喵｜AI视频众包撮合平台</text>
+        <text class="header-subtitle">双向信用管控 100%资金托管</text>
+      </view>
+      <view class="header-actions">
+        <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG5f1862ce8b8fd98e7bbbf34fe80d8f63.png" class="msg-icon" />
+        <view class="msg-badge">8</view>
+      </view>
     </view>
     <!-- Banner轮播 -->
     <scroll-view class="banner-scroll" scroll-x>
@@ -25,13 +31,10 @@
     </scroll-view>
   </view>
 
-  <!-- 分类标签栏 -->
+  <!-- 分类标签栏 (在排序栏上方) -->
   <scroll-view class="category-bar" scroll-x wx:if="{{industryTags.length > 0}}">
     <view class="category-inner">
-      <view
-        class="category-tag {{activeIndustry === '' ? 'active' : ''}}"
-        bindtap="setIndustry" data-industry=""
-      >推荐</view>
+      <text class="category-label">推荐</text>
       <view
         wx:for="{{industryTags}}" wx:key="index"
         class="category-tag {{activeIndustry === item ? 'active' : ''}}"
@@ -42,6 +45,10 @@
 
   <!-- 排序栏 -->
   <view class="sort-bar">
+    <view
+      class="sort-item {{sort === 'default' ? 'active' : ''}}"
+      bindtap="setSort" data-sort="default"
+    >默认</view>
     <view
       class="sort-item {{sort === 'created_at' ? 'active' : ''}}"
       bindtap="setSort" data-sort="created_at"
@@ -63,6 +70,7 @@
       class="task-card"
       bindtap="goTaskDetail" data-id="{{item.id}}"
     >
+      <!-- 封面图区域 -->
       <view class="task-card-cover">
         <image
           wx:if="{{item.cover}}"
@@ -71,32 +79,45 @@
           mode="aspectFill"
           lazy-load
         />
-        <view wx:else class="task-cover-fallback {{item.fallbackThemeClass}}">
-          <text class="fallback-title">{{item.title}}</text>
+        <view wx:else class="task-cover-placeholder">
+          <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGdc2570b8d5182bce2b936e063d290613.png" class="placeholder-img" />
         </view>
         <view class="task-countdown" wx:if="{{item.countdown}}">{{item.countdown}}</view>
       </view>
+
       <view class="task-card-body">
+        <!-- 标题和价格 -->
         <view class="task-title-row">
           <text class="task-title">{{item.title}}</text>
-          <text class="task-price">¥{{item.unit_price}}<text class="task-price-unit">元/条</text></text>
         </view>
+        <view class="task-price-row">
+          <text class="task-price">¥{{item.unit_price}}</text>
+          <text class="task-price-unit">元/条</text>
+        </view>
+
+        <!-- 标签区域 -->
         <view class="task-tags">
-          <view class="tag-list">
-            <text class="tag-item" wx:for="{{item.industryArray}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
-          </view>
-          <text class="tag-style" wx:if="{{item.styleArray.length > 0}}">{{item.styleArray[0]}}</text>
-        </view>
-        <view class="task-badges">
           <view class="badge badge-reward" wx:if="{{item.award_price > 0}}">
             <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG58cc34ab5d3eaf106c83cb9a4a0ffb1b.png" class="badge-icon" />
             <text>参与奖励:¥{{item.award_price}}</text>
+          </view>
+          <view class="badge badge-brand">
+            <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGcae4433a55ff92f1ae3b0e756f4191b6.png" class="badge-icon" />
+            <text>品牌名企</text>
           </view>
           <view class="badge badge-trusted">
             <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG3ccd7683dca9220cf92fd2f444f08690.png" class="badge-icon" />
             <text>资金已托管</text>
           </view>
         </view>
+
+        <!-- 行业标签 -->
+        <view class="industry-tags">
+          <text class="industry-tag" wx:for="{{item.industryArray}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
+          <text class="style-tag" wx:if="{{item.styleArray.length > 0}}">{{item.styleArray[0]}}</text>
+        </view>
+
+        <!-- 报名进度 -->
         <view class="task-progress">
           <text class="progress-label">报名进度</text>
           <view class="progress-info">
@@ -105,11 +126,13 @@
             <text class="progress-text">/{{item.total_count || 10}}人</text>
           </view>
         </view>
+
+        <!-- 底部操作区 -->
         <view class="task-action">
-          <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGdc2570b8d5182bce2b936e063d290613.png" class="task-thumb" />
           <view class="task-deadline">
             <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG5e5354f18caa98b588ce4f1dd488f0b2.png" class="clock-icon" />
             <text class="deadline-text" wx:if="{{item.countdown}}">{{item.countdown}}后截止投稿</text>
+            <text class="deadline-text" wx:else>截止时间未知</text>
           </view>
           <view class="btn-apply">立即报名</view>
         </view>
@@ -135,5 +158,21 @@
       <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG454d10efd52a38cba530e202a537c04c.png" class="fab-icon" />
       <text>发布任务</text>
     </button>
+  </view>
+
+  <!-- 底部TabBar -->
+  <view class="tab-bar">
+    <view class="tab-item active">
+      <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG86d578ff03f9956cda23d4c11e273f8f.png" class="tab-icon" />
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item" bindtap="goWorks">
+      <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGcf3b71b6cef2523fe3ecf4d797d6087c.png" class="tab-icon" />
+      <text class="tab-text">灵感</text>
+    </view>
+    <view class="tab-item" bindtap="goMine">
+      <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG6ec082387363a7eebabfccb1cb31d5c9.png" class="tab-icon" />
+      <text class="tab-text">我的</text>
+    </view>
   </view>
 </view>
