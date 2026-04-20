@@ -1,65 +1,127 @@
+<!-- pages/mine/index.wxml -->
 <view class="mine-container">
-  <!-- 用户信息卡片 -->
-  <view class="user-card" bindtap="goProfile">
-    <image class="avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}"/>
-    <view class="user-info">
-      <text class="nickname">{{user.nickname || user.username || '未登录'}}</text>
-    </view>
-    <text class="user-card-arrow">></text>
-  </view>
-
-  <!-- 钱包入口 -->
-  <view class="wallet-row" bindtap="goWallet">
-    <text class="wallet-label">钱包余额</text>
-    <view class="wallet-right">
-      <text class="wallet-balance">¥{{balance || '0.00'}}</text>
-      <text class="wallet-arrow">></text>
-    </view>
-  </view>
-
-  <!-- 创作者面板 -->
-  <view class="panel-section">
-    <view class="panel-label">创作者面板</view>
-    <view class="panel-card">
-      <view class="panel-item" bindtap="goMyClaims">
-        <text class="panel-item-icon">📋</text>
-        <text class="panel-item-text">我报名的任务</text>
+  <!-- 顶部区域 -->
+  <view class="header-section">
+    <!-- 用户信息卡片 -->
+    <view class="user-card">
+      <view class="user-info-row">
+        <image class="user-avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
+        <view class="user-detail">
+          <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
+          <text class="user-id">ID：{{user.id || '--'}}</text>
+        </view>
+        <image class="user-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" />
       </view>
-      <view class="panel-item" bindtap="goWorks">
-        <text class="panel-item-icon">🎬</text>
-        <text class="panel-item-text">我提交的作品</text>
+      <view class="user-level-row">
+        <text class="level-badge">Lv.{{creatorStats.level || 0}} {{creatorStats.level_name || '创作者'}}</text>
+        <text class="level-sep">·</text>
+        <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
       </view>
-      <view class="panel-item" bindtap="goCreatorData">
-        <text class="panel-item-icon">📊</text>
-        <text class="panel-item-text">创作数据</text>
+    </view>
+
+    <!-- 钱包入口 -->
+    <view class="wallet-card" bindtap="goWallet">
+      <view class="wallet-left">
+        <text class="wallet-title">钱包</text>
+        <text class="wallet-balance">¥{{balance || '0.00'}}</text>
+      </view>
+      <view class="wallet-right">
+        <text class="wallet-desc">可提现余额</text>
+        <image class="wallet-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
       </view>
     </view>
   </view>
 
-  <!-- 商家面板 -->
-  <view class="panel-section">
-    <view class="panel-label">商家面板</view>
-    <view class="panel-card">
-      <view class="panel-item" bindtap="goMyTasks">
-        <text class="panel-item-icon">📤</text>
-        <text class="panel-item-text">我发布的任务</text>
+  <!-- 主体内容 -->
+  <view class="content-section">
+    <!-- 创作者专区 -->
+    <view class="zone-card">
+      <view class="zone-title">创作者专区</view>
+      <view class="zone-items">
+        <view class="zone-item" bindtap="goMyClaims">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNGaca8cc33bf006c7f097a4c89b39800f3.png" />
+          <view class="zone-item-content">
+            <text class="zone-item-title">我的任务</text>
+            <view class="zone-item-badge" wx:if="{{bizStats.pending_count > 0}}">
+              <text class="badge-num">{{bizStats.pending_count}}</text>
+              <text class="badge-text">个任务待交稿</text>
+            </view>
+          </view>
+          <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
+        <view class="zone-item" bindtap="goWorks">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG82f112c4255e38b6bfaac7de1dda1ba5.png" />
+          <text class="zone-item-title">我的作品</text>
+          <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
       </view>
-      <view class="panel-item" bindtap="goAdoptedWorks">
-        <text class="panel-item-icon">🏆</text>
-        <text class="panel-item-text">作品仓库</text>
+    </view>
+
+    <!-- 商家专区 -->
+    <view class="zone-card">
+      <view class="zone-title">商家专区</view>
+      <view class="zone-items">
+        <view class="zone-item" bindtap="goMerchantAuth">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNGc19883119d2024c369461474511364ea.png" />
+          <text class="zone-item-title">商家认证</text>
+          <view class="zone-action">
+            <text class="action-text">去认证</text>
+            <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+          </view>
+        </view>
+        <view class="zone-item" bindtap="goMyTasks">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG74e97556a861f49ce06345429138ef8f.png" />
+          <view class="zone-item-content">
+            <text class="zone-item-title">任务管理</text>
+            <text class="zone-item-sub">已购作品库</text>
+          </view>
+          <view class="zone-right">
+            <view class="zone-badge" wx:if="{{bizStats.pending_count > 0}}">
+              <text class="badge-num">{{bizStats.pending_count}}</text>
+              <text class="badge-text">个视频待审核</text>
+            </view>
+            <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+          </view>
+        </view>
       </view>
-      <view class="panel-item" bindtap="goPublishTask">
-        <text class="panel-item-icon">🚀</text>
-        <text class="panel-item-text">马上发布</text>
+    </view>
+
+    <!-- 通用功能 -->
+    <view class="zone-card">
+      <view class="zone-title">通用功能</view>
+      <view class="zone-items">
+        <view class="zone-item" bindtap="goHelp">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG406ade8f0c40016652893f38275b5fb3.png" />
+          <text class="zone-item-title">帮助中心</text>
+          <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
+        <view class="zone-item" bindtap="goAppeal">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNGaed8a70a2883725e5b331ecef8cf0ebc.png" />
+          <text class="zone-item-title">申诉与纠纷</text>
+          <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
+        <view class="zone-item" bindtap="goCustomerService">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG750a5046ddb48b5befe68e4cefd712da.png" />
+          <text class="zone-item-title">联系客服</text>
+          <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
       </view>
     </view>
   </view>
 
-  <!-- 帮助中心 -->
-  <view class="help-row" bindtap="goHelp">
-    <text class="help-text">帮助中心</text>
-    <text class="help-arrow">></text>
+  <!-- 底部tabBar -->
+  <view class="tab-bar">
+    <view class="tab-item" bindtap="goHome">
+      <image class="tab-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG0ca0042d2c8219b92c002b438686e65f.png" />
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item" bindtap="goInspiration">
+      <image class="tab-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNGcf3b71b6cef2523fe3ecf4d797d6087c.png" />
+      <text class="tab-text">灵感</text>
+    </view>
+    <view class="tab-item active">
+      <image class="tab-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG83721189c55a03330830bd6479d87e9a.png" />
+      <text class="tab-text">我的</text>
+    </view>
   </view>
-
-  <view class="version">{{displayText}}</view>
 </view>
