@@ -3,13 +3,7 @@
     <mp-cell link bindtap="goProfile" value="个人信息" hover>
       <text slot="icon" class="menu-icon">👤</text>
     </mp-cell>
-    <mp-cell link bindtap="goHelp" value="帮助中心" hover>
-      <text slot="icon" class="menu-icon">❓</text>
-    </mp-cell>
-    <mp-cell link bindtap="goAbout" value="关于我们" hover>
-      <text slot="icon" class="menu-icon">ℹ️</text>
-    </mp-cell>
   </mp-cells>
 
-  <view class="version">版本 {{version}}</view>
+  <view class="version">{{displayText}}</view>
 </view>

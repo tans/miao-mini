@@ -1,37 +1,65 @@
 <view class="mine-container">
   <!-- 用户信息卡片 -->
   <view class="user-card" bindtap="goProfile">
-    <image class="avatar" src="{{user.avatar || '/assets/icons/home.png'}}"/>
+    <image class="avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}"/>
     <view class="user-info">
       <text class="nickname">{{user.nickname || user.username || '未登录'}}</text>
-      <text class="role-tag" wx:if="{{user.role === 'business'}}">商家</text>
-      <text class="role-tag" wx:elif="{{user.role === 'creator'}}">创作者</text>
     </view>
     <text class="user-card-arrow">></text>
   </view>
 
-  <!-- 钱包卡片 -->
-  <view class="wallet-card" bindtap="goWallet">
-    <view class="wallet-left">
-      <text class="wallet-label">钱包余额</text>
+  <!-- 钱包入口 -->
+  <view class="wallet-row" bindtap="goWallet">
+    <text class="wallet-label">钱包余额</text>
+    <view class="wallet-right">
       <text class="wallet-balance">¥{{balance || '0.00'}}</text>
+      <text class="wallet-arrow">></text>
     </view>
-    <text class="wallet-arrow">></text>
   </view>
 
-  <!-- 功能列表 -->
-  <mp-cells title="我的操作" footer="">
-    <mp-cell link bindtap="goMyClaims" value="我领取的任务" hover>
-      <text slot="icon" class="menu-icon">📋</text>
-    </mp-cell>
-    <mp-cell link bindtap="goMyTasks" value="我发布的任务" hover>
-      <text slot="icon" class="menu-icon">📝</text>
-    </mp-cell>
-    <mp-cell link bindtap="goTransactions" value="收益明细" hover>
-      <text slot="icon" class="menu-icon">💰</text>
-    </mp-cell>
-    <mp-cell link bindtap="goSettings" value="设置" hover>
-      <text slot="icon" class="menu-icon">⚙️</text>
-    </mp-cell>
-  </mp-cells>
+  <!-- 创作者面板 -->
+  <view class="panel-section">
+    <view class="panel-label">创作者面板</view>
+    <view class="panel-card">
+      <view class="panel-item" bindtap="goMyClaims">
+        <text class="panel-item-icon">📋</text>
+        <text class="panel-item-text">我报名的任务</text>
+      </view>
+      <view class="panel-item" bindtap="goWorks">
+        <text class="panel-item-icon">🎬</text>
+        <text class="panel-item-text">我提交的作品</text>
+      </view>
+      <view class="panel-item" bindtap="goCreatorData">
+        <text class="panel-item-icon">📊</text>
+        <text class="panel-item-text">创作数据</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商家面板 -->
+  <view class="panel-section">
+    <view class="panel-label">商家面板</view>
+    <view class="panel-card">
+      <view class="panel-item" bindtap="goMyTasks">
+        <text class="panel-item-icon">📤</text>
+        <text class="panel-item-text">我发布的任务</text>
+      </view>
+      <view class="panel-item" bindtap="goAdoptedWorks">
+        <text class="panel-item-icon">🏆</text>
+        <text class="panel-item-text">作品仓库</text>
+      </view>
+      <view class="panel-item" bindtap="goPublishTask">
+        <text class="panel-item-icon">🚀</text>
+        <text class="panel-item-text">马上发布</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 帮助中心 -->
+  <view class="help-row" bindtap="goHelp">
+    <text class="help-text">帮助中心</text>
+    <text class="help-arrow">></text>
+  </view>
+
+  <view class="version">{{displayText}}</view>
 </view>

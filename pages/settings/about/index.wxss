@@ -1,0 +1,150 @@
+.about-container {
+  padding: 16px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.hero-card {
+  background: linear-gradient(160deg, #1f2329, #38414a);
+  border-radius: 16px;
+  padding: 20px 18px;
+  margin-bottom: 12px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hero-eyebrow {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.hero-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hero-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  opacity: 0.92;
+}
+
+.section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.feature-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef8802;
+  margin-top: 6px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.feature-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.feature-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.step-index {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(239, 136, 2, 0.12);
+  color: #ef8802;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.step-text {
+  flex: 1;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-label {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.contact-value {
+  font-size: 14px;
+  color: #333;
+}
+
+.copyright {
+  text-align: center;
+  padding: 24px 0;
+  font-size: 12px;
+  color: #999;
+}

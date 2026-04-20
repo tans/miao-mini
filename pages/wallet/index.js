@@ -5,6 +5,8 @@ const app = getApp();
 Page({
   data: {
     balance: 0,
+    frozenAmount: 0,
+    marginFrozen: 0,
     totalIncome: 0,
     transactions: [],
     loading: false,
@@ -37,13 +39,16 @@ Page({
 
       const wallet = walletRes.data || {};
       const transData = transRes.data || {};
-      const transactions = (transData.transactions || []).map(t => ({
+      // 使用服务器返回的 type_str，不再前端硬编码映射
+      const transactions = (transData.data || []).map(t => ({
         ...t,
-        type_text: this.getTransTypeText(t.type)
+        type_text: t.type_str || '其他'
       }));
 
       this.setData({
         balance: wallet.balance || 0,
+        frozenAmount: wallet.frozen_amount || 0,
+        marginFrozen: wallet.margin_frozen || 0,
         totalIncome: wallet.total_income || 0,
         transactions,
       });
@@ -53,10 +58,5 @@ Page({
       wx.hideLoading();
       this.setData({ loading: false });
     }
-  },
-
-  getTransTypeText(type) {
-    const map = { 1: '充值', 2: '提现', 3: '任务收入', 4: '冻结', 5: '解冻' };
-    return map[type] || '其他';
   }
 });

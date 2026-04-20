@@ -1,4 +1,5 @@
 const Api = require('../../utils/api.js');
+const { formatDateTime } = require('../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -27,11 +28,11 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getTransactions();
-      const transData = res.data && res.data.transactions || [];
-      const typeMap = { 1: '充值', 2: '提现', 3: '任务收入', 4: '冻结', 5: '解冻' };
+      const transData = res.data && res.data.data || [];
+      // 使用服务器返回的 type_str，不再前端硬编码映射
       const transactions = transData.map(t => ({
         ...t,
-        type_text: typeMap[t.type] || '其他'
+        type_text: t.type_str || '其他'
       }));
       this.setData({ transactions });
     } catch (err) {
@@ -40,5 +41,9 @@ Page({
       this.setData({ loading: false });
       wx.hideLoading();
     }
+  },
+
+  formatDateTime(dateStr) {
+    return formatDateTime(dateStr);
   }
 });

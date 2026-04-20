@@ -1,0 +1,157 @@
+<!--pages/create-task/index.wxml-->
+<view class="create-container">
+  <mp-form-page title="发布任务" subtitle="填写任务信息">
+    <mp-form id="taskForm" rules="{{rules}}" models="{{formData}}">
+      <!-- 任务标题 -->
+      <mp-cells title="任务标题" footer="简洁描述任务需求，如某某餐饮探店短视频">
+        <mp-cell prop="title" show-error>
+          <input class="weui-input" placeholder="简洁描述任务需求，如某某餐饮探店短视频" value="{{title}}" bindinput="onTitleInput"/>
+        </mp-cell>
+      </mp-cells>
+
+      <!-- 所属行业 -->
+      <mp-cells title="所属行业">
+        <mp-cell>
+          <picker mode="selector" range="{{industryOptions}}" range-key="name" value="{{industry_index}}" bindchange="onIndustryChange">
+            <view class="weui-input picker-value">{{industry ? industry : '请选择所属行业'}}</view>
+          </picker>
+        </mp-cell>
+      </mp-cells>
+
+      <!-- 详细描述 -->
+      <mp-cells title="详细描述" footer="详细说明任务要求、交付标准、注意事项">
+        <mp-cell prop="description" show-error>
+          <textarea class="weui-textarea" placeholder="详细说明任务要求、交付标准、注意事项..." value="{{description}}" bindinput="onDescInput" style="min-height: 120px"/>
+        </mp-cell>
+      </mp-cells>
+
+      <!-- 奖励设置 -->
+    <mp-cells title="奖励设置">
+      <mp-cell prop="unit_price" show-error>
+        <view slot="title" class="award-label">参与奖励 (元/人)</view>
+        <picker mode="selector" range="{{priceRange}}" value="{{unit_price_index}}" bindchange="onUnitPriceChange">
+          <view class="weui-input picker-value">{{unit_price}}元</view>
+        </picker>
+      </mp-cell>
+      <mp-cell prop="total_count" show-error>
+        <view slot="title" class="award-label">报名人数上限</view>
+        <picker mode="selector" range="{{totalCountRange}}" value="{{total_count_index}}" bindchange="onTotalCountChange">
+          <view class="weui-input picker-value">{{total_count}}人</view>
+        </picker>
+      </mp-cell>
+      <mp-cell>
+        <view slot="title" class="award-label">采纳奖励 (元/人)</view>
+        <input type="number" class="weui-input" placeholder="≥8元" value="{{award_price}}" bindinput="onAwardPriceInput"/>
+      </mp-cell>
+      </mp-cells>
+
+      <!-- 截止日期 -->
+      <mp-cells title="截止日期" footer="选填，默认自动设置为7天后">
+        <mp-cell prop="deadline" show-error>
+          <picker mode="date" value="{{deadline}}" start="{{minDeadline}}" end="{{maxDeadline}}" bindchange="onDeadlineChange">
+            <view class="weui-input">{{deadline ? deadline : '默认7天后'}}</view>
+          </picker>
+        </mp-cell>
+      </mp-cells>
+
+      <!-- 视频时长 -->
+      <mp-cells title="视频时长要求">
+        <mp-cell>
+          <view class="chip-group">
+            <text
+              wx:for="{{durationOptions}}"
+              wx:key="index"
+              class="chip {{video_duration === item ? 'active' : ''}}"
+              data-value="{{item}}"
+              bindtap="selectDuration"
+            >{{item}}</text>
+          </view>
+        </mp-cell>
+      </mp-cells>
+
+      <!-- 创作风格 -->
+      <mp-cells title="创作风格">
+        <mp-cell>
+          <view class="chip-group">
+            <text
+              wx:for="{{styleOptions}}"
+              wx:key="index"
+              class="chip {{creative_style === item ? 'active' : ''}}"
+              data-value="{{item}}"
+              bindtap="selectStyle"
+            >{{item}}</text>
+          </view>
+        </mp-cell>
+      </mp-cells>
+    </mp-form>
+
+    <!-- 素材上传 -->
+    <view class="materials-section">
+      <view class="section-title">任务素材 <text class="required">*</text></view>
+      <view class="section-hint">第一个必须是图片，可继续添加视频等素材</view>
+
+      <view class="materials-grid">
+        <view wx:for="{{materials}}" wx:key="index" class="material-item">
+          <image wx:if="{{item.fileType === 'image'}}" class="material-thumb" src="{{item.url}}" mode="aspectFill"/>
+          <view wx:else class="material-video-thumb">
+            <text class="material-video-icon">▶</text>
+            <text class="material-video-name">{{item.fileName}}</text>
+          </view>
+          <view class="material-delete" bindtap="deleteMaterial" data-index="{{index}}">✕</view>
+        </view>
+
+        <view wx:if="{{materials.length < 9}}" class="material-add" bindtap="addMaterial">
+          <text class="material-add-icon">+</text>
+          <text class="material-add-label">添加素材</text>
+        </view>
+      </view>
+
+      <view wx:if="{{uploading}}" class="uploading-tip">
+        <mp-loading type="circle"></mp-loading>
+        <text>上传中，请稍候...</text>
+      </view>
+    </view>
+
+    <!-- 即梦合拍 -->
+    <view class="jimeng-section">
+      <view class="section-title">即梦合拍 <text class="optional">(选填)</text></view>
+      <view class="section-hint">直接粘贴即梦合拍邀约文案，系统自动解析链接和验证码</view>
+      <view class="jimeng-input-area">
+        <textarea class="jimeng-textarea" placeholder="粘贴即梦合拍邀约文案，如：快来即梦，跟 大师兄 一起合拍整活！😆 https://m.jimeng.jianying.com/s/f6kTkjlzvAc/?t=0 AA8661" value="{{jimeng_raw}}" bindinput="onJimengRawInput" />
+        <view class="jimeng-preview" wx:if="{{jimeng_link || jimeng_code}}">
+          <view class="preview-row" wx:if="{{jimeng_link}}">
+            <text class="preview-label">链接：</text>
+            <text class="preview-value">{{jimeng_link}}</text>
+          </view>
+          <view class="preview-row" wx:if="{{jimeng_code}}">
+            <text class="preview-label">验证码：</text>
+            <text class="preview-value">{{jimeng_code}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 预算预览 -->
+    <view class="budget-preview">
+      <view class="budget-title">预算预览</view>
+      <view class="budget-row">
+        <text class="budget-label">参与奖励</text>
+        <text class="budget-value">¥{{baseTotal}}</text>
+      </view>
+      <view class="budget-row" wx:if="{{award_price > 0}}">
+        <text class="budget-label">采纳奖励</text>
+        <text class="budget-value">¥{{awardTotal}}</text>
+      </view>
+      <view class="budget-row budget-total">
+        <text class="budget-label">预计总费用</text>
+        <text class="budget-value total">¥{{totalBudget}}</text>
+      </view>
+      <view class="budget-hint">发布任务后，总金额将从您的账户余额中扣除</view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <button class="weui-btn weui-btn_primary" bindtap="handleSubmit">发布任务</button>
+    </view>
+  </mp-form-page>
+</view>

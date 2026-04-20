@@ -24,14 +24,11 @@
     </mp-cell>
     <mp-cell>
       <view slot="title" class="form-label">手机</view>
-      <input
-        class="weui-input"
-        type="digit"
-        placeholder="请输入手机号"
-        maxlength="11"
-        value="{{phone}}"
-        bindinput="onPhoneInput"
-      />
+      <button
+        class="phone-btn {{phone ? 'phone-btn_active' : ''}}"
+        open-type="getPhoneNumber"
+        bindgetphonenumber="onGetPhoneNumber"
+      >{{phone || '点击授权手机号'}}</button>
     </mp-cell>
   </mp-cells>
 

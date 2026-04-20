@@ -1,31 +1,99 @@
 <view class="works-container">
   <view class="works-header">
-    <text class="works-title">灵感</text>
+    <text class="works-title">{{pageTitle}}</text>
+    <view class="search-bar {{searchBarHidden ? 'search-bar-hidden' : ''}}">
+      <view class="search-input-wrap">
+        <view class="search-field">
+          <text class="search-icon">搜</text>
+          <input
+            class="search-input"
+            value="{{searchValue}}"
+            placeholder="搜索标题、创作者、内容"
+            confirm-type="search"
+            bindinput="onSearchInput"
+            bindconfirm="onSearchConfirm"
+          />
+          <text class="search-clear" wx:if="{{searchValue}}" bindtap="clearSearch">清空</text>
+        </view>
+        <button class="search-btn" bindtap="onSearchConfirm">
+          <text class="search-btn-label">搜索</text>
+        </button>
+      </view>
+    </view>
+
+    <scroll-view class="tag-scroll" scroll-x enable-flex>
+      <view class="tag-list">
+        <view
+          wx:for="{{tags}}"
+          wx:key="*this"
+          class="tag-chip {{activeTag === item ? 'active' : ''}}"
+          data-tag="{{item}}"
+          bindtap="switchTag"
+        >
+          {{item}}
+        </view>
+      </view>
+    </scroll-view>
+
     <view class="sort-tabs">
-      <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">最新</text>
-      <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">最多点赞</text>
-      <text class="tab {{sort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">最多浏览</text>
+      <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">最新发布</text>
+      <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">点赞最多</text>
+      <text class="tab {{sort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">浏览最多</text>
     </view>
   </view>
 
-  <!-- 空状态 -->
-  <mp-msg type="info" title="暂无灵感" wx:if="{{!loading && works.length === 0}}" />
+  <view class="active-filters" wx:if="{{keyword || activeTag !== '全部'}}">
+    <text class="filter-pill" wx:if="{{keyword}}">搜索: {{keyword}}</text>
+    <text class="filter-pill" wx:if="{{activeTag !== '全部'}}">标签: {{activeTag}}</text>
+  </view>
 
-  <!-- 作品网格 - 使用mp-grids -->
-  <mp-grids wx:if="{{works.length > 0}}">
+  <mp-msg type="info" title="暂无灵感内容" wx:if="{{!loading && works.length === 0}}" />
+
+  <view class="works-grid" wx:if="{{works.length > 0}}">
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
       <view class="work-cover-wrap">
-        <image class="work-cover" src="{{item.cover_url || item.image}}" mode="aspectFill"/>
+        <image wx:if="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
+        <video
+          wx:elif="{{item.isVideo && item.previewVideoSrc}}"
+          class="work-cover work-video-preview"
+          src="{{item.previewVideoSrc}}"
+          objectFit="cover"
+          autoplay="{{false}}"
+          loop="{{false}}"
+          muted="{{true}}"
+          controls="{{false}}"
+          show-center-play-btn="{{false}}"
+          show-play-btn="{{false}}"
+          show-fullscreen-btn="{{false}}"
+          show-mute-btn="{{false}}"
+          enable-play-gesture="{{false}}"
+          enable-progress-gesture="{{false}}"
+        ></video>
+        <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
+          <view class="fallback-badge">创作说明</view>
+          <text class="fallback-summary">{{item.fallbackSummary}}</text>
+          <text class="fallback-title">{{item.task_title || item.title}}</text>
+        </view>
+        <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
+        <view class="media-badge" wx:if="{{item.isVideo}}">
+          <view class="media-play-icon"></view>
+        </view>
       </view>
       <view class="work-info">
-        <text class="work-title">{{item.title}}</text>
-        <view class="work-author">
-          <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/home.png'}}"/>
-          <text class="author-name">{{item.creator_name || '创作者'}}</text>
+        <text class="work-title">{{item.task_title || item.title}}</text>
+        <view class="work-meta">
+          <view class="work-author">
+            <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
+            <text class="author-name">{{item.creator_name || '创作者'}}</text>
+          </view>
+          <view class="work-like-count">
+            <text class="like-icon">❤</text>
+            <text class="like-count-value">{{item.likesCount}}</text>
+          </view>
         </view>
       </view>
     </view>
-  </mp-grids>
+  </view>
 
   <view class="loading-more" wx:if="{{loading}}">
     <mp-loading type="circle"></mp-loading>

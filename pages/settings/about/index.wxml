@@ -1,0 +1,44 @@
+<view class="about-container">
+  <view class="hero-card">
+    <text class="hero-eyebrow">Creative Meow</text>
+    <text class="hero-title">关于创意喵</text>
+    <text class="hero-desc">创意喵是面向视频任务协作的轻量平台。商家发布清晰需求，创作者快速认领与交付，平台帮助你用更短链路完成内容生产与收益结算。</text>
+  </view>
+
+  <view class="section">
+    <view class="section-title">平台特点</view>
+    <view class="feature-list">
+      <view class="feature-item" wx:for="{{highlights}}" wx:key="title">
+        <view class="feature-dot"></view>
+        <view class="feature-info">
+          <text class="feature-title">{{item.title}}</text>
+          <text class="feature-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">协作流程</view>
+    <view class="step-list">
+      <view class="step-item" wx:for="{{steps}}" wx:key="*this">
+        <text class="step-index">{{index + 1}}</text>
+        <text class="step-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">联系与合作</view>
+    <view class="contact-list">
+      <view class="contact-item" wx:for="{{contacts}}" wx:key="label">
+        <text class="contact-label">{{item.label}}</text>
+        <text class="contact-value">{{item.value}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="copyright">
+    <text>© 2026 创意喵 All Rights Reserved</text>
+  </view>
+</view>

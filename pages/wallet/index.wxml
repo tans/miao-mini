@@ -7,6 +7,18 @@
     <text class="balance-hint">可提现</text>
   </view>
 
+  <!-- 冻结资金 -->
+  <view class="frozen-card" wx:if="{{frozenAmount > 0 || marginFrozen > 0}}">
+    <view class="frozen-item" wx:if="{{frozenAmount > 0}}">
+      <text class="frozen-label">冻结金额</text>
+      <text class="frozen-amount">¥{{frozenAmount}}</text>
+    </view>
+    <view class="frozen-item" wx:if="{{marginFrozen > 0}}">
+      <text class="frozen-label">保证金</text>
+      <text class="frozen-amount">¥{{marginFrozen}}</text>
+    </view>
+  </view>
+
   <!-- 收入统计 -->
   <view class="income-stats">
     <view class="stat-item">

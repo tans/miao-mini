@@ -1,15 +1,30 @@
 const Api = require('../../utils/api.js');
 const app = getApp();
+const buildInfo = require('../../build-info.js');
 
 Page({
   data: {
-    version: '1.0.0',
+    displayText: 'v1.0.0',
   },
 
   onLoad() {
-    this.setData({
-      version: wx.getAccountInfoSync().miniProgram.version || '1.0.0',
-    });
+    this.updateDisplayText();
+  },
+
+  onShow() {
+    this.updateDisplayText();
+  },
+
+  updateDisplayText() {
+    const uploadTime = buildInfo.uploadTime;
+    if (uploadTime) {
+      const date = new Date(uploadTime);
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      this.setData({ displayText: `${month}-${day} ${hours}:${minutes}` });
+    }
   },
 
   goProfile() {
@@ -26,14 +41,6 @@ Page({
       return;
     }
     wx.navigateTo({ url: '/pages/settings/profile/index' });
-  },
-
-  goHelp() {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
-  },
-
-  goAbout() {
-    wx.showToast({ title: '功能开发中', icon: 'none' });
   },
 
 });

@@ -56,19 +56,36 @@
           mode="aspectFill"
           lazy-load
         />
-        <view wx:else class="card-thumb-placeholder">
-          <text class="placeholder-icon">🎬</text>
+        <view wx:else class="card-thumb-fallback {{item.fallbackThemeClass}}">
+          <view class="fallback-badge">创作说明</view>
+          <text class="fallback-summary">{{item.fallbackSummary}}</text>
+          <text class="fallback-title">{{item.title}}</text>
         </view>
+        <!-- 截止时间倒计时标签 -->
+        <view class="card-countdown" wx:if="{{item.countdown}}">{{item.countdown}}</view>
       </view>
       <view class="card-body">
         <text class="card-title">{{item.title}}</text>
-        <view class="card-tags" wx:if="{{item.industries.length > 0}}">
-          <text class="card-tag">{{item.industries[0]}}</text>
-          <text wx:if="{{item.industries.length > 1}}" class="card-tag-more">+{{item.industries.length - 1}}</text>
+        <!-- 行业类别和视频风格一行，两端对齐 -->
+        <view class="card-tags-row" wx:if="{{item.industryArray.length > 0 || item.styleArray.length > 0}}">
+          <view class="card-tags-left">
+            <text class="card-tag" wx:for="{{item.industryArray}}" wx:key="index">{{item}}</text>
+          </view>
+          <view class="card-tags-right">
+            <text class="card-style-tag" wx:for="{{item.styleArray}}" wx:key="index" wx:for-item="style">{{style}}</text>
+          </view>
         </view>
+        <!-- 价格和报名信息一行，左右对齐 -->
         <view class="card-footer">
-          <text class="card-price">¥{{item.unit_price}}</text>
-          <text class="card-remain">剩{{item.remaining_count}}名</text>
+          <view class="card-price-wrap">
+            <text class="card-price">¥{{item.unit_price}}</text>
+            <text class="card-award" wx:if="{{item.award_price > 0}}">+¥{{item.award_price}}采纳</text>
+          </view>
+          <view class="card-enroll">
+            <text class="enroll-count">已报名{{item.enrolled_count}}人</text>
+            <text class="enroll-sep">|</text>
+            <text class="remain-count">剩{{item.remaining_count}}名</text>
+          </view>
         </view>
       </view>
     </view>
@@ -78,6 +95,11 @@
     <button class="weui-btn weui-btn_default" bindtap="loadMore" disabled="{{loading}}">
       {{loading ? '加载中...' : '加载更多'}}
     </button>
+  </view>
+
+  <!-- 发布任务按钮 -->
+  <view class="fab-container">
+    <button class="fab" bindtap="goCreateTask">+ 发布任务</button>
   </view>
 
 </view>

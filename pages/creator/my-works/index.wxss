@@ -1,0 +1,142 @@
+.my-works-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+  background: #fff;
+  display: flex;
+  padding: 12px 16px;
+  gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+
+.tab {
+  font-size: 15px;
+  color: #999;
+  padding-bottom: 8rpx;
+  position: relative;
+}
+
+.tab.active {
+  color: #EF8802;
+  font-weight: 500;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32rpx;
+  height: 6rpx;
+  background: #EF8802;
+  border-radius: 3rpx;
+}
+
+/* Works List */
+.works-list {
+  padding: 12px;
+}
+
+.work-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.work-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.work-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  margin-right: 12px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.status-badge.status-pending {
+  background: #E8F4FF;
+  color: #1890ff;
+}
+
+.status-badge.status-passed {
+  background: #F6FFED;
+  color: #52c41a;
+}
+
+.status-badge.status-rejected,
+.status-badge.status-cancelled {
+  background: #F5F5F5;
+  color: #999;
+}
+
+.work-content {
+  margin-bottom: 12px;
+}
+
+.content-text {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Media Preview */
+.media-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.preview-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+}
+
+.preview-video {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+}
+
+.work-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submit-time {
+  font-size: 12px;
+  color: #999;
+}
+
+.unit-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #EF8802;
+}
+
+/* Empty State */
+.empty-state {
+  padding: 120px 0;
+}

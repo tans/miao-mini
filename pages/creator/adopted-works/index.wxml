@@ -1,0 +1,80 @@
+<view class="works-container">
+  <view class="works-header">
+    <text class="works-title">{{pageTitle}}</text>
+
+    <view class="sort-tabs">
+      <text class="tab {{sort === 'latest' ? 'active' : ''}}" data-sort="latest" bindtap="switchSort">最新发布</text>
+      <text class="tab {{sort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">点赞最多</text>
+      <text class="tab {{sort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">浏览最多</text>
+    </view>
+  </view>
+
+  <mp-msg type="info" title="暂无采纳作品" wx:if="{{!loading && works.length === 0}}" />
+
+  <view class="works-grid" wx:if="{{works.length > 0}}">
+    <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
+      <view class="work-main">
+        <view class="work-cover-wrap">
+          <image wx:if="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
+          <video
+            wx:elif="{{item.isVideo && item.previewVideoSrc}}"
+            class="work-cover work-video-preview"
+            src="{{item.previewVideoSrc}}"
+            objectFit="cover"
+            autoplay="{{false}}"
+            loop="{{false}}"
+            muted="{{true}}"
+            controls="{{false}}"
+            show-center-play-btn="{{false}}"
+            show-play-btn="{{false}}"
+            show-fullscreen-btn="{{false}}"
+            show-mute-btn="{{false}}"
+            enable-play-gesture="{{false}}"
+            enable-progress-gesture="{{false}}"
+          ></video>
+          <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
+            <view class="fallback-badge">创作说明</view>
+            <text class="fallback-summary">{{item.fallbackSummary}}</text>
+            <text class="fallback-title">{{item.task_title || item.title}}</text>
+          </view>
+          <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
+          <view class="media-badge" wx:if="{{item.isVideo}}">
+            <view class="media-play-icon"></view>
+          </view>
+        </view>
+
+        <view class="work-info">
+          <text class="work-title">{{item.task_title || item.title}}</text>
+          <view class="work-meta">
+            <view class="work-author">
+              <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
+              <text class="author-name">{{item.creator_name || '创作者'}}</text>
+            </view>
+            <view class="work-like-count">
+              <text class="like-icon">❤</text>
+              <text class="like-count-value">{{item.likesCount}}</text>
+            </view>
+          </view>
+          <view class="work-extra">
+            <text class="work-adopt-time">采纳时间：{{item.adoptedAtText}}</text>
+            <text class="work-material-count">素材 {{item.materialCount}} 个</text>
+          </view>
+          <view class="work-actions" catchtap="noop">
+            <button
+              class="download-btn"
+              catchtap="downloadWorkMaterial"
+              data-url="{{item.downloadUrl}}"
+              data-type="{{item.downloadType}}"
+              disabled="{{!item.downloadUrl}}"
+            >下载</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="loading-more" wx:if="{{loading}}">
+    <mp-loading type="circle"></mp-loading>
+    <text>加载中...</text>
+  </view>
+</view>

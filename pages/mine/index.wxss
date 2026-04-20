@@ -2,12 +2,14 @@
   min-height: 100vh;
   background: #f5f5f5;
   padding: 12px;
+  padding-bottom: 32px;
 }
 
+/* 用户信息卡片 */
 .user-card {
   background: #fff;
   border-radius: 12px;
-  padding: 20px;
+  padding: 16px;
   display: flex;
   align-items: center;
   margin-bottom: 12px;
@@ -38,95 +40,108 @@
   font-size: 16px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 6px;
-  max-width: 160px;
+  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.role-tag {
-  display: inline-block;
-  font-size: 12px;
-  color: #07c160;
-  background: rgba(7,193,96,0.1);
-  padding: 2px 8px;
-  border-radius: 10px;
-  width: fit-content;
+/* 面板区域 */
+.panel-section {
+  margin-bottom: 12px;
 }
 
-.wallet-card {
-  background: linear-gradient(135deg, #07c160, #4cd964);
+.panel-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+
+.panel-card {
+  background: #fff;
   border-radius: 12px;
-  padding: 20px;
+  padding: 16px 8px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.panel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.panel-item-icon {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.panel-item-text {
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+}
+
+/* 钱包入口 */
+.wallet-row {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-  color: #fff;
-}
-
-.wallet-left {
-  display: flex;
-  flex-direction: column;
 }
 
 .wallet-label {
   font-size: 14px;
-  opacity: 0.9;
-  margin-bottom: 4px;
-}
-
-.wallet-balance {
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.wallet-arrow {
-  font-size: 20px;
-  opacity: 0.9;
-}
-
-.menu-list {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.menu-item:last-child {
-  border-bottom: none;
-}
-
-.menu-icon {
-  font-size: 18px;
-  margin-right: 12px;
-}
-
-.menu-text {
-  flex: 1;
-  font-size: 15px;
   color: #333;
 }
 
-.menu-arrow {
-  color: #ccc;
-  font-size: 16px;
+.wallet-right {
+  display: flex;
+  align-items: center;
 }
 
-.logout-btn {
+.wallet-balance {
+  font-size: 16px;
+  font-weight: 600;
+  color: #EF8802;
+  margin-right: 8px;
+}
+
+.wallet-arrow {
+  color: #ccc;
+  font-size: 14px;
+}
+
+/* 帮助中心 */
+.help-row {
   background: #fff;
   border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-  color: #999;
-  font-size: 15px;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 12px;
+}
+
+.help-text {
+  font-size: 14px;
+  color: #333;
+}
+
+.help-arrow {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.version {
+  text-align: center;
+  color: #ccc;
+  font-size: 12px;
+  margin-top: 24px;
 }

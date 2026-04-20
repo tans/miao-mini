@@ -1,0 +1,203 @@
+.claims-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* Tab 标签栏 */
+.tabs {
+  background: #fff;
+  display: flex;
+  padding: 12px 16px;
+  gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+
+.tab {
+  font-size: 15px;
+  color: #999;
+  padding-bottom: 8rpx;
+  position: relative;
+}
+
+.tab.active {
+  color: #EF8802;
+  font-weight: 500;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32rpx;
+  height: 6rpx;
+  background: #EF8802;
+  border-radius: 3rpx;
+}
+
+/* 认领列表 */
+.claims-list {
+  padding: 16rpx;
+}
+
+/* WeUI Panel 风格 */
+.weui-panel {
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.weui-panel__hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 24rpx 16rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.weui-panel__hd .task-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+  margin-right: 16rpx;
+}
+
+/* 状态徽章 */
+.status-badge {
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  white-space: nowrap;
+}
+
+.status-badge.status-1 {
+  background: #FFF2E8;
+  color: #EF8802;
+}
+
+.status-badge.status-2 {
+  background: #E8F4FF;
+  color: #1890ff;
+}
+
+.status-badge.status-3 {
+  background: #F5F5F5;
+  color: #999;
+}
+
+.status-badge.status-4,
+.status-badge.status-5 {
+  background: #F5F5F5;
+  color: #999;
+}
+
+/* Panel Body */
+.weui-panel__bd {
+  padding: 20rpx 24rpx;
+}
+
+.weui-media-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.info-row {
+  display: flex;
+  gap: 32rpx;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.info-item .label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.info-item .value {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.info-item .value.price {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #EF8802;
+}
+
+.info-item .value.price.award {
+  color: #52c41a;
+}
+
+/* Panel Footer */
+.weui-panel__ft {
+  padding: 16rpx 24rpx 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.status-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.status-text.success {
+  color: #52c41a;
+}
+
+.modify-link {
+  font-size: 26rpx;
+  color: #576b95;
+  text-decoration: underline;
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 120rpx 0;
+}
+
+/* 提交弹窗 */
+.dialog-content {
+  padding: 12rpx 0;
+}
+
+/* WeUI 按钮调整 */
+.weui-btn_mini {
+  font-size: 24rpx;
+  padding: 0 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  border-radius: 8rpx;
+}
+
+.weui-btn_primary {
+  background: #EF8802;
+}
+
+.weui-btn_primary:active {
+  background: #d97b00;
+}
+
+.weui-btn_default {
+  background: #fff;
+  color: #666;
+  border: 1rpx solid #e5e5e5;
+}

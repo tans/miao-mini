@@ -4,6 +4,7 @@ App({
     user: null,
     token: null,
     apiBase: '', // 动态设置
+    worksMode: 'public',
   },
 
   // 登录锁，防止 onLaunch 和 onShow 并发登录
@@ -31,6 +32,7 @@ App({
       // 无缓存，静默登录
       this.silentLogin();
     }
+
   },
 
   // 静默登录：获取微信 code，调接口自动登录/注册
@@ -38,7 +40,7 @@ App({
     // 已有登录中的请求，等待它
     if (this._loginPromise) return this._loginPromise;
     // 正在登录中
-    if (this._loginLock) return;
+    if (this._loginLock) return this._loginPromise;
 
     this._loginLock = true;
     this._loginPromise = this._doSilentLogin()
@@ -89,5 +91,14 @@ App({
     this.globalData.user = null;
     wx.removeStorageSync("miao_token");
     wx.removeStorageSync("miao_user");
+  },
+
+  setWorksMode(mode) {
+    const nextMode = mode === 'adopted' ? 'adopted' : 'public';
+    this.globalData.worksMode = nextMode;
+  },
+
+  getWorksMode() {
+    return this.globalData.worksMode || 'public';
   },
 });

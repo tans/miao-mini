@@ -1,0 +1,92 @@
+<view class="proposals-container">
+  <!-- Task Info Header -->
+  <view class="task-header" wx:if="{{task}}">
+    <view class="task-title-row">
+      <text class="task-title">{{task.title}}</text>
+      <view class="status-badge status-{{task.status}}">{{task.status_text || ''}}</view>
+    </view>
+    <view class="task-meta">
+      <text class="meta-item">赏金: ¥{{task.unit_price || 0}}</text>
+      <text class="meta-item">截止: {{task.end_at ? task.end_at.substring(0, 10) : '不限'}}</text>
+      <text class="meta-item">报名: {{task.signup_count || 0}}</text>
+    </view>
+  </view>
+
+  <!-- Filter Tabs -->
+  <view class="filter-tabs">
+    <text
+      wx:for="{{filters}}"
+      wx:key="key"
+      class="tab {{activeFilter === item.key ? 'active' : ''}}"
+      data-filter="{{item.key}}"
+      bindtap="switchFilter"
+    >{{item.label}}</text>
+  </view>
+
+  <!-- Claims List -->
+  <view class="claims-list" wx:if="{{filteredClaims.length > 0}}">
+    <view class="claim-item" wx:for="{{filteredClaims}}" wx:key="id">
+      <!-- Claim Header -->
+      <view class="claim-header">
+        <view class="creator-info">
+          <image class="creator-avatar" wx:if="{{item.creatorAvatar}}" src="{{item.creatorAvatar}}" mode="aspectFill"/>
+          <text class="creator-avatar-text" wx:else>{{item.creatorInitial}}</text>
+          <text class="creator-name">{{item.creatorName}}</text>
+        </view>
+        <view class="status-badge status-{{item.statusClass}}">{{item.statusText}}</view>
+      </view>
+
+      <!-- Content -->
+      <view class="claim-content" wx:if="{{item.hasContent}}">
+        <text class="content-text">{{item.contentText}}</text>
+      </view>
+
+      <!-- Media Preview -->
+      <view class="media-preview" wx:if="{{item.hasMaterials}}">
+        <image
+          wx:for="{{item.previewImages}}"
+          wx:for-item="img"
+          wx:key="*this"
+          class="preview-img"
+          src="{{img}}"
+          mode="aspectFill"
+          data-claim-index="{{index}}"
+          data-current="{{img}}"
+          bindtap="previewImages"
+        />
+        <video
+          wx:for="{{item.previewVideos}}"
+          wx:for-item="vid"
+          wx:key="url"
+          class="preview-video"
+          src="{{vid.url}}"
+          poster="{{vid.poster}}"
+          objectFit="cover"
+        />
+      </view>
+
+      <!-- Video Link -->
+      <view class="video-link-row" wx:if="{{item.videoLink}}">
+        <text class="video-link-label">视频链接:</text>
+        <text class="video-link-value" data-url="{{item.videoLink}}" bindtap="copyVideoLink">{{item.videoLink}}</text>
+      </view>
+
+      <!-- Footer -->
+      <view class="claim-footer">
+        <text class="submit-time">{{item.displayDate}}</text>
+        <view class="action-btns" wx:if="{{item.canReview}}">
+          <text class="action-btn reject" data-claim-id="{{item.id}}" data-result="2" bindtap="reviewClaim">拒绝</text>
+          <text class="action-btn report" data-claim-id="{{item.id}}" data-result="3" bindtap="reviewClaim">举报</text>
+          <text class="action-btn accept" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Empty State -->
+  <view class="empty-state" wx:if="{{!loading && filteredClaims.length === 0}}">
+    <mp-msg type="info" title="暂无提案">
+      <view slot="desc">该任务还没有人提交作品</view>
+    </mp-msg>
+  </view>
+</view>

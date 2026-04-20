@@ -1,0 +1,176 @@
+.help-container {
+  padding: 16px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #ef8802, #ffb74d);
+  border-radius: 16px;
+  padding: 20px 18px;
+  margin-bottom: 12px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hero-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hero-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+
+.section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.quick-list,
+.faq-list,
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quick-item,
+.faq-item,
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quick-item,
+.faq-item {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.quick-item:last-child,
+.faq-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.quick-title,
+.faq-question {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.quick-desc,
+.faq-answer,
+.contact-value {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.level-table {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.level-header {
+  display: flex;
+  background: #f8f8f8;
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.level-header text {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+}
+
+.level-row {
+  display: flex;
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.level-row:last-child {
+  border-bottom: none;
+}
+
+.level-row view,
+.level-row text {
+  text-align: center;
+  font-size: 13px;
+  color: #333;
+}
+
+.col-level {
+  flex: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.level-icon {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+.level-name {
+  font-weight: 500;
+}
+
+.col-daily {
+  flex: 1;
+}
+
+.col-commission {
+  flex: 1;
+}
+
+.col-condition {
+  flex: 1.5;
+  color: #666;
+}
+
+.rule-list {
+  padding-left: 8px;
+}
+
+.rule-item {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.rule-bullet {
+  color: #EF8802;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.rule-text {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.contact-label {
+  font-size: 12px;
+  color: #999;
+}
