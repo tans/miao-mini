@@ -1,153 +1,307 @@
-/* pages/wallet/index.wxss */
 .wallet-container {
-  padding-bottom: 20px;
+  min-height: 100vh;
+  background: #fafafa;
 }
 
-.balance-card {
-  background: linear-gradient(135deg, #EF8802 0%, #FFAA33 100%);
-  color: #fff;
-  padding: 30px 24px;
+/* 顶部状态栏 */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 32rpx;
+  background: #fff;
+}
+
+.status-time {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.signal-icon, .wifi-icon, .battery-icon {
+  width: 32rpx;
+  height: 22rpx;
+  background: #333;
+  border-radius: 4rpx;
+}
+
+.battery-icon {
+  width: 48rpx;
+  height: 24rpx;
+}
+
+/* 标题栏 */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.back-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.page-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.message-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-icon {
+  width: 42rpx;
+  height: 38rpx;
+}
+
+/* 余额区域 */
+.balance-section {
+  background: #fff;
+  padding-bottom: 32rpx;
+}
+
+.balance-bg {
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
+  padding: 40rpx 32rpx 32rpx;
+}
+
+.balance-main {
   text-align: center;
+  margin-bottom: 32rpx;
 }
 
 .balance-label {
-  font-size: 14px;
-  opacity: 0.9;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-.balance-amount {
-  font-size: 42px;
-  font-weight: 700;
-  display: block;
-  margin: 8px 0;
-}
-
-.balance-hint {
-  font-size: 12px;
-  opacity: 0.8;
-}
-
-.frozen-card {
+.balance-amount-row {
   display: flex;
-  background: #fff;
-  padding: 16px 24px;
-  margin-bottom: 12px;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8rpx;
+  margin-top: 12rpx;
 }
 
-.frozen-item {
+.balance-yuan {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.balance-value {
+  font-size: 64rpx;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.balance-sub {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.balance-sub-item {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.sub-label {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sub-value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.balance-divider {
+  width: 1rpx;
+  height: 48rpx;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.balance-actions {
+  display: flex;
+  gap: 24rpx;
+  padding: 32rpx 32rpx 0;
+}
+
+.action-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #fff;
+  border-radius: 40rpx;
   text-align: center;
-}
-
-.frozen-label {
-  font-size: 12px;
-  color: #666;
-  display: block;
-}
-
-.frozen-amount {
-  font-size: 16px;
+  font-size: 30rpx;
   font-weight: 600;
-  color: #FF9800;
-  display: block;
-  margin-top: 4px;
+  color: #ef6c00;
 }
 
-.income-stats {
-  display: flex;
+.action-btn-outline {
+  background: transparent;
+  border: 2rpx solid #ef6c00;
+  color: #ef6c00;
+}
+
+/* 交易记录标签 */
+.tabs-section {
+  position: relative;
   background: #fff;
-  padding: 20px;
-  margin-bottom: 12px;
+  padding: 0 32rpx;
+  margin-bottom: 24rpx;
 }
 
-.stat-item {
-  flex: 1;
-  text-align: center;
+.tab-group {
+  display: flex;
+  gap: 48rpx;
+  padding: 24rpx 0;
 }
 
-.stat-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  display: block;
-}
-
-.stat-label {
-  font-size: 12px;
+.tab-item {
+  font-size: 28rpx;
   color: #999;
-  margin-top: 4px;
+  font-weight: 500;
+  padding-bottom: 8rpx;
 }
 
-.section {
-  background: #fff;
-  margin: 0 16px;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-.section-header {
-  margin-bottom: 12px;
-}
-
-.section-title {
-  font-size: 16px;
-  font-weight: 600;
+.tab-item.active {
   color: #333;
+  font-weight: 700;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  width: 64rpx;
+  height: 4rpx;
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
+  border-radius: 2rpx;
+  transition: left 0.3s ease;
+}
+
+/* 交易记录列表 */
+.transactions-section {
+  padding: 0 32rpx;
 }
 
 .empty-state {
-  text-align: center;
-  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
 }
 
-.empty-icon {
-  font-size: 40px;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.empty-desc {
+.empty-text {
+  font-size: 28rpx;
   color: #999;
-  font-size: 14px;
+}
+
+.transaction-list {
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
 }
 
 .transaction-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #f5f5f5;
 }
 
 .transaction-item:last-child {
   border-bottom: none;
 }
 
-.trans-left {
+.trans-info {
   display: flex;
   flex-direction: column;
+  gap: 8rpx;
 }
 
 .trans-type {
-  font-size: 14px;
+  font-size: 28rpx;
   color: #333;
+  font-weight: 500;
 }
 
 .trans-time {
-  font-size: 12px;
+  font-size: 22rpx;
   color: #999;
-  margin-top: 4px;
 }
 
-.trans-amount {
-  font-size: 16px;
+.trans-amount-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+}
+
+.trans-amount-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.trans-sign {
+  font-size: 28rpx;
   font-weight: 600;
 }
 
-.trans-amount.income {
-  color: #4CAF50;
+.trans-value {
+  font-size: 32rpx;
+  font-weight: 700;
 }
 
-.trans-amount.expense {
-  color: #e64340;
+.trans-unit {
+  font-size: 22rpx;
+}
+
+.trans-sign.income, .trans-value.income, .trans-unit.income {
+  color: #52c41a;
+}
+
+.trans-sign.expense, .trans-value.expense, .trans-unit.expense {
+  color: #333;
+}
+
+.trans-fee {
+  font-size: 20rpx;
+  color: #999;
 }

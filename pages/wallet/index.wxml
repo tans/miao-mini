@@ -1,52 +1,90 @@
-<!--pages/wallet/index.wxml-->
 <view class="wallet-container">
-  <!-- 余额卡片 -->
-  <view class="balance-card">
-    <text class="balance-label">我的余额</text>
-    <text class="balance-amount">¥{{balance}}</text>
-    <text class="balance-hint">可提现</text>
-  </view>
-
-  <!-- 冻结资金 -->
-  <view class="frozen-card" wx:if="{{frozenAmount > 0 || marginFrozen > 0}}">
-    <view class="frozen-item" wx:if="{{frozenAmount > 0}}">
-      <text class="frozen-label">冻结金额</text>
-      <text class="frozen-amount">¥{{frozenAmount}}</text>
-    </view>
-    <view class="frozen-item" wx:if="{{marginFrozen > 0}}">
-      <text class="frozen-label">保证金</text>
-      <text class="frozen-amount">¥{{marginFrozen}}</text>
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <text class="status-time">9:41</text>
+    <view class="status-icons">
+      <view class="signal-icon"></view>
+      <view class="wifi-icon"></view>
+      <view class="battery-icon"></view>
     </view>
   </view>
 
-  <!-- 收入统计 -->
-  <view class="income-stats">
-    <view class="stat-item">
-      <text class="stat-value">¥{{totalIncome}}</text>
-      <text class="stat-label">累计收益</text>
+  <!-- 标题栏 -->
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">
+      <image src="/assets/icons/back.png" class="back-icon" />
+    </view>
+    <text class="page-title">我的钱包</text>
+    <view class="message-btn">
+      <image src="/assets/icons/message.png" class="message-icon" />
     </view>
   </view>
 
-  <!-- 交易记录 -->
-  <view class="section">
-    <view class="section-header">
-      <text class="section-title">交易记录</text>
-    </view>
-
-    <!-- 空状态 -->
-    <mp-msg type="info" title="暂无交易记录" wx:if="{{transactions.length === 0}}" />
-
-    <!-- 交易记录列表 -->
-    <mp-cells wx:if="{{transactions.length > 0}}">
-      <mp-cell wx:for="{{transactions}}" wx:key="id">
-        <view slot="title">
-          <text class="trans-type">{{item.type_text || '其他'}}</text>
-          <text class="trans-time">{{item.created_at ? item.created_at.substring(0, 10) : ''}}</text>
+  <!-- 余额区域 -->
+  <view class="balance-section">
+    <view class="balance-bg">
+      <view class="balance-main">
+        <text class="balance-label">总余额(元)</text>
+        <view class="balance-amount-row">
+          <text class="balance-yuan">¥</text>
+          <text class="balance-value">{{balanceDisplay}}</text>
         </view>
-        <text class="trans-amount {{item.amount >= 0 ? 'income' : 'expense'}}" slot="footer">
-          {{item.amount >= 0 ? '+' : ''}}{{item.amount}}
-        </text>
-      </mp-cell>
-    </mp-cells>
+      </view>
+      <view class="balance-sub">
+        <view class="balance-sub-item">
+          <text class="sub-label">待解冻金额(元)</text>
+          <text class="sub-value">{{frozenAmount}}</text>
+        </view>
+        <view class="balance-divider"></view>
+        <view class="balance-sub-item">
+          <text class="sub-label">可提现金额(元)</text>
+          <text class="sub-value">{{withdrawableAmount}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="balance-actions">
+      <view class="action-btn" bindtap="goRecharge">
+        <text>充值</text>
+      </view>
+      <view class="action-btn action-btn-outline" bindtap="goWithdraw">
+        <text>提现</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 交易记录标签 -->
+  <view class="tabs-section">
+    <view class="tab-group">
+      <text class="tab-item {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部</text>
+      <text class="tab-item {{currentTab === 'income' ? 'active' : ''}}" data-tab="income" bindtap="switchTab">收入</text>
+      <text class="tab-item {{currentTab === 'expense' ? 'active' : ''}}" data-tab="expense" bindtap="switchTab">支出</text>
+    </view>
+    <view class="tab-indicator" style="left: {{tabIndicatorLeft}}"></view>
+  </view>
+
+  <!-- 交易记录列表 -->
+  <view class="transactions-section">
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{filteredTransactions.length === 0}}">
+      <text class="empty-text">暂无交易记录</text>
+    </view>
+
+    <!-- 记录列表 -->
+    <view class="transaction-list" wx:if="{{filteredTransactions.length > 0}}">
+      <view class="transaction-item" wx:for="{{filteredTransactions}}" wx:key="id">
+        <view class="trans-info">
+          <text class="trans-type">{{item.type_text || '其他'}}</text>
+          <text class="trans-time">{{item.created_at}}</text>
+        </view>
+        <view class="trans-amount-group">
+          <view class="trans-amount-row">
+            <text class="trans-sign {{item.amount >= 0 ? 'income' : 'expense'}}">{{item.amount >= 0 ? '+' : '-'}}</text>
+            <text class="trans-value {{item.amount >= 0 ? 'income' : 'expense'}}">{{item.amountDisplay}}</text>
+            <text class="trans-unit {{item.amount >= 0 ? 'income' : 'expense'}}">元</text>
+          </view>
+          <text class="trans-fee" wx:if="{{item.fee > 0}}">{{item.type_text}}手续费：{{item.fee}}元</text>
+        </view>
+      </view>
+    </view>
   </view>
 </view>

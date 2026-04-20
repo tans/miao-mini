@@ -1,14 +1,17 @@
-// pages/wallet/index.js
 const Api = require('../../utils/api.js');
 const app = getApp();
 
 Page({
   data: {
     balance: 0,
+    balanceDisplay: '0.00',
     frozenAmount: 0,
-    marginFrozen: 0,
+    withdrawableAmount: '0.00',
     totalIncome: 0,
     transactions: [],
+    filteredTransactions: [],
+    currentTab: 'all',
+    tabIndicatorLeft: '32rpx',
     loading: false,
   },
 
@@ -19,6 +22,7 @@ Page({
       });
       return;
     }
+    this.loadWallet();
   },
 
   onShow() {
@@ -39,24 +43,60 @@ Page({
 
       const wallet = walletRes.data || {};
       const transData = transRes.data || {};
-      // 使用服务器返回的 type_str，不再前端硬编码映射
       const transactions = (transData.data || []).map(t => ({
         ...t,
-        type_text: t.type_str || '其他'
+        type_text: t.type_str || '其他',
+        amountDisplay: Math.abs(t.amount).toFixed(2),
+        fee: t.fee || 0
       }));
+
+      const balance = wallet.balance || 0;
+      const frozenAmount = wallet.frozen_amount || 0;
+      const withdrawableAmount = Math.max(0, balance - frozenAmount).toFixed(2);
 
       this.setData({
         balance: wallet.balance || 0,
-        frozenAmount: wallet.frozen_amount || 0,
-        marginFrozen: wallet.margin_frozen || 0,
+        balanceDisplay: Number(wallet.balance || 0).toLocaleString('zh-CN', { minimumFractionDigits: 2 }),
+        frozenAmount: frozenAmount.toFixed(2),
+        withdrawableAmount: withdrawableAmount,
         totalIncome: wallet.total_income || 0,
         transactions,
+        loading: false,
       });
     } catch (err) {
+      this.setData({ loading: false });
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
       wx.hideLoading();
-      this.setData({ loading: false });
     }
+  },
+
+  switchTab(e) {
+    const tab = e.currentTarget.dataset.tab;
+    const tabPositions = { all: '32rpx', income: '160rpx', expense: '288rpx' };
+    const transactions = this.data.transactions;
+    let filteredTransactions = transactions;
+    if (tab === 'income') {
+      filteredTransactions = transactions.filter(t => t.amount > 0);
+    } else if (tab === 'expense') {
+      filteredTransactions = transactions.filter(t => t.amount < 0);
+    }
+    this.setData({
+      currentTab: tab,
+      tabIndicatorLeft: tabPositions[tab] || '32rpx',
+      filteredTransactions
+    });
+  },
+
+  goBack() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
+  },
+
+  goRecharge() {
+    wx.showToast({ title: '充值功能开发中', icon: 'none' });
+  },
+
+  goWithdraw() {
+    wx.showToast({ title: '提现功能开发中', icon: 'none' });
   }
 });
