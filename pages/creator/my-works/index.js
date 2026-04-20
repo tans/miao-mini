@@ -3,9 +3,10 @@ const app = getApp();
 
 const FILTERS = [
   { key: 'all', label: '全部' },
-  { key: 'pending', label: '待验收' },
-  { key: 'passed', label: '已采纳' },
-  { key: 'rejected', label: '已拒绝' }
+  { key: 'pending', label: '审核中' },
+  { key: 'adopted', label: '已采纳' },
+  { key: 'rejected', label: '未采纳' },
+  { key: 'reported', label: '被举报' }
 ];
 
 Page({
@@ -14,7 +15,8 @@ Page({
     filteredWorks: [],
     activeFilter: 'all',
     filters: FILTERS,
-    loading: false
+    loading: false,
+    currentFilter: 'all'
   },
 
   onLoad() {
@@ -49,12 +51,12 @@ Page({
       const submittedWorks = claims
         .filter(c => Number(c.status) >= 2)
         .map(c => this.formatWork(c));
-      this.setData({ works: submittedWorks });
-      this.applyFilter(this.data.activeFilter);
+      this.setData({ works: submittedWorks, loading: false });
+      this.applyFilter(this.data.currentFilter);
     } catch (err) {
+      this.setData({ loading: false });
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
-      this.setData({ loading: false });
       wx.hideLoading();
     }
   },
@@ -65,10 +67,41 @@ Page({
     const imageMaterials = materials.filter(m => m.file_type === 'image');
     const videoMaterials = materials.filter(m => m.file_type === 'video');
 
+    const firstMaterial = materials[0] || {};
+    const coverType = firstMaterial.file_type || 'image';
+    const displayCover = coverType === 'video'
+      ? (firstMaterial.thumbnail_path || firstMaterial.file_path || '')
+      : (firstMaterial.thumbnail_path || firstMaterial.file_path || '');
+    const previewVideoSrc = firstMaterial.file_path || '';
+
+    let incomeLabel = '';
+    let incomeText = '';
+    let rejectReason = '';
+    let reportReason = '';
+
+    if (status === 2) {
+      // 待验收/审核中
+      incomeLabel = '收入(审核超时自动补发参与金)';
+      incomeText = '¥5';
+    } else if (status === 3) {
+      // 已采纳
+      incomeLabel = '收入(采纳金+参与金)';
+      incomeText = `¥${claim.unit_price || 100} + ¥${claim.award_price || 30}`;
+    } else if (status === 5) {
+      // 已拒绝/未采纳
+      incomeLabel = '收入(参与金)';
+      incomeText = '¥5';
+      rejectReason = claim.reject_reason || '品牌露出不足，镜头切换节奏不符合要求。';
+    } else if (status === 6) {
+      // 被举报
+      reportReason = claim.report_reason || '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。';
+    }
+
     return {
       id: claim.id,
       task_id: claim.task_id,
       task_title: claim.task_title || '任务' + claim.task_id,
+      title: claim.title || '',
       content: claim.content || '',
       status,
       statusText: this.getStatusText(status),
@@ -80,29 +113,51 @@ Page({
         poster: m.thumbnail_path || ''
       })),
       submittedAt: claim.submitted_at || claim.updated_at || '',
-      unitPrice: claim.unit_price || 0
+      unitPrice: claim.unit_price || 0,
+      displayCover,
+      isVideo: coverType === 'video',
+      previewVideoSrc,
+      thumbnail: firstMaterial.thumbnail_path || '',
+      incomeLabel,
+      incomeText,
+      rejectReason,
+      reportReason
     };
   },
 
   getStatusText(status) {
-    const map = { 2: '待验收', 3: '已采纳', 4: '已取消', 5: '已拒绝' };
+    const map = {
+      2: '商家审核中',
+      3: '已采纳',
+      4: '商家审核超时',
+      5: '已淘汰',
+      6: '被举报'
+    };
     return map[status] || '未知';
   },
 
   getStatusClass(status) {
-    const map = { 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'rejected' };
+    const map = {
+      2: 'pending',
+      3: 'adopted',
+      4: 'timeout',
+      5: 'rejected',
+      6: 'reported'
+    };
     return map[status] || 'draft';
   },
 
   getFilterKey(status) {
     if (status === 2) return 'pending';
-    if (status === 3) return 'passed';
-    if (status === 4 || status === 5) return 'rejected';
+    if (status === 3) return 'adopted';
+    if (status === 5) return 'rejected';
+    if (status === 6) return 'reported';
     return 'all';
   },
 
   switchFilter(e) {
     const filter = e.currentTarget.dataset.filter;
+    this.setData({ currentFilter: filter });
     this.applyFilter(filter);
   },
 
@@ -113,10 +168,21 @@ Page({
     this.setData({ activeFilter: filter, filteredWorks });
   },
 
+  goBack() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
+  },
+
   goTaskDetail(e) {
     const taskId = e.currentTarget.dataset.taskId;
     if (taskId) {
       wx.navigateTo({ url: `/pages/task-detail/index?id=${taskId}` });
+    }
+  },
+
+  goWorkDetail(e) {
+    const id = e.currentTarget.dataset.id;
+    if (id) {
+      wx.navigateTo({ url: `/pages/work-detail/index?id=${id}` });
     }
   },
 
