@@ -1,0 +1,118 @@
+<view class="page">
+  <view class="group_1">
+    <view class="block_1">
+      <view class="group_2">
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">9:41</text>
+        </view>
+        <view class="block_2"></view>
+        <view class="block_3"></view>
+        <image src="../../images/lanhu_wodeqianbao/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+      </view>
+      <view class="group_3">
+        <image src="../../images/lanhu_wodeqianbao/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
+        <text lines="1" class="text_2">我的钱包</text>
+        <view class="image-wrapper_1">
+          <image src="../../images/lanhu_wodeqianbao/da476cd5af8147e39e43619edbfbaac2_mergeImage.png" class="image_2"></image>
+          <image src="../../images/lanhu_wodeqianbao/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
+        </view>
+      </view>
+      <view class="group_4">
+        <text lines="1" class="text_3">总余额(元)</text>
+        <view class="text-wrapper_2">
+          <text lines="1" class="text_4">¥</text>
+          <text lines="1" class="text_5">12,680</text>
+        </view>
+      </view>
+      <view class="group_5">
+        <view class="group_6">
+          <view class="text-group_1">
+            <text lines="1" class="text_6">待解冻金额(元)</text>
+            <text lines="1" class="text_7">990.00</text>
+          </view>
+          <view class="text-group_2">
+            <text lines="1" class="text_8">可提现金额(元)</text>
+            <text lines="1" class="text_9">250.00</text>
+          </view>
+        </view>
+        <view class="group_7">
+          <view class="text-wrapper_3">
+            <text lines="1" class="text_10">充值</text>
+          </view>
+          <view class="text-wrapper_4">
+            <text lines="1" class="text_11">提现</text>
+          </view>
+        </view>
+      </view>
+      <view class="group_8">
+        <view class="text-wrapper_5">
+          <text lines="1" class="text_12">全部</text>
+          <text lines="1" class="text_13">收入</text>
+          <text lines="1" class="text_14">支出</text>
+        </view>
+        <view class="section_1">
+          <view class="box_1"></view>
+        </view>
+      </view>
+    </view>
+    <view class="block_4">
+      <view class="list_1">
+        <view class="list-items_1-0">
+          <view class="text-group_3-0">
+            <text lines="1" class="text_15-0">充值</text>
+            <text lines="1" decode="true" class="text_16-0">2026-04-18&nbsp;09:42</text>
+          </view>
+          <view class="box_2-0">
+            <view class="text-wrapper_6-0">
+              <text lines="1" decode="true" class="text_19-0">+&nbsp;990.00</text>
+              <text lines="1" class="text_20-0">元</text>
+            </view>
+            <text lines="1" class="text_21-0">充值手续费：10.00元</text>
+          </view>
+        </view>
+        <view class="list-items_1-1">
+          <view class="text-group_3-1">
+            <text lines="1" class="text_15-1">提现</text>
+            <text lines="1" decode="true" class="text_16-1">2026-04-18&nbsp;09:42</text>
+          </view>
+          <view class="box_2-1">
+            <view class="text-wrapper_6-1">
+              <text lines="1" decode="true" class="text_19-1">-&nbsp;990.00</text>
+              <text lines="1" class="text_20-1">元</text>
+            </view>
+            <text lines="1" class="text_21-1">充值手续费：10.00元</text>
+          </view>
+        </view>
+        <view class="list-items_1-2">
+          <view class="text-group_3-2">
+            <text lines="1" class="text_15-2">活动奖励支出</text>
+            <text lines="1" decode="true" class="text_16-2">2026-04-18&nbsp;09:42</text>
+          </view>
+          <text lines="1" decode="true" class="text_17-2">-&nbsp;10.00</text>
+          <text lines="1" class="text_18-2">元</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="group_9">
+    <view class="list_2">
+      <view class="list-items_2-0">
+        <view class="text-group_4-0">
+          <text lines="1" class="text_22-0">活动支出-平台服务费</text>
+          <text lines="1" decode="true" class="text_23-0">2026-04-18&nbsp;09:42</text>
+        </view>
+        <text lines="1" decode="true" class="text_24-0">-&nbsp;20.00</text>
+        <text lines="1" class="text_25-0">元</text>
+      </view>
+      <view class="list-items_2-1">
+        <view class="text-group_4-1">
+          <text lines="1" class="text_22-1">创作收入</text>
+          <text lines="1" decode="true" class="text_23-1">2026-04-18&nbsp;09:42</text>
+        </view>
+        <text lines="1" decode="true" class="text_24-1">+&nbsp;110.00</text>
+        <text lines="1" class="text_25-1">元</text>
+      </view>
+    </view>
+    <view class="block_5"></view>
+  </view>
+</view>

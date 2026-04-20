@@ -1,0 +1,25 @@
+{
+    "pages": [
+        "pages/lanhu_shouye/component",
+        "pages/lanhu_shangjiarenwuliebiao/component",
+        "pages/lanhu_shangjiarenwuxiangqingrenwuxiangqing/component",
+        "pages/lanhu_wode/component",
+        "pages/lanhu_renwuxiangqingrenwuyaoqiu/component",
+        "pages/lanhu_wodebaoming/component",
+        "pages/lanhu_wodeqianbao/component",
+        "pages/lanhu_yigouzuopinku/component",
+        "pages/lanhu_wodezuopin/component",
+        "pages/lanhu_faburenwu/component",
+        "pages/lanhu_renwuxiangqingshangchuangaojian/component",
+        "pages/lanhu_linggan/component",
+        "pages/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/component"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "Weixin",
+        "navigationBarTextStyle": "black"
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+}

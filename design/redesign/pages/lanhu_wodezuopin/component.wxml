@@ -1,0 +1,163 @@
+<view class="page">
+  <view class="group_1">
+    <view class="box_1">
+      <view class="box_2">
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">9:41</text>
+        </view>
+        <view class="block_1"></view>
+        <view class="block_2"></view>
+        <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+      </view>
+      <view class="box_3">
+        <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
+        <text lines="1" class="text_2">我的作品</text>
+        <view class="image-wrapper_1">
+          <image src="../../images/lanhu_wodezuopin/52372f81b5a5404a80dd50533089c12d_mergeImage.png" class="image_2"></image>
+          <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
+        </view>
+      </view>
+    </view>
+    <view class="box_4">
+      <view class="group_2">
+        <view class="text-wrapper_2">
+          <text lines="1" class="text_3">全部</text>
+        </view>
+        <view class="text-wrapper_3">
+          <text lines="1" class="text_4">审核中</text>
+        </view>
+        <view class="text-wrapper_4">
+          <text lines="1" class="text_5">已采纳</text>
+        </view>
+        <view class="text-wrapper_5">
+          <text lines="1" class="text_6">未采纳</text>
+        </view>
+        <view class="text-wrapper_6">
+          <text lines="1" class="text_7">被举报</text>
+        </view>
+      </view>
+      <view class="group_3">
+        <view class="block_3">
+          <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG99a989f0e7fd7f59717fe65c32e0d975.png" class="thumbnail_3"></image>
+          <text lines="1" class="text_8">创意喵</text>
+          <text lines="1" class="text_9">安全提醒</text>
+        </view>
+        <view class="text-wrapper_7">
+          <text lines="1" class="text_10">稿件提交后，如果商家</text>
+          <text lines="1" class="text_11">超过48小时</text>
+          <text lines="1" class="text_12">未审核您的稿件会自动为您</text>
+          <text lines="1" class="text_13">发放参与奖励</text>
+          <text lines="1" class="text_14">，之后商家如果采纳了您的稿件，您依然可以获得采纳金。</text>
+        </view>
+      </view>
+      <view class="group_4">
+        <view class="section_1">
+          <view class="image-wrapper_2">
+            <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_4"></image>
+          </view>
+        </view>
+        <view class="section_2">
+          <view class="text-group_1">
+            <text lines="1" class="text_15">样板间慢镜头</text>
+            <text lines="1" decode="true" class="text_16">投稿时间&nbsp;2026-04-18&nbsp;10:26</text>
+          </view>
+          <view class="text-wrapper_8">
+            <text lines="1" class="text_17">商家审核中</text>
+          </view>
+        </view>
+      </view>
+      <view class="list_1">
+        <view class="list-items_1-0">
+          <view class="section_3-0">
+            <view class="image-wrapper_3-0">
+              <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_5-0"></image>
+            </view>
+          </view>
+          <view class="section_4-0">
+            <view class="text-group_2-0">
+              <text lines="1" class="text_18-0">样板间慢镜头</text>
+              <text lines="1" decode="true" class="text_19-0">投稿时间&nbsp;2026-04-18&nbsp;10:26</text>
+            </view>
+            <view class="text-wrapper_9-0">
+              <text lines="1" class="text_20-0">商家审核超时</text>
+            </view>
+          </view>
+          <view class="text-wrapper_10-0">
+            <text lines="1" class="text_21-0">收入(审核超时自动补发参与金)</text>
+            <text lines="1" decode="true" class="text_22-0">&nbsp;¥5</text>
+          </view>
+        </view>
+        <view class="list-items_1-1">
+          <view class="section_3-1">
+            <view class="image-wrapper_3-1">
+              <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_5-1"></image>
+            </view>
+          </view>
+          <view class="section_4-1">
+            <view class="text-group_2-1">
+              <text lines="1" class="text_18-1">样板间慢镜头</text>
+              <text lines="1" decode="true" class="text_19-1">投稿时间&nbsp;2026-04-18&nbsp;10:26</text>
+            </view>
+            <view class="text-wrapper_9-1">
+              <text lines="1" class="text_20-1">已采纳</text>
+            </view>
+          </view>
+          <view class="text-wrapper_10-1">
+            <text lines="1" class="text_21-1">收入(采纳金+参与金)</text>
+            <text lines="1" decode="true" class="text_22-1">¥100&nbsp;+&nbsp;¥30</text>
+          </view>
+        </view>
+      </view>
+      <view class="group_5">
+        <view class="box_5">
+          <view class="image-wrapper_4">
+            <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_6"></image>
+          </view>
+        </view>
+        <view class="box_6">
+          <view class="text-group_3">
+            <text lines="1" class="text_23">酒店夜景横移</text>
+            <text lines="1" decode="true" class="text_24">投稿时间&nbsp;2026-04-18&nbsp;10:26</text>
+          </view>
+          <view class="text-wrapper_11">
+            <text lines="1" class="text_25">已淘汰</text>
+          </view>
+          <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG5d3bd624ba92ec5c1d4f719e80d02c74.png" class="thumbnail_7"></image>
+        </view>
+        <view class="text-wrapper_12">
+          <text lines="1" class="text_26">淘汰原因：品牌露出不足，镜头切换节奏不符合要求。</text>
+        </view>
+        <view class="text-wrapper_13">
+          <text lines="1" class="text_27">收入(参与金)</text>
+          <text lines="1" decode="true" class="text_28">&nbsp;¥5</text>
+        </view>
+      </view>
+      <view class="group_6">
+        <view class="box_7">
+          <view class="image-wrapper_5">
+            <image src="../../images/lanhu_wodezuopin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_8"></image>
+          </view>
+        </view>
+        <view class="box_8">
+          <view class="text-group_4">
+            <text lines="1" class="text_29">酒店夜景横移</text>
+            <text lines="1" decode="true" class="text_30">投稿时间&nbsp;2026-04-18&nbsp;10:26</text>
+          </view>
+          <view class="text-wrapper_14">
+            <text lines="1" class="text_31">被举报</text>
+          </view>
+        </view>
+        <view class="text-wrapper_15">
+          <text lines="1" class="text_32">举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+        </view>
+        <view class="box_9">
+          <text lines="1" class="text_33">被举报作品无奖金</text>
+          <view class="text-wrapper_16">
+            <text lines="1" class="text_34">我要申诉</text>
+          </view>
+        </view>
+      </view>
+      <view class="group_7"></view>
+    </view>
+  </view>
+</view>

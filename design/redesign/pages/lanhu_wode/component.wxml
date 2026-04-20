@@ -1,0 +1,148 @@
+<view class="page">
+  <view class="box_1">
+    <view class="block_1">
+      <view class="text-wrapper_1">
+        <text lines="1" class="text_1">9:41</text>
+      </view>
+      <view class="section_1"></view>
+      <view class="section_2"></view>
+      <image src="../../images/lanhu_wode/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+    </view>
+    <view class="block_2">
+      <text lines="1" class="text_2">我的</text>
+      <view class="image-wrapper_1">
+        <image src="../../images/lanhu_wode/091672d0d9cf4e6087aafaf8a299c00d_mergeImage.png" class="image_2"></image>
+        <image src="../../images/lanhu_wode/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_1"></image>
+      </view>
+    </view>
+    <view class="block_3">
+      <view class="image-text_1">
+        <image src="../../images/lanhu_wode/FigmaDDSSlicePNGddf719aab1a572fc160b3ff14d0e4e14.png" class="label_1"></image>
+        <view class="text-group_1">
+          <text lines="1" class="text_3">小满创作间</text>
+          <text lines="1" class="text_4">ID：12345678</text>
+        </view>
+      </view>
+      <image src="../../images/lanhu_wode/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" class="thumbnail_2"></image>
+      <text lines="1" decode="true" class="text_5">Lv.4&nbsp;创作者&nbsp;·&nbsp;完成&nbsp;28&nbsp;个任务</text>
+    </view>
+    <view class="block_4">
+      <view class="box_2">
+        <view class="group_1">
+          <text lines="1" class="text_6">钱包</text>
+          <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_3"></image>
+        </view>
+        <text lines="1" class="text_7">¥3,820</text>
+        <text lines="1" class="text_8">可提现余额</text>
+      </view>
+    </view>
+  </view>
+  <view class="box_3">
+    <view class="group_2">
+      <text lines="1" class="text_9">创作者专区</text>
+      <view class="section_3">
+        <view class="image-text_2">
+          <image src="../../images/lanhu_wode/FigmaDDSSlicePNGaca8cc33bf006c7f097a4c89b39800f3.png" class="thumbnail_4"></image>
+          <text lines="1" class="text-group_2">我的任务</text>
+        </view>
+        <view class="image-text_3">
+          <view class="text-group_3">
+            <text lines="1" class="text_10">2</text>
+            <text lines="1" class="text_11">个任务待交稿</text>
+          </view>
+          <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_5"></image>
+        </view>
+      </view>
+      <view class="section_4">
+        <view class="image-text_4">
+          <image src="../../images/lanhu_wode/FigmaDDSSlicePNG82f112c4255e38b6bfaac7de1dda1ba5.png" class="thumbnail_6"></image>
+          <text lines="1" class="text-group_4">我的作品</text>
+        </view>
+        <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_7"></image>
+      </view>
+    </view>
+    <view class="group_3">
+      <view class="group_4">
+        <text lines="1" class="text_12">商家专区</text>
+        <view class="box_4">
+          <view class="image-text_5">
+            <image src="../../images/lanhu_wode/FigmaDDSSlicePNGc19883119d2024c369461474511364ea.png" class="thumbnail_8"></image>
+            <text lines="1" class="text-group_5">商家认证</text>
+          </view>
+          <view class="text-wrapper_2">
+            <text lines="1" class="text_13">去认证</text>
+          </view>
+        </view>
+        <view class="box_5">
+          <view class="block_5">
+            <view class="image-text_6">
+              <image src="../../images/lanhu_wode/FigmaDDSSlicePNG74e97556a861f49ce06345429138ef8f.png" class="thumbnail_9"></image>
+              <view class="text-group_6">
+                <text lines="1" class="text_14">任务管理</text>
+                <text lines="1" class="text_15">已购作品库</text>
+              </view>
+            </view>
+            <view class="image-text_7">
+              <image src="../../images/lanhu_wode/FigmaDDSSlicePNGd0e0aee00debc8c854cc8e542d36c3c0.png" class="thumbnail_10"></image>
+              <view class="text-group_7">
+                <text lines="1" class="text_14">任务管理</text>
+                <text lines="1" class="text_15">已购作品库</text>
+              </view>
+            </view>
+          </view>
+          <view class="block_6">
+            <view class="image-text_8">
+              <view class="text-group_8">
+                <text lines="1" class="text_16">3</text>
+                <text lines="1" class="text_17">个视频待审核</text>
+              </view>
+              <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_11"></image>
+            </view>
+            <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_12"></image>
+          </view>
+        </view>
+      </view>
+      <view class="group_5">
+        <text lines="1" class="text_18">通用功能</text>
+        <view class="group_6">
+          <view class="image-text_9">
+            <image src="../../images/lanhu_wode/FigmaDDSSlicePNG406ade8f0c40016652893f38275b5fb3.png" class="thumbnail_13"></image>
+            <text lines="1" class="text-group_9">帮助中心</text>
+          </view>
+          <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_14"></image>
+        </view>
+        <view class="group_7">
+          <view class="image-text_10">
+            <image src="../../images/lanhu_wode/FigmaDDSSlicePNGaed8a70a2883725e5b331ecef8cf0ebc.png" class="thumbnail_15"></image>
+            <text lines="1" class="text-group_10">申诉与纠纷</text>
+          </view>
+          <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_16"></image>
+        </view>
+        <view class="group_8">
+          <view class="image-text_11">
+            <image src="../../images/lanhu_wode/FigmaDDSSlicePNG750a5046ddb48b5befe68e4cefd712da.png" class="thumbnail_17"></image>
+            <text lines="1" class="text-group_11">联系客服</text>
+          </view>
+          <image src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" class="thumbnail_18"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="box_6">
+    <view class="image-text_12">
+      <image src="../../images/lanhu_wode/FigmaDDSSlicePNG0ca0042d2c8219b92c002b438686e65f.png" class="label_2"></image>
+      <text lines="1" class="text-group_12">首页</text>
+    </view>
+    <view class="image-text_13">
+      <image src="../../images/lanhu_wode/FigmaDDSSlicePNGcf3b71b6cef2523fe3ecf4d797d6087c.png" class="label_3"></image>
+      <text lines="1" class="text-group_13">灵感</text>
+    </view>
+    <view class="image-text_14">
+      <image src="../../images/lanhu_wode/FigmaDDSSlicePNG83721189c55a03330830bd6479d87e9a.png" class="label_4"></image>
+      <text lines="1" class="text-group_14">我的</text>
+    </view>
+  </view>
+  <view class="box_7">
+    <view class="box_8"></view>
+  </view>
+</view>

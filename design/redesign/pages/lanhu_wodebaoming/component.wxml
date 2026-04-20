@@ -1,0 +1,90 @@
+<view class="page">
+  <view class="group_1">
+    <view class="box_1">
+      <view class="group_2">
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">9:41</text>
+        </view>
+        <view class="section_1"></view>
+        <view class="section_2"></view>
+        <image src="../../images/lanhu_wodebaoming/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+      </view>
+      <view class="group_3">
+        <image src="../../images/lanhu_wodebaoming/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
+        <text lines="1" class="text_2">我的报名</text>
+        <view class="image-wrapper_1">
+          <image src="../../images/lanhu_wodebaoming/9f34bd2b680c4192bfa155e25d905d79_mergeImage.png" class="image_2"></image>
+          <image src="../../images/lanhu_wodebaoming/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
+        </view>
+      </view>
+    </view>
+    <view class="box_2">
+      <view class="section_3">
+        <view class="group_4">
+          <view class="group_5">
+            <view class="text-group_1">
+              <text lines="1" class="text_3">高端楼盘春日氛围视频</text>
+              <text lines="1" decode="true" class="text_4">投稿截止时间&nbsp;2026-04-18&nbsp;10:26</text>
+            </view>
+            <view class="text-wrapper_2">
+              <text lines="1" class="text_5">征稿中</text>
+            </view>
+          </view>
+          <view class="group_6">
+            <text lines="1" class="text_6">剩余：22小时13分12秒</text>
+            <view class="text-wrapper_3">
+              <text lines="1" class="text_7">立即交稿</text>
+            </view>
+          </view>
+        </view>
+        <view class="group_7">
+          <view class="section_4">
+            <view class="text-group_2">
+              <text lines="1" class="text_8">高端楼盘春日氛围视频</text>
+              <text lines="1" decode="true" class="text_9">投稿截止时间&nbsp;2026-04-18&nbsp;10:26</text>
+            </view>
+            <view class="text-wrapper_4">
+              <text lines="1" class="text_10">征稿中</text>
+            </view>
+          </view>
+          <view class="section_5">
+            <text lines="1" class="text_11">剩余：2小时13分12秒</text>
+            <view class="text-wrapper_5">
+              <text lines="1" class="text_12">立即交稿</text>
+            </view>
+          </view>
+        </view>
+        <view class="group_8">
+          <view class="group_9">
+            <view class="text-group_3">
+              <text lines="1" class="text_13">高端楼盘春日氛围视频</text>
+              <text lines="1" decode="true" class="text_14">投稿截止时间&nbsp;2026-04-18&nbsp;10:26</text>
+            </view>
+            <view class="text-wrapper_6">
+              <text lines="1" class="text_15">征稿中</text>
+            </view>
+          </view>
+          <view class="group_10">
+            <text lines="1" class="text_16">剩余：0秒</text>
+            <view class="text-wrapper_7">
+              <text lines="1" class="text_17">立即交稿</text>
+            </view>
+          </view>
+        </view>
+        <view class="group_11">
+          <view class="group_12">
+            <image src="../../images/lanhu_wodebaoming/FigmaDDSSlicePNG99a989f0e7fd7f59717fe65c32e0d975.png" class="thumbnail_3"></image>
+            <text lines="1" class="text_18">创意喵</text>
+            <text lines="1" class="text_19">安全提醒</text>
+          </view>
+          <view class="text-wrapper_8">
+            <text lines="1" decode="true" class="text_20">平台保障内容质量，每个创作者同时最多可报名&nbsp;3&nbsp;个任务，您当前的创作者等级为：</text>
+            <text lines="1" class="text_21">Lv3优质创作者，</text>
+            <text lines="1" decode="true" class="text_22">每日最多可报名&nbsp;8&nbsp;次。&nbsp;请合理安排创作时间。</text>
+          </view>
+        </view>
+        <view class="group_13"></view>
+      </view>
+    </view>
+  </view>
+</view>
