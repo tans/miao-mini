@@ -1,72 +1,111 @@
 .works-container {
   min-height: 100vh;
-  background: #f5f5f5;
-  padding: 0 12px 20px;
+  background: #fafafa;
+  padding-bottom: 20px;
 }
 
-.works-header {
-  background: #fff;
-  padding: 16px 12px 12px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  margin: 0 -12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-}
-
-.works-title {
-  display: block;
-  margin-bottom: 12px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #20242c;
-}
-
-.sort-tabs {
+/* 顶部状态栏 */
+.status-bar {
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 32rpx;
+  background: #fff;
 }
 
-.tab {
-  font-size: 14px;
-  color: #999;
-  padding-bottom: 4px;
-}
-
-.tab.active {
-  color: #ef8802;
+.status-time {
+  font-size: 28rpx;
+  color: #333;
   font-weight: 500;
-  border-bottom: 2px solid #ef8802;
 }
 
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.signal-icon, .wifi-icon, .battery-icon {
+  width: 32rpx;
+  height: 22rpx;
+  background: #333;
+  border-radius: 4rpx;
+}
+
+.battery-icon {
+  width: 48rpx;
+  height: 24rpx;
+}
+
+/* 标题栏 */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.back-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.page-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.message-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-icon {
+  width: 42rpx;
+  height: 38rpx;
+}
+
+/* 作品网格 */
 .works-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-top: 12px;
+  gap: 24rpx;
+  padding: 24rpx;
 }
 
+/* 作品卡片 */
 .work-card {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 16rpx;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 17, 0.04);
 }
 
 .work-main {
   display: flex;
   align-items: stretch;
-  min-height: 148px;
+  min-height: 280rpx;
 }
 
 .work-card .work-cover-wrap {
   position: relative;
-  width: 132px;
-  min-width: 132px;
-  height: 148px;
+  width: 240rpx;
+  min-width: 240rpx;
+  height: 280rpx;
   background: #eee;
 }
 
@@ -152,16 +191,18 @@
 .work-info {
   flex: 1;
   min-width: 0;
-  padding: 14px 12px;
+  padding: 24rpx;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .work-title {
-  font-size: 14px;
+  font-size: 28rpx;
+  font-weight: 900;
   color: #333;
   display: -webkit-box;
-  margin-bottom: 10px;
+  margin-bottom: 16rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
@@ -173,26 +214,26 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 16rpx;
 }
 
 .work-author {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12rpx;
   min-width: 0;
 }
 
 .author-avatar {
-  width: 20px;
-  height: 20px;
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 50%;
   background: #eee;
 }
 
 .author-name {
-  font-size: 12px;
-  color: #999;
+  font-size: 24rpx;
+  color: #666;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -201,52 +242,51 @@
 .work-extra {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.work-actions {
-  margin-top: 12px;
+  gap: 8rpx;
+  margin-top: 16rpx;
 }
 
 .work-adopt-time,
 .work-material-count {
-  font-size: 12px;
+  font-size: 22rpx;
   color: #8a94a6;
   line-height: 1.4;
+}
+
+.work-actions {
+  margin-top: 16rpx;
 }
 
 .work-like-count {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8rpx;
   flex-shrink: 0;
 }
 
 .like-icon {
-  font-size: 13px;
+  font-size: 24rpx;
   line-height: 1;
   color: #ff5a6b;
   flex-shrink: 0;
-  transform: translateY(1px);
 }
 
 .like-count-value {
-  font-size: 12px;
+  font-size: 24rpx;
   color: #ff5a6b;
   font-weight: 600;
 }
 
 .download-btn {
-  width: 92px;
-  height: 36px;
-  line-height: 36px;
+  width: 184rpx;
+  height: 64rpx;
+  line-height: 64rpx;
   padding: 0;
-  border-radius: 999px;
+  border-radius: 32rpx;
   border: none;
   background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   color: #fff;
-  font-size: 13px;
+  font-size: 26rpx;
   font-weight: 600;
 }
 
@@ -261,11 +301,38 @@
 
 .loading-more {
   text-align: center;
-  padding: 20px;
+  padding: 40rpx;
   color: #999;
-  font-size: 14px;
+  font-size: 28rpx;
 }
 
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #8c8c98;
+}
+
+/* 主题色 */
 .cover-theme-0 {
   background: linear-gradient(145deg, #ff7a59, #ffb347);
 }

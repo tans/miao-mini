@@ -118,6 +118,10 @@ Page({
 
   noop() {},
 
+  goBack() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
+  },
+
   downloadWorkMaterial(e) {
     const url = e.currentTarget.dataset.url;
     const type = e.currentTarget.dataset.type || '';
