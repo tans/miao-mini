@@ -1,5 +1,44 @@
-<!--pages/home/index.wxml-->
+<!-- pages/home/index.wxml -->
 <view class="home-container">
+  <!-- 顶部渐变区域 -->
+  <view class="header-gradient">
+    <view class="header-title-wrap">
+      <text class="header-title">创意喵｜AI视频众包撮合平台</text>
+      <text class="header-subtitle">双向信用管控 100%资金托管</text>
+    </view>
+    <!-- Banner轮播 -->
+    <scroll-view class="banner-scroll" scroll-x>
+      <view class="banner-list">
+        <view class="banner-item">
+          <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGc75faa1c8dcb90839a3c0761ac45a37b.png" class="banner-img" />
+          <view class="banner-tag">学会这招，收益稳稳到账</view>
+        </view>
+        <view class="banner-item">
+          <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGc75faa1c8dcb90839a3c0761ac45a37b.png" class="banner-img" />
+          <view class="banner-tag">学会这招，收益稳稳到账</view>
+        </view>
+        <view class="banner-item">
+          <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGc75faa1c8dcb90839a3c0761ac45a37b.png" class="banner-img" />
+          <view class="banner-tag">学会这招，收益稳稳到账</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 分类标签栏 -->
+  <scroll-view class="category-bar" scroll-x wx:if="{{industryTags.length > 0}}">
+    <view class="category-inner">
+      <view
+        class="category-tag {{activeIndustry === '' ? 'active' : ''}}"
+        bindtap="setIndustry" data-industry=""
+      >推荐</view>
+      <view
+        wx:for="{{industryTags}}" wx:key="index"
+        class="category-tag {{activeIndustry === item ? 'active' : ''}}"
+        bindtap="setIndustry" data-industry="{{item}}"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
 
   <!-- 排序栏 -->
   <view class="sort-bar">
@@ -8,98 +47,93 @@
       bindtap="setSort" data-sort="created_at"
     >最新</view>
     <view
+      class="sort-item {{sort === 'hot' ? 'active' : ''}}"
+      bindtap="setSort" data-sort="hot"
+    >最热</view>
+    <view
       class="sort-item {{sort === 'price_desc' ? 'active' : ''}}"
       bindtap="setSort" data-sort="price_desc"
     >价格最高</view>
-    <view
-      class="sort-item {{sort === 'price_asc' ? 'active' : ''}}"
-      bindtap="setSort" data-sort="price_asc"
-    >价格最低</view>
   </view>
 
-  <!-- 行业筛选标签 -->
-  <scroll-view class="industry-bar" scroll-x wx:if="{{industryTags.length > 0}}">
-    <view class="industry-inner">
-      <view
-        class="industry-tag {{activeIndustry === '' ? 'active' : ''}}"
-        bindtap="setIndustry" data-industry=""
-      >全部</view>
-      <view
-        wx:for="{{industryTags}}" wx:key="index"
-        class="industry-tag {{activeIndustry === item ? 'active' : ''}}"
-        bindtap="setIndustry" data-industry="{{item}}"
-      >{{item}}</view>
-    </view>
-  </scroll-view>
-
-  <!-- 任务数量 -->
-  <view class="section-header">
-    <text class="section-title">{{activeIndustry ? activeIndustry : '全部任务'}}</text>
-    <text class="section-count">{{displayTasks.length}}{{hasMore && activeIndustry === '' ? '+' : ''}}个</text>
-  </view>
-
-  <!-- 空状态 -->
-  <mp-msg type="info" title="暂无相关任务" wx:if="{{displayTasks.length === 0 && !loading}}" />
-
-  <!-- 两列任务网格 -->
-  <view class="task-grid" wx:if="{{displayTasks.length > 0}}">
+  <!-- 任务列表 -->
+  <view class="task-list" wx:if="{{displayTasks.length > 0}}">
     <view
       wx:for="{{displayTasks}}" wx:key="id"
-      class="task-card-grid"
+      class="task-card"
       bindtap="goTaskDetail" data-id="{{item.id}}"
     >
-      <view class="card-thumb-wrap">
+      <view class="task-card-cover">
         <image
           wx:if="{{item.cover}}"
-          class="card-thumb"
+          class="task-cover-img"
           src="{{item.cover}}"
           mode="aspectFill"
           lazy-load
         />
-        <view wx:else class="card-thumb-fallback {{item.fallbackThemeClass}}">
-          <view class="fallback-badge">创作说明</view>
-          <text class="fallback-summary">{{item.fallbackSummary}}</text>
+        <view wx:else class="task-cover-fallback {{item.fallbackThemeClass}}">
           <text class="fallback-title">{{item.title}}</text>
         </view>
-        <!-- 截止时间倒计时标签 -->
-        <view class="card-countdown" wx:if="{{item.countdown}}">{{item.countdown}}</view>
+        <view class="task-countdown" wx:if="{{item.countdown}}">{{item.countdown}}</view>
       </view>
-      <view class="card-body">
-        <text class="card-title">{{item.title}}</text>
-        <!-- 行业类别和视频风格一行，两端对齐 -->
-        <view class="card-tags-row" wx:if="{{item.industryArray.length > 0 || item.styleArray.length > 0}}">
-          <view class="card-tags-left">
-            <text class="card-tag" wx:for="{{item.industryArray}}" wx:key="index">{{item}}</text>
+      <view class="task-card-body">
+        <view class="task-title-row">
+          <text class="task-title">{{item.title}}</text>
+          <text class="task-price">¥{{item.unit_price}}<text class="task-price-unit">元/条</text></text>
+        </view>
+        <view class="task-tags">
+          <view class="tag-list">
+            <text class="tag-item" wx:for="{{item.industryArray}}" wx:key="index" wx:for-item="tag">{{tag}}</text>
           </view>
-          <view class="card-tags-right">
-            <text class="card-style-tag" wx:for="{{item.styleArray}}" wx:key="index" wx:for-item="style">{{style}}</text>
+          <text class="tag-style" wx:if="{{item.styleArray.length > 0}}">{{item.styleArray[0]}}</text>
+        </view>
+        <view class="task-badges">
+          <view class="badge badge-reward" wx:if="{{item.award_price > 0}}">
+            <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG58cc34ab5d3eaf106c83cb9a4a0ffb1b.png" class="badge-icon" />
+            <text>参与奖励:¥{{item.award_price}}</text>
+          </view>
+          <view class="badge badge-trusted">
+            <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG3ccd7683dca9220cf92fd2f444f08690.png" class="badge-icon" />
+            <text>资金已托管</text>
           </view>
         </view>
-        <!-- 价格和报名信息一行，左右对齐 -->
-        <view class="card-footer">
-          <view class="card-price-wrap">
-            <text class="card-price">¥{{item.unit_price}}</text>
-            <text class="card-award" wx:if="{{item.award_price > 0}}">+¥{{item.award_price}}采纳</text>
+        <view class="task-progress">
+          <text class="progress-label">报名进度</text>
+          <view class="progress-info">
+            <text class="progress-text">已报名</text>
+            <text class="progress-num">{{item.enrolled_count}}</text>
+            <text class="progress-text">/{{item.total_count || 10}}人</text>
           </view>
-          <view class="card-enroll">
-            <text class="enroll-count">已报名{{item.enrolled_count}}人</text>
-            <text class="enroll-sep">|</text>
-            <text class="remain-count">剩{{item.remaining_count}}名</text>
+        </view>
+        <view class="task-action">
+          <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGdc2570b8d5182bce2b936e063d290613.png" class="task-thumb" />
+          <view class="task-deadline">
+            <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG5e5354f18caa98b588ce4f1dd488f0b2.png" class="clock-icon" />
+            <text class="deadline-text" wx:if="{{item.countdown}}">{{item.countdown}}后截止投稿</text>
           </view>
+          <view class="btn-apply">立即报名</view>
         </view>
       </view>
     </view>
   </view>
 
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{displayTasks.length === 0 && !loading}}">
+    <mp-msg type="info" title="暂无相关任务" />
+  </view>
+
+  <!-- 加载更多 -->
   <view wx:if="{{hasMore && activeIndustry === '' && displayTasks.length > 0}}" class="load-more">
     <button class="weui-btn weui-btn_default" bindtap="loadMore" disabled="{{loading}}">
       {{loading ? '加载中...' : '加载更多'}}
     </button>
   </view>
 
-  <!-- 发布任务按钮 -->
+  <!-- 发布任务悬浮按钮 -->
   <view class="fab-container">
-    <button class="fab" bindtap="goCreateTask">+ 发布任务</button>
+    <button class="fab" bindtap="goCreateTask">
+      <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG454d10efd52a38cba530e202a537c04c.png" class="fab-icon" />
+      <text>发布任务</text>
+    </button>
   </view>
-
 </view>

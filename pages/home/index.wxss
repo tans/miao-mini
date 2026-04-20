@@ -1,24 +1,121 @@
 /* pages/home/index.wxss */
 .home-container {
-  padding-bottom: 20px;
   background: #f5f5f5;
   min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部渐变区域 */
+.header-gradient {
+  background: linear-gradient(66deg, #FF7C09 0%, #FFAF55 32%, #FFCD42 72%, #FFE177 100%);
+  padding-bottom: 30rpx;
+}
+
+.header-title-wrap {
+  padding: 30rpx 36rpx 20rpx;
+}
+
+.header-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: rgba(0,0,0,1);
+  line-height: 48rpx;
+}
+
+.header-subtitle {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: rgba(0,0,0,1);
+  line-height: 36rpx;
+  margin-top: 8rpx;
+}
+
+/* Banner轮播 */
+.banner-scroll {
+  white-space: nowrap;
+  padding: 0 32rpx;
+}
+
+.banner-list {
+  display: flex;
+  gap: 28rpx;
+}
+
+.banner-item {
+  width: 560rpx;
+  height: 320rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #5b86e5, #36d1dc);
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+}
+
+.banner-tag {
+  position: absolute;
+  bottom: 24rpx;
+  left: 28rpx;
+  background: rgba(55,55,55,0.9);
+  border-radius: 8rpx;
+  padding: 8rpx 16rpx;
+  font-size: 18rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* 分类标签栏 */
+.category-bar {
+  background: #fff;
+  white-space: nowrap;
+  margin-top: -20rpx;
+}
+
+.category-inner {
+  display: flex;
+  padding: 20rpx 24rpx;
+  gap: 24rpx;
+}
+
+.category-tag {
+  display: inline-block;
+  padding: 8rpx 24rpx;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  background: #f5f5f5;
+  color: #666;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.category-tag.active {
+  background: #EF8802;
+  color: #fff;
+  font-weight: 600;
 }
 
 /* 排序栏 */
 .sort-bar {
   display: flex;
   background: #fff;
-  padding: 0 16px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 0 24rpx;
+  margin: 16rpx 0;
 }
 
 .sort-item {
-  padding: 12px 14px;
-  font-size: 14px;
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 26rpx;
   color: #666;
   position: relative;
-  white-space: nowrap;
 }
 
 .sort-item.active {
@@ -30,293 +127,55 @@
   content: '';
   position: absolute;
   bottom: 0;
-  left: 14px;
-  right: 14px;
-  height: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 4rpx;
   background: #EF8802;
-  border-radius: 2px;
+  border-radius: 2rpx;
 }
 
-/* 行业标签栏 */
-.industry-bar {
+/* 任务列表 */
+.task-list {
+  padding: 0 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.task-card {
   background: #fff;
-  white-space: nowrap;
-  margin-bottom: 4px;
-}
-
-.industry-inner {
-  display: flex;
-  padding: 10px 12px;
-  gap: 8px;
-}
-
-.industry-tag {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-  background: #f5f5f5;
-  color: #666;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.industry-tag.active {
-  background: rgba(239, 136, 2, 0.1);
-  color: #EF8802;
-  font-weight: 600;
-}
-
-/* 标题栏 */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px 6px;
-}
-
-.section-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #333;
-}
-
-.section-count {
-  font-size: 13px;
-  color: #999;
-}
-
-/* 两列任务网格 */
-.task-grid {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 8px;
-  gap: 8px;
-}
-
-.task-card-grid {
-  width: calc(50% - 4px);
-  background: #fff;
-  border-radius: 12px;
+  border-radius: 16rpx;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 4rpx 24rpx rgba(20,42,31,0.08);
 }
 
-/* 缩略图 - 竖屏比例 */
-.card-thumb-wrap {
+.task-card-cover {
   width: 100%;
-  padding-top: 133%; /* 3:4 竖屏比例 */
-  height: 0;
+  height: 320rpx;
   background: #f0f0f0;
-  overflow: hidden;
   position: relative;
 }
 
-.card-thumb {
-  position: absolute;
-  top: 0;
-  left: 0;
+.task-cover-img {
   width: 100%;
   height: 100%;
 }
 
-.card-thumb-fallback {
-  position: absolute;
-  inset: 0;
+.task-cover-fallback {
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 10rpx;
-  padding: 22rpx 20rpx;
-  color: #fff;
-}
-
-.fallback-badge {
-  align-self: flex-start;
-  padding: 6rpx 12rpx;
-  border-radius: 999rpx;
-  background: rgba(255, 255, 255, 0.16);
-  font-size: 20rpx;
-  line-height: 1;
-}
-
-.fallback-summary {
-  font-size: 30rpx;
-  line-height: 1.45;
-  font-weight: 700;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
 }
 
 .fallback-title {
-  font-size: 20rpx;
-  line-height: 1.4;
-  opacity: 0.85;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-/* 截止时间倒计时标签 */
-.card-countdown {
-  position: absolute;
-  top: 8rpx;
-  right: 8rpx;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  font-size: 20rpx;
-  padding: 4rpx 10rpx;
-  border-radius: 6rpx;
-}
-
-/* 卡片内容 */
-.card-body {
-  padding: 10rpx 12rpx 12rpx;
-}
-
-.card-title {
-  font-size: 26rpx;
-  font-weight: 600;
-  color: #222;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  line-height: 1.4;
-  margin-bottom: 6rpx;
-}
-
-/* 行业类别和视频风格一行，两端对齐 */
-.card-tags-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6rpx;
-}
-
-.card-tags-left {
-  display: flex;
-  align-items: center;
-  gap: 4rpx;
-  flex-wrap: wrap;
-  flex: 1;
-  min-width: 0;
-}
-
-.card-tags-right {
-  display: flex;
-  align-items: center;
-  gap: 4rpx;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
-
-.card-tag {
-  background: #FFFBF3;
-  color: #EF8802;
-  font-size: 20rpx;
-  padding: 2rpx 8rpx;
-  border-radius: 4rpx;
-}
-
-.card-style-tag {
-  background: #fff3e0;
-  color: #e65100;
-  font-size: 18rpx;
-  padding: 2rpx 6rpx;
-  border-radius: 4rpx;
-}
-
-/* 报名信息 */
-.card-enroll {
-  display: flex;
-  align-items: center;
-  gap: 6rpx;
-}
-
-.enroll-count {
-  font-size: 20rpx;
-  color: #666;
-}
-
-.enroll-sep {
-  font-size: 20rpx;
-  color: #ddd;
-}
-
-.remain-count {
-  font-size: 20rpx;
-  color: #999;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-price {
   font-size: 28rpx;
-  font-weight: 700;
-  color: #EF8802;
-}
-
-.card-price-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-}
-
-.card-award {
-  font-size: 20rpx;
-  font-weight: 500;
-  color: #52c41a;
-}
-
-/* 加载更多 */
-.load-more {
-  text-align: center;
-  padding: 16px;
-}
-
-/* 空状态 */
-.empty-state {
-  text-align: center;
-  padding: 80px 20px;
-}
-
-.empty-icon {
-  font-size: 48px;
-  display: block;
-  margin-bottom: 16px;
-}
-
-.empty-desc {
-  color: #999;
-  font-size: 14px;
-}
-
-/* 发布任务悬浮按钮 */
-.fab-container {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-}
-
-.fab {
-  background: #EF8802;
-  color: #fff;
-  border: none;
-  border-radius: 24px;
-  padding: 10px 20px;
-  font-size: 14px;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(239, 136, 2, 0.4);
+  color: #fff;
+  padding: 24rpx;
+  text-align: center;
 }
 
 .cover-theme-0 {
@@ -341,4 +200,216 @@
 
 .cover-theme-5 {
   background: linear-gradient(145deg, #4568dc, #b06ab3);
+}
+
+.task-countdown {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.task-card-body {
+  padding: 32rpx;
+}
+
+.task-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.task-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #0f172a;
+  flex: 1;
+  line-height: 1.4;
+  margin-right: 16rpx;
+}
+
+.task-price {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #ef4444;
+  font-family: D-DIN-PRO-Bold;
+}
+
+.task-price-unit {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #ef4444;
+}
+
+.task-tags {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.tag-list {
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.tag-item {
+  background: #FFFBF3;
+  color: #EF8802;
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.tag-style {
+  background: #fff3e0;
+  color: #e65100;
+  font-size: 20rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 4rpx;
+}
+
+.task-badges {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+.badge-reward {
+  background: #FFF0EA;
+  color: #ef4444;
+}
+
+.badge-trusted {
+  background: #E9FFEE;
+  color: #616878;
+}
+
+.badge-icon {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.task-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.progress-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.progress-num {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.task-action {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.task-thumb {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  background: #f0f0f0;
+}
+
+.task-deadline {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.clock-icon {
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.deadline-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.btn-apply {
+  background: #EF8802;
+  color: #fff;
+  padding: 16rpx 32rpx;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 32rpx;
+}
+
+/* 发布任务悬浮按钮 */
+.fab-container {
+  position: fixed;
+  bottom: 30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.fab {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: #EF8802;
+  color: #fff;
+  border: none;
+  border-radius: 40rpx;
+  padding: 16rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 8rpx 32rpx rgba(239,136,2,0.4);
+}
+
+.fab-icon {
+  width: 32rpx;
+  height: 32rpx;
 }
