@@ -199,6 +199,14 @@ Page({
     });
   },
 
+  goHome() {
+    wx.switchTab({ url: '/pages/home/index' });
+  },
+
+  goMine() {
+    wx.switchTab({ url: '/pages/mine/index' });
+  },
+
   normalizeWork(item = {}) {
     const materials = Array.isArray(item.materials) ? item.materials : [];
     const firstMaterial = materials[0] || null;

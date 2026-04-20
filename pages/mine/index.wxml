@@ -108,20 +108,4 @@
       </view>
     </view>
   </view>
-
-  <!-- 底部tabBar -->
-  <view class="tab-bar">
-    <view class="tab-item" bindtap="goHome">
-      <image class="tab-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG0ca0042d2c8219b92c002b438686e65f.png" />
-      <text class="tab-text">首页</text>
-    </view>
-    <view class="tab-item" bindtap="goInspiration">
-      <image class="tab-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNGcf3b71b6cef2523fe3ecf4d797d6087c.png" />
-      <text class="tab-text">灵感</text>
-    </view>
-    <view class="tab-item active">
-      <image class="tab-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG83721189c55a03330830bd6479d87e9a.png" />
-      <text class="tab-text">我的</text>
-    </view>
-  </view>
 </view>

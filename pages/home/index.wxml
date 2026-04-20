@@ -159,20 +159,4 @@
       <text>发布任务</text>
     </button>
   </view>
-
-  <!-- 底部TabBar -->
-  <view class="tab-bar">
-    <view class="tab-item active">
-      <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG86d578ff03f9956cda23d4c11e273f8f.png" class="tab-icon" />
-      <text class="tab-text">首页</text>
-    </view>
-    <view class="tab-item" bindtap="goWorks">
-      <image src="../../images/lanhu_shouye/FigmaDDSSlicePNGcf3b71b6cef2523fe3ecf4d797d6087c.png" class="tab-icon" />
-      <text class="tab-text">灵感</text>
-    </view>
-    <view class="tab-item" bindtap="goMine">
-      <image src="../../images/lanhu_shouye/FigmaDDSSlicePNG6ec082387363a7eebabfccb1cb31d5c9.png" class="tab-icon" />
-      <text class="tab-text">我的</text>
-    </view>
-  </view>
 </view>
