@@ -12,8 +12,20 @@ Page({
 
   async loadInspirationDetail(id) {
     wx.showLoading({ title: '加载中...' });
+
+    // 超时保护：5秒后强制结束
+    const timeoutId = setTimeout(() => {
+      if (this.data.loading) {
+        console.log('loadInspirationDetail timeout, using mock data');
+        const mockData = this.getMockData(id);
+        this.setData({ inspiration: mockData, loading: false });
+        wx.hideLoading();
+      }
+    }, 5000);
+
     try {
       const res = await Api.getWork(id);
+      clearTimeout(timeoutId);
       const inspiration = res.data;
 
       if (!inspiration) {
@@ -23,17 +35,12 @@ Page({
         return;
       }
 
-      this.setData({
-        inspiration,
-        loading: false
-      });
+      this.setData({ inspiration, loading: false });
     } catch (err) {
-      // 使用mock数据
+      clearTimeout(timeoutId);
+      console.error('loadInspirationDetail error:', err);
       const mockData = this.getMockData(id);
-      this.setData({
-        inspiration: mockData,
-        loading: false
-      });
+      this.setData({ inspiration: mockData, loading: false });
     } finally {
       wx.hideLoading();
     }
