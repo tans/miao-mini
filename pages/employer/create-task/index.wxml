@@ -11,28 +11,56 @@
   <scroll-view scroll-y="true" class="form-scroll">
     <!-- 流程图 -->
     <view class="flow-section">
+      <view class="flow-header">
+        <view class="flow-header-left">
+          <image class="flow-icon" src="./images/FigmaDDSSlicePNGcf51c47f1d7ec2c2219965b59a7f190c.png" />
+          <text class="flow-headline">发单先托管</text>
+          <text class="flow-headline-highlight">验收再放款</text>
+        </view>
+        <text class="flow-hint">详细教程</text>
+      </view>
       <view class="flow-item">
         <view class="flow-step">
-          <view class="flow-dot flow-dot-1">发</view>
-          <text class="flow-label">发布任务托管奖金</text>
+          <view class="flow-icon-wrapper">
+            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG29823902767c2a9879c703aaa86a61c9.png" />
+          </view>
+          <view class="flow-step-text">
+            <text class="flow-step-title">发布任务</text>
+            <text class="flow-step-sub">托管奖金</text>
+          </view>
         </view>
-        <view class="flow-arrow"></view>
+        <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
-          <view class="flow-dot flow-dot-2">创</view>
-          <text class="flow-label">创作者报名提交视频</text>
+          <view class="flow-icon-wrapper">
+            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG552002459c165b264bfde3d79e34f6b4.png" />
+          </view>
+          <view class="flow-step-text">
+            <text class="flow-step-title">创作者报名</text>
+            <text class="flow-step-sub">提交视频</text>
+          </view>
         </view>
-        <view class="flow-arrow"></view>
+        <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
-          <view class="flow-dot flow-dot-3">审</view>
-          <text class="flow-label">商家审核验收视频</text>
+          <view class="flow-icon-wrapper">
+            <image class="flow-step-icon" src="./images/64eb92ffc20a47659d3b94f1f6c981d1_mergeImage.png" />
+          </view>
+          <view class="flow-step-text">
+            <text class="flow-step-title">商家审核</text>
+            <text class="flow-step-sub">验收视频</text>
+          </view>
         </view>
-        <view class="flow-arrow"></view>
+        <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
-          <view class="flow-dot flow-dot-4">结</view>
-          <text class="flow-label">任务结束解冻剩余资金</text>
+          <view class="flow-icon-wrapper">
+            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG26444e830900e7f016708436b07a5211.png" />
+          </view>
+          <view class="flow-step-text">
+            <text class="flow-step-title">任务结束</text>
+            <text class="flow-step-sub">解冻剩余资金</text>
+          </view>
         </view>
       </view>
-      <view class="flow-hint">详细教程</view>
+      <image class="flow-label" src="./images/FigmaDDSSlicePNGae94ccf4fbc29229298c9051993d4ba9.png" />
     </view>
 
     <!-- 基础信息 -->
@@ -40,9 +68,9 @@
       <view class="card-title">基础信息</view>
 
       <!-- 任务标题 -->
-      <view class="form-field">
-        <view class="field-label">任务标题</view>
-        <input class="field-input" placeholder="请输入任务标题" value="{{title}}" bindinput="onTitleInput"/>
+      <view class="title-field">
+        <text class="title-label">任务标题</text>
+        <input class="title-input" placeholder="高端楼盘春日氛围视频" value="{{title}}" bindinput="onTitleInput"/>
       </view>
 
       <!-- 行业 -->
@@ -51,9 +79,11 @@
           <text class="field-label">行业</text>
           <text class="field-hint">（可多选）</text>
         </view>
-        <view class="tag-group">
-          <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{selectedIndustries.includes(item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
-        </view>
+        <scroll-view scroll-x="true" class="tag-scroll">
+          <view class="tag-group">
+            <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{selectedIndustries.includes(item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
+          </view>
+        </scroll-view>
       </view>
 
       <!-- 风格 -->
@@ -62,19 +92,34 @@
           <text class="field-label">风格</text>
           <text class="field-hint">（可多选）</text>
         </view>
-        <view class="tag-group">
-          <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{selectedStyles.includes(item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
-        </view>
+        <scroll-view scroll-x="true" class="tag-scroll">
+          <view class="tag-group">
+            <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{selectedStyles.includes(item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
+          </view>
+        </scroll-view>
       </view>
 
       <!-- 任务描述 -->
-      <view class="form-field">
-        <view class="field-label">任务描述</view>
+      <view class="desc-field">
+        <text class="desc-label">任务描述</text>
         <view class="desc-area">
           <textarea class="desc-textarea" placeholder="请输入不少于10个字的描述" value="{{description}}" bindinput="onDescInput" maxlength="500"/>
           <view class="ai-write-btn" bindtap="aiWriteDesc">
-            <text class="ai-icon">✎</text>
+            <image class="ai-icon" src="./images/FigmaDDSSlicePNGe4091db8f20a5f20d3fd34f7c653a856.png" />
             <text>AI帮写</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 图片参考 -->
+      <view class="image-reference">
+        <image class="ref-image" src="./images/FigmaDDSSlicePNGbab45d11d281f4d80e337b96b6d6ed91.png" />
+        <view class="ref-right">
+          <view class="ref-upload">
+            <image class="upload-icon" src="./images/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" />
+          </view>
+          <view class="ref-upload">
+            <image class="upload-icon" src="./images/FigmaDDSSlicePNG14ea664d8c78f1a6300dcce799cc26ce.png" />
           </view>
         </view>
       </view>
@@ -86,57 +131,60 @@
     </view>
 
     <!-- 隐私保护 -->
-    <view class="form-card">
+    <view class="form-card card-with-shadow">
       <view class="card-title">隐私保护</view>
-      <view class="switch-row">
+      <view class="switch-box">
         <view class="switch-info">
           <text class="switch-title">开启稿件隐私保护</text>
           <text class="switch-desc">开启后，创作者的投稿仅商家可见</text>
         </view>
-        <switch class="privacy-switch" checked="{{privacyProtected}}" bindchange="togglePrivacy"/>
+        <image class="switch-icon" src="./images/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png" />
       </view>
     </view>
 
     <!-- 即梦合拍 -->
-    <view class="form-card">
+    <view class="form-card card-with-shadow">
       <view class="card-title">即梦合拍</view>
-      <view class="switch-row">
-        <view class="switch-info">
-          <text class="switch-title">即梦合拍设置</text>
-          <text class="switch-desc">商家提供数字人模型给创作者用于合成视频</text>
+      <view class="jimeng-box">
+        <view class="switch-row">
+          <view class="switch-info">
+            <text class="switch-title">即梦合拍设置</text>
+            <text class="switch-desc">商家提供数字人模型给创作者用于合成视频</text>
+          </view>
+          <image class="switch-icon" src="./images/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png" />
         </view>
-        <switch class="jimeng-switch" checked="{{jimengEnabled}}" bindchange="toggleJimeng"/>
-      </view>
-      <view wx:if="{{jimengEnabled}}" class="jimeng-content">
-        <view class="jimeng-input-row">
-          <input class="jimeng-input" placeholder="请输入邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="50"/>
-          <text class="char-count">{{jimeng_link.length}}/50</text>
-        </view>
-        <view class="jimeng-tutorial" bindtap="showJimengTutorial">
-          <text class="tutorial-icon">📖</text>
-          <text>查看即梦合拍教程</text>
+        <view wx:if="{{jimengEnabled}}" class="jimeng-content">
+          <view class="jimeng-input-box">
+            <input class="jimeng-input" placeholder="请输入邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="50"/>
+            <text class="char-count">{{jimeng_link.length}}/50</text>
+          </view>
+          <view class="jimeng-tutorial" bindtap="showJimengTutorial">
+            <view class="tutorial-icon-wrapper">
+              <image class="tutorial-icon" src="./images/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" />
+            </view>
+            <text>查看即梦合拍教程</text>
+          </view>
         </view>
         <view class="jimeng-tips">
-          <text class="tips-main">tips：即梦合拍邀请链接仅48小时有效</text>
+          <text class="tips-main">tips：即梦合拍邀请</text>
+          <text class="tips-highlight">链接仅48小时有效</text>
           <text class="tips-sub">，请在我的-任务管理-任务详情中更新链接。</text>
         </view>
       </view>
     </view>
 
     <!-- 视频规格 -->
-    <view class="form-card">
+    <view class="form-card card-with-shadow">
       <view class="card-title">视频规格</view>
-      <view class="spec-row">
+      <view class="spec-box">
         <view class="spec-item">
           <text class="spec-value">30</text>
           <text class="spec-unit">秒内</text>
         </view>
-        <view class="spec-divider"></view>
         <view class="spec-item">
           <text class="spec-value">9:16</text>
           <text class="spec-unit">竖版</text>
         </view>
-        <view class="spec-divider"></view>
         <view class="spec-item">
           <text class="spec-value">1080P</text>
           <text class="spec-unit">高清</text>
@@ -145,44 +193,44 @@
     </view>
 
     <!-- 时间与奖金 -->
-    <view class="form-card">
+    <view class="form-card card-with-shadow">
       <view class="card-title">时间与奖金</view>
 
       <!-- 投稿截止时间 -->
-      <view class="form-field">
-        <view class="field-label">投稿截止时间</view>
-        <picker mode="date" value="{{deadline}}" start="{{minDeadline}}" end="{{maxDeadline}}" bindchange="onDeadlineChange">
-          <view class="field-picker">
-            <text>{{deadline || '默认7天后'}}</text>
-            <text class="picker-arrow">›</text>
-          </view>
-        </picker>
+      <view class="picker-box">
+        <text class="picker-label">投稿截止时间</text>
+        <view class="picker-row">
+          <text class="picker-value">{{deadline || '2026-04-24 18:00'}}</text>
+          <image class="picker-arrow" src="./images/FigmaDDSSlicePNG238c6963ed8330276941b8174e02ee6d.png" />
+        </view>
       </view>
 
       <!-- 参与奖 -->
-      <view class="form-field">
-        <view class="field-label">参与奖</view>
-        <view class="award-input-row">
-          <input type="number" class="award-input" placeholder="2" value="{{unit_price}}" bindinput="onUnitPriceInput"/>
-          <text class="award-unit">元/条</text>
+      <view class="input-box">
+        <text class="input-label">参与奖</text>
+        <view class="input-row">
+          <input type="number" class="price-input" placeholder="2" value="{{unit_price}}" bindinput="onUnitPriceInput"/>
+          <text class="input-unit">元/条</text>
         </view>
       </view>
 
       <!-- 采纳奖 -->
-      <view class="form-field">
-        <view class="field-label">采纳奖</view>
-        <view class="award-input-row">
-          <input type="number" class="award-input" placeholder="≥8元" value="{{award_price}}" bindinput="onAwardPriceInput"/>
-          <text class="award-unit">元/条</text>
+      <view class="input-box">
+        <text class="input-label">采纳奖</text>
+        <view class="input-row">
+          <input type="number" class="price-input" placeholder="20" value="{{award_price}}" bindinput="onAwardPriceInput"/>
+          <text class="input-unit">元/条</text>
         </view>
       </view>
 
+      <view class="tips-notice">tips：被采纳的作品获得采纳奖+参与奖。</view>
+
       <!-- 报名人数上限 -->
-      <view class="form-field">
-        <view class="field-label">报名人数上限</view>
-        <view class="count-input-row">
-          <input type="number" class="count-input" placeholder="10" value="{{total_count}}" bindinput="onTotalCountInput"/>
-          <text class="award-unit">人</text>
+      <view class="input-box">
+        <text class="input-label">报名人数上限</text>
+        <view class="input-row">
+          <input type="number" class="price-input" placeholder="10" value="{{total_count}}" bindinput="onTotalCountInput"/>
+          <text class="input-unit">人</text>
         </view>
       </view>
 
@@ -214,6 +262,7 @@
     <!-- 提交按钮 -->
     <view class="submit-section">
       <button class="submit-btn" bindtap="handleSubmit">托管奖金并发布</button>
+      <view class="submit-indicator"></view>
     </view>
   </scroll-view>
 </view>
