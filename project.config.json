@@ -1,7 +1,25 @@
 {
   "description": "创意喵 - 视频任务平台",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "folder", "value": "design/" },
+      { "type": "folder", "value": "styles/" },
+      { "type": "folder", "value": "scripts/" },
+      { "type": "file", "value": "build-info.js" },
+      { "type": "file", "value": "V1_0_PRD.md" },
+      { "type": "file", "value": "README.md" },
+      { "type": "file", "value": "小程序信息架构图.md" },
+      { "type": "file", "value": "styles.css" },
+      { "type": "file", "value": "project.private.config.json" },
+      { "type": "file", "value": "private.key" },
+      { "type": "file", "value": ".DS_Store" },
+      { "type": "file", "value": ".ci-trigger" },
+      { "type": "file", "value": ".ci-trigger-2" },
+      { "type": "file", "value": ".ci-trigger-3" },
+      { "type": "folder", "value": ".miao-mini" },
+      { "type": "folder", "value": ".claude" },
+      { "type": "folder", "value": "node_modules/.package-lock.json" }
+    ],
     "include": []
   },
   "setting": {
