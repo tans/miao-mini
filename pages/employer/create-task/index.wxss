@@ -187,6 +187,8 @@
   text-align: right;
   flex: 1;
   margin-left: 16rpx;
+  text-decoration: underline;
+  text-underline-offset: 8rpx;
 }
 
 /* 表单字段 */
