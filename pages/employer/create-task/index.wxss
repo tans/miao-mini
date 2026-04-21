@@ -291,21 +291,43 @@
 
 /* 图片参考 */
 .image-reference {
-  display: flex;
-  gap: 16rpx;
   margin-bottom: 24rpx;
 }
 
-.ref-image {
+.ref-images-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.ref-image-item {
+  position: relative;
+  width: 112rpx;
+  height: 112rpx;
+}
+
+.ref-image-item .ref-image {
   width: 112rpx;
   height: 112rpx;
   border-radius: 16rpx;
 }
 
-.ref-right {
+.ref-image-remove {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  width: 36rpx;
+  height: 36rpx;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
-  gap: 16rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.ref-image-remove .remove-icon {
+  width: 24rpx;
+  height: 24rpx;
 }
 
 .ref-upload {

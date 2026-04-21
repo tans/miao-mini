@@ -15,6 +15,7 @@ Page({
     jimeng_link: '',
     selectedIndustries: [],
     selectedStyles: [],
+    refImages: [],
     industryOptions: [
       { id: 1001, name: '餐饮美食' },
       { id: 1002, name: '酒店民宿' },
@@ -114,6 +115,29 @@ Page({
 
   toggleJimeng() {
     this.setData({ jimengEnabled: !this.data.jimengEnabled });
+  },
+
+  addRefImage() {
+    if (this.data.refImages.length >= 3) {
+      wx.showToast({ title: '最多上传3张图片', icon: 'none' });
+      return;
+    }
+    wx.chooseImage({
+      count: 3 - this.data.refImages.length,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        this.setData({
+          refImages: this.data.refImages.concat(res.tempFilePaths)
+        });
+      }
+    });
+  },
+
+  removeRefImage(e) {
+    const index = e.currentTarget.dataset.index;
+    this.data.refImages.splice(index, 1);
+    this.setData({ refImages: this.data.refImages });
   },
 
   onJimengLinkInput(e) {
