@@ -66,7 +66,7 @@ Page({
         totalAdopted: stats.adopted_count || 0
       });
     } catch (err) {
-      // ignore
+      wx.showToast({ title: '加载创作者数据失败', icon: 'none' });
     }
   },
 
@@ -82,7 +82,7 @@ Page({
         totalSubmitted
       });
     } catch (err) {
-      // ignore
+      wx.showToast({ title: '加载报名数据失败', icon: 'none' });
     }
   },
 
@@ -96,7 +96,7 @@ Page({
         reportWarning: reportCount >= 3  // 3次及以上显示预警
       });
     } catch (err) {
-      // ignore
+      wx.showToast({ title: '加载用户数据失败', icon: 'none' });
     }
   },
 

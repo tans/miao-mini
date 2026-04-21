@@ -106,7 +106,7 @@ Page({
         }
       });
     } catch (err) {
-      // 使用默认数据
+      wx.showToast({ title: '加载创作者数据失败', icon: 'none' });
     }
   },
 
@@ -122,7 +122,7 @@ Page({
         }
       });
     } catch (err) {
-      // 使用默认数据
+      wx.showToast({ title: '加载业务数据失败', icon: 'none' });
     }
   },
 
