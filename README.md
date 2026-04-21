@@ -9,21 +9,28 @@ miao-mini/
 ├── app.js              # 应用入口
 ├── app.json            # 全局配置
 ├── app.wxss            # 全局样式
-├── project.config.json # 开发者工具配置
+├── project.config.json  # 开发者工具配置
 ├── sitemap.json        # SEO配置
 ├── utils/
 │   ├── api.js          # API 服务层
 │   └── util.js         # 工具函数
 ├── assets/
-│   └── icons/          # TabBar 图标（需自行添加）
+│   └── icons/          # TabBar 图标
 └── pages/
-    ├── home/           # 首页 - 任务列表
-    ├── task-detail/    # 任务详情
-    ├── create-task/    # 创建任务
-    ├── my-tasks/       # 我的任务
-    ├── video-proposals/# 视频提案
-    ├── login/          # 登录
-    └── register/       # 注册
+    ├── home/           # 首页 - 任务大厅
+    ├── inspiration/    # 灵感页 - 过审作品画廊
+    ├── task-detail/    # 任务详情（商家视图）
+    ├── creator/        # 创作者相关页面
+    │   ├── claim/      # 认领任务
+    │   ├── submit/     # 提交作品
+    │   └── my-task/    # 我的任务（创作者）
+    ├── employer/       # 商家相关页面
+    │   └── create-task/ # 创建任务
+    ├── wallet/        # 我的钱包
+    ├── works/         # 我的作品
+    ├── transactions/  # 交易记录
+    ├── mine/          # 我的页面
+    └── settings/      # 设置页面
 ```
 
 ## 快速开始
@@ -76,11 +83,13 @@ globalData: {
 - 发布视频创作任务
 - 设置预算、人数、截止日期
 - 审核创作者提案
+- 管理任务和收益
 
 ### 创作者端
 - 浏览任务大厅
 - 接单任务
 - 提交视频作品
+- 查看钱包和交易记录
 
 ## API 文档
 
