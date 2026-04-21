@@ -42,7 +42,7 @@
         <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/64eb92ffc20a47659d3b94f1f6c981d1_mergeImage.png" />
+            <image class="flow-step-icon" src="./images/7910abfa6305424ab23076f704592295_mergeImage.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">商家审核</text>
@@ -52,7 +52,7 @@
         <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG26444e830900e7f016708436b07a5211.png" />
+            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNGae94ccf4fbc29229298c9051993d4ba9.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">任务结束</text>
