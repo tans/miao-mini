@@ -86,7 +86,7 @@ Page({
         cancelText: '取消',
         success: (res) => {
           if (res.confirm) {
-            wx.navigateTo({ url: '/pages/mine/index' });
+            wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });
           }
         }
       });
