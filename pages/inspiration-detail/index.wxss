@@ -79,12 +79,46 @@
 .spec-label {
   font-size: 28rpx;
   color: #666;
+  flex-shrink: 0;
 }
 
-.spec-value {
+.spec-input {
+  flex: 1;
+  text-align: right;
   font-size: 28rpx;
   color: #333;
   font-weight: 500;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #333;
+  padding: 24rpx 0 16rpx;
+}
+
+.reward-input {
+  width: 120rpx;
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #ef8802;
+  border: none;
+  background: transparent;
+}
+
+.reward-input-dark {
+  color: #333;
+}
+
+.time-input {
+  flex: 1;
+  text-align: right;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  border: none;
+  background: transparent;
 }
 
 /* 时间与奖金 */

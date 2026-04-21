@@ -4,6 +4,13 @@ Page({
   data: {
     inspiration: null,
     loading: true,
+    // 可编辑字段
+    editVideoAspect: '',
+    editVideoResolution: '',
+    editVideoDuration: '',
+    editReward: '',
+    editParticipationReward: '',
+    editDeadline: '',
   },
 
   onLoad(options) {
@@ -18,7 +25,16 @@ Page({
       if (this.data.loading) {
         console.log('loadInspirationDetail timeout, using mock data');
         const mockData = this.getMockData(id);
-        this.setData({ inspiration: mockData, loading: false });
+        this.setData({
+          inspiration: mockData,
+          editVideoAspect: mockData.videoAspect || '9:16 竖屏',
+          editVideoResolution: mockData.videoResolution || '1080P',
+          editVideoDuration: mockData.videoDuration || '30s',
+          editReward: String(mockData.reward || 100),
+          editParticipationReward: String(mockData.participationReward || 10),
+          editDeadline: mockData.deadline || '',
+          loading: false
+        });
         wx.hideLoading();
       }
     }, 5000);
@@ -35,15 +51,58 @@ Page({
         return;
       }
 
-      this.setData({ inspiration, loading: false });
+      this.setData({
+        inspiration,
+        editVideoAspect: inspiration.videoAspect || '9:16 竖屏',
+        editVideoResolution: inspiration.videoResolution || '1080P',
+        editVideoDuration: inspiration.videoDuration || '30s',
+        editReward: String(inspiration.reward || 100),
+        editParticipationReward: String(inspiration.participationReward || 10),
+        editDeadline: inspiration.deadline || '',
+        loading: false
+      });
     } catch (err) {
       clearTimeout(timeoutId);
       console.error('loadInspirationDetail error:', err);
       const mockData = this.getMockData(id);
-      this.setData({ inspiration: mockData, loading: false });
+      this.setData({
+        inspiration: mockData,
+        editVideoAspect: mockData.videoAspect || '9:16 竖屏',
+        editVideoResolution: mockData.videoResolution || '1080P',
+        editVideoDuration: mockData.videoDuration || '30s',
+        editReward: String(mockData.reward || 100),
+        editParticipationReward: String(mockData.participationReward || 10),
+        editDeadline: mockData.deadline || '',
+        loading: false
+      });
     } finally {
       wx.hideLoading();
     }
+  },
+
+  // 输入处理
+  onVideoAspectInput(e) {
+    this.setData({ editVideoAspect: e.detail.value });
+  },
+
+  onVideoResolutionInput(e) {
+    this.setData({ editVideoResolution: e.detail.value });
+  },
+
+  onVideoDurationInput(e) {
+    this.setData({ editVideoDuration: e.detail.value });
+  },
+
+  onRewardInput(e) {
+    this.setData({ editReward: e.detail.value });
+  },
+
+  onParticipationRewardInput(e) {
+    this.setData({ editParticipationReward: e.detail.value });
+  },
+
+  onDeadlineInput(e) {
+    this.setData({ editDeadline: e.detail.value });
   },
 
   playVideo() {
