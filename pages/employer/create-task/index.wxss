@@ -110,6 +110,51 @@
   margin-bottom: 8rpx;
 }
 
+/* Step 3 icon wrapper - check in circle */
+.flow-icon-wrapper-3 {
+  width: 60rpx;
+  height: 60rpx;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAABAhJREFUeAGlV19unDUQn5+/rSh96UaUB8TLFglE39ITEE4QbpD0BNucoOUEWU5AcgM4AeEEpBJCokLa5Yk+BO3yR4Jm83k6tsf2+NtVk7af5MzYHs+fn2fGWdANPp7/NKbbo13qeJ889sjxhBjjuAlekadz4c6p73/Exw+/u4lOXGvwzugxAVNiUkNg2UGwaCSRVIUlLKj3p0SjE3z0YPHGhvnFz4+pwxMRGUeNLMrhOCkvViyfKAeqDjg8xb0Hpzc2zBe/zCSIaYoqGEQynMQ14qEmleWNjRk+/PzoWsN88euJkAPa/qnaDLWiwB5FFXLU9gxOce+zR1aRa40+n4nnB1EJdFgeykCO5VHnnGQdDc7LPh3yn8+Pt0bMF78dyuzbJnnivUYxhdqcspBCEy3LYCBfzvARPvh0Vgzzci7l4X8QdrKhxCova2BVhO37eR4VWT0rwt/3sfNwlaE+FMmJwoV4R4FPo0KaoGSF3MBaKBfYo47BGtxdovG0RrxazEVwQsMPsCUTRVtes9iiBBVnpuaaUKpuKeh+MhKYv5IcmzRpltQbZbmMdDetIaLoSC1ouRX9BWEUHrHEd4TbHZHrvkjJbbIFzcFcIjlWlGhzdBhg0WSHopFkEB1l2hfDbjfdf0gYpAhb0Rx13o+3pyXD5H3es/Wb3Kg1rXOFwnV74H/+WMrsbttvm+PVc1tegXqdF7kMBm1+Vg/xX+B/X3BjpnbdzS5Uksh0qkY5uHiRnGSixiHkY6OY6hkY24fLPfPA7xBtV5Mvu6z3lUpJeOfaR8QYDXpHIi9FTeMSI9rMkBdm2HtR+rRZsViqjs0GlPaCPmkgzi200GEKXUeADGiaAJUe3M6z/PaGorrVIefOg8RZeStSdupDgFikCTLtVDEjtXO55oFQY5kH1wfEOIOOowzzMycL36vHVAzYVykbcyWiikxZczmSatB1XJ0xugLt3BmYl2N66eayOqbhx/oHWzK4lcLGmukC7T4vcHt83wE7klxuplBmaJOxGGlnm3ylruSCgbvAihJpjrLmzAllT2LU61sp6ly/QcgPnrmcyc1bTOlBIFPaNcZaEakn/E5+/SXe31mkywlRe/q63JvUUH3WULORTLa7EnVKmnyfNctT5E1udE+DURreDff/H4vBaYwgNQGN5p0+hdh/g1t3jixQrdTlfydi8CC9p9B3tbypehEm4YZy7f/YGeJTjN57dL2L/fqY+0vmKzP6Ac18v/ZCfZqv/caZ/vKY3uSTg4fcX81FmRy+0iG8v/LNPFA/mCd+KUan9DafPL0T0fCEfT+XIayMQNn7SONo+ECX8Qzz+HW6QTf8RNG+kD3hdoXKkJ82KfFWMhZyv2dCww+2Z9JRV9fpewUShXJKdQw7UQAAAABJRU5ErkJggg==) 100% no-repeat;
+  background-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8rpx;
+}
+
+.flow-icon-3 {
+  width: 36rpx;
+  height: 36rpx;
+  margin: 12rpx 0 0 12rpx;
+}
+
+/* Step 4 icon wrapper - circle with arrow */
+.flow-icon-wrapper-4 {
+  width: 60rpx;
+  height: 60rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8rpx;
+}
+
+.flow-icon-4 {
+  position: absolute;
+  width: 60rpx;
+  height: 60rpx;
+  background: linear-gradient(360deg, rgba(255,232,210,1) 0%, rgba(255,255,255,1) 100%);
+  border-radius: 100%;
+}
+
+.flow-arrow-in-icon {
+  position: absolute;
+  width: 68rpx;
+  height: 20rpx;
+  z-index: 1;
+  margin-top: 20rpx;
+}
+
 .flow-step-icon {
   width: 36rpx;
   height: 36rpx;
