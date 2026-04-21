@@ -202,10 +202,9 @@ Page({
     const firstMaterial = materials[0] || null;
     const coverType = item.cover_type || (firstMaterial && firstMaterial.file_type) || 'image';
     const previewVideoSrc =
-      item.cover_url ||
-      item.image ||
-      (firstMaterial && firstMaterial.file_path) ||
-      '';
+      coverType === 'video'
+        ? (item.video_url || '')
+        : (item.cover_url || item.image || (firstMaterial && firstMaterial.file_path) || '');
 
     let displayCover = '';
     if (coverType === 'video') {
