@@ -5,10 +5,42 @@
   padding-bottom: 120rpx;
 }
 
+/* 状态栏占位 */
+.status-bar {
+  height: 64rpx;
+  background: linear-gradient(66deg, #FF7C09 0%, #FFAF55 32%, #FFCD42 72%, #FFE177 100%);
+}
+
+/* 标题栏 */
+.title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 42rpx;
+  height: 64rpx;
+  background: linear-gradient(66deg, #FF7C09 0%, #FFAF55 32%, #FFCD42 72%, #FFE177 100%);
+}
+
+.title-text {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.title-right {
+  display: flex;
+  align-items: center;
+}
+
+.title-icon {
+  width: 174rpx;
+  height: 64rpx;
+}
+
 /* 顶部区域 */
 .header-section {
   background: linear-gradient(66deg, #FF7C09 0%, #FFAF55 32%, #FFCD42 72%, #FFE177 100%);
-  padding: 24rpx 32rpx 40rpx;
+  padding: 0 24rpx 40rpx;
 }
 
 /* 用户信息卡片 */
@@ -38,6 +70,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .user-name {
@@ -52,9 +85,15 @@
   color: #999;
 }
 
+.user-id-row {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
 .user-arrow {
-  width: 48rpx;
-  height: 48rpx;
+  width: 32rpx;
+  height: 32rpx;
 }
 
 .user-level-row {
@@ -129,8 +168,8 @@
 
 /* 主体内容 */
 .content-section {
-  padding: 24rpx 32rpx;
-  margin-top: -20rpx;
+  padding: 24rpx 24rpx;
+  background: #f5f5f5;
 }
 
 /* 专区卡片 */
@@ -161,8 +200,8 @@
 }
 
 .zone-icon {
-  width: 48rpx;
-  height: 48rpx;
+  width: 28rpx;
+  height: 28rpx;
   margin-right: 20rpx;
 }
 
@@ -232,4 +271,13 @@
 .zone-arrow {
   width: 32rpx;
   height: 32rpx;
+  margin-top: 6rpx;
+}
+
+/* 更新时间 */
+.update-time {
+  text-align: center;
+  font-size: 22rpx;
+  color: #999;
+  padding: 24rpx 0;
 }

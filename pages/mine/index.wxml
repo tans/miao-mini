@@ -1,5 +1,14 @@
 <!-- pages/mine/index.wxml -->
 <view class="mine-container">
+  <!-- 状态栏占位 -->
+  <view class="status-bar"></view>
+  <!-- 标题栏 -->
+  <view class="title-bar">
+    <text class="title-text">我的</text>
+    <view class="title-right">
+      <image class="title-icon" src="../../images/lanhu_wode/5dba2895a18a4763b17808988254b538_mergeImage.png" />
+    </view>
+  </view>
   <!-- 顶部区域 -->
   <view class="header-section">
     <!-- 用户信息卡片 -->
@@ -8,14 +17,16 @@
         <image class="user-avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
         <view class="user-detail">
           <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
-          <text class="user-id">ID：{{user.id || '--'}}</text>
+          <view class="user-level-row">
+            <text class="level-badge">Lv.{{creatorStats.level || 0}} {{creatorStats.level_name || '创作者'}}</text>
+            <text class="level-sep">·</text>
+            <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
+          </view>
         </view>
-        <image class="user-arrow" src="../../images/mine/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" />
-      </view>
-      <view class="user-level-row">
-        <text class="level-badge">Lv.{{creatorStats.level || 0}} {{creatorStats.level_name || '创作者'}}</text>
-        <text class="level-sep">·</text>
-        <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
+        <view class="user-id-row">
+          <text class="user-id">ID：{{user.id || '--'}}</text>
+          <image class="user-arrow" src="../../images/mine/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" />
+        </view>
       </view>
     </view>
 
@@ -73,15 +84,12 @@
           <image class="zone-icon" src="../../images/mine/FigmaDDSSlicePNG74e97556a861f49ce06345429138ef8f.png" />
           <view class="zone-item-content">
             <text class="zone-item-title">任务管理</text>
-            <text class="zone-item-sub">已购作品库</text>
-          </view>
-          <view class="zone-right">
-            <view class="zone-badge" wx:if="{{bizStats.pending_count > 0}}">
+            <view class="zone-item-badge" wx:if="{{bizStats.pending_count > 0}}">
               <text class="badge-num">{{bizStats.pending_count}}</text>
               <text class="badge-text">个视频待审核</text>
             </view>
-            <image class="zone-arrow" src="../../images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
           </view>
+          <image class="zone-arrow" src="../../images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
         </view>
         <view class="zone-item" bindtap="goPurchasedWorks">
           <image class="zone-icon" src="../../images/mine/FigmaDDSSlicePNG74e97556a861f49ce06345429138ef8f.png" />
@@ -113,4 +121,7 @@
       </view>
     </view>
   </view>
+
+  <!-- 更新时间（commit hook自动更新） -->
+  <view class="update-time">最后更新：2026-04-21</view>
 </view>
