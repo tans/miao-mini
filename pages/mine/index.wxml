@@ -129,5 +129,5 @@
   </view>
 
   <!-- 更新时间（commit hook自动更新） -->
-  <view class="update-time">最后更新：2026-04-21</view>
+  <view class="update-time">最后更新：{{displayText}}</view>
 </view>
