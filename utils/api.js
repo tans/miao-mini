@@ -273,14 +273,14 @@ const Api = {
   },
 
   reviewClaim(claimId, result, reason) {
-    // result: 1=通过, 2=拒绝, 3=举报
+    // result: 3=已采纳, 4=已取消, 5=已淘汰, 6=已举报
     const data = { result };
     if (reason) data.reason = reason;
     return this.request('PUT', `/business/claim/${claimId}/review`, data);
   },
 
   batchReviewClaim(claimIds, result, reason) {
-    // result: 1=通过, 2=拒绝, 3=举报
+    // result: 3=已采纳, 4=已取消, 5=已淘汰, 6=已举报
     const data = { claim_ids: claimIds, result };
     if (reason) data.reason = reason;
     return this.request('PUT', `/business/claims/batch-review`, data);
