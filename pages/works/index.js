@@ -152,8 +152,9 @@ Page({
     const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
 
-    // 视频作品直接播放，不跳转
+    // 视频作品提示播放中
     if (isVideo) {
+      wx.showToast({ title: '视频加载中...', icon: 'none' });
       return;
     }
 
