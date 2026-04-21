@@ -40,6 +40,8 @@ Page({
         realNameVerified: user.real_name_verified || false
       });
     } catch (err) {
+      console.error('加载钱包信息失败:', err);
+      wx.showToast({ title: '加载失败', icon: 'none' });
     }
   },
 

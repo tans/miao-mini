@@ -47,7 +47,7 @@ Page({
         this.loadUserInfo()
       ]);
     } catch (err) {
-      // ignore
+      console.error('加载创作者数据失败:', err);
     } finally {
       this.setData({ loading: false });
     }

@@ -248,6 +248,16 @@ const Api = {
     return this.request('POST', '/business/tasks', data);
   },
 
+  // Merchant Auth
+  getMerchantAuthStatus() {
+    return this.request('GET', '/business/merchant/auth/status');
+  },
+
+  submitMerchantAuth(data) {
+    // data: { company_name, contact_name, contact_phone, license_url }
+    return this.request('POST', '/business/merchant/auth', data);
+  },
+
   getMyBusinessTasks(params = {}) {
     const q = [];
     if (params.page) q.push(`page=${params.page}`);
