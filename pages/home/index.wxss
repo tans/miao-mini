@@ -8,7 +8,7 @@
 /* 顶部渐变区域 */
 .header-gradient {
   background: linear-gradient(66deg, #FF7C09 0%, #FFAF55 32%, #FFCD42 72%, #FFE177 100%);
-  padding: 24rpx 32rpx 32rpx;
+  padding: 16rpx 32rpx 32rpx;
 }
 
 .header-top {

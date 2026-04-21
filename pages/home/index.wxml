@@ -4,16 +4,6 @@
 <view class="home-container">
   <!-- 顶部渐变区域 -->
   <view class="header-gradient">
-    <view class="header-top">
-      <view class="header-title-wrap">
-        <text class="header-title">创意喵｜AI视频众包撮合平台</text>
-        <text class="header-subtitle">双向信用管控 100%资金托管</text>
-      </view>
-      <view class="header-actions">
-        <image src="../../images/home/FigmaDDSSlicePNG5f1862ce8b8fd98e7bbbf34fe80d8f63.png" class="msg-icon" />
-        <view class="msg-badge">8</view>
-      </view>
-    </view>
     <!-- Banner轮播 -->
     <scroll-view class="banner-scroll" scroll-x>
       <view class="banner-list">
