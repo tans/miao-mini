@@ -19,10 +19,34 @@ Page({
   },
 
   loadAuthStatus() {
-    // TODO: 调用 API 获取商家认证状态
-    // Api.getMerchantAuthStatus().then(res => {
-    //   this.setData({ status: res.data.status });
-    // });
+    Api.getMerchantAuthStatus().then(res => {
+      const data = res.data || {};
+      this.setData({
+        status: data.status || 'uncertified',
+        companyName: data.company_name || '',
+        contactName: data.contact_name || '',
+        contactPhone: data.contact_phone || '',
+        licenseUrl: data.license_url || ''
+      });
+      this._updateStatusUI(data.status);
+    }).catch(err => {
+      console.error('获取认证状态失败', err);
+    });
+  },
+
+  _updateStatusUI(status) {
+    const statusMap = {
+      certified: { icon: 'icon-certified', text: '已认证', title: '已通过商家认证', desc: '您已是认证商家，可发布任务' },
+      pending: { icon: 'icon-pending', text: '审核中', title: '认证申请已提交', desc: '预计1-3个工作日内完成审核' },
+      uncertified: { icon: 'icon-uncertified', text: '未认证', title: '您尚未完成商家认证', desc: '完成认证后可发布任务、享受更多权益' }
+    };
+    const info = statusMap[status] || statusMap.uncertified;
+    this.setData({
+      statusIcon: info.icon,
+      statusIconText: info.text,
+      statusTitle: info.title,
+      statusDesc: info.desc
+    });
   },
 
   onCompanyNameInput(e) {
@@ -76,18 +100,20 @@ Page({
     }
 
     wx.showLoading({ title: '提交中...' });
-    // TODO: 调用 API 提交认证
-    setTimeout(() => {
+    Api.submitMerchantAuth({
+      company_name: companyName,
+      contact_name: contactName,
+      contact_phone: contactPhone,
+      license_url: licenseUrl
+    }).then(res => {
       wx.hideLoading();
       wx.showToast({ title: '提交成功，等待审核', icon: 'success' });
-      this.setData({
-        status: 'pending',
-        statusIcon: 'icon-pending',
-        statusIconText: '审核中',
-        statusTitle: '认证申请已提交',
-        statusDesc: '预计1-3个工作日内完成审核'
-      });
-    }, 1500);
+      this.setData({ status: 'pending' });
+      this._updateStatusUI('pending');
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '提交失败', icon: 'none' });
+    });
   },
 
   goBack() {
