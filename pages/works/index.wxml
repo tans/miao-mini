@@ -50,7 +50,7 @@
   <mp-msg type="info" title="暂无灵感内容" wx:if="{{!loading && works.length === 0}}" />
 
   <view class="works-grid" wx:if="{{works.length > 0}}">
-    <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
+    <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}" data-is-video="{{item.isVideo}}">
       <view class="work-cover-wrap">
         <image wx:if="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
         <video

@@ -187,9 +187,15 @@ Page({
   goWorkDetail(e) {
     if (this.navigating) return;
     const id = e.currentTarget.dataset.id;
+    const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
+
+    // 视频作品直接播放，不跳转
+    if (isVideo) {
+      return;
+    }
+
     this.navigating = true;
-    // 作品已无需单独页面承载，改为提示
     wx.showToast({ title: '作品预览开发中', icon: 'none' });
     setTimeout(() => {
       this.navigating = false;

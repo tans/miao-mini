@@ -1,5 +1,5 @@
 // pages/employer/task-detail/index.js
-const Api = require('../../utils/api.js');
+const Api = require('../../../utils/api.js');
 const app = getApp();
 
 Page({
