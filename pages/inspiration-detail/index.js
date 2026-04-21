@@ -47,7 +47,10 @@ Page({
   },
 
   playVideo() {
-    // 视频播放
+    const videoCtx = wx.createVideoContext('inspirationVideo');
+    if (videoCtx) {
+      videoCtx.play();
+    }
   },
 
   goBack() {
