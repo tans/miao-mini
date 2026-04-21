@@ -79,6 +79,7 @@
     "mp-badge": "weui-miniprogram/miniprogram_dist/badge/badge",
     "mp-searchbar": "weui-miniprogram/miniprogram_dist/searchbar/searchbar",
     "mp-actionsheet": "weui-miniprogram/miniprogram_dist/actionsheet/actionsheet",
-    "mp-half-screen-dialog": "weui-miniprogram/miniprogram_dist/half-screen-dialog/half-screen-dialog"
+    "mp-half-screen-dialog": "weui-miniprogram/miniprogram_dist/half-screen-dialog/half-screen-dialog",
+    "custom-nav": "/components/custom-nav/component"
   }
 }
