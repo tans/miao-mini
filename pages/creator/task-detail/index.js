@@ -40,6 +40,7 @@ Page({
   },
 
   initMockData() {
+    if (process.env.NODE_ENV !== 'development') return;
     // 模拟数据用于开发和测试
     const mockTask = {
       id: 'CC-20260418-000126',
