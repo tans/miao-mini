@@ -1,0 +1,51 @@
+<view class="page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">灵感详情</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 视频播放区域 -->
+  <view class="video-section">
+    <view class="video-container" wx:if="{{inspiration.video_url || inspiration.previewVideoSrc}}" bindtap="playVideo">
+      <video
+        id="inspirationVideo"
+        class="video-player"
+        src="{{inspiration.video_url || inspiration.previewVideoSrc}}"
+        poster="{{inspiration.displayCover || inspiration.cover}}"
+        controls
+        show-center-play-btn
+        enable-progress-gesture
+      ></video>
+    </view>
+    <view class="video-placeholder" wx:else>
+      <image class="cover-image" src="{{inspiration.cover}}" mode="aspectFill"/>
+    </view>
+  </view>
+
+  <!-- 灵感信息 -->
+  <view class="info-section">
+    <view class="info-card">
+      <text class="inspiration-title">{{inspiration.title}}</text>
+      <view class="author-row">
+        <image class="author-avatar" src="{{inspiration.authorAvatar}}" mode="aspectFill"/>
+        <text class="author-name">{{inspiration.authorName}}</text>
+      </view>
+      <view class="stats-row">
+        <view class="stat-item">
+          <text class="stat-icon">♡</text>
+          <text class="stat-value">{{inspiration.likes}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <mp-loading type="circle"></mp-loading>
+    <text>加载中...</text>
+  </view>
+</view>

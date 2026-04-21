@@ -71,17 +71,18 @@ Page({
     const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
 
-    // 非视频卡片显示"作品预览开发中"
-    if (!isVideo) {
-      this.navigating = true;
+    this.navigating = true;
+
+    // 视频卡片跳转至播放页面
+    if (isVideo) {
+      wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
+    } else {
       wx.showToast({ title: '作品预览开发中', icon: 'none' });
-      setTimeout(() => {
-        this.navigating = false;
-      }, 400);
-      return;
     }
 
-    // 视频卡片不跳转，让视频在当前页播放
+    setTimeout(() => {
+      this.navigating = false;
+    }, 400);
   },
 
   goHome() {
