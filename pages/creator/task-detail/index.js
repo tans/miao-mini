@@ -28,10 +28,10 @@ Page({
       this.setData({
         task,
         materials: task.materials || [],
-        hasSignedUp: task.hasSignedUp || false,
-        canSubmit: task.canSubmit || false,
+        hasSignedUp: task.has_signed_up || false,
+        canSubmit: task.can_submit || false,
       });
-      this.updateCountdown(task.endAt);
+      this.updateCountdown(task.end_at);
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
