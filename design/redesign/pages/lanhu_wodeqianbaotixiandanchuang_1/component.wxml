@@ -1,0 +1,17 @@
+<view class="page">
+  <view class="group_1">
+    <view class="box_1">
+      <view class="box_2">
+        <text lines="1" class="text_1">提现成功</text>
+        <image src="../../images/lanhu_wodeqianbaotixiandanchuang_1/FigmaDDSSlicePNGf77000bfdf71ddcd1db59a2a3f9f05a4.png" class="image_1"></image>
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_2">提现后，平台会在48小时内进行审核，自动发放至您的</text>
+          <text lines="1" class="text_3">微信钱包</text>
+          <text lines="1" class="text_4">。</text>
+        </view>
+        <view class="box_3"></view>
+        <text lines="1" class="text_5">我知道了</text>
+      </view>
+    </view>
+  </view>
+</view>

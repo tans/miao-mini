@@ -1,0 +1,16 @@
+<view class="page">
+  <view class="section_1">
+    <view class="section_2">
+      <view class="box_1">
+        <text lines="1" class="text_1">充值成功</text>
+        <image src="../../images/lanhu_wodeqianbaochongzhidanchuang_1/FigmaDDSSlicePNGf77000bfdf71ddcd1db59a2a3f9f05a4.png" class="image_1"></image>
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_2">充值已到账，您的当前余额是：</text>
+          <text lines="1" class="text_3">1920.00元</text>
+        </view>
+        <view class="group_1"></view>
+        <text lines="1" class="text_4">我知道了</text>
+      </view>
+    </view>
+  </view>
+</view>

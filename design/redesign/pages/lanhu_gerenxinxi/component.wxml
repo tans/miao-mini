@@ -1,0 +1,44 @@
+<view class="page">
+  <view class="group_10">
+    <view class="group_11">
+      <view class="box_5">
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">9:41</text>
+        </view>
+        <view class="section_1"></view>
+        <view class="section_2"></view>
+        <image src="../../images/lanhu_gerenxinxi/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+      </view>
+      <view class="box_6">
+        <image src="../../images/lanhu_gerenxinxi/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
+        <text lines="1" class="text_2">个人信息</text>
+        <view class="image-wrapper_1">
+          <image src="../../images/lanhu_gerenxinxi/3afee77f15284e13be8014df92801689_mergeImage.png" class="image_2"></image>
+          <image src="../../images/lanhu_gerenxinxi/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
+        </view>
+      </view>
+    </view>
+    <view class="group_3">
+      <view class="box_1">
+        <image src="../../images/lanhu_gerenxinxi/FigmaDDSSlicePNGdc0cbdd865ab2872b1474cd68b8d9853.png" class="image_3"></image>
+        <view class="text-wrapper_2">
+          <text lines="1" class="text_3">更换头像</text>
+        </view>
+      </view>
+      <view class="box_2">
+        <view class="text-wrapper_3">
+          <text lines="1" class="text_4">昵称</text>
+          <text lines="1" class="text_5">小满创作间</text>
+        </view>
+        <view class="text-wrapper_4">
+          <text lines="1" class="text_6">联系电话</text>
+          <text lines="1" decode="true" class="text_7">138&nbsp;0030&nbsp;8891</text>
+        </view>
+      </view>
+      <view class="text-wrapper_6">
+        <text lines="1" class="text_9">保存修改</text>
+      </view>
+      <view class="box_3"></view>
+    </view>
+  </view>
+</view>

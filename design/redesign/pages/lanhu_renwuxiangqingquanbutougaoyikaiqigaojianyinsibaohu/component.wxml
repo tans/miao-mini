@@ -1,0 +1,272 @@
+<view class="page">
+  <view class="box_1">
+    <view class="box_2">
+      <view class="box_3">
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">9:41</text>
+        </view>
+        <view class="box_4"></view>
+        <view class="box_5"></view>
+        <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+      </view>
+      <view class="box_6">
+        <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
+        <text lines="1" class="text_2">任务详情</text>
+        <view class="image-wrapper_1">
+          <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/0f2b3287b00648db988c6ddec9a0fbe0_mergeImage.png" class="image_2"></image>
+          <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="box_7">
+    <view class="group_1">
+      <view class="box_8">
+        <view class="image-text_1">
+          <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG99a989f0e7fd7f59717fe65c32e0d975.png" class="thumbnail_3"></image>
+          <text lines="1" class="text-group_1">新手不踩坑</text>
+        </view>
+        <text lines="1" class="text_3">投稿看流程</text>
+      </view>
+      <view class="box_9">
+        <view class="image-text_2">
+          <view class="image-wrapper_2">
+            <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG552002459c165b264bfde3d79e34f6b4.png" class="thumbnail_4"></image>
+          </view>
+          <text lines="1" class="text-group_2">报名后按时交稿</text>
+        </view>
+        <view class="image-text_3">
+          <view class="box_10">
+            <view class="group_2"></view>
+          </view>
+          <text lines="1" class="text-group_3">商家审核付款</text>
+        </view>
+        <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNGb9d2e3e868703ea52fe78ed2bb56199c.png" class="image_3"></image>
+        <text lines="1" class="text_4">钱包提现奖励</text>
+        <view class="image-wrapper_3">
+          <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG9b7de89fadb828c49bceb033c599d936.png" class="label_1"></image>
+        </view>
+        <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNGca835f86bd2e42e589620183968dab46.png" class="image_4"></image>
+      </view>
+    </view>
+    <view class="group_3">
+      <view class="text-wrapper_2">
+        <text lines="1" class="text_5">任务详情</text>
+        <text lines="1" class="text_6">全部投稿</text>
+      </view>
+      <view class="group_4">
+        <view class="group_5"></view>
+      </view>
+    </view>
+  </view>
+  <view class="box_11">
+    <view class="box_12">
+      <view class="group_6">
+        <view class="box_13">
+          <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG99a989f0e7fd7f59717fe65c32e0d975.png" class="thumbnail_5"></image>
+          <text lines="1" class="text_7">创意喵</text>
+          <text lines="1" class="text_8">隐私保护</text>
+        </view>
+        <text lines="1" class="text_9">商家已开启了稿件隐私保护，您无权查看。</text>
+      </view>
+      <view class="group_7">
+        <view class="section_1">
+          <view class="box_14">
+            <view class="image-wrapper_4">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG3e756be50a3f035d65e5b0415c4eab5d.png" class="label_2"></image>
+            </view>
+          </view>
+          <view class="box_15">
+            <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG47699c6672565cbb2cdb01a9b87cf14b.png" class="label_3"></image>
+            <text lines="1" class="text_10">镜头研究社</text>
+            <text lines="1" class="text_11">Lv.4</text>
+          </view>
+          <text lines="1" decode="true" class="text_12">2026-04-18&nbsp;10:26&nbsp;投稿</text>
+        </view>
+        <view class="section_2">
+          <view class="box_16">
+            <view class="image-wrapper_5">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG3e756be50a3f035d65e5b0415c4eab5d.png" class="label_4"></image>
+            </view>
+          </view>
+          <view class="box_17">
+            <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG47699c6672565cbb2cdb01a9b87cf14b.png" class="label_5"></image>
+            <text lines="1" class="text_13">镜头研究社</text>
+            <text lines="1" class="text_14">Lv.4</text>
+          </view>
+          <text lines="1" decode="true" class="text_15">2026-04-18&nbsp;10:26&nbsp;投稿</text>
+        </view>
+      </view>
+      <view class="group_8">
+        <view class="group_9">
+          <view class="block_1">
+            <view class="image-wrapper_6">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG3e756be50a3f035d65e5b0415c4eab5d.png" class="label_6"></image>
+            </view>
+          </view>
+          <view class="block_2">
+            <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG47699c6672565cbb2cdb01a9b87cf14b.png" class="label_7"></image>
+            <text lines="1" class="text_16">镜头研究社</text>
+            <text lines="1" class="text_17">Lv.4</text>
+          </view>
+          <text lines="1" decode="true" class="text_18">2026-04-18&nbsp;10:26&nbsp;投稿</text>
+        </view>
+        <view class="group_10">
+          <view class="box_18">
+            <view class="image-wrapper_7">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG3e756be50a3f035d65e5b0415c4eab5d.png" class="label_8"></image>
+            </view>
+          </view>
+          <view class="box_19">
+            <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG47699c6672565cbb2cdb01a9b87cf14b.png" class="label_9"></image>
+            <text lines="1" class="text_19">镜头研究社</text>
+            <text lines="1" class="text_20">Lv.4</text>
+          </view>
+          <text lines="1" decode="true" class="text_21">2026-04-18&nbsp;10:26&nbsp;投稿</text>
+        </view>
+      </view>
+      <view class="image-text_4">
+        <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG456a0231cb0bd2d590c2c1ed948f0ac1.png" class="label_10"></image>
+        <text lines="1" class="text-group_4">热门推荐</text>
+      </view>
+      <view class="list_1">
+        <view class="list-items_1-0">
+          <view class="text-wrapper_3-0">
+            <text lines="1" class="text_22-0">企业宣传片剪辑</text>
+            <text lines="1" class="text_23-0">100</text>
+            <text lines="1" class="text_24-0">元/</text>
+            <text lines="1" class="text_25-0">条</text>
+          </view>
+          <view class="block_3-0">
+            <view class="section_3-0">
+              <view class="image-text_5-0">
+                <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG58cc34ab5d3eaf106c83cb9a4a0ffb1b.png" class="thumbnail_6-0"></image>
+                <text lines="1" class="text-group_5-0">参与奖励:10元</text>
+              </view>
+            </view>
+            <view class="section_4-0">
+              <view class="image-text_6-0">
+                <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNGcae4433a55ff92f1ae3b0e756f4191b6.png" class="thumbnail_7-0"></image>
+                <text lines="1" class="text-group_6-0">品牌名企</text>
+              </view>
+            </view>
+            <view class="section_5-0">
+              <view class="image-text_7-0">
+                <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG3ccd7683dca9220cf92fd2f444f08690.png" class="thumbnail_8-0"></image>
+                <text lines="1" class="text-group_7-0">资金已托管</text>
+              </view>
+            </view>
+          </view>
+          <view class="block_4-0">
+            <view class="text-wrapper_4-0">
+              <text lines="1" class="text_26-0">房产家居</text>
+            </view>
+            <view class="text-wrapper_5-0">
+              <text lines="1" class="text_27-0">房产家居</text>
+            </view>
+            <view class="text-wrapper_6-0">
+              <text lines="1" class="text_28-0">房产家居</text>
+            </view>
+            <view class="text-wrapper_7-0">
+              <text lines="1" class="text_29-0">房产家居</text>
+            </view>
+            <view class="text-wrapper_8-0">
+              <text lines="1" class="text_30-0">30s视频</text>
+            </view>
+          </view>
+          <view class="block_5-0">
+            <text lines="1" class="text_31-0">报名进度</text>
+            <view class="text-wrapper_9-0">
+              <text lines="1" class="text_32-0">已报名</text>
+              <text lines="1" class="text_33-0">3</text>
+              <text lines="1" class="text_34-0">/10人</text>
+            </view>
+          </view>
+          <view class="block_6-0">
+            <view class="image-wrapper_8-0">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNGdc2570b8d5182bce2b936e063d290613.png" class="image_5-0"></image>
+            </view>
+          </view>
+          <view class="block_7-0">
+            <view class="image-text_8-0">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG5e5354f18caa98b588ce4f1dd488f0b2.png" class="thumbnail_9-0"></image>
+              <text lines="1" class="text-group_8-0">2天16小时后截止投稿</text>
+            </view>
+            <view class="text-wrapper_10-0">
+              <text lines="1" class="text_35-0">立即报名</text>
+            </view>
+          </view>
+        </view>
+        <view class="list-items_1-1">
+          <view class="text-wrapper_3-1">
+            <text lines="1" class="text_22-1">企业宣传片拍摄剪辑</text>
+            <text lines="1" class="text_23-1">100</text>
+            <text lines="1" class="text_24-1">元/</text>
+            <text lines="1" class="text_25-1">条</text>
+          </view>
+          <view class="block_3-1">
+            <view class="section_3-1">
+              <view class="image-text_5-1">
+                <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG58cc34ab5d3eaf106c83cb9a4a0ffb1b.png" class="thumbnail_6-1"></image>
+                <text lines="1" class="text-group_5-1">参与奖励:10元</text>
+              </view>
+            </view>
+            <view class="section_4-1">
+              <view class="image-text_6-1">
+                <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG3ccd7683dca9220cf92fd2f444f08690.png" class="thumbnail_7-1"></image>
+                <text lines="1" class="text-group_6-1">资金已托管</text>
+              </view>
+            </view>
+          </view>
+          <view class="block_4-1">
+            <view class="text-wrapper_4-1">
+              <text lines="1" class="text_26-1">房产家居</text>
+            </view>
+            <view class="text-wrapper_5-1">
+              <text lines="1" class="text_27-1">房产家居</text>
+            </view>
+            <view class="text-wrapper_6-1">
+              <text lines="1" class="text_28-1">房产家居</text>
+            </view>
+            <view class="text-wrapper_7-1">
+              <text lines="1" class="text_29-1">房产家居</text>
+            </view>
+            <view class="text-wrapper_8-1">
+              <text lines="1" class="text_30-1">30s视频</text>
+            </view>
+          </view>
+          <view class="block_5-1">
+            <text lines="1" class="text_31-1">报名进度</text>
+            <view class="text-wrapper_9-1">
+              <text lines="1" class="text_32-1">已报名</text>
+              <text lines="1" class="text_33-1">3</text>
+              <text lines="1" class="text_34-1">/10人</text>
+            </view>
+          </view>
+          <view class="block_6-1">
+            <view class="image-wrapper_8-1">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNGdc2570b8d5182bce2b936e063d290613.png" class="image_5-1"></image>
+            </view>
+          </view>
+          <view class="block_7-1">
+            <view class="image-text_8-1">
+              <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG5e5354f18caa98b588ce4f1dd488f0b2.png" class="thumbnail_9-1"></image>
+              <text lines="1" class="text-group_8-1">2天16小时后截止投稿</text>
+            </view>
+            <view class="text-wrapper_10-1">
+              <text lines="1" class="text_35-1">立即报名</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG25ec5aa553083ee05fd59b9f23193ff2.png" class="image_6"></image>
+    <image src="../../images/lanhu_renwuxiangqingquanbutougaoyikaiqigaojianyinsibaohu/FigmaDDSSlicePNG25ec5aa553083ee05fd59b9f23193ff2.png" class="image_7"></image>
+  </view>
+  <view class="box_20">
+    <view class="text-wrapper_11">
+      <text lines="1" decode="true" class="text_36">截稿倒计时：23&nbsp;小时&nbsp;28&nbsp;分，立即报名</text>
+    </view>
+    <view class="block_8"></view>
+  </view>
+</view>

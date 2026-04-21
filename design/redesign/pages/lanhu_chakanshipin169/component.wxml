@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="group_1">
+    <view class="group_2">
+      <view class="section_1">
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">9:41</text>
+        </view>
+        <view class="section_2"></view>
+        <view class="section_3"></view>
+        <image src="../../images/lanhu_chakanshipin169/FigmaDDSSlicePNG1b0477a1e31fe02d38b0ebeef0893a88.png" class="image_1"></image>
+      </view>
+      <view class="section_4">
+        <image src="../../images/lanhu_chakanshipin169/FigmaDDSSlicePNG0f85968dc5ac4f225806e16b606240f7.png" class="thumbnail_1"></image>
+        <text lines="1" class="text_2">视频稿件</text>
+        <view class="block_1">
+          <view class="box_1"></view>
+          <view class="box_2"></view>
+          <image src="../../images/lanhu_chakanshipin169/FigmaDDSSlicePNG930d28e3ff871237bde8d381865a3916.png" class="thumbnail_2"></image>
+        </view>
+      </view>
+    </view>
+    <image src="../../images/lanhu_chakanshipin169/FigmaDDSSlicePNG73b27ff57e5cf9736ee9e76723ed8d09.png" class="image_2"></image>
+    <view class="group_3">
+      <view class="image-text_1">
+        <image src="../../images/lanhu_chakanshipin169/FigmaDDSSlicePNG9ca9475f866f249bc32a0a0ea0874a30.png" class="label_1"></image>
+        <view class="text-group_1">
+          <text lines="1" class="text_3">镜头研究社</text>
+          <text lines="1" decode="true" class="text_4">信用分&nbsp;94&nbsp;·&nbsp;2026.04.01&nbsp;12:18&nbsp;提交</text>
+        </view>
+      </view>
+      <view class="box_3"></view>
+      <image src="../../images/lanhu_chakanshipin169/FigmaDDSSlicePNGa7f32f110d59fea4df835e2daba9bcb0.png" class="image_3"></image>
+    </view>
+  </view>
+</view>

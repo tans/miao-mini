@@ -1,0 +1,59 @@
+<view class="page">
+  <view class="box_6">
+    <view class="group_4">
+      <view class="text-wrapper_1">
+        <text lines="1" class="text_1">9:41</text>
+      </view>
+      <view class="box_2"></view>
+      <view class="box_3"></view>
+      <image src="../../images/lanhu_shangjiarenzheng/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+    </view>
+    <view class="group_5">
+      <image src="../../images/lanhu_shangjiarenzheng/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
+      <text lines="1" class="text_2">商家认证</text>
+      <view class="image-wrapper_1">
+        <image src="../../images/lanhu_shangjiarenzheng/6bf3054a947642a387b85a71839cc6a4_mergeImage.png" class="image_2"></image>
+        <image src="../../images/lanhu_shangjiarenzheng/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
+      </view>
+    </view>
+    <view class="box_5">
+      <view class="text-group_5">
+        <text lines="1" class="text_3">商家认证</text>
+        <text lines="1" class="text_4">认证后可提升任务发布额度，享受更多平台权益与更高赏金托管上限。</text>
+      </view>
+    </view>
+  </view>
+  <view class="section_2">
+    <view class="block_1">
+      <view class="image-text_3">
+        <image src="../../images/lanhu_shangjiarenzheng/FigmaDDSSlicePNG8f7cc833b3074910190ae411a7ab67b4.png" class="label_1"></image>
+        <view class="text-group_6">
+          <text lines="1" class="text_5">上传营业执照</text>
+          <text lines="1" class="text_6">请上传清晰的企业营业执照或个体工商户执照照片</text>
+        </view>
+      </view>
+    </view>
+    <view class="text-wrapper_2">
+      <text lines="1" class="text_7">企业名称</text>
+      <text lines="1" class="text_8">上海美寓家居科技有限公司</text>
+    </view>
+    <view class="text-wrapper_3">
+      <text lines="1" class="text_9">统一社会信用代码</text>
+      <text lines="1" class="text_10">91310000X12345XXX</text>
+    </view>
+    <view class="text-wrapper_4">
+      <text lines="1" class="text_11">联系人</text>
+      <text lines="1" class="text_12">周晓晨</text>
+    </view>
+    <view class="text-wrapper_5">
+      <text lines="1" class="text_13">联系电话</text>
+      <text lines="1" decode="true" class="text_14">138&nbsp;0030&nbsp;8891</text>
+    </view>
+  </view>
+  <view class="box_7">
+    <view class="text-wrapper_6">
+      <text lines="1" class="text_15">提交</text>
+    </view>
+    <view class="group_1"></view>
+  </view>
+</view>

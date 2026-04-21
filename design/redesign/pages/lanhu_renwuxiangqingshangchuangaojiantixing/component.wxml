@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="group_1">
+    <view class="box_1">
+      <view class="group_2">
+        <view class="image-wrapper_1">
+          <image src="../../images/lanhu_renwuxiangqingshangchuangaojiantixing/FigmaDDSSlicePNG421a7313fad998ac6461f344be47f5aa.png" class="thumbnail_1"></image>
+        </view>
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">80%</text>
+        </view>
+        <text lines="1" class="text_2">视频正在上传...</text>
+        <view class="text-wrapper_2">
+          <text lines="1" class="text_3">商家会在</text>
+          <text lines="1" class="text_4">收到投稿后48小时内审核稿件，</text>
+          <text lines="1" class="text_5">超时未审核将自动为您发放参与奖，后续商家如果采纳了您的视频也会为自动补发采纳奖至您的钱包。</text>
+        </view>
+      </view>
+      <view class="group_3">
+        <view class="group_4"></view>
+      </view>
+    </view>
+  </view>
+</view>

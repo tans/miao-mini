@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="group_1">
+    <view class="section_1">
+      <view class="group_2">
+        <view class="section_2">
+          <text lines="1" class="text_1">充值</text>
+          <image src="../../images/lanhu_wodeqianbaochongzhidanchuang/FigmaDDSSlicePNG421a7313fad998ac6461f344be47f5aa.png" class="thumbnail_1"></image>
+        </view>
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_2">请输入金额</text>
+        </view>
+        <view class="text-wrapper_2">
+          <text lines="1" class="text_3">充值手续费为充值金额的</text>
+          <text lines="1" class="text_4">10%</text>
+          <text lines="1" class="text_5">，实际到账金额将自动扣除手续费。</text>
+        </view>
+        <view class="text-wrapper_3">
+          <text lines="1" class="text_6">确认充值</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

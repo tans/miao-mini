@@ -1,0 +1,134 @@
+<view class="page">
+  <view class="box_4">
+    <view class="group_17">
+      <view class="section_12">
+        <view class="text-wrapper_1">
+          <text lines="1" class="text_1">9:41</text>
+        </view>
+        <view class="section_2"></view>
+        <view class="section_3"></view>
+        <image src="../../images/lanhu_shensuyujiufen/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
+      </view>
+      <view class="section_13">
+        <image src="../../images/lanhu_shensuyujiufen/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
+        <text lines="1" class="text_2">申诉与纠纷</text>
+        <view class="image-wrapper_1">
+          <image src="../../images/lanhu_shensuyujiufen/5ba5cdb960184df9ba77031339fa8e00_mergeImage.png" class="image_2"></image>
+          <image src="../../images/lanhu_shensuyujiufen/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
+        </view>
+      </view>
+    </view>
+    <view class="block_2">
+      <view class="section_14">
+        <view class="text-wrapper_2">
+          <text lines="1" class="text_3">全部</text>
+        </view>
+        <view class="text-wrapper_3">
+          <text lines="1" class="text_4">我发起的</text>
+        </view>
+        <view class="text-wrapper_4">
+          <text lines="1" class="text_5">关于我的</text>
+        </view>
+      </view>
+      <view class="block_6">
+        <view class="group_3">
+          <view class="box_5">
+            <view class="image-wrapper_2">
+              <image src="../../images/lanhu_shensuyujiufen/FigmaDDSSlicePNG5ce522446583846855e38ed9f91309de.png" class="thumbnail_3"></image>
+            </view>
+            <view class="text-group_5">
+              <text lines="1" class="text_6">您举报的《酒店夜景》任务商家提起申诉</text>
+              <text lines="1" class="text_7">关联任务：酒店民宿氛围短片</text>
+            </view>
+          </view>
+          <view class="box_6">
+            <view class="text-wrapper_5">
+              <text lines="1" class="text_8">举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+            </view>
+          </view>
+          <view class="box_7">
+            <view class="text-wrapper_6">
+              <text lines="1" class="text_9">商家申诉：任务并未涉及违规词汇。</text>
+            </view>
+          </view>
+          <view class="box_8">
+            <text lines="1" decode="true" class="text_10">裁决时间&nbsp;2026-04-13&nbsp;10:12</text>
+            <view class="text-wrapper_7">
+              <text lines="1" class="text_11">平台处理中</text>
+            </view>
+          </view>
+        </view>
+        <view class="group_8">
+          <view class="box_9">
+            <view class="image-wrapper_3">
+              <image src="../../images/lanhu_shensuyujiufen/FigmaDDSSlicePNG5ce522446583846855e38ed9f91309de.png" class="thumbnail_4"></image>
+            </view>
+            <view class="text-group_6">
+              <text lines="1" class="text_12">您的《酒店夜景横移》作品被举报，如有异议可提起申诉</text>
+              <text lines="1" class="text_13">关联任务：酒店民宿氛围短片</text>
+            </view>
+          </view>
+          <view class="box_10">
+            <view class="text-wrapper_8">
+              <text lines="1" class="text_14">举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+            </view>
+          </view>
+          <view class="box_11">
+            <text lines="1" decode="true" class="text_15">举报时间&nbsp;2026-04-13&nbsp;10:12</text>
+            <view class="text-wrapper_9">
+              <text lines="1" class="text_16">我要申诉</text>
+            </view>
+          </view>
+        </view>
+        <view class="list_3">
+          <view class="list-items_1-0">
+            <view class="box_12-0">
+              <view class="image-wrapper_4-0">
+                <image src="../../images/lanhu_shensuyujiufen/FigmaDDSSlicePNGc96e6757f180ce9f2666cd746f2f2007.png" class="thumbnail_5-0"></image>
+              </view>
+              <view class="text-wrapper_16-0">
+                <text lines="1" class="text_17-0">您的《春日出游》作品申诉成功。</text>
+                <text lines="1" class="text_18-0">关联任务：酒店民宿氛围短片</text>
+              </view>
+            </view>
+            <view class="text-wrapper_17-0">
+              <text lines="1" class="text_19-0">平台支持您的申诉，已为您补发参与奖励。</text>
+            </view>
+            <view class="box_13-0">
+              <text lines="1" decode="true" class="text_20-0">裁决时间&nbsp;2026-04-13&nbsp;10:12</text>
+              <view class="text-wrapper_12-0">
+                <text lines="1" class="text_21-0">已裁决</text>
+              </view>
+            </view>
+          </view>
+          <view class="list-items_1-1">
+            <view class="box_12-1">
+              <view class="image-wrapper_4-1">
+                <image src="../../images/lanhu_shensuyujiufen/FigmaDDSSlicePNGc96e6757f180ce9f2666cd746f2f2007.png" class="thumbnail_5-1"></image>
+              </view>
+              <view class="text-wrapper_16-1">
+                <text lines="1" class="text_17-1">举报商家发布涉黄视频任务</text>
+                <text lines="1" class="text_18-1">关联任务：酒店民宿氛围短片</text>
+              </view>
+            </view>
+            <view class="text-wrapper_17-1">
+              <text lines="1" class="text_19-1">平台支持您的举报，涉事任务已下架处理。</text>
+            </view>
+            <view class="box_13-1">
+              <text lines="1" decode="true" class="text_20-1">裁决时间&nbsp;2026-04-13&nbsp;10:12</text>
+              <view class="text-wrapper_12-1">
+                <text lines="1" class="text_21-1">已裁决</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="group_12">
+        <view class="text-wrapper_13">
+          <text lines="1" class="text_22">联系客服</text>
+        </view>
+        <view class="box_1"></view>
+      </view>
+    </view>
+  </view>
+</view>
