@@ -7,7 +7,7 @@ Page({
 
   goHelpDetail(e) {
     const type = e.currentTarget.dataset.type;
-    wx.showToast({ title: '帮助内容开发中', icon: 'none' });
+    wx.navigateTo({ url: `/pages/mine/help-detail/index?type=${type}` });
   },
 
   contactService() {

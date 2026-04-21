@@ -1,0 +1,27 @@
+<view class="help-detail-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">{{title}}</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 帮助内容 -->
+  <scroll-view scroll-y="true" class="content-scroll">
+    <view class="help-header">
+      <image class="header-icon" src="{{content.icon}}" />
+      <text class="header-title">{{content.title}}</text>
+    </view>
+
+    <view class="help-sections">
+      <view class="section-item" wx:for="{{content.sections}}" wx:key="title">
+        <view class="section-title">{{item.title}}</view>
+        <view class="section-content">
+          <text class="content-text">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
