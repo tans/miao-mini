@@ -76,6 +76,14 @@ Page({
     this.setData({ description: e.detail.value });
   },
 
+  isIndustrySelected(id) {
+    return this.data.selectedIndustries.indexOf(id) > -1;
+  },
+
+  isStyleSelected(style) {
+    return this.data.selectedStyles.indexOf(style) > -1;
+  },
+
   toggleIndustry(e) {
     const id = e.currentTarget.dataset.id;
     const { selectedIndustries } = this.data;

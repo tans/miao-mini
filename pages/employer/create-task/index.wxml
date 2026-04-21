@@ -1,3 +1,11 @@
+<wxs module="utils">
+module.exports = {
+  includes: function(arr, item) {
+    return arr.indexOf(item) > -1;
+  }
+}
+</wxs>
+
 <view class="create-container">
   <!-- 顶部导航栏 -->
   <view class="nav-bar">
@@ -80,7 +88,7 @@
         </view>
         <scroll-view scroll-x="true" class="tag-scroll">
           <view class="tag-group">
-            <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{selectedIndustries.includes(item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
+            <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
           </view>
         </scroll-view>
       </view>
@@ -93,7 +101,7 @@
         </view>
         <scroll-view scroll-x="true" class="tag-scroll">
           <view class="tag-group">
-            <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{selectedStyles.includes(item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
+            <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
           </view>
         </scroll-view>
       </view>
