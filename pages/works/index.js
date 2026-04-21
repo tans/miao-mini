@@ -126,7 +126,7 @@ Page({
     this.setData({ loading: true });
     try {
       const tag = this.data.activeTag === '全部' ? '' : this.data.activeTag;
-      const res = await Api.getWorks({
+      const res = await Api.getInspirationList({
         sort: this.data.sort,
         keyword: this.data.keyword,
         tag,

@@ -380,21 +380,12 @@ const Api = {
     return this.request('DELETE', `/inspirations/${id}/like`);
   },
 
-  getWorks(params = {}) {
-    const q = [];
-    if (params.sort) q.push(`sort=${encodeURIComponent(params.sort)}`);
-    if (params.keyword) q.push(`keyword=${encodeURIComponent(params.keyword)}`);
-    if (params.tag) q.push(`tag=${encodeURIComponent(params.tag)}`);
-    if (params.page) q.push(`page=${params.page}`);
-    if (params.limit) q.push(`limit=${params.limit}`);
-    const qs = q.length ? '?' + q.join('&') : '';
-    return this.request('GET', '/inspirations' + qs, null, true);
-  },
-
   getInspirationList(params = {}) {
     const q = [];
     if (params.category && params.category !== 'all') q.push(`category=${encodeURIComponent(params.category)}`);
     if (params.sort && params.sort !== 'default') q.push(`sort=${encodeURIComponent(params.sort)}`);
+    if (params.keyword) q.push(`keyword=${encodeURIComponent(params.keyword)}`);
+    if (params.tag) q.push(`tag=${encodeURIComponent(params.tag)}`);
     if (params.page) q.push(`page=${params.page}`);
     if (params.limit) q.push(`limit=${params.limit}`);
     const qs = q.length ? '?' + q.join('&') : '';
