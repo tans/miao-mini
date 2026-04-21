@@ -23,7 +23,6 @@ Page({
     // 超时保护：5秒后强制结束
     const timeoutId = setTimeout(() => {
       if (this.data.loading) {
-        console.log('loadInspirationDetail timeout, using mock data');
         const mockData = this.getMockData(id);
         this.setData({
           inspiration: mockData,
@@ -63,7 +62,6 @@ Page({
       });
     } catch (err) {
       clearTimeout(timeoutId);
-      console.error('loadInspirationDetail error:', err);
       const mockData = this.getMockData(id);
       this.setData({
         inspiration: mockData,

@@ -128,7 +128,7 @@ Page({
             const url = await Api.uploadImage(img);
             uploadedUrls.push(url);
           } catch (e) {
-            console.error('Image upload failed:', e);
+            // image upload failed, skip
           }
         }
         evidence = uploadedUrls.join(',');

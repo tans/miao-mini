@@ -24,7 +24,7 @@ Page({
         this.setData({ task: res.data.claim.task || res.data.claim });
       }
     }).catch(err => {
-      console.error('加载任务信息失败:', err);
+      // load task failed
     });
   },
 
