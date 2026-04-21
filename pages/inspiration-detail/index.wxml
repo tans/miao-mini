@@ -42,6 +42,27 @@
     </view>
   </view>
 
+  <!-- 时间与奖金 -->
+  <view class="reward-section">
+    <view class="reward-row">
+      <view class="reward-item">
+        <text class="reward-label">采纳奖励</text>
+        <text class="reward-value">{{inspiration.reward || 100}}</text>
+        <text class="reward-unit">元/条</text>
+      </view>
+      <view class="reward-plus">+</view>
+      <view class="reward-item">
+        <text class="reward-label">参与奖励</text>
+        <text class="reward-value-dark">{{inspiration.participationReward || 10}}</text>
+        <text class="reward-unit">元/条</text>
+      </view>
+    </view>
+    <view class="time-row" wx:if="{{inspiration.deadline}}">
+      <text class="time-label">截稿时间</text>
+      <text class="time-value">{{inspiration.deadline}}</text>
+    </view>
+  </view>
+
   <!-- 灵感信息 -->
   <view class="info-section">
     <view class="info-card">

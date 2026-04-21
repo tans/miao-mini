@@ -87,6 +87,76 @@
   font-weight: 500;
 }
 
+/* 时间与奖金 */
+.reward-section {
+  padding: 0 24rpx;
+}
+
+.reward-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.reward-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reward-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.reward-value {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #ef8802;
+}
+
+.reward-value-dark {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.reward-unit {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.reward-plus {
+  font-size: 32rpx;
+  color: #999;
+  margin: 0 32rpx;
+}
+
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+}
+
+.time-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.time-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
 /* 信息区域 */
 .info-section {
   padding: 24rpx;

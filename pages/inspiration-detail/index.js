@@ -71,7 +71,10 @@ Page({
         authorName: '镜头研究社',
         videoAspect: '9:16 竖屏',
         videoResolution: '1080P',
-        videoDuration: '30s'
+        videoDuration: '30s',
+        reward: 100,
+        participationReward: 10,
+        deadline: '2026-04-25 18:00'
       },
       {
         id: 2,
@@ -82,7 +85,10 @@ Page({
         authorName: '美食摄影君',
         videoAspect: '16:9 横屏',
         videoResolution: '720P',
-        videoDuration: '60s'
+        videoDuration: '60s',
+        reward: 80,
+        participationReward: 8,
+        deadline: '2026-04-26 12:00'
       },
       {
         id: 3,
@@ -96,7 +102,10 @@ Page({
         authorName: '旅拍达人',
         videoAspect: '9:16 竖屏',
         videoResolution: '1080P',
-        videoDuration: '45s'
+        videoDuration: '45s',
+        reward: 150,
+        participationReward: 15,
+        deadline: '2026-04-27 20:00'
       },
       {
         id: 4,
@@ -107,7 +116,10 @@ Page({
         authorName: '地产视频圈',
         videoAspect: '1:1 方屏',
         videoResolution: '720P',
-        videoDuration: '15s'
+        videoDuration: '15s',
+        reward: 60,
+        participationReward: 6,
+        deadline: '2026-04-24 18:00'
       },
       {
         id: 5,
@@ -121,7 +133,10 @@ Page({
         authorName: '生活记录者',
         videoAspect: '9:16 竖屏',
         videoResolution: '1080P',
-        videoDuration: '30s'
+        videoDuration: '30s',
+        reward: 120,
+        participationReward: 12,
+        deadline: '2026-04-28 18:00'
       },
       {
         id: 6,
@@ -132,7 +147,10 @@ Page({
         authorName: '美妆控',
         videoAspect: '9:16 竖屏',
         videoResolution: '1080P',
-        videoDuration: '20s'
+        videoDuration: '20s',
+        reward: 90,
+        participationReward: 9,
+        deadline: '2026-04-26 18:00'
       }
     ];
     return mockList.find(item => item.id == id) || mockList[0];
