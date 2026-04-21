@@ -21,7 +21,7 @@
       </view>
       <view class="flow-body">
         <view class="flow-step">
-          <view class="flow-icon-wrapper-1">
+          <view class="flow-icon-wrapper">
             <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG29823902767c2a9879c703aaa86a61c9.png" />
           </view>
           <view class="flow-step-text">
@@ -31,7 +31,7 @@
         </view>
         <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
-          <view class="flow-icon-wrapper-2">
+          <view class="flow-icon-wrapper">
             <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG552002459c165b264bfde3d79e34f6b4.png" />
           </view>
           <view class="flow-step-text">
@@ -41,8 +41,8 @@
         </view>
         <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
-          <view class="flow-icon-wrapper-3">
-            <image class="flow-step-3-icon" src="./images/64eb92ffc20a47659d3b94f1f6c981d1_mergeImage.png" />
+          <view class="flow-icon-wrapper">
+            <image class="flow-step-icon" src="./images/64eb92ffc20a47659d3b94f1f6c981d1_mergeImage.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">商家审核</text>
@@ -51,8 +51,8 @@
         </view>
         <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
-          <view class="flow-icon-wrapper-4">
-            <image class="flow-step-4-icon" src="./images/FigmaDDSSlicePNG26444e830900e7f016708436b07a5211.png" />
+          <view class="flow-icon-wrapper">
+            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG26444e830900e7f016708436b07a5211.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">任务结束</text>
