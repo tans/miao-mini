@@ -97,6 +97,6 @@ Page({
   },
 
   goWithdraw() {
-    wx.showToast({ title: '提现功能开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/wallet/withdraw/index' });
   }
 });
