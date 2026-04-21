@@ -73,11 +73,12 @@ Page({
 
     this.navigating = true;
 
-    // 视频卡片跳转至播放页面
+    // 视频卡片跳转至播放页面，非视频跳转到预览页面
     if (isVideo) {
       wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
     } else {
-      wx.showToast({ title: '作品预览开发中', icon: 'none' });
+      const workData = encodeURIComponent(JSON.stringify(this.data.inspirationList.find(item => item.id === id) || {}));
+      wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
     }
 
     setTimeout(() => {

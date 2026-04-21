@@ -182,8 +182,9 @@ Page({
   goWorkDetail(e) {
     const id = e.currentTarget.dataset.id;
     if (id) {
-      // 作品已无需单独页面承载，直接预览
-      wx.showToast({ title: '作品预览开发中', icon: 'none' });
+      const work = this.data.filteredWorks.find(w => w.id === id) || {};
+      const workData = encodeURIComponent(JSON.stringify(work));
+      wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
     }
   },
 

@@ -159,7 +159,8 @@ Page({
     }
 
     this.navigating = true;
-    wx.showToast({ title: '作品预览开发中', icon: 'none' });
+    const workData = encodeURIComponent(JSON.stringify(this.data.works.find(w => w.id === id) || {}));
+    wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
     setTimeout(() => {
       this.navigating = false;
     }, 400);

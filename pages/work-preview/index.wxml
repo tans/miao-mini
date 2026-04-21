@@ -1,0 +1,39 @@
+<view class="preview-container">
+  <custom-nav title="{{work.title || '作品预览'}}" showBack="{{true}}" bind:back="goBack" />
+
+  <view class="content-wrap">
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <text>加载中...</text>
+    </view>
+
+    <block wx:elif="{{isVideo && videoUrl}}">
+      <video
+        class="video-player"
+        src="{{videoUrl}}"
+        controls
+        autoplay
+        show-center-play-btn
+        enable-progress-gesture
+        bind:error="onVideoError"
+      />
+    </block>
+
+    <block wx:elif="{{images.length > 0}}">
+      <view class="image-list">
+        <view
+          wx:for="{{images}}"
+          wx:key="index"
+          class="image-item"
+          bindtap="onImageTap"
+          data-index="{{index}}"
+        >
+          <image mode="widthFix" src="{{item}}" class="preview-image" />
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="empty-wrap">
+      <text>暂无预览内容</text>
+    </view>
+  </view>
+</view>
