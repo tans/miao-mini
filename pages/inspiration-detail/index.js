@@ -14,7 +14,6 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getWork(id);
-      console.log('getWork response:', res);
       const inspiration = res.data;
 
       if (!inspiration) {
@@ -29,7 +28,6 @@ Page({
         loading: false
       });
     } catch (err) {
-      console.error('loadInspirationDetail error:', err);
       // 使用mock数据
       const mockData = this.getMockData(id);
       this.setData({

@@ -40,7 +40,6 @@ Page({
         realNameVerified: user.real_name_verified || false
       });
     } catch (err) {
-      console.error('loadWalletInfo error:', err);
     }
   },
 

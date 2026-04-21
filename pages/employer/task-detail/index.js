@@ -21,7 +21,6 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getTask(taskId);
-      console.log('getTask response:', res);
       const task = res.data;
 
       if (!task) {
@@ -37,7 +36,6 @@ Page({
         loading: false
       });
     } catch (err) {
-      console.error('loadTaskDetail error:', err);
       wx.showToast({ title: '加载失败: ' + (err.message || '未知错误'), icon: 'none', duration: 3000 });
       this.setData({ loading: false });
     } finally {

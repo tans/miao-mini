@@ -20,7 +20,6 @@ Page({
   },
 
   loadTaskInfo(taskId) {
-    console.log('加载任务信息:', taskId);
   },
 
   initMockData() {
