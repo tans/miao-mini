@@ -1,0 +1,78 @@
+<view class="appeal-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back-white.png" />
+    </view>
+    <text class="nav-title">申诉与纠纷</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="tips-section">
+    <text class="tips-text">如果您对任务结果有异议，可以提交申诉。平台将在1-3个工作日内处理。</text>
+  </view>
+
+  <!-- 申诉表单 -->
+  <view class="form-section">
+    <view class="form-card">
+      <view class="form-item">
+        <text class="form-label">选择任务</text>
+        <picker mode="selector" range="{{taskList}}" range-key="title" bindchange="onTaskChange">
+          <view class="picker-value">
+            {{selectedTask ? selectedTask.title : '请选择任务'}}
+            <image class="picker-arrow" src="/assets/icons/arrow-right.png" />
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">申诉类型</text>
+        <picker mode="selector" range="{{appealTypes}}" range-key="name" bindchange="onAppealTypeChange">
+          <view class="picker-value">
+            {{selectedType ? selectedType.name : '请选择申诉类型'}}
+            <image class="picker-arrow" src="/assets/icons/arrow-right.png" />
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">申诉原因</text>
+        <textarea class="form-textarea" value="{{reason}}" bindinput="onReasonInput" placeholder="请详细描述您的申诉原因" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">上传凭证</text>
+        <view class="upload-list">
+          <view class="upload-item" wx:for="{{uploadImages}}" wx:key="index">
+            <image class="upload-preview" src="{{item}}" />
+            <view class="upload-remove" bindtap="removeImage" data-index="{{index}}">×</view>
+          </view>
+          <view class="upload-add" bindtap="uploadImage" wx:if="{{uploadImages.length < 3}}">
+            <image class="upload-icon" src="/assets/icons/upload.png" />
+            <text class="upload-text">添加凭证</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="submit-section">
+      <button class="submit-btn" bindtap="submitAppeal">提交申诉</button>
+    </view>
+  </view>
+
+  <!-- 申诉记录 -->
+  <view class="record-section">
+    <text class="record-title">历史申诉记录</text>
+    <view class="record-list">
+      <view class="record-empty" wx:if="{{records.length === 0}}">
+        <text class="record-empty-text">暂无申诉记录</text>
+      </view>
+      <view class="record-item" wx:for="{{records}}" wx:key="index">
+        <view class="record-header">
+          <text class="record-task">{{item.taskTitle}}</text>
+          <text class="record-status {{item.status}}">{{item.statusText}}</text>
+        </view>
+        <text class="record-desc">{{item.reason}}</text>
+        <text class="record-time">{{item.createTime}}</text>
+      </view>
+    </view>
+  </view>
+</view>

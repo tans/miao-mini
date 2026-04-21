@@ -1,0 +1,39 @@
+<view class="profile-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back-white.png" />
+    </view>
+    <text class="nav-title">个人资料</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="avatar-section">
+      <image class="avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
+      <view class="avatar-edit" bindtap="changeAvatar">
+        <text class="avatar-edit-text">修改头像</text>
+      </view>
+    </view>
+    <view class="user-info">
+      <view class="info-row">
+        <text class="info-label">昵称</text>
+        <input class="info-input" value="{{user.nickname || user.username || ''}}" bindinput="onNicknameInput" placeholder="请输入昵称" />
+      </view>
+      <view class="info-row">
+        <text class="info-label">用户ID</text>
+        <text class="info-value">{{user.id || '--'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">手机号</text>
+        <text class="info-value">{{user.phone || '未绑定'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-section">
+    <button class="save-btn" bindtap="saveProfile">保存修改</button>
+  </view>
+</view>

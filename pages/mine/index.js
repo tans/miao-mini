@@ -156,7 +156,7 @@ Page({
 
   goProfile() {
     this._ensureLogin(() => {
-      wx.showToast({ title: '个人资料开发中', icon: 'none' });
+      wx.navigateTo({ url: '/pages/mine/profile/index' });
     });
   },
 
@@ -203,11 +203,11 @@ Page({
   },
 
   goHelp() {
-    wx.showToast({ title: '帮助中心开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/mine/help/index' });
   },
 
   goAbout() {
-    wx.showToast({ title: '关于我们开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/mine/about/index' });
   },
 
   goHome() {
@@ -220,7 +220,7 @@ Page({
 
   goMerchantAuth() {
     this._ensureLogin(() => {
-      wx.showToast({ title: '商家认证功能开发中', icon: 'none' });
+      wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });
     });
   },
 
@@ -232,12 +232,12 @@ Page({
 
   goAppeal() {
     this._ensureLogin(() => {
-      wx.showToast({ title: '申诉功能开发中', icon: 'none' });
+      wx.navigateTo({ url: '/pages/mine/appeal/index' });
     });
   },
 
   goCustomerService() {
-    wx.showToast({ title: '客服功能开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/mine/customer-service/index' });
   },
 
   goBack() {

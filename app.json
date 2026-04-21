@@ -19,7 +19,13 @@
     "pages/inspiration/index",
     "pages/inspiration-detail/index",
     "pages/creator/task-detail/index",
-    "pages/creator/submit-work/index"
+    "pages/creator/submit-work/index",
+    "pages/mine/profile/index",
+    "pages/mine/help/index",
+    "pages/mine/about/index",
+    "pages/mine/merchant-auth/index",
+    "pages/mine/appeal/index",
+    "pages/mine/customer-service/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

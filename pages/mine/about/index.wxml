@@ -1,0 +1,63 @@
+<view class="about-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back-white.png" />
+    </view>
+    <text class="nav-title">关于我们</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- Logo区域 -->
+  <view class="logo-section">
+    <image class="logo" src="/assets/icons/logo.png" />
+    <text class="app-name">创意喵</text>
+    <text class="app-version">版本 1.0.0</text>
+  </view>
+
+  <!-- 公司介绍 -->
+  <view class="intro-card">
+    <text class="intro-title">关于创意喵</text>
+    <text class="intro-content">
+      创意喵是面向视频任务协作的轻量平台。商家发布清晰需求，创作者快速认领与交付，平台帮助你用更短链路完成内容生产与收益结算。
+    </text>
+  </view>
+
+  <!-- 功能介绍 -->
+  <view class="feature-card">
+    <view class="feature-item">
+      <image class="feature-icon" src="/assets/icons/feature-task.png" />
+      <view class="feature-info">
+        <text class="feature-title">海量任务</text>
+        <text class="feature-desc">每日更新优质视频任务</text>
+      </view>
+    </view>
+    <view class="feature-item">
+      <image class="feature-icon" src="/assets/icons/feature-money.png" />
+      <view class="feature-info">
+        <text class="feature-title">快速结算</text>
+        <text class="feature-desc">作品通过即刻结算收益</text>
+      </view>
+    </view>
+    <view class="feature-item">
+      <image class="feature-icon" src="/assets/icons/feature-shield.png" />
+      <view class="feature-info">
+        <text class="feature-title">安全可靠</text>
+        <text class="feature-desc">资金托管保障双方权益</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系方式 -->
+  <view class="contact-card">
+    <text class="contact-title">联系我们</text>
+    <view class="contact-row">
+      <text class="contact-label">客服热线</text>
+      <text class="contact-value">400-xxx-xxxx</text>
+    </view>
+    <view class="contact-row">
+      <text class="contact-label">官方邮箱</text>
+      <text class="contact-value">support@chuangyimiao.com</text>
+    </view>
+  </view>
+</view>

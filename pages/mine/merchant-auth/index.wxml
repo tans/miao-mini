@@ -1,0 +1,51 @@
+<view class="auth-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back-white.png" />
+    </view>
+    <text class="nav-title">商家认证</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 认证状态 -->
+  <view class="status-section">
+    <view class="status-card">
+      <view class="status-icon {{statusIcon}}">
+        <text class="status-icon-text">{{statusIconText}}</text>
+      </view>
+      <text class="status-title">{{statusTitle}}</text>
+      <text class="status-desc">{{statusDesc}}</text>
+    </view>
+  </view>
+
+  <!-- 认证表单 -->
+  <view class="form-section" wx:if="{{status !== 'certified'}}">
+    <view class="form-card">
+      <view class="form-item">
+        <text class="form-label">企业名称</text>
+        <input class="form-input" value="{{companyName}}" bindinput="onCompanyNameInput" placeholder="请输入企业名称" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">联系人</text>
+        <input class="form-input" value="{{contactName}}" bindinput="onContactNameInput" placeholder="请输入联系人姓名" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">联系电话</text>
+        <input class="form-input" type="number" value="{{contactPhone}}" bindinput="onContactPhoneInput" placeholder="请输入联系电话" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">营业执照</text>
+        <view class="upload-area" bindtap="uploadLicense">
+          <image class="upload-icon" src="/assets/icons/upload.png" wx:if="{{!licenseUrl}}" />
+          <image class="upload-preview" src="{{licenseUrl}}" wx:else />
+          <text class="upload-text" wx:if="{{!licenseUrl}}">点击上传营业执照</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="submit-section">
+      <button class="submit-btn" bindtap="submitAuth">提交认证</button>
+    </view>
+  </view>
+</view>

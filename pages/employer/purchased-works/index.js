@@ -171,25 +171,16 @@ Page({
   },
 
   fallbackOpenDownloadedFile(filePath) {
-    wx.saveFileToDisk({
+    wx.openDocument({
       filePath,
+      showMenu: true,
       success: () => {
         wx.hideLoading();
-        wx.showToast({ title: '保存成功', icon: 'success' });
+        wx.showToast({ title: '已打开', icon: 'success' });
       },
       fail: () => {
-        wx.openDocument({
-          filePath,
-          showMenu: true,
-          success: () => {
-            wx.hideLoading();
-            wx.showToast({ title: '已打开', icon: 'success' });
-          },
-          fail: () => {
-            wx.hideLoading();
-            wx.showToast({ title: '下载失败', icon: 'none' });
-          },
-        });
+        wx.hideLoading();
+        wx.showToast({ title: '下载失败', icon: 'none' });
       },
     });
   },

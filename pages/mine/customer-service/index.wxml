@@ -1,0 +1,84 @@
+<view class="service-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back-white.png" />
+    </view>
+    <text class="nav-title">联系客服</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 客服热线 -->
+  <view class="hotline-section">
+    <view class="hotline-card">
+      <view class="hotline-icon">
+        <image class="hotline-icon-img" src="/assets/icons/phone.png" />
+      </view>
+      <view class="hotline-info">
+        <text class="hotline-title">客服热线</text>
+        <text class="hotline-number">400-xxx-xxxx</text>
+        <text class="hotline-time">服务时间：工作日 9:00-18:00</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 在线客服入口 -->
+  <view class="online-section">
+    <view class="online-card">
+      <view class="online-header">
+        <text class="online-title">在线客服</text>
+        <view class="online-status">
+          <view class="status-dot"></view>
+          <text class="status-text">在线</text>
+        </view>
+      </view>
+      <view class="online-list">
+        <view class="service-item" bindtap="startService" data-type="general">
+          <image class="service-icon" src="/assets/icons/service-general.png" />
+          <view class="service-content">
+            <text class="service-title">普通咨询</text>
+            <text class="service-desc">账号、任务、收益等问题</text>
+          </view>
+          <image class="service-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
+        <view class="service-item" bindtap="startService" data-type="business">
+          <image class="service-icon" src="/assets/icons/service-business.png" />
+          <view class="service-content">
+            <text class="service-title">商务合作</text>
+            <text class="service-desc">商家入驻、品牌合作</text>
+          </view>
+          <image class="service-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
+        <view class="service-item" bindtap="startService" data-type="complaint">
+          <image class="service-icon" src="/assets/icons/service-complaint.png" />
+          <view class="service-content">
+            <text class="service-title">投诉建议</text>
+            <text class="service-desc">问题反馈、平台建议</text>
+          </view>
+          <image class="service-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 常见问题 -->
+  <view class="faq-section">
+    <view class="faq-header">
+      <text class="faq-title">常见问题</text>
+    </view>
+    <view class="faq-list">
+      <view class="faq-item" bindtap="goHelp">
+        <text class="faq-question">如何成为创作者？</text>
+        <image class="faq-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+      </view>
+      <view class="faq-item" bindtap="goHelp">
+        <text class="faq-question">任务收益如何结算？</text>
+        <image class="faq-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+      </view>
+      <view class="faq-item" bindtap="goHelp">
+        <text class="faq-question">作品审核需要多久？</text>
+        <image class="faq-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+      </view>
+    </view>
+  </view>
+</view>
