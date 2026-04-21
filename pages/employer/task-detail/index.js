@@ -10,6 +10,7 @@ Page({
     currentTab: 'detail',
     showEditJimeng: false,
     editJimengLink: '',
+    proposalCount: 0,
   },
 
   onLoad(options) {
@@ -68,6 +69,22 @@ Page({
   previewMaterial(e) {
     const url = e.currentTarget.dataset.url;
     wx.previewImage({ urls: [url], current: url });
+  },
+
+  // 跳转视频提案审核
+  goToProposalReview() {
+    const taskId = this.data.task.id;
+    wx.navigateTo({
+      url: `/pages/employer/video-proposals/index?task_id=${taskId}`
+    });
+  },
+
+  // 播放视频
+  playVideo() {
+    if (this.data.task.video_url) {
+      this.videoContext = wx.createVideoContext('taskVideo');
+      this.videoContext.play();
+    }
   },
 
   showJimengTutorial() {
