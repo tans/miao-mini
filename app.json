@@ -17,7 +17,8 @@
     "pages/wallet/withdraw/index",
     "pages/employer/recharge/index",
     "pages/inspiration/index",
-    "pages/creator/task-detail/index"
+    "pages/creator/task-detail/index",
+    "pages/creator/submit-work/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

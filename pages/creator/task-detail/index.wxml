@@ -265,14 +265,8 @@
       <text class="countdown-label">截稿倒计时：</text>
       <text class="countdown-value">{{countdownText || '23小时28分'}}</text>
     </view>
-    <button class="signup-btn" bindtap="handleSignUp" wx:if="{{!hasSignedUp}}">
-      <text>立即报名</text>
+    <button class="action-btn {{hasSignedUp ? 'submit-work-btn' : 'signup-btn'}}" bindtap="{{hasSignedUp ? 'goSubmitWork' : 'handleSignUp'}}">
+      <text>{{hasSignedUp ? '上传稿件' : '立即报名'}}</text>
     </button>
-    <button class="submit-btn" bindtap="goSubmitWork" wx:if="{{hasSignedUp && canSubmit}}">
-      <text>立即提交作品</text>
-    </button>
-    <view class="signed-badge" wx:if="{{hasSignedUp && !canSubmit}}">
-      <text>已报名，待提交</text>
-    </view>
   </view>
 </view>

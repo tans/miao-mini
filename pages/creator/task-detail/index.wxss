@@ -739,3 +739,20 @@
   font-size: 28rpx;
   color: #666;
 }
+
+.submit-work-btn {
+  padding: 24rpx 64rpx;
+  background: linear-gradient(135deg, #ff9a1f, #ef6c00);
+  border-radius: 48rpx;
+  border: none;
+}
+
+.submit-work-btn text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.submit-work-btn::after {
+  border: none;
+}
