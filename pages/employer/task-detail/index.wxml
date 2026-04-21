@@ -1,4 +1,4 @@
-<view class="employer-task-detail-container">
+<view class="page">
   <!-- 顶部导航 -->
   <view class="nav-bar">
     <view class="nav-left" bindtap="goBack">
@@ -11,19 +11,36 @@
   <!-- 标签切换 -->
   <view class="tab-switch">
     <view class="tab-item {{currentTab === 'video' ? 'active' : ''}}" data-tab="video" bindtap="switchTab">
-      <text>任务视频</text>
+      <text class="tab-text {{currentTab === 'video' ? 'active' : ''}}">任务视频</text>
     </view>
     <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">
-      <text>任务详情</text>
+      <text class="tab-text {{currentTab === 'detail' ? 'active' : ''}}">任务详情</text>
     </view>
-    <view class="tab-indicator" style="left: {{currentTab === 'video' ? '72rpx' : '296rpx'}}"></view>
+    <view class="tab-indicator" style="left: {{currentTab === 'video' ? '48rpx' : '296rpx'}}"></view>
   </view>
 
   <!-- 任务视频 -->
   <view class="tab-content" wx:if="{{currentTab === 'video'}}">
-    <view class="video-placeholder">
-      <view class="play-btn"></view>
-      <text class="video-hint">点击播放任务视频</text>
+    <view class="video-section">
+      <!-- 视频提案审核入口 -->
+      <view class="proposal-review-card" wx:if="{{proposalCount > 0}}" bindtap="goToProposalReview">
+        <view class="proposal-info">
+          <text class="proposal-title">视频提案</text>
+          <text class="proposal-count">{{proposalCount}}个提案待审核</text>
+        </view>
+        <view class="proposal-arrow">
+          <text class="arrow-text">></text>
+        </view>
+      </view>
+
+      <!-- 视频播放区域 -->
+      <view class="video-container" wx:if="{{task.video_url}}" bindtap="playVideo">
+        <video id="taskVideo" class="video-player" src="{{task.video_url}}" controls />
+      </view>
+      <view class="video-placeholder" wx:else bindtap="playVideo">
+        <view class="play-btn"></view>
+        <text class="video-hint">点击播放任务视频</text>
+      </view>
     </view>
   </view>
 
@@ -48,32 +65,32 @@
       <view class="reward-row">
         <view class="reward-item">
           <text class="reward-label">采纳奖励</text>
-          <text class="reward-value">{{task.unit_price || 100}}</text>
-          <text class="reward-unit">元/</text>
-          <text class="reward-unit">条</text>
         </view>
+        <text class="reward-value">{{task.unit_price || 100}}</text>
+        <text class="reward-unit">元/</text>
+        <text class="reward-unit">条</text>
         <text class="reward-plus">+</text>
         <view class="reward-item">
           <text class="reward-label">参与奖励</text>
-          <text class="reward-value">{{task.award_price || 10}}</text>
-          <text class="reward-unit">元/</text>
-          <text class="reward-unit">条</text>
         </view>
+        <text class="reward-value-dark">{{task.award_price || 10}}</text>
+        <text class="reward-unit">元/</text>
+        <text class="reward-unit">条</text>
       </view>
 
       <!-- 标签 -->
       <view class="tags-row">
         <view class="tag-group">
           <text class="tag-label">行业标签</text>
-          <view class="tag-content">
-            <text class="tag-value">{{task.industry || '房产家居'}}</text>
-          </view>
         </view>
         <view class="tag-group">
           <text class="tag-label">风格标签</text>
-          <view class="tag-content">
-            <text class="tag-value">{{task.style || '房产家居'}}</text>
-          </view>
+        </view>
+        <view class="tag-content">
+          <text class="tag-value">{{task.industry || '房产家居'}}</text>
+        </view>
+        <view class="tag-content">
+          <text class="tag-value">{{task.style || '房产家居'}}</text>
         </view>
       </view>
 
@@ -84,28 +101,20 @@
 
       <!-- 视频规格 -->
       <view class="spec-row">
-        <view class="spec-item">
-          <text class="spec-label">视频尺寸</text>
-          <text class="spec-value">{{task.video_aspect || '9:16 竖屏'}}</text>
-        </view>
+        <text class="spec-label">视频尺寸</text>
+        <text class="spec-value">{{task.video_aspect || '9:16 竖屏'}}</text>
       </view>
       <view class="spec-row">
-        <view class="spec-item">
-          <text class="spec-label">分辨率</text>
-          <text class="spec-value">{{task.video_resolution || '1080P'}}</text>
-        </view>
+        <text class="spec-label">分辨率</text>
+        <text class="spec-value">{{task.video_resolution || '1080P'}}</text>
       </view>
       <view class="spec-row">
-        <view class="spec-item">
-          <text class="spec-label">视频时长</text>
-          <text class="spec-value">{{task.video_duration || '30s'}}</text>
-        </view>
+        <text class="spec-label">视频时长</text>
+        <text class="spec-value">{{task.video_duration || '30s'}}</text>
       </view>
       <view class="spec-row">
-        <view class="spec-item">
-          <text class="spec-label">截稿时间</text>
-          <text class="spec-value">{{task.end_at || '2026-04-24 18:00'}}</text>
-        </view>
+        <text class="spec-label">截稿时间</text>
+        <text class="spec-value">{{task.end_at || '2026-04-24 18:00'}}</text>
       </view>
 
       <!-- 平台禁忌 -->
