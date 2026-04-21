@@ -61,6 +61,32 @@
   height: 100%;
 }
 
+/* 视频规格 */
+.spec-section {
+  padding: 0 24rpx;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.spec-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.spec-value {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
 /* 信息区域 */
 .info-section {
   padding: 24rpx;

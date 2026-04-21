@@ -68,7 +68,10 @@ Page({
         displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 2300,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '镜头研究社'
+        authorName: '镜头研究社',
+        videoAspect: '9:16 竖屏',
+        videoResolution: '1080P',
+        videoDuration: '30s'
       },
       {
         id: 2,
@@ -76,7 +79,10 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 1800,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '美食摄影君'
+        authorName: '美食摄影君',
+        videoAspect: '16:9 横屏',
+        videoResolution: '720P',
+        videoDuration: '60s'
       },
       {
         id: 3,
@@ -87,7 +93,10 @@ Page({
         displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 1200,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '旅拍达人'
+        authorName: '旅拍达人',
+        videoAspect: '9:16 竖屏',
+        videoResolution: '1080P',
+        videoDuration: '45s'
       },
       {
         id: 4,
@@ -95,7 +104,10 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 980,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '地产视频圈'
+        authorName: '地产视频圈',
+        videoAspect: '1:1 方屏',
+        videoResolution: '720P',
+        videoDuration: '15s'
       },
       {
         id: 5,
@@ -106,7 +118,10 @@ Page({
         displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 2100,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '生活记录者'
+        authorName: '生活记录者',
+        videoAspect: '9:16 竖屏',
+        videoResolution: '1080P',
+        videoDuration: '30s'
       },
       {
         id: 6,
@@ -114,7 +129,10 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 3500,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '美妆控'
+        authorName: '美妆控',
+        videoAspect: '9:16 竖屏',
+        videoResolution: '1080P',
+        videoDuration: '20s'
       }
     ];
     return mockList.find(item => item.id == id) || mockList[0];

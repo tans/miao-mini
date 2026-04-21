@@ -26,6 +26,22 @@
     </view>
   </view>
 
+  <!-- 视频信息 -->
+  <view class="spec-section">
+    <view class="spec-row">
+      <text class="spec-label">视频比例</text>
+      <text class="spec-value">{{inspiration.videoAspect || '9:16 竖屏'}}</text>
+    </view>
+    <view class="spec-row">
+      <text class="spec-label">分辨率</text>
+      <text class="spec-value">{{inspiration.videoResolution || '1080P'}}</text>
+    </view>
+    <view class="spec-row">
+      <text class="spec-label">时长</text>
+      <text class="spec-value">{{inspiration.videoDuration || '30s'}}</text>
+    </view>
+  </view>
+
   <!-- 灵感信息 -->
   <view class="info-section">
     <view class="info-card">
