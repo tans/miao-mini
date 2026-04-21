@@ -1,0 +1,83 @@
+<view class="inspiration-container">
+  <!-- 分类标签 -->
+  <view class="category-section">
+    <view class="category-scroll">
+      <view class="category-group">
+        <text class="category-item {{currentCategory === 'all' ? 'active' : ''}}" data-category="all" bindtap="switchCategory">推荐</text>
+        <text class="category-item {{currentCategory === 'catering' ? 'active' : ''}}" data-category="catering" bindtap="switchCategory">餐饮美食</text>
+        <text class="category-item {{currentCategory === 'hotel' ? 'active' : ''}}" data-category="hotel" bindtap="switchCategory">酒店民宿</text>
+        <text class="category-item {{currentCategory === 'life' ? 'active' : ''}}" data-category="life" bindtap="switchCategory">本地生活</text>
+        <text class="category-item {{currentCategory === 'property' ? 'active' : ''}}" data-category="property" bindtap="switchCategory">房产家居</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 排序选项 -->
+  <view class="sort-section">
+    <view class="sort-group">
+      <text class="sort-item {{currentSort === 'default' ? 'active' : ''}}" data-sort="default" bindtap="switchSort">默认</text>
+      <text class="sort-item {{currentSort === 'likes' ? 'active' : ''}}" data-sort="likes" bindtap="switchSort">最多点赞</text>
+      <text class="sort-item {{currentSort === 'views' ? 'active' : ''}}" data-sort="views" bindtap="switchSort">最多浏览</text>
+    </view>
+  </view>
+
+  <!-- 灵感内容瀑布流 -->
+  <scroll-view scroll-y="true" class="content-scroll">
+    <view class="masonry-grid">
+      <!-- 左列 -->
+      <view class="masonry-column">
+        <view class="inspiration-card" wx:for="{{leftColumn}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+          <view class="card-image-wrap">
+            <image class="card-image" src="{{item.cover}}" mode="aspectFill"/>
+            <view class="like-btn">
+              <text class="like-icon">♡</text>
+              <text class="like-count">{{item.likes}}</text>
+            </view>
+          </view>
+          <view class="card-info">
+            <text class="card-title">{{item.title}}</text>
+            <view class="card-author">
+              <image class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill"/>
+              <text class="author-name">{{item.authorName}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 右列 -->
+      <view class="masonry-column">
+        <view class="inspiration-card" wx:for="{{rightColumn}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+          <view class="card-image-wrap">
+            <image class="card-image" src="{{item.cover}}" mode="aspectFill"/>
+            <view class="like-btn">
+              <text class="like-icon">♡</text>
+              <text class="like-count">{{item.likes}}</text>
+            </view>
+          </view>
+          <view class="card-info">
+            <text class="card-title">{{item.title}}</text>
+            <view class="card-author">
+              <image class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill"/>
+              <text class="author-name">{{item.authorName}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部TabBar -->
+  <view class="tab-bar">
+    <view class="tab-item" bindtap="goHome">
+      <text class="tab-icon">🏠</text>
+      <text class="tab-text">首页</text>
+    </view>
+    <view class="tab-item active">
+      <text class="tab-icon">💡</text>
+      <text class="tab-text active">灵感</text>
+    </view>
+    <view class="tab-item" bindtap="goMine">
+      <text class="tab-icon">👤</text>
+      <text class="tab-text">我的</text>
+    </view>
+  </view>
+</view>

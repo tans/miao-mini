@@ -209,4 +209,34 @@ Page({
   goAbout() {
     wx.navigateTo({ url: '/pages/settings/about/index' });
   },
+
+  goHome() {
+    wx.switchTab({ url: '/pages/home/index' });
+  },
+
+  goInspiration() {
+    wx.switchTab({ url: '/pages/works/index' });
+  },
+
+  goMerchantAuth() {
+    this._ensureLogin(() => {
+      wx.showToast({ title: '商家认证功能开发中', icon: 'none' });
+    });
+  },
+
+  goPurchasedWorks() {
+    this._ensureLogin(() => {
+      wx.navigateTo({ url: '/pages/employer/purchased-works/index' });
+    });
+  },
+
+  goAppeal() {
+    this._ensureLogin(() => {
+      wx.showToast({ title: '申诉功能开发中', icon: 'none' });
+    });
+  },
+
+  goCustomerService() {
+    wx.showToast({ title: '客服功能开发中', icon: 'none' });
+  },
 });

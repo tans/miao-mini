@@ -1,258 +1,161 @@
-<!--pages/task-detail/index.wxml-->
-<!-- Skeleton 加载状态 -->
-<view class="skeleton-container" wx:if="{{loading}}">
-  <view class="skeleton-header"></view>
-  <view class="skeleton-section"></view>
-  <view class="skeleton-section"></view>
-  <view class="skeleton-section"></view>
-</view>
-
-<!-- 内容区域 -->
-<view class="detail-container" wx:if="{{!loading && task}}">
-  <!-- 任务头部卡片 - 优先级最高 -->
-  <view class="task-hero-card">
-    <view class="task-status-bar">
-      <text class="status-badge {{getStatusClass(task.status)}}">{{getStatusText(task.status)}}</text>
-      <text class="deadline-hint" wx:if="{{task.end_at}}">📅 {{task.end_at.substring(0, 10)}} 截止</text>
+<view class="task-detail-container">
+  <!-- 标签切换 -->
+  <view class="tab-switch">
+    <view class="tab-item {{currentTab === 'video' ? 'active' : ''}}" data-tab="video" bindtap="switchTab">
+      <text>任务视频</text>
     </view>
-    <view class="task-title">{{task.title}}</view>
-    <view class="task-meta-row">
-      <text class="meta-item">👤 {{task.business_name || '商家'}}</text>
-      <text class="meta-item" wx:if="{{task.remaining_count > 0}}">🎯 剩余 {{task.remaining_count}} 名额</text>
+    <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">
+      <text>任务详情</text>
+    </view>
+    <view class="tab-indicator" style="left: {{currentTab === 'video' ? '72rpx' : '296rpx'}}"></view>
+  </view>
+
+  <!-- 任务视频 -->
+  <view class="tab-content" wx:if="{{currentTab === 'video'}}">
+    <view class="video-placeholder">
+      <view class="play-btn"></view>
+      <text class="video-hint">点击播放任务视频</text>
     </view>
   </view>
 
-  <!-- 奖励卡片 - 创作者最关心 -->
-  <view class="reward-card">
-    <view class="reward-header">💰 任务奖励</view>
-    <view class="reward-main">
-      <view class="reward-primary">
-        <text class="reward-price">¥{{task.unit_price}}</text>
-        <text class="reward-unit">/人</text>
+  <!-- 任务详情 -->
+  <view class="tab-content" wx:if="{{currentTab === 'detail'}}">
+    <!-- 任务ID -->
+    <view class="task-id-card">
+      <view class="id-info">
+        <text class="id-label">任务ID</text>
+        <text class="id-value">{{task.id || 'CC-20260418-000126'}}</text>
       </view>
-      <view class="reward-bonus" wx:if="{{task.award_price > 0}}">
-        <text class="bonus-tag">采纳额外+¥{{task.award_price}}</text>
-      </view>
-    </view>
-    <view class="reward-stats">
-      <view class="stat-item">
-        <text class="stat-label">报名人数</text>
-        <text class="stat-value">{{signups.length || 0}}</text>
-      </view>
-      <view class="stat-item">
-        <text class="stat-label">总名额</text>
-        <text class="stat-value">{{task.total_count || 0}}</text>
-      </view>
-      <view class="stat-item">
-        <text class="stat-label">已采纳</text>
-        <text class="stat-value">{{submissions.length}}</text>
+      <view class="copy-btn" bindtap="copyTaskId">
+        <text>复制</text>
       </view>
     </view>
-  </view>
 
-  <!-- 任务描述 -->
-  <view class="section-card">
-    <view class="section-title">
-      <text class="title-icon">📋</text>
-      <text>任务说明</text>
-    </view>
-    <view class="section-content">
-      <text class="detail-text">{{task.description || '暂无描述'}}</text>
-    </view>
-  </view>
+    <!-- 任务详情卡片 -->
+    <view class="detail-card">
+      <text class="detail-title">{{task.title || '高端楼盘春日氛围视频'}}</text>
 
-  <!-- 视频要求 -->
-  <view class="section-card" wx:if="{{task.video_duration}}">
-    <view class="section-title">
-      <text class="title-icon">🎬</text>
-      <text>视频要求</text>
-    </view>
-    <view class="section-content">
+      <!-- 奖励信息 -->
+      <view class="reward-row">
+        <view class="reward-item">
+          <text class="reward-label">采纳奖励</text>
+          <text class="reward-value">{{task.unit_price || 100}}</text>
+          <text class="reward-unit">元/</text>
+          <text class="reward-unit">条</text>
+        </view>
+        <text class="reward-plus">+</text>
+        <view class="reward-item">
+          <text class="reward-label">参与奖励</text>
+          <text class="reward-value">{{task.award_price || 10}}</text>
+          <text class="reward-unit">元/</text>
+          <text class="reward-unit">条</text>
+        </view>
+      </view>
+
+      <!-- 标签 -->
+      <view class="tags-row">
+        <view class="tag-group">
+          <text class="tag-label">行业标签</text>
+          <view class="tag-content">
+            <text class="tag-value">{{task.industry || '房产家居'}}</text>
+          </view>
+        </view>
+        <view class="tag-group">
+          <text class="tag-label">风格标签</text>
+          <view class="tag-content">
+            <text class="tag-value">{{task.style || '房产家居'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 描述 -->
+      <view class="desc-section">
+        <text class="desc-text">{{task.description || '突出空间通透感与生活方式场景，口语化表达，避免过度摆拍。适合地产、家居类创作者参与。'}}</text>
+      </view>
+
+      <!-- 视频规格 -->
       <view class="spec-row">
         <view class="spec-item">
-          <text class="spec-label">时长</text>
-          <text class="spec-value">{{task.video_duration}}</text>
+          <text class="spec-label">视频尺寸</text>
+          <text class="spec-value">{{task.video_aspect || '9:16 竖屏'}}</text>
         </view>
-        <view class="spec-item" wx:if="{{task.video_aspect}}">
-          <text class="spec-label">尺寸</text>
-          <text class="spec-value">{{task.video_aspect}}</text>
-        </view>
-        <view class="spec-item" wx:if="{{task.video_resolution}}">
+      </view>
+      <view class="spec-row">
+        <view class="spec-item">
           <text class="spec-label">分辨率</text>
-          <text class="spec-value">{{task.video_resolution}}</text>
+          <text class="spec-value">{{task.video_resolution || '1080P'}}</text>
+        </view>
+      </view>
+      <view class="spec-row">
+        <view class="spec-item">
+          <text class="spec-label">视频时长</text>
+          <text class="spec-value">{{task.video_duration || '30s'}}</text>
+        </view>
+      </view>
+      <view class="spec-row">
+        <view class="spec-item">
+          <text class="spec-label">截稿时间</text>
+          <text class="spec-value">{{task.end_at || '2026-04-24 18:00'}}</text>
+        </view>
+      </view>
+
+      <!-- 平台禁忌 -->
+      <view class="restriction-section">
+        <text class="restriction-text">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+      </view>
+    </view>
+
+    <!-- 商家素材 -->
+    <view class="material-card" wx:if="{{materials.length > 0}}">
+      <view class="card-header">
+        <text class="header-title">商家素材</text>
+      </view>
+      <view class="material-grid">
+        <view class="material-item" wx:for="{{materials}}" wx:key="id" bindtap="previewMaterial" data-url="{{item.file_path}}">
+          <image wx:if="{{item.file_type === 'image'}}" class="material-thumb" src="{{item.file_path}}" mode="aspectFill"/>
+          <video wx:if="{{item.file_type === 'video'}}" class="material-thumb" src="{{item.file_path}}" controls/>
         </view>
       </view>
     </view>
-  </view>
 
-  <!-- 标签 -->
-  <view class="section-card" wx:if="{{industryArray.length > 0}}">
-    <view class="section-title">
-      <text class="title-icon">🏷️</text>
-      <text>任务标签</text>
-    </view>
-    <view class="section-content">
-      <view class="task-tags">
-        <text wx:for="{{industryArray}}" wx:key="index" class="tag">{{item}}</text>
+    <!-- 即梦合拍 -->
+    <view class="jimeng-card" wx:if="{{task.jimeng_link}}">
+      <view class="card-header">
+        <text class="header-title">即梦合拍</text>
       </view>
-    </view>
-  </view>
-
-  <!-- 素材 -->
-  <view class="section-card" wx:if="{{materials.length > 0}}">
-    <view class="section-title">
-      <text class="title-icon">📦</text>
-      <text>商家素材</text>
-      <text class="section-hint">({{materials.length}}个文件)</text>
-    </view>
-    <view class="section-content">
-      <view class="material-list">
-        <view wx:for="{{materials}}" wx:key="id" class="material-card">
-          <image wx:if="{{item.file_type === 'image'}}" class="material-thumb" src="{{item.file_path}}" mode="aspectFill" bindtap="previewMaterial" data-url="{{item.file_path}}"/>
-          <video wx:if="{{item.file_type === 'video'}}" class="material-video" src="{{item.file_path}}" controls/>
-          <view class="material-footer">
-            <text class="material-name">{{item.file_name || '素材' + (index + 1)}}</text>
-            <button class="download-btn" data-url="{{item.file_path}}" data-name="{{item.file_name}}" bindtap="downloadMaterial">下载</button>
-          </view>
+      <view class="jimeng-content">
+        <view class="jimeng-info">
+          <text class="jimeng-name">即梦合拍设置</text>
+          <text class="jimeng-desc">商家提供数字人模型给创作者用于合成视频</text>
         </view>
+        <image class="jimeng-icon" src="/assets/icons/jimeng.png" />
       </view>
-    </view>
-  </view>
-
-  <!-- 即梦合拍 -->
-  <view class="section-card jimeng-card" wx:if="{{task.jimeng_link}}">
-    <view class="section-title">
-      <text class="title-icon">✨</text>
-      <text>即梦合拍</text>
-    </view>
-    <view class="section-content">
-      <view class="jimeng-invite">快来即梦，跟 {{task.business_name || '大师兄'}} 一起合拍整活！😆</view>
       <view class="jimeng-link-row">
-        <text class="jimeng-label">链接：</text>
-        <text class="jimeng-link" selectable="true">{{task.jimeng_link}}</text>
-        <button class="copy-btn" data-copy="{{task.jimeng_link}}" bindtap="copyText">复制</button>
+        <text class="link-text">{{task.jimeng_link}}</text>
+        <text class="link-count">0/50</text>
       </view>
-      <view class="jimeng-code-row" wx:if="{{task.jimeng_code}}">
-        <text class="jimeng-label">验证码：</text>
-        <text class="jimeng-code" selectable="true">{{task.jimeng_code}}</text>
-        <button class="copy-btn" data-copy="{{task.jimeng_code}}" bindtap="copyText">复制</button>
+      <view class="jimeng-tutorial">
+        <text>查看即梦合拍教程</text>
       </view>
-      <view class="jimeng-hint">⚠️ 链接有效期48小时，请尽快完成合拍</view>
-    </view>
-  </view>
-
-  <!-- 商家信息 - 仅商家端显示 -->
-  <view class="section-card merchant-section" wx:if="{{isMyTask}}">
-    <view class="section-title">
-      <text class="title-icon">📊</text>
-      <text>任务数据</text>
-    </view>
-    <view class="section-content">
-      <view class="data-stats-grid">
-        <view class="data-stat">
-          <text class="stat-num">{{task.total_budget || 0}}</text>
-          <text class="stat-name">总预算(元)</text>
-        </view>
-        <view class="data-stat">
-          <text class="stat-num">{{task.frozen_amount || 0}}</text>
-          <text class="stat-name">已冻结(元)</text>
-        </view>
-        <view class="data-stat">
-          <text class="stat-num">{{task.paid_amount || 0}}</text>
-          <text class="stat-name">已支付(元)</text>
-        </view>
+      <view class="update-link-btn">
+        <text>更新链接</text>
       </view>
-    </view>
-  </view>
-
-  <!-- 报名列表 - 仅商家端显示 -->
-  <view class="section-card" wx:if="{{isMyTask && signups.length > 0}}">
-    <view class="section-title">
-      <text class="title-icon">👥</text>
-      <text>报名列表</text>
-      <text class="section-count">{{signups.length}}人</text>
-    </view>
-    <view class="section-content">
-      <view wx:for="{{signups}}" wx:key="id" class="user-card">
-        <view class="user-info">
-          <image class="user-avatar" src="{{item.creator_avatar}}" mode="aspectFill" wx:if="{{item.creator_avatar}}"/>
-          <view class="avatar-placeholder" wx:else>{{item.creator_name ? item.creator_name[0] : '创'}}</view>
-          <view class="user-detail">
-            <text class="user-name">{{item.creator_name || '匿名创作者'}}</text>
-            <text class="user-time">{{formatDateTime(item.created_at)}}</text>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="section-card empty-section" wx:if="{{isMyTask && signups.length === 0}}">
-    <view class="section-title">
-      <text class="title-icon">👥</text>
-      <text>报名列表</text>
-    </view>
-    <view class="section-content empty-content">
-      <text class="empty-text">暂无报名</text>
-    </view>
-  </view>
-
-  <!-- 投稿列表 - 仅商家端显示 -->
-  <view class="section-card" wx:if="{{isMyTask && submissions.length > 0}}">
-    <view class="section-title">
-      <text class="title-icon">📨</text>
-      <text>投稿列表</text>
-      <text class="section-count">{{submissions.length}}份</text>
-      <button class="review-btn" bindtap="goReviewProposals">审核作品</button>
-    </view>
-    <view class="section-content">
-      <view wx:for="{{submissions}}" wx:key="id" class="submission-item">
-        <view class="submission-info">
-          <image class="user-avatar" src="{{item.creator_avatar}}" mode="aspectFill" wx:if="{{item.creator_avatar}}"/>
-          <view class="avatar-placeholder" wx:else>{{item.creator_name ? item.creator_name[0] : '创'}}</view>
-          <view class="user-detail">
-            <text class="user-name">{{item.creator_name || '匿名创作者'}}</text>
-            <text class="user-time">{{formatDateTime(item.submitted_at ? item.submitted_at : item.created_at)}}</text>
-          </view>
-        </view>
-        <view class="status-badge-small {{isAdopted(item.status) ? 'adopted' : 'pending'}}">
-          {{isAdopted(item.status) ? '已采纳' : '待验收'}}
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class="section-card empty-section" wx:if="{{isMyTask && submissions.length === 0}}">
-    <view class="section-title">
-      <text class="title-icon">📨</text>
-      <text>投稿列表</text>
-    </view>
-    <view class="section-content empty-content">
-      <text class="empty-text">暂无投稿</text>
     </view>
   </view>
 
   <!-- 底部操作栏 -->
-  <view class="action-bar" wx:if="{{canClaim || claimReason || hasClaimed}}">
-    <!-- 已认领该任务，根据状态显示不同按钮 -->
-    <button class="weui-btn weui-btn_primary weui-btn_block action-btn" bindtap="goSubmitWork" wx:if="{{hasClaimed && claimStatus === 1}}">
-      <text class="btn-text">立即提交作品</text>
+  <view class="action-bar" wx:if="{{canClaim || hasClaimed}}">
+    <button class="claim-btn" bindtap="claimTask" wx:if="{{!hasClaimed && canClaim}}">
+      <text>立即接单</text>
     </button>
-    <view class="status-bar" wx:if="{{hasClaimed && claimStatus === 2}}">
-      <view class="status-indicator pending"></view>
-      <text class="status-label">待商家验收</text>
-    </view>
-    <view class="status-bar success" wx:if="{{hasClaimed && claimStatus === 3}}">
-      <view class="status-indicator"></view>
-      <text class="status-label">任务已完成</text>
-    </view>
-    <view class="status-bar expired" wx:if="{{hasClaimed && (claimStatus === 4 || claimStatus === 5)}}">
-      <text class="status-label">任务已失效</text>
-    </view>
-    <!-- 未认领，显示接单按钮或原因 -->
-    <button class="weui-btn weui-btn_primary weui-btn_block action-btn" bindtap="claimTask" wx:if="{{!hasClaimed && canClaim}}">
-      <text class="btn-text">🎯 立即接单</text>
+    <button class="submit-btn" bindtap="goSubmitWork" wx:if="{{hasClaimed && claimStatus === 1}}">
+      <text>立即提交作品</text>
     </button>
-    <view class="claim-reason" wx:if="{{!canClaim && !hasClaimed && claimReason}}">{{claimReason}}</view>
+    <view class="status-indicator" wx:if="{{hasClaimed && claimStatus === 2}}">
+      <text>待商家验收</text>
+    </view>
+    <view class="status-indicator success" wx:if="{{hasClaimed && claimStatus === 3}}">
+      <text>任务已完成</text>
+    </view>
   </view>
 </view>
-
-<!-- 空状态 -->
-<mp-msg type="warn" title="暂无任务信息" wx:if="{{!loading && !task}}" />

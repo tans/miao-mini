@@ -1,0 +1,269 @@
+<view class="task-detail-container">
+  <!-- 标签切换 -->
+  <view class="tab-switch">
+    <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">
+      <text>任务详情</text>
+    </view>
+    <view class="tab-item {{currentTab === 'submissions' ? 'active' : ''}}" data-tab="submissions" bindtap="switchTab">
+      <text>全部投稿</text>
+    </view>
+    <view class="tab-indicator" style="left: {{currentTab === 'detail' ? '72rpx' : '296rpx'}}"></view>
+  </view>
+
+  <scroll-view scroll-y="true" class="content-scroll">
+    <!-- 投稿流程 -->
+    <view class="flow-section">
+      <view class="flow-header">
+        <view class="flow-step">
+          <image src="/assets/icons/flow-guide.png" class="flow-icon-text" />
+          <text class="flow-title">新手不踩坑</text>
+        </view>
+        <text class="flow-subtitle">投稿看流程</text>
+      </view>
+      <view class="flow-steps">
+        <view class="flow-item">
+          <view class="flow-dot">1</view>
+          <view class="flow-line"></view>
+          <view class="flow-text">
+            <text class="flow-label">报名后按时交稿</text>
+          </view>
+        </view>
+        <view class="flow-arrow">→</view>
+        <view class="flow-item">
+          <view class="flow-dot">2</view>
+          <view class="flow-line"></view>
+          <view class="flow-text">
+            <text class="flow-label">商家审核付款</text>
+          </view>
+        </view>
+        <view class="flow-arrow">→</view>
+        <view class="flow-item">
+          <view class="flow-dot">3</view>
+          <view class="flow-text">
+            <text class="flow-label">钱包提现奖励</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 任务详情内容 -->
+    <view class="detail-content" wx:if="{{currentTab === 'detail'}}">
+      <!-- 商家信息卡片 -->
+      <view class="merchant-card">
+        <view class="merchant-info">
+          <image class="merchant-avatar" src="{{task.merchantAvatar || '/assets/icons/avatar-default.jpg'}}" mode="aspectFill"/>
+          <view class="merchant-detail">
+            <text class="merchant-name">{{task.merchantName || '美寓家居旗舰店'}}</text>
+            <view class="merchant-badges">
+              <view class="badge" wx:if="{{task.isBrandEnterprise}}">
+                <text class="badge-icon">🏅</text>
+                <text class="badge-text">品牌名企</text>
+              </view>
+              <view class="badge">
+                <text class="badge-icon">🔒</text>
+                <text class="badge-text">资金已托管</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="merchant-stats">
+          <view class="stat-item">
+            <text class="stat-label">平均采纳率</text>
+            <text class="stat-value">{{task.adoptionRate || '86'}}%</text>
+          </view>
+          <view class="stat-divider"></view>
+          <view class="stat-item">
+            <text class="stat-label">累计发布</text>
+            <text class="stat-value">{{task.totalTasks || 120}}</text>
+            <text class="stat-unit">个任务</text>
+          </view>
+          <view class="stat-divider"></view>
+          <view class="stat-item">
+            <text class="stat-label">累计支出</text>
+            <text class="stat-value">¥{{task.totalSpend || 6800}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 任务ID -->
+      <view class="task-id-card">
+        <view class="id-info">
+          <text class="id-label">任务ID</text>
+          <text class="id-value">{{task.id || 'CC-20260418-000126'}}</text>
+        </view>
+        <view class="copy-btn" bindtap="copyTaskId">
+          <text>复制</text>
+        </view>
+      </view>
+
+      <!-- 任务详情卡片 -->
+      <view class="detail-card">
+        <text class="detail-title">{{task.title || '高端楼盘春日氛围视频'}}</text>
+
+        <!-- 奖励 -->
+        <view class="reward-row">
+          <view class="reward-item">
+            <text class="reward-label">采纳奖励</text>
+            <view class="reward-value-row">
+              <text class="reward-value">{{task.unitPrice || 100}}</text>
+              <text class="reward-unit">元/条</text>
+            </view>
+          </view>
+          <text class="reward-plus">+</text>
+          <view class="reward-item">
+            <text class="reward-label">参与奖励</text>
+            <view class="reward-value-row">
+              <text class="reward-value">{{task.awardPrice || 10}}</text>
+              <text class="reward-unit">元/条</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 标签 -->
+        <view class="tags-row">
+          <view class="tag-group">
+            <text class="tag-label">行业标签</text>
+            <view class="tag-value">{{task.industry || '房产家居'}}</view>
+          </view>
+          <view class="tag-group">
+            <text class="tag-label">风格标签</text>
+            <view class="tag-value">{{task.style || '房产家居'}}</view>
+          </view>
+        </view>
+
+        <!-- 描述 -->
+        <view class="desc-section">
+          <text class="desc-text">{{task.description || '突出空间通透感与生活方式场景，口语化表达，避免过度摆拍。适合地产、家居类创作者参与。'}}</text>
+        </view>
+
+        <!-- 视频规格 -->
+        <view class="specs-grid">
+          <view class="spec-item">
+            <text class="spec-label">视频尺寸</text>
+            <text class="spec-value">{{task.videoAspect || '9:16 竖屏'}}</text>
+          </view>
+          <view class="spec-item">
+            <text class="spec-label">分辨率</text>
+            <text class="spec-value">{{task.videoResolution || '1080P'}}</text>
+          </view>
+          <view class="spec-item">
+            <text class="spec-label">视频时长</text>
+            <text class="spec-value">{{task.videoDuration || '30s'}}</text>
+          </view>
+          <view class="spec-item">
+            <text class="spec-label">截稿时间</text>
+            <text class="spec-value deadline">{{task.endAt || '2026-04-24 18:00'}}</text>
+          </view>
+        </view>
+
+        <!-- 平台禁忌 -->
+        <view class="restriction-section">
+          <text class="restriction-text">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+        </view>
+      </view>
+
+      <!-- 商家素材 -->
+      <view class="material-card" wx:if="{{materials.length > 0}}">
+        <view class="card-header">
+          <text class="header-title">商家素材</text>
+          <view class="download-btn">
+            <text>下载全部</text>
+          </view>
+        </view>
+        <view class="material-grid">
+          <view class="material-item" wx:for="{{materials}}" wx:key="id" bindtap="previewMaterial" data-url="{{item.file_path}}">
+            <image class="material-thumb" src="{{item.file_path}}" mode="aspectFill"/>
+          </view>
+        </view>
+      </view>
+
+      <!-- 即梦合拍 -->
+      <view class="jimeng-card" wx:if="{{task.jimengLink}}">
+        <view class="card-header">
+          <text class="header-title">即梦合拍邀拍链接</text>
+        </view>
+        <view class="jimeng-content">
+          <text class="jimeng-link">{{task.jimengLink}}</text>
+        </view>
+      </view>
+      <view class="jimeng-card" wx:if="{{!task.jimengLink && !hasSignedUp}}">
+        <view class="card-header">
+          <text class="header-title">即梦合拍邀拍链接</text>
+        </view>
+        <view class="jimeng-lock">
+          <text class="lock-text">报名后可见</text>
+        </view>
+      </view>
+
+      <!-- 安全提醒 -->
+      <view class="safety-card">
+        <view class="safety-header">
+          <text class="safety-icon">🛡️</text>
+          <text class="safety-title">创意喵 安全提醒</text>
+        </view>
+        <text class="safety-text">如发现商家发布违规需求可立即举报。创作者请勿提交无关稿件或违规稿件，被效举报超过 5 次将永久封号。</text>
+      </view>
+
+      <!-- 热门推荐 -->
+      <view class="recommend-section">
+        <view class="recommend-header">
+          <text class="recommend-icon">🔥</text>
+          <text class="recommend-title">热门推荐</text>
+        </view>
+        <view class="recommend-list">
+          <view class="recommend-card" wx:for="{{recommendations}}" wx:key="id" bindtap="goTaskDetail" data-id="{{item.id}}">
+            <view class="recommend-info">
+              <text class="recommend-title">{{item.title}}</text>
+              <view class="recommend-reward">
+                <text class="reward-amount">{{item.unitPrice}}</text>
+                <text class="reward-unit">元/条</text>
+              </view>
+            </view>
+            <view class="recommend-tags">
+              <text class="recommend-tag">{{item.industry}}</text>
+              <text class="recommend-tag">{{item.style}}</text>
+              <text class="recommend-tag">{{item.duration}}</text>
+            </view>
+            <view class="recommend-progress">
+              <text class="progress-label">报名进度</text>
+              <view class="progress-bar">
+                <view class="progress-fill" style="width: {{item.enrolledPercent}}%"></view>
+              </view>
+              <text class="progress-text">已报名 {{item.enrolled}}/{{item.limit}}人</text>
+            </view>
+            <view class="recommend-action">
+              <text class="countdown-text">{{item.deadlineText}}</text>
+              <view class="action-btn">
+                <text>立即报名</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 全部投稿内容 -->
+    <view class="submissions-content" wx:if="{{currentTab === 'submissions'}}">
+      <view class="submissions-empty">
+        <text>暂无投稿记录</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar">
+    <view class="countdown-section">
+      <text class="countdown-label">截稿倒计时：</text>
+      <text class="countdown-value">{{countdownText || '23小时28分'}}</text>
+    </view>
+    <button class="signup-btn" bindtap="handleSignUp" wx:if="{{!hasSignedUp}}">
+      <text>立即报名</text>
+    </button>
+    <button class="submit-btn" bindtap="goSubmitWork" wx:if="{{hasSignedUp && canSubmit}}">
+      <text>立即提交作品</text>
+    </button>
+    <view class="signed-badge" wx:if="{{hasSignedUp && !canSubmit}}">
+      <text>已报名，待提交</text>
+    </view>
+  </view>
+</view>

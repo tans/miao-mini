@@ -249,4 +249,12 @@ Page({
   goCreateTask() {
     wx.navigateTo({ url: '/pages/employer/create-task/index' });
   },
+
+  goWorks() {
+    wx.switchTab({ url: '/pages/works/index' });
+  },
+
+  goMine() {
+    wx.switchTab({ url: '/pages/mine/index' });
+  },
 });

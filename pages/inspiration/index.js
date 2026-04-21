@@ -1,0 +1,133 @@
+const Api = require('../../utils/api.js');
+const app = getApp();
+
+Page({
+  data: {
+    currentCategory: 'all',
+    currentSort: 'default',
+    inspirationList: [],
+    leftColumn: [],
+    rightColumn: [],
+  },
+
+  onLoad() {
+    this.loadInspirationList();
+  },
+
+  async loadInspirationList() {
+    wx.showLoading({ title: '加载中...' });
+    try {
+      const res = await Api.getInspirationList({
+        category: this.data.currentCategory,
+        sort: this.data.currentSort
+      });
+      const list = res.data || [];
+      this.processColumns(list);
+    } catch (err) {
+      // 使用模拟数据
+      const mockData = this.getMockData();
+      this.processColumns(mockData);
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  processColumns(list) {
+    // 简单的瀑布流分配：奇数项放左列，偶数项放右列
+    const leftColumn = [];
+    const rightColumn = [];
+    list.forEach((item, index) => {
+      if (index % 2 === 0) {
+        leftColumn.push(item);
+      } else {
+        rightColumn.push(item);
+      }
+    });
+    this.setData({
+      inspirationList: list,
+      leftColumn,
+      rightColumn
+    });
+  },
+
+  switchCategory(e) {
+    const category = e.currentTarget.dataset.category;
+    if (category === this.data.currentCategory) return;
+    this.setData({ currentCategory: category });
+    this.loadInspirationList();
+  },
+
+  switchSort(e) {
+    const sort = e.currentTarget.dataset.sort;
+    if (sort === this.data.currentSort) return;
+    this.setData({ currentSort: sort });
+    this.loadInspirationList();
+  },
+
+  goDetail(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
+  },
+
+  goHome() {
+    wx.switchTab({ url: '/pages/home/index' });
+  },
+
+  goMine() {
+    wx.switchTab({ url: '/pages/mine/index' });
+  },
+
+  getMockData() {
+    // 返回模拟数据用于开发和测试
+    return [
+      {
+        id: 1,
+        title: '春日家居焕新脚本拆解',
+        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        likes: 2300,
+        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorName: '镜头研究社'
+      },
+      {
+        id: 2,
+        title: '探店美食拍摄技巧分享',
+        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        likes: 1800,
+        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorName: '美食摄影君'
+      },
+      {
+        id: 3,
+        title: '酒店民宿宣传片拍摄思路',
+        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        likes: 1200,
+        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorName: '旅拍达人'
+      },
+      {
+        id: 4,
+        title: '地产项目短视频营销方案',
+        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        likes: 980,
+        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorName: '地产视频圈'
+      },
+      {
+        id: 5,
+        title: '本地生活服务类视频创作指南',
+        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        likes: 2100,
+        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorName: '生活记录者'
+      },
+      {
+        id: 6,
+        title: '美妆产品种草视频脚本',
+        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        likes: 3500,
+        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorName: '美妆控'
+      }
+    ];
+  }
+});

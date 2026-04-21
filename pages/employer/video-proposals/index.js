@@ -6,6 +6,7 @@ const app = getApp();
 Page({
   data: {
     task: null,
+    materials: [],
     claims: [],
     filteredClaims: [],
     activeFilter: 'all',
@@ -16,7 +17,9 @@ Page({
       { key: 'rejected', label: '已拒绝' }
     ],
     loading: false,
-    taskId: ''
+    taskId: '',
+    currentTab: 'detail', // 默认显示任务详情
+    deadlineText: '23小时28分'
   },
 
   onLoad(options = {}) {
@@ -48,12 +51,36 @@ Page({
         Api.getTaskClaims(this.data.taskId).catch(() => ({ data: [] }))
       ]);
       const task = taskRes.data || null;
+      const materials = task && task.materials ? task.materials : [];
       const claims = (claimsRes.data || [])
         .filter(c => Number(c.status) !== 1) // 排除待提交
         .map(c => this.formatClaim(c, task));
-      this.setData({ task, claims });
+
+      // 计算截止时间
+      let deadlineText = '23小时28分';
+      if (task && task.end_at) {
+        const endTime = new Date(task.end_at).getTime();
+        const now = Date.now();
+        const diff = endTime - now;
+        if (diff > 0) {
+          const hours = Math.floor(diff / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          deadlineText = `${hours}小时${minutes}分`;
+        } else {
+          deadlineText = '已截止';
+        }
+      }
+
+      this.setData({
+        task,
+        materials,
+        claims,
+        deadlineText,
+        loading: false
+      });
       this.applyFilter(this.data.activeFilter);
     } catch (err) {
+      this.setData({ loading: false });
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
       wx.hideLoading();
@@ -68,6 +95,34 @@ Page({
 
   onPullDownRefresh() {
     this._initPage().finally(() => wx.stopPullDownRefresh());
+  },
+
+  switchTab(e) {
+    const tab = e.currentTarget.dataset.tab;
+    this.setData({ currentTab: tab });
+  },
+
+  goBack() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
+  },
+
+  copyTaskId() {
+    const taskId = this.data.task && this.data.task.id;
+    if (taskId) {
+      wx.setClipboardData({
+        data: taskId,
+        success() {
+          wx.showToast({ title: '已复制', icon: 'success' });
+        }
+      });
+    }
+  },
+
+  previewMaterial(e) {
+    const url = e.currentTarget.dataset.url;
+    if (url) {
+      wx.previewImage({ urls: [url], current: url });
+    }
   },
 
   formatClaim(claim, task) {

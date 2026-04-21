@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/home/index",
-    "pages/creator/submit-work/index",
     "pages/works/index",
     "pages/creator/adopted-works/index",
     "pages/mine/index",
@@ -10,6 +9,7 @@
     "pages/creator/my-works/index",
     "pages/creator/data/index",
     "pages/employer/my-tasks/index",
+    "pages/employer/purchased-works/index",
     "pages/transactions/index",
     "pages/settings/index",
     "pages/settings/help/index",
@@ -18,15 +18,19 @@
     "pages/work-detail/index",
     "pages/employer/create-task/index",
     "pages/employer/video-proposals/index",
+    "pages/employer/task-detail/index",
     "pages/wallet/index",
-    "pages/settings/profile/index"
+    "pages/settings/profile/index",
+    "pages/inspiration/index",
+    "pages/creator/task-detail/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "创意喵",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": true,
+    "navigationStyle": "custom"
   },
   "tabBar": {
     "color": "#999",
@@ -75,6 +79,7 @@
     "mp-badge": "weui-miniprogram/miniprogram_dist/badge/badge",
     "mp-searchbar": "weui-miniprogram/miniprogram_dist/searchbar/searchbar",
     "mp-actionsheet": "weui-miniprogram/miniprogram_dist/actionsheet/actionsheet",
-    "mp-half-screen-dialog": "weui-miniprogram/miniprogram_dist/half-screen-dialog/half-screen-dialog"
+    "mp-half-screen-dialog": "weui-miniprogram/miniprogram_dist/half-screen-dialog/half-screen-dialog",
+    "custom-nav": "/components/custom-nav/component"
   }
 }

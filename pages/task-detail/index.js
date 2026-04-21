@@ -18,6 +18,7 @@ Page({
     claimStatus: 0,     // 认领状态：0=未认领, 1=待提交, 2=待验收, 3=已完成
     pendingCount: 0,    // 当前用户已接单数量（待提交状态）
     remainingSlots: 3,  // 剩余可接单数量
+    currentTab: 'detail', // 当前标签页
   },
 
   onLoad(options) {
@@ -243,16 +244,6 @@ Page({
     });
   },
 
-  // 跳转到提交作品页面
-  goSubmitWork() {
-    const { myClaim } = this.data;
-    if (myClaim) {
-      wx.navigateTo({
-        url: `/pages/creator/submit-work/index?claimId=${myClaim.id}&taskId=${myClaim.task_id}`
-      });
-    }
-  },
-
   async reviewClaim(e) {
     const { claimId, result } = e.currentTarget.dataset;
     try {
@@ -350,5 +341,26 @@ Page({
 
   formatDateTime(dateStr) {
     return formatDateTime(dateStr);
+  },
+
+  switchTab(e) {
+    const tab = e.currentTarget.dataset.tab;
+    this.setData({ currentTab: tab });
+  },
+
+  goBack() {
+    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
+  },
+
+  copyTaskId() {
+    const taskId = this.data.task && this.data.task.id;
+    if (taskId) {
+      wx.setClipboardData({
+        data: taskId,
+        success() {
+          wx.showToast({ title: '已复制', icon: 'success' });
+        }
+      });
+    }
   }
 });

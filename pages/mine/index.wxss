@@ -1,104 +1,114 @@
+/* pages/mine/index.wxss */
 .mine-container {
   min-height: 100vh;
   background: #f5f5f5;
-  padding: 12px;
-  padding-bottom: 32px;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部区域 */
+.header-section {
+  background: linear-gradient(66deg, #FF7C09 0%, #FFAF55 32%, #FFCD42 72%, #FFE177 100%);
+  padding: 24rpx 32rpx 40rpx;
 }
 
 /* 用户信息卡片 */
 .user-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.08);
+}
+
+.user-info-row {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 20rpx;
 }
 
-.user-card-arrow {
-  margin-left: auto;
-  color: #ccc;
-  font-size: 16px;
-}
-
-.avatar {
-  width: 48px;
-  height: 48px;
+.user-avatar {
+  width: 96rpx;
+  height: 96rpx;
   border-radius: 50%;
-  background: #eee;
-  margin-right: 12px;
-  flex-shrink: 0;
+  background: #f0f0f0;
+  margin-right: 24rpx;
 }
 
-.user-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.nickname {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* 面板区域 */
-.panel-section {
-  margin-bottom: 12px;
-}
-
-.panel-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  padding: 0 4px;
-  margin-bottom: 8px;
-}
-
-.panel-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px 8px;
-  display: flex;
-  justify-content: space-around;
-}
-
-.panel-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.user-detail {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.panel-item-icon {
-  font-size: 24px;
-  margin-bottom: 6px;
-}
-
-.panel-item-text {
-  font-size: 12px;
+.user-name {
+  font-size: 32rpx;
+  font-weight: 700;
   color: #333;
-  text-align: center;
+  margin-bottom: 8rpx;
 }
 
-/* 钱包入口 */
-.wallet-row {
+.user-id {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.user-arrow {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.user-level-row {
+  display: flex;
+  align-items: center;
+}
+
+.level-badge {
+  background: #FFF0E0;
+  color: #EF8802;
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.level-sep {
+  color: #999;
+  margin: 0 12rpx;
+  font-size: 24rpx;
+}
+
+.level-task-count {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 钱包卡片 */
+.wallet-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 14px 16px;
+  border-radius: 16rpx;
+  padding: 32rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.08);
 }
 
-.wallet-label {
-  font-size: 14px;
-  color: #333;
+.wallet-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.wallet-title {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.wallet-balance {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #EF8802;
+  font-family: D-DIN-PRO-Bold;
 }
 
 .wallet-right {
@@ -106,42 +116,120 @@
   align-items: center;
 }
 
-.wallet-balance {
-  font-size: 16px;
-  font-weight: 600;
-  color: #EF8802;
-  margin-right: 8px;
+.wallet-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-right: 12rpx;
 }
 
 .wallet-arrow {
-  color: #ccc;
-  font-size: 14px;
+  width: 32rpx;
+  height: 32rpx;
 }
 
-/* 帮助中心 */
-.help-row {
+/* 主体内容 */
+.content-section {
+  padding: 24rpx 32rpx;
+  margin-top: -20rpx;
+}
+
+/* 专区卡片 */
+.zone-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 14px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 12px;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.08);
 }
 
-.help-text {
-  font-size: 14px;
+.zone-title {
+  font-size: 30rpx;
+  font-weight: 700;
   color: #333;
+  margin-bottom: 24rpx;
 }
 
-.help-arrow {
-  color: #ccc;
-  font-size: 14px;
+.zone-items {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
 }
 
-.version {
-  text-align: center;
-  color: #ccc;
-  font-size: 12px;
-  margin-top: 24px;
+.zone-item {
+  display: flex;
+  align-items: center;
+}
+
+.zone-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 20rpx;
+}
+
+.zone-item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.zone-item-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.zone-item-sub {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.zone-item-badge {
+  display: flex;
+  align-items: center;
+  margin-top: 8rpx;
+}
+
+.badge-num {
+  background: #EF8802;
+  color: #fff;
+  font-size: 20rpx;
+  font-weight: 600;
+  padding: 2rpx 8rpx;
+  border-radius: 10rpx;
+  margin-right: 6rpx;
+}
+
+.badge-text {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.zone-action {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.action-text {
+  font-size: 24rpx;
+  color: #EF8802;
+  margin-right: 8rpx;
+}
+
+.zone-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.zone-badge {
+  display: flex;
+  align-items: center;
+  margin-right: 8rpx;
+}
+
+.zone-arrow {
+  width: 32rpx;
+  height: 32rpx;
 }
