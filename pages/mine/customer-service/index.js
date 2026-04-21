@@ -7,7 +7,16 @@ Page({
 
   startService(e) {
     const type = e.currentTarget.dataset.type;
-    wx.showToast({ title: '客服系统开发中', icon: 'none' });
+    if (type === 'complaint') {
+      // 投诉建议 - 跳转到申诉页面
+      wx.navigateTo({ url: '/pages/mine/appeal/index' });
+    } else if (type === 'business') {
+      // 商务合作 - 跳转到商家认证页面
+      wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });
+    } else {
+      // 普通咨询 - 跳转到帮助页面
+      wx.navigateTo({ url: '/pages/mine/help/index' });
+    }
   },
 
   goHelp() {
