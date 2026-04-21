@@ -164,14 +164,12 @@
 
 /* 任务标题 */
 .title-field {
-  background: #f5f5f7;
-  border-radius: 16rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 94rpx;
-  padding: 0 32rpx;
+  padding: 0 32rpx 16rpx;
   margin-bottom: 24rpx;
+  border-bottom: 1px solid #eee;
 }
 
 .title-label {
