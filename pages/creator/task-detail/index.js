@@ -18,13 +18,12 @@ Page({
       this.setData({ taskId: options.id });
       this.loadTaskDetail(options.id);
     }
-    this.initMockData();
   },
 
   async loadTaskDetail(taskId) {
     wx.showLoading({ title: '加载中...' });
     try {
-      const res = await Api.getTaskDetail(taskId);
+      const res = await Api.getTask(taskId);
       const task = res.data || {};
       this.setData({
         task,
