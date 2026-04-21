@@ -1,4 +1,6 @@
 // utils/api.js - 创意喵小程序 API 服务层
+const config = require('./config.js');
+
 const Api = {
   tokenKey: 'miao_token',
   userKey: 'miao_user',
@@ -10,7 +12,7 @@ const Api = {
     if (this._apiBase) return this._apiBase;
     // 优先使用 app.globalData 中配置的后端地址
     const app = getApp();
-    return app && app.globalData && app.globalData.apiBase || 'https://miao-test.clawos.cc/api/v1';
+    return app && app.globalData && app.globalData.apiBase || config.apiBase;
   },
 
   setApiBase(base) {

@@ -1,9 +1,9 @@
-// 创意喵 - 视频任务平台
+const config = require('./utils/config.js');
 App({
   globalData: {
     user: null,
     token: null,
-    apiBase: '', // 动态设置
+    apiBase: config.apiBase,
     worksMode: 'public',
     statusBarHeight: 20,
   },
@@ -16,8 +16,6 @@ App({
     // 获取状态栏高度和设备信息
     const info = wx.getSystemInfoSync();
     this.globalData.statusBarHeight = info.statusBarHeight || 20;
-    const isDevtools = info.platform === 'devtools';
-    this.globalData.apiBase = 'https://miao-test.clawos.cc/api/v1';
 
     // 读取缓存（同步），已登录则直接用缓存，未登录则静默登录
     const token = wx.getStorageSync("miao_token");
