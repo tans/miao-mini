@@ -4,7 +4,6 @@
     "ignore": [
       { "type": "folder", "value": "design/" },
       { "type": "folder", "value": "scripts/" },
-      { "type": "file", "value": "build-info.js" },
       { "type": "file", "value": "V1_0_PRD.md" },
       { "type": "file", "value": "README.md" },
       { "type": "file", "value": "小程序信息架构图.md" },
