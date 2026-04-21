@@ -17,12 +17,13 @@ Page({
   },
 
   onLoad() {
-    this.loadMyTasks();
-    this.loadAppealRecords();
+    this.loadMyTasks().then(() => {
+      this.loadAppealRecords();
+    });
   },
 
   loadMyTasks() {
-    Api.getMyClaims({ page: 1, limit: 100 }).then(res => {
+    return Api.getMyClaims({ page: 1, limit: 100 }).then(res => {
       if (res.data && res.data.length > 0) {
         // Map claims to task list for picker
         const taskList = res.data.map(claim => ({
@@ -41,14 +42,24 @@ Page({
   loadAppealRecords() {
     Api.getAppeals({ limit: 50, offset: 0 }).then(res => {
       if (res.data && res.data.appeals) {
-        const records = res.data.appeals.map(appeal => ({
-          id: appeal.id,
-          taskTitle: '任务申诉', // API doesn't return task title, using generic text
-          reason: appeal.reason,
-          status: appeal.status,
-          statusText: appeal.status_str || (appeal.status === 1 ? '待处理' : '已处理'),
-          createTime: appeal.created_at ? appeal.created_at.split('T')[0] : ''
-        }));
+        // Build task title lookup from loaded tasks (from loadMyTasks)
+        const taskMap = {};
+        (this.data.taskList || []).forEach(task => {
+          // key by claim id
+          taskMap[task.id] = task.title;
+        });
+        const records = res.data.appeals.map(appeal => {
+          // Try to get task title from cached taskList, fallback to target_id
+          const taskTitle = taskMap[appeal.target_id] || `任务 #${appeal.target_id}`;
+          return {
+            id: appeal.id,
+            taskTitle: taskTitle,
+            reason: appeal.reason,
+            status: appeal.status,
+            statusText: appeal.status_str || (appeal.status === 1 ? '待处理' : '已处理'),
+            createTime: appeal.created_at ? appeal.created_at.split('T')[0] : ''
+          };
+        });
         this.setData({ records });
       }
     }).catch(err => {

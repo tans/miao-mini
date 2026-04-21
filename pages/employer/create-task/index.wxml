@@ -120,13 +120,15 @@ module.exports = {
 
       <!-- 图片参考 -->
       <view class="image-reference">
-        <image class="ref-image" src="./images/FigmaDDSSlicePNGbab45d11d281f4d80e337b96b6d6ed91.png" />
-        <view class="ref-right">
-          <view class="ref-upload">
-            <image class="upload-icon" src="./images/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" />
+        <view class="ref-images-box">
+          <view wx:for="{{refImages}}" wx:key="*this" class="ref-image-item">
+            <image class="ref-image" src="{{item}}" mode="aspectFill"/>
+            <view class="ref-image-remove" bindtap="removeRefImage" data-index="{{index}}">
+              <image class="remove-icon" src="./images/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png"/>
+            </view>
           </view>
-          <view class="ref-upload">
-            <image class="upload-icon" src="./images/FigmaDDSSlicePNG14ea664d8c78f1a6300dcce799cc26ce.png" />
+          <view wx:if="{{refImages.length < 3}}" class="ref-upload" bindtap="addRefImage">
+            <image class="upload-icon" src="./images/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" />
           </view>
         </view>
       </view>

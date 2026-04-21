@@ -94,12 +94,12 @@ const Api = {
           if (data && data.code === 0) {
             resolve(data);
           } else {
-            const msg = (data && data.message) || '璇锋眰澶辫触';
+            const msg = (data && data.message) || '请求失败';
             reject(new Error(msg));
           }
         },
         fail: (err) => {
-          const msg = err && (err.message || err.errMsg) || '缃戠粶璇锋眰澶辫触';
+          const msg = err && (err.message || err.errMsg) || '缃戠粶请求失败';
           reject(new Error(msg));
         }
       });
@@ -286,6 +286,12 @@ const Api = {
 
   updateTaskJimengLink(taskId, jimengLink) {
     return this.request('PUT', `/business/tasks/${taskId}`, { jimeng_link: jimengLink });
+  },
+
+  // AI task description generation
+  aiWriteTaskDescription(data) {
+    // data: { title, industries, styles }
+    return this.request('POST', '/business/tasks/ai-write', data);
   },
 
   // Creator
