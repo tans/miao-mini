@@ -152,9 +152,14 @@ Page({
     const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
 
-    // 视频作品提示播放中
+    // 视频作品跳转播放页
     if (isVideo) {
-      wx.showToast({ title: '视频加载中...', icon: 'none' });
+      const work = this.data.works.find(w => w.id === id);
+      if (work && work.previewVideoSrc) {
+        wx.navigateTo({ url: `/pages/video-player/index?url=${encodeURIComponent(work.previewVideoSrc)}` });
+      } else {
+        wx.showToast({ title: '视频加载中...', icon: 'none' });
+      }
       return;
     }
 
