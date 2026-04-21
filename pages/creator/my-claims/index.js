@@ -110,9 +110,11 @@ Page({
   applyFilter(filter) {
     let filtered = this.data.claims;
     if (filter === 'active') {
-      filtered = this.data.claims.filter(c => c.status === 1);
+      // 进行中：已提交(2)及以上，排除待提交(1)
+      filtered = this.data.claims.filter(c => c.status >= 2);
     } else if (filter === 'ended') {
-      filtered = this.data.claims.filter(c => c.status !== 1);
+      // 已结束：已取消(4)或已超时(5)
+      filtered = this.data.claims.filter(c => c.status >= 4);
     }
     this.setData({ filteredClaims: filtered });
   },
