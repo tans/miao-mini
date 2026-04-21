@@ -3,7 +3,6 @@
   "packOptions": {
     "ignore": [
       { "type": "folder", "value": "design/" },
-      { "type": "folder", "value": "styles/" },
       { "type": "folder", "value": "scripts/" },
       { "type": "file", "value": "build-info.js" },
       { "type": "file", "value": "V1_0_PRD.md" },
