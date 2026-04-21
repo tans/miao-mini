@@ -9,6 +9,7 @@
     "pages/creator/my-works/index",
     "pages/creator/data/index",
     "pages/employer/my-tasks/index",
+    "pages/employer/purchased-works/index",
     "pages/transactions/index",
     "pages/settings/index",
     "pages/settings/help/index",

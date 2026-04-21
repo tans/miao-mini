@@ -83,6 +83,11 @@
             <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
           </view>
         </view>
+        <view class="zone-item" bindtap="goPurchasedWorks">
+          <image class="zone-icon" src="../../images/lanhu_wode/FigmaDDSSlicePNG74e97556a861f49ce06345429138ef8f.png" />
+          <text class="zone-item-title">已购作品库</text>
+          <image class="zone-arrow" src="../../images/lanhu_wode/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+        </view>
       </view>
     </view>
 

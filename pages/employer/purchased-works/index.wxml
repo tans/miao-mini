@@ -1,0 +1,62 @@
+<view class="works-container">
+  <!-- 作品网格 -->
+  <view class="works-grid" wx:if="{{works.length > 0}}">
+    <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
+      <view class="work-cover-wrap">
+        <image wx:if="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
+        <video
+          wx:elif="{{item.isVideo && item.previewVideoSrc}}"
+          class="work-cover work-video-preview"
+          src="{{item.previewVideoSrc}}"
+          objectFit="cover"
+          autoplay="{{false}}"
+          loop="{{false}}"
+          muted="{{true}}"
+          controls="{{false}}"
+          show-center-play-btn="{{false}}"
+          show-play-btn="{{false}}"
+          show-fullscreen-btn="{{false}}"
+          show-mute-btn="{{false}}"
+          enable-play-gesture="{{false}}"
+          enable-progress-gesture="{{false}}"
+        ></video>
+        <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
+          <view class="fallback-badge">创作说明</view>
+          <text class="fallback-summary">{{item.fallbackSummary}}</text>
+          <text class="fallback-title">{{item.task_title || item.title}}</text>
+        </view>
+        <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
+        <view class="media-badge" wx:if="{{item.isVideo}}">
+          <view class="media-play-icon"></view>
+        </view>
+      </view>
+
+      <view class="work-info">
+        <text class="work-title">{{item.task_title || item.title}}</text>
+        <view class="work-meta">
+          <view class="work-author">
+            <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
+            <text class="author-name">{{item.creator_name || '创作者'}}</text>
+          </view>
+          <view class="work-like-count">
+            <text class="like-icon">❤</text>
+            <text class="like-count-value">{{item.likesCount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && works.length === 0}}">
+    <view class="empty-icon">📦</view>
+    <text class="empty-text">暂无已购作品</text>
+    <text class="empty-hint">采纳的作品将显示在这里</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <mp-loading type="circle"></mp-loading>
+    <text>加载中...</text>
+  </view>
+</view>

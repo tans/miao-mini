@@ -224,6 +224,12 @@ Page({
     });
   },
 
+  goPurchasedWorks() {
+    this._ensureLogin(() => {
+      wx.navigateTo({ url: '/pages/employer/purchased-works/index' });
+    });
+  },
+
   goAppeal() {
     this._ensureLogin(() => {
       wx.showToast({ title: '申诉功能开发中', icon: 'none' });
