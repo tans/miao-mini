@@ -45,7 +45,7 @@ Page({
     sort: 'latest',
     keyword: '',
     searchValue: '',
-    searchBarHidden: false,
+    searchBarHidden: true,
     activeTag: '全部',
     tags: TAG_OPTIONS,
     page: 1,
