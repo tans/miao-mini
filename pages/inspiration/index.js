@@ -68,19 +68,20 @@ Page({
   goDetail(e) {
     if (this.navigating) return;
     const id = e.currentTarget.dataset.id;
-    const isVideo = e.currentTarget.dataset.isvideo;
+    const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
 
-    // 视频作品直接播放，不跳转
-    if (isVideo) {
+    // 非视频卡片显示"作品预览开发中"
+    if (!isVideo) {
+      this.navigating = true;
+      wx.showToast({ title: '作品预览开发中', icon: 'none' });
+      setTimeout(() => {
+        this.navigating = false;
+      }, 400);
       return;
     }
 
-    this.navigating = true;
-    wx.showToast({ title: '作品预览开发中', icon: 'none' });
-    setTimeout(() => {
-      this.navigating = false;
-    }, 400);
+    // 视频卡片不跳转，让视频在当前页播放
   },
 
   goHome() {
