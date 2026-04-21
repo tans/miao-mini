@@ -16,23 +16,16 @@ Page({
       this.setData({ taskId: options.taskId });
       this.loadTaskInfo(options.taskId);
     }
-    this.initMockData();
   },
 
   loadTaskInfo(taskId) {
-  },
-
-  initMockData() {
-    const mockTask = {
-      id: 'CC-20260418-000126',
-      title: '高端楼盘春日氛围视频',
-      unitPrice: 100,
-      awardPrice: 10,
-      videoAspect: '9:16 竖屏',
-      videoResolution: '1080P',
-      videoDuration: '30s',
-    };
-    this.setData({ task: mockTask });
+    Api.getClaimByTaskId(taskId).then(res => {
+      if (res.data && res.data.claim) {
+        this.setData({ task: res.data.claim.task || res.data.claim });
+      }
+    }).catch(err => {
+      console.error('加载任务信息失败:', err);
+    });
   },
 
   chooseVideo() {
@@ -75,11 +68,30 @@ Page({
       return;
     }
 
+    const claimId = this.data.task.claim_id || this.data.task.id;
+    if (!claimId) {
+      wx.showToast({ title: '任务信息不完整', icon: 'none' });
+      return;
+    }
+
     this.setData({ isSubmitting: true });
     wx.showLoading({ title: '上传中...' });
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const videoUrl = await Api.uploadVideo(this.data.videoUrl);
+      wx.showLoading({ title: '提交中...' });
+
+      const submitData = {
+        content: this.data.description,
+        materials: [{
+          file_name: 'video.mp4',
+          file_path: videoUrl,
+          file_type: 'video',
+        }],
+      };
+
+      await Api.submitClaim(claimId, submitData);
+
       wx.hideLoading();
       wx.showToast({ title: '提交成功', icon: 'success' });
       setTimeout(() => {
@@ -87,7 +99,7 @@ Page({
       }, 1500);
     } catch (err) {
       wx.hideLoading();
-      wx.showToast({ title: '提交失败', icon: 'none' });
+      wx.showToast({ title: err.message || '提交失败', icon: 'none' });
     } finally {
       this.setData({ isSubmitting: false });
     }
