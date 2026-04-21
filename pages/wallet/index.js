@@ -93,7 +93,7 @@ Page({
   },
 
   goRecharge() {
-    wx.showToast({ title: '充值功能开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/employer/recharge/index' });
   },
 
   goWithdraw() {

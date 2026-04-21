@@ -312,6 +312,10 @@ const Api = {
     return this.request('GET', '/creator/wallet');
   },
 
+  recharge(amount) {
+    return this.request('POST', '/business/recharge', { amount });
+  },
+
   getTransactions() {
     return this.request('GET', '/creator/transactions');
   },
