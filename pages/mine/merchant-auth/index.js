@@ -94,6 +94,12 @@ Page({
       wx.showToast({ title: '请输入联系电话', icon: 'none' });
       return;
     }
+    // 手机号格式校验（11位手机号或带区号的固话）
+    const phoneRegex = /^1[3-9]\d{9}$|^0\d{2,3}-?\d{7,8}$/;
+    if (!phoneRegex.test(contactPhone.trim())) {
+      wx.showToast({ title: '请输入正确的联系电话', icon: 'none' });
+      return;
+    }
     if (!licenseUrl) {
       wx.showToast({ title: '请上传营业执照', icon: 'none' });
       return;
