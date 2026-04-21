@@ -361,6 +361,16 @@ const Api = {
     return this.request('GET', '/inspirations' + qs, null, true);
   },
 
+  getInspirationList(params = {}) {
+    const q = [];
+    if (params.category && params.category !== 'all') q.push(`category=${encodeURIComponent(params.category)}`);
+    if (params.sort && params.sort !== 'default') q.push(`sort=${encodeURIComponent(params.sort)}`);
+    if (params.page) q.push(`page=${params.page}`);
+    if (params.limit) q.push(`limit=${params.limit}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/inspirations' + qs, null, true);
+  },
+
   getBusinessWorks(params = {}) {
     const q = [];
     if (params.sort) q.push(`sort=${encodeURIComponent(params.sort)}`);

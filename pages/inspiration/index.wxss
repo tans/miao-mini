@@ -227,3 +227,45 @@
 .tab-text.active {
   color: #ef8802;
 }
+
+/* 视频预览元素 */
+.card-video-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #f1f3f8, #dde4ef);
+  z-index: 1;
+}
+
+.cover-tap-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: transparent;
+}
+
+.media-badge {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  width: 56rpx;
+  height: 56rpx;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(28, 31, 40, 0.42);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.media-play-icon {
+  width: 0;
+  height: 0;
+  border-top: 12rpx solid transparent;
+  border-bottom: 12rpx solid transparent;
+  border-left: 18rpx solid #fff;
+  margin-left: 6rpx;
+}

@@ -90,7 +90,10 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 2300,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '镜头研究社'
+        authorName: '镜头研究社',
+        isVideo: true,
+        previewVideoSrc: 'https://v.megajinghua.com/template/20250421/1587627825767211008/transcode/1f65a77dd7d94e1593e7c3ea7a3ad8f4.mp4',
+        displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg'
       },
       {
         id: 2,
@@ -98,7 +101,8 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 1800,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '美食摄影君'
+        authorName: '美食摄影君',
+        isVideo: false
       },
       {
         id: 3,
@@ -106,7 +110,10 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 1200,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '旅拍达人'
+        authorName: '旅拍达人',
+        isVideo: true,
+        previewVideoSrc: 'https://v.megajinghua.com/template/20250421/1587627825767211008/transcode/1f65a77dd7d94e1593e7c3ea7a3ad8f4.mp4',
+        displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg'
       },
       {
         id: 4,
@@ -114,7 +121,8 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 980,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '地产视频圈'
+        authorName: '地产视频圈',
+        isVideo: false
       },
       {
         id: 5,
@@ -122,7 +130,10 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 2100,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '生活记录者'
+        authorName: '生活记录者',
+        isVideo: true,
+        previewVideoSrc: 'https://v.megajinghua.com/template/20250421/1587627825767211008/transcode/1f65a77dd7d94e1593e7c3ea7a3ad8f4.mp4',
+        displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg'
       },
       {
         id: 6,
@@ -130,7 +141,8 @@ Page({
         cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
         likes: 3500,
         authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '美妆控'
+        authorName: '美妆控',
+        isVideo: false
       }
     ];
   }
