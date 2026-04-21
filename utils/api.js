@@ -317,6 +317,20 @@ const Api = {
     return this.request('GET', `/creator/claim/by-task/${taskId}`);
   },
 
+  // Appeals
+  createAppeal(data) {
+    // data: { type: 1, target_id: claimId, reason: string, evidence: string (optional, image urls joined by comma) }
+    return this.request('POST', '/appeals', data);
+  },
+
+  getAppeals(params = {}) {
+    const q = [];
+    if (params.limit) q.push(`limit=${params.limit}`);
+    if (params.offset) q.push(`offset=${params.offset}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/appeals' + qs);
+  },
+
   // Wallet
   getWallet() {
     return this.request('GET', '/creator/wallet');

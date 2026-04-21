@@ -22,11 +22,38 @@ Page({
   },
 
   loadMyTasks() {
-    // TODO: 加载我的任务列表
+    Api.getMyClaims({ page: 1, limit: 100 }).then(res => {
+      if (res.data && res.data.length > 0) {
+        // Map claims to task list for picker
+        const taskList = res.data.map(claim => ({
+          id: claim.id,
+          task_id: claim.task_id,
+          title: claim.task_title,
+          status: claim.status
+        }));
+        this.setData({ taskList });
+      }
+    }).catch(err => {
+      wx.showToast({ title: err.message || '加载任务失败', icon: 'none' });
+    });
   },
 
   loadAppealRecords() {
-    // TODO: 加载申诉记录
+    Api.getAppeals({ limit: 50, offset: 0 }).then(res => {
+      if (res.data && res.data.appeals) {
+        const records = res.data.appeals.map(appeal => ({
+          id: appeal.id,
+          taskTitle: '任务申诉', // API doesn't return task title, using generic text
+          reason: appeal.reason,
+          status: appeal.status,
+          statusText: appeal.status_str || (appeal.status === 1 ? '待处理' : '已处理'),
+          createTime: appeal.created_at ? appeal.created_at.split('T')[0] : ''
+        }));
+        this.setData({ records });
+      }
+    }).catch(err => {
+      wx.showToast({ title: err.message || '加载申诉记录失败', icon: 'none' });
+    });
   },
 
   onTaskChange(e) {
@@ -79,13 +106,40 @@ Page({
     }
 
     wx.showLoading({ title: '提交中...' });
-    // TODO: 调用 API 提交申诉
-    setTimeout(() => {
+
+    // Upload images first if any, then submit appeal
+    const uploadAndSubmit = async () => {
+      let evidence = '';
+      if (this.data.uploadImages.length > 0) {
+        const uploadedUrls = [];
+        for (const img of this.data.uploadImages) {
+          try {
+            const url = await Api.uploadImage(img);
+            uploadedUrls.push(url);
+          } catch (e) {
+            console.error('Image upload failed:', e);
+          }
+        }
+        evidence = uploadedUrls.join(',');
+      }
+
+      return Api.createAppeal({
+        type: 1, // 任务申诉
+        target_id: this.data.selectedTask.id, // claim ID
+        reason: this.data.selectedType.name + ': ' + this.data.reason,
+        evidence: evidence
+      });
+    };
+
+    uploadAndSubmit().then(res => {
       wx.hideLoading();
       wx.showToast({ title: '申诉已提交', icon: 'success' });
-      this.setData({ reason: '', uploadImages: [] });
+      this.setData({ reason: '', uploadImages: [], selectedTask: null, selectedType: null });
       this.loadAppealRecords();
-    }, 1500);
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '提交失败', icon: 'none' });
+    });
   },
 
   goBack() {
