@@ -8,6 +8,8 @@ Page({
     loading: true,
     materials: [],
     currentTab: 'detail',
+    showEditJimeng: false,
+    editJimengLink: '',
   },
 
   onLoad(options) {
@@ -66,5 +68,38 @@ Page({
   previewMaterial(e) {
     const url = e.currentTarget.dataset.url;
     wx.previewImage({ urls: [url], current: url });
+  },
+
+  showJimengTutorial() {
+    wx.showToast({ title: '教程页面开发中', icon: 'none' });
+  },
+
+  onJimengLinkInput(e) {
+    this.setData({ editJimengLink: e.detail.value });
+  },
+
+  async updateJimengLink() {
+    const { task, editJimengLink } = this.data;
+    if (!editJimengLink || editJimengLink.length < 10) {
+      wx.showToast({ title: '请输入有效的邀请链接', icon: 'none' });
+      return;
+    }
+    wx.showLoading({ title: '更新中...' });
+    try {
+      await Api.updateTaskJimengLink(task.id, editJimengLink);
+      wx.showToast({ title: '更新成功', icon: 'success' });
+      this.setData({
+        'task.jimeng_link': editJimengLink,
+        showEditJimeng: false
+      });
+    } catch (err) {
+      wx.showToast({ title: '更新失败: ' + (err.message || '未知错误'), icon: 'none' });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  toggleEditJimeng() {
+    this.setData({ showEditJimeng: !this.data.showEditJimeng, editJimengLink: this.data.task.jimeng_link || '' });
   }
 });

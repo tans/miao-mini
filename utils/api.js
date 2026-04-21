@@ -260,9 +260,22 @@ const Api = {
     return this.request('GET', `/business/tasks/${taskId}/claims`);
   },
 
-  reviewClaim(claimId, result) {
-    // result: 1=通过, 0=拒绝
-    return this.request('PUT', `/business/claim/${claimId}/review`, { result });
+  reviewClaim(claimId, result, reason) {
+    // result: 1=通过, 2=拒绝, 3=举报
+    const data = { result };
+    if (reason) data.reason = reason;
+    return this.request('PUT', `/business/claim/${claimId}/review`, data);
+  },
+
+  batchReviewClaim(claimIds, result, reason) {
+    // result: 1=通过, 2=拒绝, 3=举报
+    const data = { claim_ids: claimIds, result };
+    if (reason) data.reason = reason;
+    return this.request('PUT', `/business/claims/batch-review`, data);
+  },
+
+  updateTaskJimengLink(taskId, jimengLink) {
+    return this.request('PUT', `/business/tasks/${taskId}`, { jimeng_link: jimengLink });
   },
 
   // Creator
