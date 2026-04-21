@@ -2,11 +2,15 @@
 <view class="mine-container">
   <!-- 顶部导航栏 -->
   <view class="nav-bar">
-    <view class="nav-left" bindtap="goBack">
-      <image class="nav-back" src="/assets/icons/back.png" />
+    <view class="nav-left">
+      <text class="nav-title">我的</text>
     </view>
-    <text class="nav-title">我的</text>
-    <view class="nav-right"></view>
+    <view class="nav-right">
+      <view class="nav-capsule">
+        <image class="nav-icon" src="/assets/icons/notice.png" />
+        <view class="nav-dot" wx:if="{{noticeCount > 0}}"></view>
+      </view>
+    </view>
   </view>
 
   <!-- 顶部区域 -->
@@ -16,10 +20,12 @@
       <view class="user-info-row">
         <image class="user-avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
         <view class="user-detail">
-          <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
+          <view class="user-name-row">
+            <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
+            <image class="user-arrow" src="../../images/mine/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" />
+          </view>
           <text class="user-id">ID：{{user.id || '--'}}</text>
         </view>
-        <image class="user-arrow" src="../../images/mine/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" />
       </view>
       <view class="user-level-row">
         <text class="level-badge">Lv.{{creatorStats.level || 0}} {{creatorStats.level_name || '创作者'}}</text>
@@ -74,7 +80,9 @@
           <image class="zone-icon" src="../../images/mine/FigmaDDSSlicePNGc19883119d2024c369461474511364ea.png" />
           <text class="zone-item-title">商家认证</text>
           <view class="zone-action">
-            <text class="action-text">去认证</text>
+            <view class="action-tag">
+              <text class="action-tag-text">去认证</text>
+            </view>
             <image class="zone-arrow" src="../../images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
           </view>
         </view>
