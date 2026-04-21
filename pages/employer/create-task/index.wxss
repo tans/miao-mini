@@ -143,14 +143,6 @@
   margin: 20rpx 0 0 -12rpx;
 }
 
-.flow-label {
-  position: absolute;
-  right: 0;
-  top: 98rpx;
-  width: 62rpx;
-  height: 62rpx;
-}
-
 /* 表单卡片 */
 .form-card {
   background: #fff;
