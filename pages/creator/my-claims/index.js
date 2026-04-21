@@ -123,7 +123,8 @@ Page({
 
   goTaskDetail(e) {
     const taskId = e.currentTarget.dataset.task || e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/task-detail/index?id=${taskId}` });
+    // 任务详情已拆分至商家/创作者视角，导航至创作者任务详情
+    wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${taskId}` });
   },
 
   getClaimStatusText(status) {
