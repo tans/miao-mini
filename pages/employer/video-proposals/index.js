@@ -316,7 +316,7 @@ Page({
     this.setData({ batchMode: !this.data.batchMode, selectedClaims: {}, selectedCount: 0 });
   },
 
-  downloadSelected() {
+  async downloadSelected() {
     const selectedClaims = this.data.filteredClaims.filter(c => this.data.selectedClaims[c.id]);
     if (selectedClaims.length === 0) {
       wx.showToast({ title: '请先选择作品', icon: 'none' });
@@ -326,15 +326,76 @@ Page({
     const urls = [];
     selectedClaims.forEach(claim => {
       if (claim.previewImages) {
-        claim.previewImages.forEach(img => urls.push(img));
+        claim.previewImages.forEach(img => urls.push({ url: img, name: claim.creatorName }));
       }
     });
     if (urls.length === 0) {
       wx.showToast({ title: '没有可下载的内容', icon: 'none' });
       return;
     }
-    wx.showToast({ title: `开始下载 ${urls.length} 个文件`, icon: 'none' });
-    // Note: WeChat doesn't support bulk download directly, show message
+
+    wx.showLoading({ title: `正在下载 0/${urls.length}...` });
+    let successCount = 0;
+    let failCount = 0;
+
+    for (let i = 0; i < urls.length; i++) {
+      const { url } = urls[i];
+      try {
+        const [tempFilePath] = await this.downloadFile(url);
+        await this.saveImageToAlbum(tempFilePath);
+        successCount++;
+        wx.showLoading({ title: `正在下载 ${successCount}/${urls.length}...` });
+      } catch (err) {
+        console.error(`下载失败: ${url}`, err);
+        failCount++;
+      }
+    }
+
+    wx.hideLoading();
+    const message = failCount === 0
+      ? `已下载 ${successCount} 个文件`
+      : `成功 ${successCount} 个，失败 ${failCount} 个`;
+    wx.showToast({ title: message, icon: 'none' });
+  },
+
+  downloadFile(url) {
+    return new Promise((resolve, reject) => {
+      wx.downloadFile({
+        url,
+        success: (res) => {
+          if (res.statusCode === 200 && res.tempFilePath) {
+            resolve([res.tempFilePath]);
+          } else {
+            reject(new Error('下载失败'));
+          }
+        },
+        fail: (err) => reject(err)
+      });
+    });
+  },
+
+  saveImageToAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+      wx.saveImageToPhotosAlbum({
+        filePath,
+        success: () => resolve(),
+        fail: (err) => {
+          if (err.errMsg && err.errMsg.includes('auth deny')) {
+            wx.showModal({
+              title: '提示',
+              content: '需要您授权保存图片到相册',
+              confirmText: '去授权',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.openSetting();
+                }
+              }
+            });
+          }
+          reject(err);
+        }
+      });
+    });
   },
 
   previewImages(e) {
