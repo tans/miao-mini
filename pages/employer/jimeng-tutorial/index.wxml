@@ -1,0 +1,75 @@
+<view class="tutorial-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back-white.png" />
+    </view>
+    <text class="nav-title">即梦使用教程</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 简介 -->
+  <view class="intro-section">
+    <view class="intro-icon">
+      <image src="/assets/images/jimeng-logo.png" mode="aspectFit" />
+    </view>
+    <view class="intro-text">
+      <text class="intro-title">即梦AI</text>
+      <text class="intro-desc">字节跳动旗下AI绘画平台，助您快速生成创意图片和视频</text>
+    </view>
+  </view>
+
+  <!-- 步骤 -->
+  <view class="steps-section">
+    <view class="step-item">
+      <view class="step-num">1</view>
+      <view class="step-content">
+        <text class="step-title">获取即梦邀请链接</text>
+        <text class="step-desc">联系平台客服或通过商家获取即梦AI邀请链接</text>
+      </view>
+    </view>
+    <view class="step-item">
+      <view class="step-num">2</view>
+      <view class="step-content">
+        <text class="step-title">注册/登录即梦账号</text>
+        <text class="step-desc">打开邀请链接，使用手机号登录或注册即梦账号</text>
+      </view>
+    </view>
+    <view class="step-item">
+      <view class="step-num">3</view>
+      <view class="step-content">
+        <text class="step-title">输入创作描述</text>
+        <text class="step-desc">在AI绘画界面输入您想要的图片描述词，即梦将自动生成图片</text>
+      </view>
+    </view>
+    <view class="step-item">
+      <view class="step-num">4</view>
+      <view class="step-content">
+        <text class="step-title">生成并下载图片</text>
+        <text class="step-desc">选择喜欢的风格和尺寸，点击生成后下载高清图片</text>
+      </view>
+    </view>
+    <view class="step-item">
+      <view class="step-num">5</view>
+      <view class="step-content">
+        <text class="step-title">将图片链接填入任务</text>
+        <text class="step-desc">将生成的图片或图片链接填写到创意喵任务发布页的即梦链接输入框中</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 注意事项 -->
+  <view class="tips-section">
+    <view class="tips-title">注意事项</view>
+    <view class="tips-list">
+      <text class="tips-item">• 请确保您使用的图片不侵犯他人知识产权</text>
+      <text class="tips-item">• 生成后的图片建议保存原图以便后续修改</text>
+      <text class="tips-item">• 即梦VIP用户可享受更高质量的生成服务</text>
+    </view>
+  </view>
+
+  <!-- 联系客服 -->
+  <view class="contact-section">
+    <button class="contact-btn" bindtap="contactService">如有疑问请联系客服</button>
+  </view>
+</view>

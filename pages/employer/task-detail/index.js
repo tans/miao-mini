@@ -86,7 +86,7 @@ Page({
   },
 
   showJimengTutorial() {
-    wx.showToast({ title: '教程页面开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/employer/jimeng-tutorial/index' });
   },
 
   onJimengLinkInput(e) {
