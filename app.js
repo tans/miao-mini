@@ -5,6 +5,7 @@ App({
     token: null,
     apiBase: '', // 动态设置
     worksMode: 'public',
+    statusBarHeight: 20,
   },
 
   // 登录锁，防止 onLaunch 和 onShow 并发登录
@@ -12,6 +13,10 @@ App({
   _loginPromise: null,
 
   onLaunch() {
+    // 获取状态栏高度
+    const info = wx.getSystemInfoSync();
+    this.globalData.statusBarHeight = info.statusBarHeight || 20;
+
     // 检测运行环境：只有微信开发者工具才用 localhost
     const info = wx.getDeviceInfo();
     const isDevtools = info.platform === 'devtools';

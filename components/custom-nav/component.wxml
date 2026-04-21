@@ -1,0 +1,20 @@
+<view class="custom-nav" style="padding-top: {{statusBarHeight}}px;">
+  <view class="nav-content">
+    <!-- 左侧消息图标 -->
+    <view class="nav-left" bindtap="onMessageTap">
+      <image src="/images/lanhu_shouye/FigmaDDSSlicePNG5f1862ce8b8fd98e7bbbf34fe80d8f63.png" class="msg-icon" />
+      <view class="msg-badge" wx:if="{{msgCount > 0}}">{{msgCount > 99 ? '99+' : msgCount}}</view>
+    </view>
+
+    <!-- 中间标题区域 -->
+    <view class="nav-center">
+      <view class="title-wrap">
+        <text class="title-text">{{title}}</text>
+        <text class="subtitle-text" wx:if="{{subtitle}}">{{subtitle}}</text>
+      </view>
+    </view>
+
+    <!-- 右侧占位，保持居中 -->
+    <view class="nav-right"></view>
+  </view>
+</view>

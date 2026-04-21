@@ -29,7 +29,8 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "创意喵",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": true,
+    "navigationStyle": "custom"
   },
   "tabBar": {
     "color": "#999",
