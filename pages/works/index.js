@@ -45,7 +45,7 @@ Page({
     sort: 'latest',
     keyword: '',
     searchValue: '',
-    searchBarHidden: true,
+    searchBarHidden: false,
     activeTag: '全部',
     tags: TAG_OPTIONS,
     page: 1,
@@ -65,45 +65,7 @@ Page({
   },
 
   onPageScroll(e) {
-    const scrollTop = Math.max((e && e.scrollTop) || 0, 0);
-
-    if (scrollTop <= SEARCH_BAR_SHOW_AT_TOP) {
-      if (this.data.searchBarHidden) {
-        this.setData({ searchBarHidden: false });
-      }
-      this._resetSearchBarScrollState(scrollTop);
-      return;
-    }
-
-    const delta = scrollTop - this._lastScrollTop;
-    this._lastScrollTop = scrollTop;
-
-    if (Math.abs(delta) < 2) {
-      return;
-    }
-
-    const direction = delta > 0 ? 'down' : 'up';
-    if (direction !== this._scrollDirection) {
-      this._scrollDirection = direction;
-      this._scrollAnchorTop = scrollTop;
-      return;
-    }
-
-    const travelled = Math.abs(scrollTop - this._scrollAnchorTop);
-    if (travelled < SEARCH_BAR_TOGGLE_DISTANCE) {
-      return;
-    }
-
-    if (direction === 'down' && !this.data.searchBarHidden) {
-      this.setData({ searchBarHidden: true });
-      this._scrollAnchorTop = scrollTop;
-      return;
-    }
-
-    if (direction === 'up' && this.data.searchBarHidden) {
-      this.setData({ searchBarHidden: false });
-      this._scrollAnchorTop = scrollTop;
-    }
+    // 搜索栏固定显示，不随滚动隐藏
   },
 
   onPullDownRefresh() {
