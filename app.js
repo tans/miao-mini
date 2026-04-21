@@ -55,16 +55,37 @@ App({
   },
 
   async _doSilentLogin() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       wx.login({
         success: (res) => {
-          const code = res.code || 'dev_' + Date.now();
+          if (!res.code) {
+            wx.showModal({
+              title: '登录失败',
+              content: '微信登录code无效，请检查网络后重试',
+              showCancel: false,
+            });
+            return reject(new Error('invalid code'));
+          }
           const Api = require('./utils/api.js');
-          Api.loginByWechat(code)
+          Api.loginByWechat(res.code)
             .then(() => resolve())
-            .catch(() => resolve()); // 静默失败不影响主流程
+            .catch((err) => {
+              wx.showModal({
+                title: '登录失败',
+                content: '服务器错误，请稍后重试',
+                showCancel: false,
+              });
+              reject(err);
+            });
         },
-        fail: () => resolve(), // 微信登录失败也继续
+        fail: () => {
+          wx.showModal({
+            title: '登录失败',
+            content: '无法连接微信，请检查网络后重试',
+            showCancel: false,
+          });
+          reject(new Error('wx.login failed'));
+        },
       });
     });
   },
