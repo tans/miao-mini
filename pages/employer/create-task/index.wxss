@@ -37,22 +37,22 @@
 /* 表单滚动区域 */
 .form-scroll {
   flex: 1;
-  height: calc(100vh - 88rpx);
 }
 
 /* 流程图 */
 .flow-section {
   background: #fff;
-  margin-bottom: 24rpx;
-  padding: 32rpx 24rpx 24rpx;
-  position: relative;
+  margin: 32rpx 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0px 10rpx 26rpx rgba(20,42,31,0.08);
+  padding-bottom: 24rpx;
 }
 
 .flow-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24rpx;
+  padding: 32rpx 32rpx 24rpx;
 }
 
 .flow-header-left {
@@ -83,12 +83,14 @@
   font-size: 24rpx;
   font-weight: 500;
   color: #ef8802;
+  margin-left: 206rpx;
 }
 
-.flow-item {
+.flow-body {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 56rpx;
   margin-bottom: 34rpx;
 }
 
@@ -102,9 +104,6 @@
 .flow-icon-wrapper {
   width: 60rpx;
   height: 60rpx;
-  border-radius: 50%;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAy1JREFUeAGdV1Fu1DAQnXFSUfhKRflA/KQfIPqDlhNQTlBu0PYE256g5QTdG7C9AZyAcgLKTyUQ0kZ89aPSrhASsLvJdOwkzsTxJtmONGvPeDxvxvY4XoQeRJOvEWyGAwhoHwj3ACnmNjKDSDP+vYKMOYUv+OzVxz4+sRPwUXgMCodAEDG3zNADxiCBNLsACMf4dDdps/aD3lwfc4anbJID6h9sjTPHrSjhgM9we/cC+gLT7fWIl3LoNydYSd5hHOGTlyc+Uwf0+5ibA/BS61q3EI5x+8XRSmC6/TFizbCXf2ODQpAu3bSN3QgfPz+paXLQn4csfagBygDImeFitdlYmU4YfGRVNJ1weWSfuRtDgzr2dT2aAf7ewa3XM1UoOFsVM4NhDVb2UfYFlzbS1vZx1Tyu/WgINuNZMuGk4jxB1Evi7LFcO7fv3c/CRzFuz4PpzHh1d0Ka/nrHtnENyIA7vkh2UBwsbB52LSus5mA5bnT6xhuEEKg39oKQGaCDanFUno0nyYbcqAwdBM9VG/sh9wciJJ+1UzpOf20yK7AXAgQDE4WvTko1FoHJfZMB2jMhxshduRrFSH9uqAbScWZaK0vO89WyiDfMy6AcEBnJDNDJwMrY9KywfgakjJW/kD8GXNQQVQMyXNEvx2zkPWytumHDF4hSSb3I0XNRiIuBsNpzFAyy9V0iNf2VBr6sRSrBdKu0XEzQrSoclS3IIEs9ijGs5lofAQMTfKoBggd8lQyO0xKstFFSlnZwiUTTCP6rCWsj72mmHi+PtYgS3Ix2FOIWHy41WnnxqwBaPxbu+ajtsXL2W3MwBig212S92MizrgUHjfpr1XsTLNrcPoFs8RYfbiWmiE3WGbyv9m5FRnJffZ9I95yU2arSJjjToODGS+m/c8jo2CoQmx+EexM/+jY2m08fCz7/O+YID7rfPW6/zQbGGD44gi6idHFO6ZxoKTh120XBnrGltJmfwzrEEw8pW07yycuKs4KNvHBkyYspgw7hPkREMXs4pSydMFM3Z7qdmjlEUZvv3jcDO9rnZo97/HAwj4eoeE/pP20JH8RLbvUftm+IOOvydwdFH7pPV9g+vgAAAABJRU5ErkJggg==) 100% no-repeat;
-  background-size: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,7 +113,6 @@
 .flow-step-icon {
   width: 36rpx;
   height: 36rpx;
-  margin: 12rpx 0 0 12rpx;
 }
 
 .flow-step-text {
@@ -128,18 +126,21 @@
   font-weight: 900;
   color: #333;
   white-space: nowrap;
+  text-align: center;
 }
 
 .flow-step-sub {
   font-size: 20rpx;
   color: #666;
   white-space: nowrap;
+  text-align: center;
 }
 
 .flow-arrow {
   width: 68rpx;
   height: 20rpx;
   flex-shrink: 0;
+  margin: 20rpx 0 0 -12rpx;
 }
 
 .flow-label {
@@ -153,13 +154,13 @@
 /* 表单卡片 */
 .form-card {
   background: #fff;
+  margin: 0 24rpx 24rpx;
   padding: 32rpx;
-  margin-bottom: 24rpx;
+  border-radius: 16rpx;
 }
 
 .card-with-shadow {
-  box-shadow: 0px 2px 8px rgba(17,17,17,0.04);
-  border-radius: 16rpx;
+  box-shadow: 0px 2rpx 8rpx rgba(17,17,17,0.04);
 }
 
 .card-title {
@@ -431,7 +432,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 120rpx;
 }
 
 .tutorial-icon {
@@ -440,11 +440,10 @@
 }
 
 .jimeng-tutorial text {
-  position: absolute;
-  top: 170rpx;
   font-size: 24rpx;
   font-weight: 900;
   color: #fff;
+  margin-top: 120rpx;
 }
 
 .jimeng-tips {
@@ -505,7 +504,7 @@
   align-items: center;
   height: 90rpx;
   padding: 0 32rpx;
-  margin-bottom: 24rpx;
+  margin: 32rpx 0 0 0;
 }
 
 .picker-label {
@@ -539,7 +538,7 @@
   justify-content: center;
   align-items: center;
   height: 90rpx;
-  margin-bottom: 24rpx;
+  margin: 24rpx 0 0 0;
 }
 
 .input-label {
@@ -578,6 +577,7 @@
 .tips-notice text {
   font-size: 24rpx;
   color: #8c8c98;
+  margin-left: 32rpx;
 }
 
 /* 预算框 */
@@ -585,7 +585,7 @@
   background: #eef5ff;
   border-radius: 16rpx;
   padding: 32rpx;
-  margin-top: 24rpx;
+  margin: 24rpx 0 32rpx 0;
 }
 
 .budget-row {
@@ -645,7 +645,7 @@
 /* 提交区域 */
 .submit-section {
   padding: 26rpx 32rpx;
-  margin-bottom: 40rpx;
+  margin: 0 0 40rpx 0;
   position: relative;
 }
 
@@ -670,5 +670,5 @@
   height: 10rpx;
   background: rgba(17,17,17,0.92);
   border-radius: 1998rpx;
-  margin: 24rpx auto 20rpx;
+  margin: 24rpx auto 0;
 }

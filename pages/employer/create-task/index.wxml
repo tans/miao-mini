@@ -19,7 +19,7 @@
         </view>
         <text class="flow-hint">详细教程</text>
       </view>
-      <view class="flow-item">
+      <view class="flow-body">
         <view class="flow-step">
           <view class="flow-icon-wrapper">
             <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG29823902767c2a9879c703aaa86a61c9.png" />
