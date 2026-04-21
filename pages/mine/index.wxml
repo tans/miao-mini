@@ -99,7 +99,7 @@
       </view>
     </view>
 
-    <!-- 通用功能 -->
+    <!--  通用功能 -->
     <view class="zone-card">
       <view class="zone-title">通用功能</view>
       <view class="zone-items">
