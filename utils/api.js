@@ -3,12 +3,12 @@ const Api = {
   tokenKey: 'miao_token',
   userKey: 'miao_user',
 
-  // API 璇锋眰鍩虹鍦板潃锛屽彲閫氳繃 setApiBase 淇敼
+  // API 请求地址级别，可通过 setApiBase 修改
   _apiBase: '',
 
   getApiBase() {
     if (this._apiBase) return this._apiBase;
-    // 浼樺厛浣跨敤 app.globalData 涓厤缃殑鍚庣鍦板潃
+    // 优先使用 app.globalData 中配置的后端地址
     const app = getApp();
     return app && app.globalData && app.globalData.apiBase || 'https://miao-test.clawos.cc/api/v1';
   },
@@ -99,7 +99,7 @@ const Api = {
           }
         },
         fail: (err) => {
-          const msg = err && (err.message || err.errMsg) || '缃戠粶请求失败';
+          const msg = err && (err.message || err.errMsg) || '网络请求失败';
           reject(new Error(msg));
         }
       });
@@ -151,7 +151,7 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
-              // 淇濆瓨涓婁紶鏃堕棿
+              // 保存上传时间
               wx.setStorageSync('lastUploadTime', new Date().toISOString());
               // Ensure URL is absolute for WeChat image component
               const url = data.data.url;
@@ -163,17 +163,17 @@ const Api = {
                 resolve(url);
               }
             } else {
-              const msg = (data && data.message) || '涓婁紶澶辫触';
+              const msg = (data && data.message) || '上传失败';
               wx.showToast({ title: msg, icon: 'none' });
               reject(new Error(msg));
             }
           } catch (e) {
-            wx.showToast({ title: '涓婁紶鍝嶅簲瑙ｆ瀽澶辫触', icon: 'none' });
+            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
             reject(e);
           }
         },
         fail: (err) => {
-          wx.showToast({ title: '涓婁紶澶辫触', icon: 'none' });
+          wx.showToast({ title: '上传失败', icon: 'none' });
           reject(err);
         },
       });
@@ -198,7 +198,7 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
-              // 淇濆瓨涓婁紶鏃堕棿
+              // 保存上传时间
               wx.setStorageSync('lastUploadTime', new Date().toISOString());
               // Ensure URL is absolute for WeChat video component
               const url = data.data.url;
@@ -209,17 +209,17 @@ const Api = {
                 resolve(url);
               }
             } else {
-              const msg = (data && data.message) || '涓婁紶澶辫触';
+              const msg = (data && data.message) || '上传失败';
               wx.showToast({ title: msg, icon: 'none' });
               reject(new Error(msg));
             }
           } catch (e) {
-            wx.showToast({ title: '涓婁紶鍝嶅簲瑙ｆ瀽澶辫触', icon: 'none' });
+            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
             reject(e);
           }
         },
         fail: (err) => {
-          wx.showToast({ title: '涓婁紶澶辫触', icon: 'none' });
+          wx.showToast({ title: '上传失败', icon: 'none' });
           reject(err);
         },
       });
