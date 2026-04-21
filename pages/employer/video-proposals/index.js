@@ -238,7 +238,7 @@ Page({
   async reviewClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     const result = Number(e.currentTarget.dataset.result);
-    if (!claimId || ![1, 2, 3].includes(result)) {
+    if (!claimId || ![2, 3].includes(result)) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
@@ -251,7 +251,7 @@ Page({
 
     try {
       await Api.reviewClaim(claimId, result, reason);
-      const msg = result === 1 ? '已采纳' : result === 2 ? '已淘汰' : '已举报';
+      const msg = result === 2 ? '已淘汰' : '已举报';
       wx.showToast({ title: msg, icon: 'success' });
       this._initPage();
     } catch (err) {
@@ -276,7 +276,7 @@ Page({
 
   async batchReview(e) {
     const action = e.currentTarget.dataset.action;
-    if (![1, 2, 3].includes(action)) return;
+    if (![2, 3].includes(action)) return;
 
     const selectedClaims = this.data.filteredClaims.filter(c => c.selected);
     if (selectedClaims.length === 0) {
@@ -294,7 +294,7 @@ Page({
     try {
       const claimIds = selectedClaims.map(c => c.id);
       await Api.batchReviewClaim(claimIds, action, reason);
-      const msg = action === 1 ? '批量采纳成功' : action === 2 ? '批量淘汰成功' : '批量举报成功';
+      const msg = action === 2 ? '批量淘汰成功' : '批量举报成功';
       wx.showToast({ title: msg, icon: 'success' });
       this.setData({ batchMode: false, selectedClaims: {} });
       this._initPage();
