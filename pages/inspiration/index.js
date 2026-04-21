@@ -8,6 +8,7 @@ Page({
     inspirationList: [],
     leftColumn: [],
     rightColumn: [],
+    navigating: false,
   },
 
   onLoad() {
@@ -65,8 +66,21 @@ Page({
   },
 
   goDetail(e) {
+    if (this.navigating) return;
     const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
+    const isVideo = e.currentTarget.dataset.isvideo;
+    if (!id) return;
+
+    // 视频作品直接播放，不跳转
+    if (isVideo) {
+      return;
+    }
+
+    this.navigating = true;
+    wx.showToast({ title: '作品预览开发中', icon: 'none' });
+    setTimeout(() => {
+      this.navigating = false;
+    }, 400);
   },
 
   goHome() {
