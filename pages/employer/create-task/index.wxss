@@ -101,7 +101,7 @@
   width: 96rpx;
 }
 
-.flow-icon-wrapper {
+.flow-icon-wrapper-1 {
   width: 60rpx;
   height: 60rpx;
   display: flex;
@@ -110,7 +110,15 @@
   margin-bottom: 8rpx;
 }
 
-/* Step 3 icon wrapper - circle with checkmark */
+.flow-icon-wrapper-2 {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8rpx;
+}
+
 .flow-icon-wrapper-3 {
   width: 60rpx;
   height: 60rpx;

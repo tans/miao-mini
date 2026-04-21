@@ -21,7 +21,7 @@
       </view>
       <view class="flow-body">
         <view class="flow-step">
-          <view class="flow-icon-wrapper">
+          <view class="flow-icon-wrapper-1">
             <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG29823902767c2a9879c703aaa86a61c9.png" />
           </view>
           <view class="flow-step-text">
@@ -31,7 +31,7 @@
         </view>
         <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
         <view class="flow-step">
-          <view class="flow-icon-wrapper">
+          <view class="flow-icon-wrapper-2">
             <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG552002459c165b264bfde3d79e34f6b4.png" />
           </view>
           <view class="flow-step-text">
