@@ -1,4 +1,13 @@
 <view class="proposals-container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">任务详情</text>
+    <view class="nav-right"></view>
+  </view>
+
   <!-- 标签切换 -->
   <view class="tab-switch">
     <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">

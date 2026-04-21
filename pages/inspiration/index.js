@@ -77,6 +77,10 @@ Page({
     wx.switchTab({ url: '/pages/mine/index' });
   },
 
+  goBack() {
+    wx.navigateBack({ delta: 1 });
+  },
+
   getMockData() {
     // 返回模拟数据用于开发和测试
     return [

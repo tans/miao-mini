@@ -1,4 +1,13 @@
 <view class="my-tasks-container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">任务管理</text>
+    <view class="nav-right"></view>
+  </view>
+
   <!-- 筛选标签 -->
   <view class="filter-tabs">
     <view class="filter-tab {{currentFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="switchFilter">

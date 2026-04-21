@@ -1,4 +1,13 @@
 <view class="level-page">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">创作者积分</text>
+    <view class="nav-right"></view>
+  </view>
+
   <view class="page-header">
     <text class="page-title">创作者积分体系</text>
     <text class="page-subtitle">等级越高，权益越好，佣金越低</text>

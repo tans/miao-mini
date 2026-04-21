@@ -239,4 +239,8 @@ Page({
   goCustomerService() {
     wx.showToast({ title: '客服功能开发中', icon: 'none' });
   },
+
+  goBack() {
+    wx.navigateBack({ delta: 1 });
+  },
 });
