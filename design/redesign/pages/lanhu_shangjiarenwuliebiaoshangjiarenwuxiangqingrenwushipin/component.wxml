@@ -1,30 +1,30 @@
 <view class="page">
-  <view class="box_1">
+  <view class="group_1">
     <view class="text-wrapper_1">
       <text lines="1" class="text_1">9:41</text>
     </view>
-    <view class="group_1"></view>
-    <view class="group_2"></view>
+    <view class="section_1"></view>
+    <view class="section_2"></view>
     <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
   </view>
-  <view class="box_2">
+  <view class="group_2">
     <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
     <text lines="1" class="text_2">商家任务详情</text>
     <view class="image-wrapper_1">
-      <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/0b04de2cff8b448bbfb1f8e820be717d_mergeImage.png" class="image_2"></image>
+      <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/6a3974dbbc5f4d3884ad64562ba11319_mergeImage.png" class="image_2"></image>
       <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
     </view>
   </view>
-  <view class="box_3">
+  <view class="group_3">
     <view class="text-wrapper_2">
       <text lines="1" class="text_3">任务视频</text>
       <text lines="1" class="text_4">任务详情</text>
     </view>
-    <view class="block_1">
-      <view class="group_3"></view>
+    <view class="section_3">
+      <view class="group_4"></view>
     </view>
   </view>
-  <view class="box_4">
+  <view class="group_5">
     <text lines="1" decode="true" class="text_5">已选&nbsp;2&nbsp;个作品</text>
     <view class="text-wrapper_3">
       <text lines="1" class="text_6">批量下载</text>
@@ -33,110 +33,110 @@
       <text lines="1" class="text_7">批量通过</text>
     </view>
   </view>
-  <view class="box_5">
-    <view class="box_6">
-      <view class="box_7">
-        <view class="group_4">
-          <view class="text-group_1">
-            <text lines="1" class="text_8">总投稿数</text>
-            <text lines="1" class="text_9">10</text>
-            <text lines="1" class="text_10">+12%较上期</text>
-          </view>
-        </view>
-        <view class="group_5">
-          <view class="text-group_2">
-            <text lines="1" class="text_11">总采纳数</text>
-            <text lines="1" class="text_12">3</text>
-            <text lines="1" class="text_13">30%采纳率</text>
-          </view>
-        </view>
-        <view class="group_6">
-          <text lines="1" class="text_14">总支出</text>
+  <view class="group_6">
+    <view class="block_1">
+      <view class="block_2">
+        <view class="group_7">
+          <text lines="1" class="text_8">总投稿数</text>
           <view class="text-wrapper_5">
-            <text lines="1" class="text_15">￥</text>
-            <text lines="1" class="text_16">360</text>
+            <text lines="1" class="text_9">10</text>
+            <text lines="1" class="text_10">/46</text>
           </view>
-          <text lines="1" class="text_17">-20%较上期</text>
+          <text lines="1" class="text_11">+12%较上期</text>
+        </view>
+        <view class="group_8">
+          <view class="text-group_1">
+            <text lines="1" class="text_12">总采纳数</text>
+            <text lines="1" class="text_13">3</text>
+            <text lines="1" class="text_14">30%采纳率</text>
+          </view>
+        </view>
+        <view class="group_9">
+          <text lines="1" class="text_15">总支出</text>
+          <view class="text-wrapper_6">
+            <text lines="1" class="text_16">￥</text>
+            <text lines="1" class="text_17">360</text>
+          </view>
+          <text lines="1" class="text_18">-20%较上期</text>
         </view>
       </view>
-      <view class="box_8">
-        <view class="section_1">
-          <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG99a989f0e7fd7f59717fe65c32e0d975.png" class="thumbnail_3"></image>
-          <text lines="1" class="text_18">创意喵</text>
-          <text lines="1" class="text_19">安全提醒</text>
+      <view class="block_3">
+        <view class="section_4">
+          <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNGcf51c47f1d7ec2c2219965b59a7f190c.png" class="thumbnail_3"></image>
+          <text lines="1" class="text_19">创意喵</text>
+          <text lines="1" class="text_20">安全提醒</text>
         </view>
-        <view class="text-wrapper_6">
-          <text lines="1" class="text_20">请在</text>
-          <text lines="1" class="text_21">收到投稿后48小时内审核稿件，</text>
-          <text lines="1" decode="true" class="text_22">超时未审核将自动为创作者发放参与奖，后续继续采纳可自动补发采纳奖。&nbsp;采纳稿件后自动为创作者发放采纳奖+参与奖；淘汰自动发放参与奖；</text>
-          <text lines="1" class="text_23">如遇到恶意低质灌水稿件可直接举报，</text>
-          <text lines="1" class="text_24">平台介入确认事实后，退还此稿参与奖至商家钱包。</text>
-        </view>
-      </view>
-      <view class="box_9">
         <view class="text-wrapper_7">
-          <text lines="1" class="text_25">全部</text>
+          <text lines="1" class="text_21">请在</text>
+          <text lines="1" class="text_22">收到投稿后48小时内审核稿件，</text>
+          <text lines="1" decode="true" class="text_23">超时未审核将自动为创作者发放参与奖，后续继续采纳可自动补发采纳奖。&nbsp;采纳稿件后自动为创作者发放采纳奖+参与奖；淘汰自动发放参与奖；</text>
+          <text lines="1" class="text_24">如遇到恶意低质灌水稿件可直接举报，</text>
+          <text lines="1" class="text_25">平台介入确认事实后，退还此稿参与奖至商家钱包。</text>
         </view>
+      </view>
+      <view class="block_4">
         <view class="text-wrapper_8">
-          <text lines="1" decode="true" class="text_26">待审核&nbsp;8</text>
+          <text lines="1" class="text_26">全部</text>
         </view>
         <view class="text-wrapper_9">
-          <text lines="1" class="text_27">已采纳</text>
+          <text lines="1" decode="true" class="text_27">待审核&nbsp;8</text>
         </view>
         <view class="text-wrapper_10">
-          <text lines="1" class="text_28">已淘汰</text>
+          <text lines="1" class="text_28">已采纳</text>
+        </view>
+        <view class="text-wrapper_11">
+          <text lines="1" class="text_29">已淘汰</text>
         </view>
       </view>
-      <view class="box_10"></view>
-      <view class="text-wrapper_11">
-        <text lines="1" class="text_29">已举报</text>
+      <view class="text-wrapper_12">
+        <text lines="1" class="text_30">已举报</text>
       </view>
     </view>
-    <view class="box_11">
-      <view class="section_2">
-        <view class="group_7">
-          <view class="box_12">
+    <view class="block_5">
+      <view class="box_1">
+        <view class="block_6">
+          <view class="section_5">
             <view class="image-text_1">
               <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG9ca9475f866f249bc32a0a0ea0874a30.png" class="label_1"></image>
-              <view class="text-group_3">
-                <text lines="1" class="text_30">镜头研究社</text>
-                <text lines="1" decode="true" class="text_31">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
+              <view class="text-group_2">
+                <text lines="1" class="text_31">镜头研究社</text>
+                <text lines="1" decode="true" class="text_32">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
               </view>
             </view>
             <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNGa1848526734e41c400201e3b9c634c95.png" class="thumbnail_4"></image>
           </view>
-          <view class="box_13">
+          <view class="section_6">
             <view class="image-wrapper_2">
               <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_5"></image>
             </view>
           </view>
-          <view class="box_14">
-            <view class="text-wrapper_12">
-              <text lines="1" class="text_32">采纳</text>
-            </view>
+          <view class="section_7">
             <view class="text-wrapper_13">
-              <text lines="1" class="text_33">淘汰</text>
+              <text lines="1" class="text_33">采纳</text>
             </view>
             <view class="text-wrapper_14">
-              <text lines="1" class="text_34">举报</text>
+              <text lines="1" class="text_34">淘汰</text>
+            </view>
+            <view class="text-wrapper_15">
+              <text lines="1" class="text_35">举报</text>
             </view>
             <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG142cd00fd6a1cd3f0252be40aa93b9b7.png" class="thumbnail_6"></image>
           </view>
         </view>
-        <view class="group_8">
-          <view class="block_2">
+        <view class="block_7">
+          <view class="box_2">
             <view class="image-text_2">
               <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG368ccffce78a3acaaaa2786fd2604f7f.png" class="label_2"></image>
-              <view class="text-group_4">
-                <text lines="1" class="text_35">小满创作间</text>
-                <text lines="1" decode="true" class="text_36">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
+              <view class="text-group_3">
+                <text lines="1" class="text_36">小满创作间</text>
+                <text lines="1" decode="true" class="text_37">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
               </view>
             </view>
-            <view class="text-wrapper_15">
-              <text lines="1" class="text_37">已采纳</text>
+            <view class="text-wrapper_16">
+              <text lines="1" class="text_38">已采纳</text>
             </view>
           </view>
-          <view class="block_3">
+          <view class="box_3">
             <view class="image-wrapper_3">
               <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_7"></image>
             </view>
@@ -150,57 +150,57 @@
     </view>
     <view class="list_1">
       <view class="list-items_1-0">
-        <view class="group_9-0">
+        <view class="group_10-0">
           <view class="image-text_3-0">
             <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG368ccffce78a3acaaaa2786fd2604f7f.png" class="label_3-0"></image>
-            <view class="text-group_5-0">
-              <text lines="1" class="text_38-0">小满创作间</text>
-              <text lines="1" decode="true" class="text_39-0">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
+            <view class="text-group_4-0">
+              <text lines="1" class="text_39-0">小满创作间</text>
+              <text lines="1" decode="true" class="text_40-0">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
             </view>
           </view>
-          <view class="text-wrapper_16-0">
-            <text lines="1" class="text_40-0">已淘汰</text>
+          <view class="text-wrapper_17-0">
+            <text lines="1" class="text_41-0">已淘汰</text>
           </view>
         </view>
-        <view class="group_10-0">
+        <view class="group_11-0">
           <view class="image-wrapper_5-0">
             <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_10-0"></image>
           </view>
         </view>
-        <view class="text-wrapper_19-0">
-          <text lines="1" class="text_44-0">淘汰原因：品牌露出不足，镜头切换节奏不符合要求。</text>
+        <view class="text-wrapper_18-0">
+          <text lines="1" class="text_42-0">淘汰原因：品牌露出不足，镜头切换节奏不符合要求。</text>
         </view>
       </view>
       <view class="list-items_1-1">
-        <view class="group_9-1">
+        <view class="group_10-1">
           <view class="image-text_3-1">
             <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG368ccffce78a3acaaaa2786fd2604f7f.png" class="label_3-1"></image>
-            <view class="text-group_5-1">
-              <text lines="1" class="text_38-1">小满创作间</text>
-              <text lines="1" decode="true" class="text_39-1">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
+            <view class="text-group_4-1">
+              <text lines="1" class="text_39-1">小满创作间</text>
+              <text lines="1" decode="true" class="text_40-1">信用分&nbsp;94&nbsp;·&nbsp;12:18&nbsp;提交</text>
             </view>
           </view>
-          <view class="text-wrapper_16-1">
-            <text lines="1" class="text_40-1">已举报</text>
+          <view class="text-wrapper_17-1">
+            <text lines="1" class="text_41-1">已举报</text>
           </view>
         </view>
-        <view class="group_10-1">
+        <view class="group_11-1">
           <view class="image-wrapper_5-1">
             <image src="../../images/lanhu_shangjiarenwuliebiaoshangjiarenwuxiangqingrenwushipin/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_10-1"></image>
           </view>
-          <view class="section_3-1">
-            <text lines="1" decode="true" class="text_41-1">已选&nbsp;2&nbsp;个作品</text>
-            <view class="text-wrapper_17-1">
-              <text lines="1" class="text_42-1">批量淘汰</text>
-            </view>
-            <view class="text-wrapper_18-1">
-              <text lines="1" class="text_43-1">批量采纳</text>
-            </view>
-          </view>
         </view>
-        <view class="text-wrapper_19-1">
-          <text lines="1" class="text_44-1">举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+        <view class="text-wrapper_18-1">
+          <text lines="1" class="text_42-1">举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
         </view>
+      </view>
+    </view>
+    <view class="block_8">
+      <text lines="1" decode="true" class="text_43">已选&nbsp;2&nbsp;个作品</text>
+      <view class="text-wrapper_19">
+        <text lines="1" class="text_44">批量淘汰</text>
+      </view>
+      <view class="text-wrapper_20">
+        <text lines="1" class="text_45">批量采纳</text>
       </view>
     </view>
   </view>

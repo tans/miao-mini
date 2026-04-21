@@ -1,27 +1,27 @@
 <view class="page">
   <view class="box_1">
-    <view class="box_2">
-      <view class="block_1">
+    <view class="block_1">
+      <view class="group_1">
         <view class="text-wrapper_1">
           <text lines="1" class="text_1">9:41</text>
         </view>
-        <view class="group_1"></view>
         <view class="group_2"></view>
+        <view class="group_3"></view>
         <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGfd2dd0f9288aa39d675326abb4e7591e.png" class="image_1"></image>
       </view>
-      <view class="block_2">
+      <view class="group_4">
         <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="thumbnail_1"></image>
         <text lines="1" class="text_2">发布任务</text>
         <view class="image-wrapper_1">
-          <image src="../../images/lanhu_faburenwu/64eb92ffc20a47659d3b94f1f6c981d1_mergeImage.png" class="image_2"></image>
+          <image src="../../images/lanhu_faburenwu/06d51b5ae1d549f2bde02ffd203dfe34_mergeImage.png" class="image_2"></image>
           <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGc7377f3f944573e79bef2175ec549dcd.png" class="thumbnail_2"></image>
         </view>
       </view>
     </view>
   </view>
-  <view class="box_3">
-    <view class="block_3">
-      <view class="block_4">
+  <view class="box_2">
+    <view class="box_3">
+      <view class="group_5">
         <view class="image-text_1">
           <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGcf51c47f1d7ec2c2219965b59a7f190c.png" class="thumbnail_3"></image>
           <text lines="1" class="text-group_1">发单先托管</text>
@@ -29,8 +29,8 @@
         <text lines="1" class="text_3">验收再放款</text>
         <text lines="1" class="text_4">详细教程</text>
       </view>
-      <view class="block_5">
-        <view class="group_3">
+      <view class="group_6">
+        <view class="box_4">
           <view class="image-text_2">
             <view class="image-wrapper_2">
               <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG29823902767c2a9879c703aaa86a61c9.png" class="thumbnail_4"></image>
@@ -47,23 +47,23 @@
           <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" class="image_4"></image>
         </view>
         <view class="image-text_4">
-          <view class="section_1">
-            <view class="box_4"></view>
+          <view class="group_7">
+            <view class="section_1"></view>
           </view>
           <text lines="1" decode="true" class="text-group_4">商家审核&nbsp;验收视频</text>
         </view>
-        <view class="group_4">
-          <view class="group_5">
+        <view class="box_5">
+          <view class="block_2">
             <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" class="image_5"></image>
-            <view class="group_6"></view>
+            <view class="box_6"></view>
           </view>
           <text lines="1" class="paragraph_1">任务结束<br/>解冻剩余资金</text>
         </view>
       </view>
       <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGae94ccf4fbc29229298c9051993d4ba9.png" class="label_1"></image>
     </view>
-    <view class="block_6">
-      <view class="group_7">
+    <view class="box_7">
+      <view class="group_8">
         <text lines="1" class="text_5">基础信息</text>
         <view class="text-wrapper_2">
           <text lines="1" class="text_6">任务标题</text>
@@ -93,20 +93,24 @@
             <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG238c6963ed8330276941b8174e02ee6d.png" class="thumbnail_6-1"></image>
           </view>
         </view>
-        <view class="group_8">
+        <view class="group_9">
           <text lines="1" class="text_13">任务描述</text>
           <view class="text-wrapper_6">
             <text lines="1" class="text_14">请输入不少于10个字的描述</text>
           </view>
-          <view class="block_7">
+          <view class="group_10">
             <view class="image-text_5">
               <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGe4091db8f20a5f20d3fd34f7c653a856.png" class="thumbnail_7"></image>
               <text lines="1" class="text-group_5">AI帮写</text>
             </view>
           </view>
-          <view class="block_8">
+          <view class="text-wrapper_7">
+            <text lines="1" class="text_15">任务素材</text>
+            <text lines="1" class="text_16">(可提供指定素材做为创作要求或参考)</text>
+          </view>
+          <view class="group_11">
             <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNGbab45d11d281f4d80e337b96b6d6ed91.png" class="image_6"></image>
-            <view class="group_9">
+            <view class="block_3">
               <view class="image-wrapper_4">
                 <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_8"></image>
               </view>
@@ -116,117 +120,130 @@
             </view>
           </view>
         </view>
-        <view class="text-wrapper_7">
-          <text lines="1" class="text_15">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+        <view class="text-wrapper_8">
+          <text lines="1" class="text_17">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
         </view>
       </view>
-      <view class="group_10">
-        <text lines="1" class="text_16">隐私保护</text>
-        <view class="box_5">
+      <view class="group_12">
+        <text lines="1" class="text_18">隐私保护</text>
+        <view class="section_2">
           <view class="text-group_6">
-            <text lines="1" class="text_17">开启稿件隐私保护</text>
-            <text lines="1" class="text_18">开启后，创作者的投稿仅商家可见</text>
+            <text lines="1" class="text_19">开启稿件隐私保护</text>
+            <text lines="1" class="text_20">开启后，创作者的投稿仅商家可见</text>
           </view>
           <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png" class="label_2"></image>
         </view>
       </view>
-      <view class="group_11">
-        <text lines="1" class="text_19">即梦合拍</text>
-        <view class="group_12">
+      <view class="group_13">
+        <text lines="1" class="text_21">即梦合拍</text>
+        <view class="box_8">
           <view class="image-text_6">
             <view class="text-group_7">
-              <text lines="1" class="text_20">即梦合拍设置</text>
-              <text lines="1" class="text_21">商家提供数字人模型给创作者用于合成视频</text>
+              <text lines="1" class="text_22">即梦合拍设置</text>
+              <text lines="1" class="text_23">商家提供数字人模型给创作者用于合成视频</text>
             </view>
             <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png" class="label_3"></image>
           </view>
-          <view class="text-wrapper_8">
-            <text lines="1" class="text_22">请输入邀请链接</text>
-            <text lines="1" class="text_23">0/50</text>
+          <view class="text-wrapper_9">
+            <text lines="1" class="text_24">请输入邀请链接</text>
+            <text lines="1" class="text_25">0/50</text>
           </view>
-          <view class="block_9">
-            <view class="section_2">
+          <view class="group_14">
+            <view class="group_15">
               <view class="image-wrapper_6">
                 <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" class="thumbnail_10"></image>
               </view>
-              <text lines="1" class="text_24">查看即梦合拍教程</text>
+              <text lines="1" class="text_26">查看即梦合拍教程</text>
             </view>
           </view>
         </view>
-        <view class="text-wrapper_9">
-          <text lines="1" class="text_25">tips：即梦合拍邀请</text>
-          <text lines="1" class="text_26">链接仅48小时有效</text>
-          <text lines="1" class="text_27">，请在我的-任务管理-任务详情中更新链接。</text>
+        <view class="text-wrapper_10">
+          <text lines="1" class="text_27">tips：即梦合拍邀请</text>
+          <text lines="1" class="text_28">链接仅48小时有效</text>
+          <text lines="1" class="text_29">，请在我的-任务管理-任务详情中更新链接。</text>
         </view>
       </view>
-      <view class="group_13">
-        <text lines="1" class="text_28">视频规格</text>
-        <view class="box_6">
-          <view class="text-wrapper_10">
-            <text lines="1" decode="true" class="text_29">30&nbsp;秒内</text>
-          </view>
+      <view class="group_16">
+        <text lines="1" class="text_30">视频规格</text>
+        <view class="section_3">
           <view class="text-wrapper_11">
-            <text lines="1" class="text_30">9:16</text>
+            <text lines="1" decode="true" class="text_31">30&nbsp;秒内</text>
           </view>
           <view class="text-wrapper_12">
-            <text lines="1" class="text_31">1080P</text>
+            <text lines="1" class="text_32">9:16</text>
+          </view>
+          <view class="text-wrapper_13">
+            <text lines="1" class="text_33">1080P</text>
           </view>
         </view>
       </view>
-      <view class="group_14">
-        <text lines="1" class="text_32">时间与奖金</text>
-        <view class="box_7">
-          <text lines="1" class="text_33">投稿截止时间</text>
+      <view class="group_17">
+        <text lines="1" class="text_34">时间与奖金</text>
+        <view class="box_9">
+          <text lines="1" class="text_35">投稿截止时间</text>
           <view class="image-text_7">
             <text lines="1" decode="true" class="text-group_8">2026-04-24&nbsp;18:00</text>
             <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG238c6963ed8330276941b8174e02ee6d.png" class="thumbnail_11"></image>
           </view>
         </view>
-        <view class="text-wrapper_13">
-          <text lines="1" class="text_34">参与奖</text>
-          <text lines="1" class="text_35">2</text>
-          <text lines="1" class="text_36">元/条</text>
-        </view>
         <view class="text-wrapper_14">
-          <text lines="1" class="text_37">采纳奖</text>
-          <text lines="1" class="text_38">20</text>
-          <text lines="1" class="text_39">元/条</text>
+          <text lines="1" class="text_36">参与奖</text>
+          <text lines="1" class="text_37">2</text>
+          <text lines="1" class="text_38">元/条</text>
         </view>
-        <text lines="1" class="text_40">tips：被采纳的作品获得采纳奖+参与奖。</text>
         <view class="text-wrapper_15">
-          <text lines="1" class="text_41">报名人数上限</text>
-          <text lines="1" class="text_42">10</text>
-          <text lines="1" class="text_43">人</text>
+          <text lines="1" class="text_39">采纳奖</text>
+          <text lines="1" class="text_40">20</text>
+          <text lines="1" class="text_41">元/条</text>
         </view>
-        <text lines="1" class="text_44">tips：请按需设置报名人数，若活动采纳率过低，可能会隐形您的信誉。</text>
-        <view class="box_8">
-          <view class="section_3">
-            <view class="text-group_9">
-              <text lines="1" class="text_45">参与奖励总额</text>
-              <text lines="1" class="text_46">采纳奖励总额</text>
-              <text lines="1" class="text_47">平台服务费</text>
-            </view>
-            <view class="text-group_10">
-              <text lines="1" class="text_48">¥20</text>
-              <text lines="1" class="text_49">¥200</text>
-              <text lines="1" class="text_50">¥10</text>
-            </view>
+        <text lines="1" class="text_42">tips：被采纳的作品获得采纳奖+参与奖。</text>
+        <view class="text-wrapper_16">
+          <text lines="1" class="text_43">报名人数上限</text>
+          <text lines="1" class="text_44">10</text>
+          <text lines="1" class="text_45">人</text>
+        </view>
+        <text lines="1" class="text_46">tips：请按需设置报名人数，若活动采纳率过低，可能会隐形您的信誉。</text>
+        <view class="box_10">
+          <view class="text-wrapper_17">
+            <text lines="1" class="text_47">参与奖励总额</text>
+            <text lines="1" decode="true" class="text_48">¥&nbsp;20.00</text>
           </view>
-          <view class="section_4">
-            <view class="text-wrapper_16">
-              <text lines="1" class="text_51">需预支付总金额</text>
-              <text lines="1" class="text_52">¥230</text>
+          <view class="text-wrapper_18">
+            <text lines="1" class="text_49">采纳奖励总额</text>
+            <text lines="1" decode="true" class="text_50">¥&nbsp;200.00</text>
+          </view>
+          <view class="text-wrapper_19">
+            <text lines="1" class="text_51">平台服务费(10%)</text>
+            <text lines="1" decode="true" class="text_52">¥&nbsp;22.00</text>
+          </view>
+          <view class="group_18">
+            <view class="image-text_8">
+              <image src="../../images/lanhu_faburenwu/FigmaDDSSlicePNG5f724a0ff6077e701a6b5e14b90ac0e1.png" class="image_7"></image>
+              <text lines="1" class="text-group_9">服务费减免(5%)</text>
             </view>
-            <text lines="1" class="text_53">tips：活动金额按报名人数上限全额冻结，审核完全部稿件48小时后，剩余活动金即可解冻。</text>
+            <text lines="1" class="text_53">-￥11.00</text>
+          </view>
+          <view class="group_19">
+            <view class="list_2">
+              <view class="text-wrapper_20-0">
+                <text lines="1" class="text_54-0">需预支付总金额</text>
+                <text lines="1" class="text_55-0">当前钱包可用余额</text>
+              </view>
+              <view class="text-wrapper_20-1">
+                <text lines="1" class="text_54-1">¥231.00</text>
+                <text lines="1" decode="true" class="text_55-1">¥&nbsp;500.00</text>
+              </view>
+            </view>
+            <text lines="1" class="text_56">tips：活动金额按报名人数上限全额冻结，审核完全部稿件48小时后，剩余活动金即可解冻。</text>
           </view>
         </view>
       </view>
     </view>
-    <view class="block_10">
-      <view class="text-wrapper_17">
-        <text lines="1" class="text_54">托管奖金并发布</text>
+    <view class="box_11">
+      <view class="text-wrapper_21">
+        <text lines="1" class="text_57">托管奖金并发布</text>
       </view>
-      <view class="section_5"></view>
+      <view class="box_12"></view>
     </view>
   </view>
 </view>
