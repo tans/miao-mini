@@ -1,4 +1,13 @@
 <view class="create-container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">发布任务</text>
+    <view class="nav-right"></view>
+  </view>
+
   <scroll-view scroll-y="true" class="form-scroll">
     <!-- 流程图 -->
     <view class="flow-section">

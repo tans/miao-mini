@@ -128,7 +128,7 @@
     </view>
 
     <!-- 即梦合拍 -->
-    <view class="jimeng-card" wx:if="{{task.jimeng_link}}">
+    <view class="jimeng-card" wx:if="{{task.jimeng_link || task.jimeng_enabled}}">
       <view class="card-header">
         <text class="header-title">即梦合拍</text>
       </view>
@@ -139,15 +139,22 @@
         </view>
         <image class="jimeng-icon" src="/assets/icons/jimeng.png" />
       </view>
-      <view class="jimeng-link-row">
-        <text class="link-text">{{task.jimeng_link}}</text>
-        <text class="link-count">0/50</text>
+      <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
+        <text class="link-text">{{task.jimeng_link || '暂未设置'}}</text>
+        <text class="link-count">{{task.jimeng_link ? task.jimeng_link.length : 0}}/50</text>
       </view>
-      <view class="jimeng-tutorial">
+      <view wx:if="{{showEditJimeng}}" class="jimeng-edit-row">
+        <input class="jimeng-edit-input" placeholder="请输入新的邀请链接" value="{{editJimengLink}}" bindinput="onJimengLinkInput" maxlength="50"/>
+        <text class="link-count">{{editJimengLink.length}}/50</text>
+      </view>
+      <view class="jimeng-tutorial" bindtap="showJimengTutorial">
         <text>查看即梦合拍教程</text>
       </view>
-      <view class="update-link-btn">
-        <text>更新链接</text>
+      <view class="update-link-btn" bindtap="toggleEditJimeng">
+        <text>{{showEditJimeng ? '取消' : '更新链接'}}</text>
+      </view>
+      <view wx:if="{{showEditJimeng}}" class="confirm-update-btn" bindtap="updateJimengLink">
+        <text>确认更新</text>
       </view>
     </view>
   </view>

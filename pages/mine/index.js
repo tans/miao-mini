@@ -156,7 +156,7 @@ Page({
 
   goProfile() {
     this._ensureLogin(() => {
-      wx.navigateTo({ url: '/pages/settings/profile/index' });
+      wx.showToast({ title: '个人资料开发中', icon: 'none' });
     });
   },
 
@@ -203,11 +203,11 @@ Page({
   },
 
   goHelp() {
-    wx.navigateTo({ url: '/pages/settings/help/index' });
+    wx.showToast({ title: '帮助中心开发中', icon: 'none' });
   },
 
   goAbout() {
-    wx.navigateTo({ url: '/pages/settings/about/index' });
+    wx.showToast({ title: '关于我们开发中', icon: 'none' });
   },
 
   goHome() {
@@ -238,5 +238,9 @@ Page({
 
   goCustomerService() {
     wx.showToast({ title: '客服功能开发中', icon: 'none' });
+  },
+
+  goBack() {
+    wx.navigateBack({ delta: 1 });
   },
 });

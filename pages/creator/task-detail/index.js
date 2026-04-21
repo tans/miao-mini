@@ -1,4 +1,4 @@
-const Api = require('../../../utils/api.js');
+const Api = require('../../utils/api.js');
 const app = getApp();
 
 Page({
@@ -154,5 +154,9 @@ Page({
       this.setData({ hasSignedUp: true, canSubmit: true });
       wx.showToast({ title: '报名成功', icon: 'success' });
     }, 1000);
+  },
+
+  goSubmitWork() {
+    wx.navigateTo({ url: `/pages/creator/submit-work/index?taskId=${this.data.taskId}` });
   }
 });

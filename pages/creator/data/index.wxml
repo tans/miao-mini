@@ -1,4 +1,13 @@
 <view class="data-page">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">创作者数据</text>
+    <view class="nav-right"></view>
+  </view>
+
   <!-- 顶部标题 -->
   <view class="page-header">
     <text class="page-title">创作者数据</text>

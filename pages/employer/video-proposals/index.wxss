@@ -5,6 +5,35 @@
   padding-bottom: 120rpx;
 }
 
+/* 导航栏 */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 88rpx;
+  padding: 0 32rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.nav-left, .nav-right {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+}
+
+.nav-back {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 900;
+  color: #333;
+}
+
 /* 标签切换 */
 .tab-switch {
   display: flex;
@@ -433,6 +462,86 @@
   line-height: 1.6;
 }
 
+/* Stats Cards */
+.stats-cards {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.stat-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 17, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.stat-card .stat-label {
+  font-size: 24rpx;
+  color: #878fa1;
+}
+
+.stat-card .stat-value {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #000;
+  font-family: D-DIN-PRO-Bold, sans-serif;
+}
+
+.stat-card .stat-hint {
+  font-size: 24rpx;
+  color: #35b86b;
+}
+
+/* Safety Card for Proposals */
+.proposals-container .safety-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 10rpx 26rpx rgba(20, 42, 31, 0.08);
+}
+
+.proposals-container .safety-header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.proposals-container .safety-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.proposals-container .safety-title {
+  font-size: 26rpx;
+  font-weight: 900;
+  color: #f58a1f;
+}
+
+.proposals-container .safety-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.proposals-container .safety-text {
+  font-size: 24rpx;
+  color: #858a92;
+  line-height: 36rpx;
+}
+
+.proposals-container .safety-highlight {
+  font-size: 24rpx;
+  color: #f58a1f;
+  line-height: 36rpx;
+}
+
 /* Filter Tabs */
 .filter-tabs {
   display: flex;
@@ -441,6 +550,7 @@
   gap: 48rpx;
   border-bottom: 1rpx solid #f0f0f0;
   margin: -24rpx -24rpx 0 -24rpx;
+  flex-wrap: wrap;
 }
 
 .tab {
@@ -453,6 +563,107 @@
   color: #ff9f2f;
   font-weight: 600;
   border-bottom: 4rpx solid #ff9f2f;
+}
+
+/* Batch Operation Bar */
+.batch-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 24rpx 32rpx;
+  margin-bottom: 24rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 17, 0.04);
+}
+
+.batch-info {
+  font-size: 25rpx;
+  color: #858a92;
+}
+
+.batch-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.batch-btn {
+  padding: 16rpx 32rpx;
+  border-radius: 19998rpx;
+  font-size: 26rpx;
+  font-weight: 900;
+}
+
+.batch-btn.batch-download {
+  border: 1rpx solid #ececef;
+  color: #333;
+}
+
+.batch-btn.batch-reject {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.batch-btn.batch-accept {
+  background: linear-gradient(135deg, #ff9f2f 0%, #ef6c00 100%);
+  color: #fff;
+}
+
+/* Batch Toggle */
+.batch-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16rpx;
+}
+
+.batch-toggle-text {
+  font-size: 24rpx;
+  color: #ff9f2f;
+  padding: 8rpx 20rpx;
+  background: #fff4e8;
+  border-radius: 20rpx;
+}
+
+.batch-toggle.done .batch-toggle-text {
+  color: #52c41a;
+  background: #e8f5e9;
+}
+
+/* Claims List */
+.claims-list {
+  margin-top: 24rpx;
+}
+
+.claim-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 17, 0.04);
+  position: relative;
+}
+
+.claim-item.selectable {
+  padding-left: 80rpx;
+}
+
+.claim-item.selected {
+  background: #fff4e8;
+}
+
+/* Claim Checkbox */
+.claim-checkbox {
+  position: absolute;
+  left: 24rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.checkbox-icon {
+  width: 40rpx;
+  height: 40rpx;
 }
 
 /* Claims List */
@@ -527,6 +738,11 @@
 .status-badge.rejected {
   background: #ffebee;
   color: #f44336;
+}
+
+.status-badge.reported {
+  background: #fff3e0;
+  color: #ff9800;
 }
 
 /* Media Preview */

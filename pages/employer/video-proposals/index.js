@@ -14,12 +14,21 @@ Page({
       { key: 'all', label: '全部' },
       { key: 'pending', label: '待审核' },
       { key: 'passed', label: '已采纳' },
-      { key: 'rejected', label: '已拒绝' }
+      { key: 'rejected', label: '已淘汰' },
+      { key: 'reported', label: '已举报' }
     ],
     loading: false,
     taskId: '',
     currentTab: 'detail', // 默认显示任务详情
-    deadlineText: '23小时28分'
+    deadlineText: '23小时28分',
+    batchMode: false,
+    selectedClaims: {},
+    selectedCount: 0,
+    // Stats
+    totalSubmitted: 0,
+    totalAdopted: 0,
+    adoptionRate: 0,
+    totalSpent: 0
   },
 
   onLoad(options = {}) {
@@ -56,6 +65,13 @@ Page({
         .filter(c => Number(c.status) !== 1) // 排除待提交
         .map(c => this.formatClaim(c, task));
 
+      // Calculate stats
+      const allClaims = claimsRes.data || [];
+      const totalSubmitted = allClaims.filter(c => Number(c.status) !== 1).length;
+      const totalAdopted = allClaims.filter(c => Number(c.status) === 3).length;
+      const adoptionRate = totalSubmitted > 0 ? Math.round((totalAdopted / totalSubmitted) * 100) : 0;
+      const totalSpent = totalAdopted * (task ? (task.unit_price || 0) : 0);
+
       // 计算截止时间
       let deadlineText = '23小时28分';
       if (task && task.end_at) {
@@ -76,7 +92,11 @@ Page({
         materials,
         claims,
         deadlineText,
-        loading: false
+        loading: false,
+        totalSubmitted,
+        totalAdopted,
+        adoptionRate,
+        totalSpent
       });
       this.applyFilter(this.data.activeFilter);
     } catch (err) {
@@ -186,19 +206,20 @@ Page({
   },
 
   getClaimStatusText(status) {
-    const map = { 2: '待审核', 3: '已采纳', 4: '已取消', 5: '已拒绝' };
+    const map = { 2: '待审核', 3: '已采纳', 4: '已取消', 5: '已淘汰', 6: '已举报' };
     return map[status] || `未知(${status})`;
   },
 
   getClaimStatusClass(status) {
-    const map = { 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'rejected' };
+    const map = { 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'rejected', 6: 'reported' };
     return map[status] || 'draft';
   },
 
   getFilterKey(status) {
     if (status === 2) return 'pending';
     if (status === 3) return 'passed';
-    if (status === 4 || status === 5) return 'rejected';
+    if (status === 5) return 'rejected';
+    if (status === 6) return 'reported';
     return 'all';
   },
 
@@ -222,14 +243,98 @@ Page({
       return;
     }
 
+    let reason = null;
+    if (result === 3) {
+      reason = await this.showReportModal();
+      if (!reason) return;
+    }
+
     try {
-      await Api.reviewClaim(claimId, result);
-      const msg = result === 1 ? '已采纳' : result === 2 ? '已拒绝' : '已举报';
+      await Api.reviewClaim(claimId, result, reason);
+      const msg = result === 1 ? '已采纳' : result === 2 ? '已淘汰' : '已举报';
       wx.showToast({ title: msg, icon: 'success' });
       this._initPage();
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
     }
+  },
+
+  showReportModal() {
+    return new Promise((resolve) => {
+      const reasons = ['敏感词', '低俗内容', '侵权内容', '政治敏感', '广告夸大'];
+      wx.showActionSheet({
+        itemList: reasons,
+        success: (res) => {
+          resolve(reasons[res.tapIndex]);
+        },
+        fail: () => {
+          resolve(null);
+        }
+      });
+    });
+  },
+
+  async batchReview(e) {
+    const action = e.currentTarget.dataset.action;
+    if (![1, 2, 3].includes(action)) return;
+
+    const selectedClaims = this.data.filteredClaims.filter(c => c.selected);
+    if (selectedClaims.length === 0) {
+      wx.showToast({ title: '请先选择作品', icon: 'none' });
+      return;
+    }
+
+    let reason = null;
+    if (action === 3) {
+      reason = await this.showReportModal();
+      if (!reason) return;
+    }
+
+    wx.showLoading({ title: '处理中...' });
+    try {
+      const claimIds = selectedClaims.map(c => c.id);
+      await Api.batchReviewClaim(claimIds, action, reason);
+      const msg = action === 1 ? '批量采纳成功' : action === 2 ? '批量淘汰成功' : '批量举报成功';
+      wx.showToast({ title: msg, icon: 'success' });
+      this.setData({ batchMode: false, selectedClaims: {} });
+      this._initPage();
+    } catch (err) {
+      wx.showToast({ title: err.message || '操作失败', icon: 'none' });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  toggleClaimSelection(e) {
+    const claimId = e.currentTarget.dataset.claimId;
+    const selected = { ...this.data.selectedClaims, [claimId]: !this.data.selectedClaims[claimId] };
+    const selectedCount = Object.values(selected).filter(Boolean).length;
+    this.setData({ selectedClaims: selected, selectedCount });
+  },
+
+  toggleBatchMode() {
+    this.setData({ batchMode: !this.data.batchMode, selectedClaims: {}, selectedCount: 0 });
+  },
+
+  downloadSelected() {
+    const selectedClaims = this.data.filteredClaims.filter(c => this.data.selectedClaims[c.id]);
+    if (selectedClaims.length === 0) {
+      wx.showToast({ title: '请先选择作品', icon: 'none' });
+      return;
+    }
+    // Collect all image URLs for download
+    const urls = [];
+    selectedClaims.forEach(claim => {
+      if (claim.previewImages) {
+        claim.previewImages.forEach(img => urls.push(img));
+      }
+    });
+    if (urls.length === 0) {
+      wx.showToast({ title: '没有可下载的内容', icon: 'none' });
+      return;
+    }
+    wx.showToast({ title: `开始下载 ${urls.length} 个文件`, icon: 'none' });
+    // Note: WeChat doesn't support bulk download directly, show message
   },
 
   previewImages(e) {

@@ -175,14 +175,15 @@ Page({
   goTaskDetail(e) {
     const taskId = e.currentTarget.dataset.taskId;
     if (taskId) {
-      wx.navigateTo({ url: `/pages/task-detail/index?id=${taskId}` });
+      wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${taskId}` });
     }
   },
 
   goWorkDetail(e) {
     const id = e.currentTarget.dataset.id;
     if (id) {
-      wx.navigateTo({ url: `/pages/work-detail/index?id=${id}` });
+      // 作品已无需单独页面承载，直接预览
+      wx.showToast({ title: '作品预览开发中', icon: 'none' });
     }
   },
 

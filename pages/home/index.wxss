@@ -105,13 +105,14 @@
   background: #fff;
   white-space: nowrap;
   margin-top: -16rpx;
+  border-radius: 24rpx 24rpx 0 0;
 }
 
 .category-inner {
   display: flex;
   align-items: center;
-  padding: 20rpx 24rpx;
-  gap: 24rpx;
+  padding: 24rpx 28rpx 20rpx;
+  gap: 20rpx;
 }
 
 .category-label {
@@ -119,21 +120,25 @@
   font-weight: 600;
   color: #EF8802;
   flex-shrink: 0;
+  padding-right: 8rpx;
 }
 
 .category-tag {
   display: inline-block;
-  padding: 8rpx 20rpx;
-  border-radius: 20rpx;
+  padding: 10rpx 22rpx;
+  border-radius: 24rpx;
   font-size: 26rpx;
   color: #666;
+  background: #f5f5f5;
   white-space: nowrap;
   flex-shrink: 0;
+  transition: all 0.2s ease;
 }
 
 .category-tag.active {
-  background: #EF8802;
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   color: #fff;
+  font-weight: 600;
 }
 
 /* 排序栏 */
@@ -141,7 +146,8 @@
   display: flex;
   background: #fff;
   padding: 0 32rpx;
-  margin-bottom: 16rpx;
+  margin-bottom: 20rpx;
+  border-top: 1rpx solid #f5f5f5;
 }
 
 .sort-item {
@@ -226,8 +232,8 @@
 /* 标签区域 */
 .task-tags {
   display: flex;
-  gap: 12rpx;
-  margin-bottom: 16rpx;
+  gap: 10rpx;
+  margin-bottom: 18rpx;
   flex-wrap: wrap;
 }
 
@@ -235,9 +241,10 @@
   display: flex;
   align-items: center;
   gap: 6rpx;
-  padding: 6rpx 14rpx;
-  border-radius: 8rpx;
-  font-size: 22rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  line-height: 1.4;
 }
 
 .badge-reward {

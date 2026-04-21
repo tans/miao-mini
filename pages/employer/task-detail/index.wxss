@@ -397,6 +397,33 @@
   color: #333;
 }
 
+.jimeng-edit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.jimeng-edit-input {
+  flex: 1;
+  font-size: 22rpx;
+  color: #2563eb;
+}
+
+.confirm-update-btn {
+  text-align: center;
+  padding: 16rpx;
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  font-weight: 900;
+  color: #fff;
+  margin-top: 16rpx;
+}
+
 /* 底部占位 */
 .bottom-placeholder {
   height: 120rpx;

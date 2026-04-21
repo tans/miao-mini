@@ -106,14 +106,11 @@ Page({
     const id = e.currentTarget.dataset.id;
     if (!id) return;
     this.navigating = true;
-    wx.navigateTo({
-      url: `/pages/work-detail/index?id=${id}&mode=adopted`,
-      complete: () => {
-        setTimeout(() => {
-          this.navigating = false;
-        }, 400);
-      },
-    });
+    // 作品已无需单独页面承载，改为提示
+    wx.showToast({ title: '作品预览开发中', icon: 'none' });
+    setTimeout(() => {
+      this.navigating = false;
+    }, 400);
   },
 
   noop() {},

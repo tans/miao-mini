@@ -1,14 +1,18 @@
 <!-- pages/mine/index.wxml -->
 <view class="mine-container">
-  <!-- 状态栏占位 -->
-  <view class="status-bar"></view>
-  <!-- 标题栏 -->
-  <view class="title-bar">
-    <text class="title-text">我的</text>
-    <view class="title-right">
-      <image class="title-icon" src="../../images/lanhu_wode/5dba2895a18a4763b17808988254b538_mergeImage.png" />
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left">
+      <text class="nav-title">我的</text>
+    </view>
+    <view class="nav-right">
+      <view class="nav-capsule">
+        <image class="nav-icon" src="/assets/icons/notice.png" />
+        <view class="nav-dot" wx:if="{{noticeCount > 0}}"></view>
+      </view>
     </view>
   </view>
+
   <!-- 顶部区域 -->
   <view class="header-section">
     <!-- 用户信息卡片 -->
@@ -16,17 +20,17 @@
       <view class="user-info-row">
         <image class="user-avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
         <view class="user-detail">
-          <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
-          <view class="user-level-row">
-            <text class="level-badge">Lv.{{creatorStats.level || 0}} {{creatorStats.level_name || '创作者'}}</text>
-            <text class="level-sep">·</text>
-            <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
+          <view class="user-name-row">
+            <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
+            <image class="user-arrow" src="../../images/mine/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" />
           </view>
-        </view>
-        <view class="user-id-row">
           <text class="user-id">ID：{{user.id || '--'}}</text>
-          <image class="user-arrow" src="../../images/mine/FigmaDDSSlicePNG4b3cca4dedfa3af0746694b71e25825a.png" />
         </view>
+      </view>
+      <view class="user-level-row">
+        <text class="level-badge">Lv.{{creatorStats.level || 0}} {{creatorStats.level_name || '创作者'}}</text>
+        <text class="level-sep">·</text>
+        <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
       </view>
     </view>
 
@@ -76,7 +80,9 @@
           <image class="zone-icon" src="../../images/mine/FigmaDDSSlicePNGc19883119d2024c369461474511364ea.png" />
           <text class="zone-item-title">商家认证</text>
           <view class="zone-action">
-            <text class="action-text">去认证</text>
+            <view class="action-tag">
+              <text class="action-tag-text">去认证</text>
+            </view>
             <image class="zone-arrow" src="../../images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
           </view>
         </view>
@@ -99,7 +105,7 @@
       </view>
     </view>
 
-    <!--  通用功能 -->
+    <!-- 通用功能 -->
     <view class="zone-card">
       <view class="zone-title">通用功能</view>
       <view class="zone-items">

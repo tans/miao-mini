@@ -45,7 +45,7 @@ Page({
     sort: 'latest',
     keyword: '',
     searchValue: '',
-    searchBarHidden: false,
+    searchBarHidden: true,
     activeTag: '全部',
     tags: TAG_OPTIONS,
     page: 1,
@@ -187,16 +187,19 @@ Page({
   goWorkDetail(e) {
     if (this.navigating) return;
     const id = e.currentTarget.dataset.id;
+    const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
+
+    // 视频作品直接播放，不跳转
+    if (isVideo) {
+      return;
+    }
+
     this.navigating = true;
-    wx.navigateTo({
-      url: `/pages/work-detail/index?id=${id}&mode=public`,
-      complete: () => {
-        setTimeout(() => {
-          this.navigating = false;
-        }, 400);
-      },
-    });
+    wx.showToast({ title: '作品预览开发中', icon: 'none' });
+    setTimeout(() => {
+      this.navigating = false;
+    }, 400);
   },
 
   goHome() {

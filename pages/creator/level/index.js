@@ -85,5 +85,9 @@ Page({
     } catch (err) {
       // ignore
     }
+  },
+
+  goBack() {
+    wx.navigateBack({ delta: 1 });
   }
 });
