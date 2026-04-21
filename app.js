@@ -13,12 +13,9 @@ App({
   _loginPromise: null,
 
   onLaunch() {
-    // 获取状态栏高度
+    // 获取状态栏高度和设备信息
     const info = wx.getSystemInfoSync();
     this.globalData.statusBarHeight = info.statusBarHeight || 20;
-
-    // 检测运行环境：只有微信开发者工具才用 localhost
-    const info = wx.getDeviceInfo();
     const isDevtools = info.platform === 'devtools';
     this.globalData.apiBase = 'https://miao-test.clawos.cc/api/v1';
 
