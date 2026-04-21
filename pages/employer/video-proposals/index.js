@@ -125,11 +125,6 @@ Page({
     }
   },
 
-  goSubmitWork() {
-    const taskId = this.data.taskId;
-    wx.navigateTo({ url: `/pages/creator/submit-work/index?taskId=${taskId}` });
-  },
-
   formatClaim(claim, task) {
     const status = Number(claim.status);
     const materials = Array.isArray(claim.materials) ? claim.materials : [];

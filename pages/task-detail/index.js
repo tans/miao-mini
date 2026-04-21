@@ -244,16 +244,6 @@ Page({
     });
   },
 
-  // 跳转到提交作品页面
-  goSubmitWork() {
-    const { myClaim } = this.data;
-    if (myClaim) {
-      wx.navigateTo({
-        url: `/pages/creator/submit-work/index?claimId=${myClaim.id}&taskId=${myClaim.task_id}`
-      });
-    }
-  },
-
   async reviewClaim(e) {
     const { claimId, result } = e.currentTarget.dataset;
     try {

@@ -27,8 +27,8 @@
           <text class="time-label">剩余：</text>
           <text class="time-value {{item.remainingTimeClass}}">{{item.remainingTimeDisplay}}</text>
         </view>
-        <view class="action-btn {{item.status === 1 ? 'btn-submit' : 'btn-ended'}}" bindtap="{{item.status === 1 ? 'goSubmitWork' : 'goTaskDetail'}}" data-claim="{{item.id}}" data-task="{{item.task_id}}">
-          <text>{{item.status === 1 ? '立即交稿' : '查看详情'}}</text>
+        <view class="action-btn btn-ended" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">
+          <text>查看详情</text>
         </view>
       </view>
     </view>

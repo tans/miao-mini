@@ -126,18 +126,8 @@ Page({
     wx.navigateTo({ url: `/pages/task-detail/index?id=${taskId}` });
   },
 
-  goSubmitWork(e) {
-    const claimId = e.currentTarget.dataset.claim;
-    wx.navigateTo({ url: `/pages/creator/submit-work/index?claimId=${claimId}` });
-  },
-
   getClaimStatusText(status) {
     return getClaimStatusText(status);
-  },
-
-  showSubmitModal(e) {
-    const claimId = e.currentTarget.dataset.claimId;
-    wx.navigateTo({ url: `/pages/creator/submit-work/index?claimId=${claimId}` });
   },
 
   hideSubmitModal() {

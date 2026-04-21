@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/home/index",
-    "pages/creator/submit-work/index",
     "pages/works/index",
     "pages/creator/adopted-works/index",
     "pages/mine/index",
