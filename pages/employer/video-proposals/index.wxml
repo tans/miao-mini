@@ -187,6 +187,41 @@
 
   <!-- 全部投稿 -->
   <view class="tab-content" wx:if="{{currentTab === 'proposals'}}">
+    <!-- Stats Cards -->
+    <view class="stats-cards">
+      <view class="stat-card">
+        <text class="stat-label">总投稿数</text>
+        <text class="stat-value">{{totalSubmitted}}</text>
+        <text class="stat-hint">{{adoptionRate}}%采纳率</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-label">总采纳数</text>
+        <text class="stat-value">{{totalAdopted}}</text>
+        <text class="stat-hint">{{adoptionRate}}%采纳率</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-label">总支出</text>
+        <text class="stat-value">¥{{totalSpent}}</text>
+        <text class="stat-hint">已支出</text>
+      </view>
+    </view>
+
+    <!-- Safety Reminder -->
+    <view class="safety-card">
+      <view class="safety-header">
+        <image src="/assets/icons/safety-icon.png" class="safety-icon" />
+        <text class="safety-title">创意喵 安全提醒</text>
+      </view>
+      <view class="safety-content">
+        <text class="safety-text">请在</text>
+        <text class="safety-highlight">收到投稿后48小时内审核稿件，</text>
+        <text class="safety-text">超时未审核将自动为创作者发放参与奖，后续继续采纳可自动补发采纳奖。</text>
+        <text class="safety-text">采纳稿件后自动为创作者发放采纳奖+参与奖；淘汰自动发放参与奖；</text>
+        <text class="safety-highlight">如遇到恶意低质灌水稿件可直接举报，</text>
+        <text class="safety-text">平台介入确认事实后，退还此稿参与奖至商家钱包。</text>
+      </view>
+    </view>
+
     <!-- Filter Tabs -->
     <view class="filter-tabs">
       <text
@@ -198,9 +233,35 @@
       >{{item.label}}</text>
     </view>
 
+    <!-- Batch Operation Bar -->
+    <view class="batch-bar" wx:if="{{batchMode}}">
+      <view class="batch-info">
+        <text>已选 {{selectedCount}} 个作品</text>
+      </view>
+      <view class="batch-actions">
+        <text class="batch-btn batch-download" bindtap="downloadSelected">批量下载</text>
+        <text class="batch-btn batch-reject" data-action="2" bindtap="batchReview">批量淘汰</text>
+        <text class="batch-btn batch-accept" data-action="1" bindtap="batchReview">批量通过</text>
+      </view>
+    </view>
+
     <!-- Claims List -->
     <view class="claims-list" wx:if="{{filteredClaims.length > 0}}">
-      <view class="claim-item" wx:for="{{filteredClaims}}" wx:key="id">
+      <!-- Batch Mode Toggle -->
+      <view class="batch-toggle" wx:if="{{!batchMode}}" bindtap="toggleBatchMode">
+        <text class="batch-toggle-text">批量操作</text>
+      </view>
+      <view class="batch-toggle done" wx:else bindtap="toggleBatchMode">
+        <text class="batch-toggle-text">完成</text>
+      </view>
+
+      <view class="claim-item {{batchMode ? 'selectable' : ''}} {{item.selected ? 'selected' : ''}}" wx:for="{{filteredClaims}}" wx:key="id">
+        <!-- Selection Checkbox in Batch Mode -->
+        <view class="claim-checkbox" wx:if="{{batchMode}}" bindtap="toggleClaimSelection" data-claim-id="{{item.id}}">
+          <image wx:if="{{selectedClaims[item.id]}}" src="/assets/icons/checkbox-checked.png" class="checkbox-icon"/>
+          <image wx:else src="/assets/icons/checkbox-unchecked.png" class="checkbox-icon"/>
+        </view>
+
         <!-- Claim Header -->
         <view class="claim-header">
           <view class="creator-info">
