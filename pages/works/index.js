@@ -152,10 +152,12 @@ Page({
     const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
 
+    const work = this.data.works.find(w => w.id === id);
+    if (!work) return;
+
     // 视频作品跳转播放页
     if (isVideo) {
-      const work = this.data.works.find(w => w.id === id);
-      if (work && work.previewVideoSrc) {
+      if (work.previewVideoSrc) {
         wx.navigateTo({ url: `/pages/video-player/index?url=${encodeURIComponent(work.previewVideoSrc)}` });
       } else {
         wx.showToast({ title: '视频加载中...', icon: 'none' });
@@ -164,8 +166,9 @@ Page({
     }
 
     this.navigating = true;
-    const workData = encodeURIComponent(JSON.stringify(this.data.works.find(w => w.id === id) || {}));
-    wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
+    // 使用 storage 传递数据，避免 URL 长度超限
+    wx.setStorageSync(`work_preview_${id}`, work);
+    wx.navigateTo({ url: `/pages/work-preview/index?id=${id}` });
     setTimeout(() => {
       this.navigating = false;
     }, 400);

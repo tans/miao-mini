@@ -70,7 +70,7 @@ Page({
       const totalSubmitted = allClaims.filter(c => Number(c.status) !== 1).length;
       const totalAdopted = allClaims.filter(c => Number(c.status) === 3).length;
       const adoptionRate = totalSubmitted > 0 ? Math.round((totalAdopted / totalSubmitted) * 100) : 0;
-      const totalSpent = totalAdopted * (task ? (task.unit_price || 0) : 0);
+      const totalSpent = totalAdopted * (task ? ((task.unit_price || 0) + (task.award_price || 0)) : 0);
 
       // 计算截止时间
       let deadlineText = '23小时28分';
@@ -352,31 +352,51 @@ Page({
       wx.showToast({ title: '请先选择作品', icon: 'none' });
       return;
     }
-    // Collect all image URLs for download
-    const urls = [];
+    // Collect all image and video URLs for download
+    const imageUrls = [];
+    const videoUrls = [];
     selectedClaims.forEach(claim => {
       if (claim.previewImages) {
-        claim.previewImages.forEach(img => urls.push({ url: img, name: claim.creatorName }));
+        claim.previewImages.forEach(img => imageUrls.push({ url: img, name: claim.creatorName }));
+      }
+      if (claim.previewVideos) {
+        claim.previewVideos.forEach(video => videoUrls.push({ url: video.url, name: claim.creatorName }));
       }
     });
-    if (urls.length === 0) {
+    const totalCount = imageUrls.length + videoUrls.length;
+    if (totalCount === 0) {
       wx.showToast({ title: '没有可下载的内容', icon: 'none' });
       return;
     }
 
-    wx.showLoading({ title: `正在下载 0/${urls.length}...` });
+    wx.showLoading({ title: `正在下载 0/${totalCount}...` });
     let successCount = 0;
     let failCount = 0;
 
-    for (let i = 0; i < urls.length; i++) {
-      const { url } = urls[i];
+    // Download images
+    for (let i = 0; i < imageUrls.length; i++) {
+      const { url } = imageUrls[i];
       try {
         const [tempFilePath] = await this.downloadFile(url);
         await this.saveImageToAlbum(tempFilePath);
         successCount++;
-        wx.showLoading({ title: `正在下载 ${successCount}/${urls.length}...` });
+        wx.showLoading({ title: `正在下载 ${successCount}/${totalCount}...` });
       } catch (err) {
-        console.error(`下载失败: ${url}`, err);
+        console.error(`下载图片失败: ${url}`, err);
+        failCount++;
+      }
+    }
+
+    // Download videos
+    for (let i = 0; i < videoUrls.length; i++) {
+      const { url } = videoUrls[i];
+      try {
+        const [tempFilePath] = await this.downloadFile(url);
+        await this.saveVideoToAlbum(tempFilePath);
+        successCount++;
+        wx.showLoading({ title: `正在下载 ${successCount}/${totalCount}...` });
+      } catch (err) {
+        console.error(`下载视频失败: ${url}`, err);
         failCount++;
       }
     }
@@ -414,6 +434,30 @@ Page({
             wx.showModal({
               title: '提示',
               content: '需要您授权保存图片到相册',
+              confirmText: '去授权',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.openSetting();
+                }
+              }
+            });
+          }
+          reject(err);
+        }
+      });
+    });
+  },
+
+  saveVideoToAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+      wx.saveVideoToPhotosAlbum({
+        filePath,
+        success: () => resolve(),
+        fail: (err) => {
+          if (err.errMsg && err.errMsg.includes('auth deny')) {
+            wx.showModal({
+              title: '提示',
+              content: '需要您授权保存视频到相册',
               confirmText: '去授权',
               success: (res) => {
                 if (res.confirm) {

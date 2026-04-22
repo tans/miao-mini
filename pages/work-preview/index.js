@@ -13,7 +13,13 @@ Page({
 
   onLoad(options) {
     if (options.id) {
-      this.loadWork(options.id);
+      // 优先从 storage 获取，避免 URL 长度超限问题
+      const storedWork = wx.getStorageSync(`work_preview_${options.id}`);
+      if (storedWork && storedWork.id) {
+        this.setWorkData(storedWork);
+      } else {
+        this.loadWork(options.id);
+      }
     } else if (options.data) {
       try {
         const work = JSON.parse(decodeURIComponent(options.data));
@@ -100,6 +106,13 @@ Page({
 
   onVideoError(e) {
     wx.showToast({ title: '视频播放失败', icon: 'none' });
+  },
+
+  onUnload() {
+    // 清理 storage 中的预览数据
+    if (this.data.work && this.data.work.id) {
+      wx.removeStorageSync(`work_preview_${this.data.work.id}`);
+    }
   },
 
   goBack() {
