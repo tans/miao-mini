@@ -44,6 +44,12 @@ Page({
           wx.hideLoading();
           wx.showToast({ title: '上传失败', icon: 'none' });
         });
+      },
+      fail: (res) => {
+        if (res.errMsg && res.errMsg.includes('cancel')) {
+          return;
+        }
+        wx.showToast({ title: '选择失败', icon: 'none' });
       }
     });
   },
