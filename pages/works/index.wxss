@@ -1,7 +1,7 @@
 .works-container {
   min-height: 100vh;
   background: #f5f5f5;
-  padding: 0 12px 20px;
+  padding: 88rpx 12px 20px;
 }
 
 .works-header {

@@ -1,6 +1,4 @@
 <!-- pages/home/index.wxml -->
-<custom-nav title="创意喵｜AI视频众包撮合平台" subtitle="双向信用管控 100%资金托管" msgCount="{{8}}" />
-
 <view class="home-container">
   <!-- 顶部渐变区域 -->
   <view class="header-gradient">
