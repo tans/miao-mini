@@ -18,21 +18,20 @@ Page({
       this.setData({ taskId: options.id });
       this.loadTaskDetail(options.id);
     }
-    this.initMockData();
   },
 
   async loadTaskDetail(taskId) {
     wx.showLoading({ title: '加载中...' });
     try {
-      const res = await Api.getTaskDetail(taskId);
+      const res = await Api.getTask(taskId);
       const task = res.data || {};
       this.setData({
         task,
         materials: task.materials || [],
-        hasSignedUp: task.hasSignedUp || false,
-        canSubmit: task.canSubmit || false,
+        hasSignedUp: task.has_signed_up || false,
+        canSubmit: task.can_submit || false,
       });
-      this.updateCountdown(task.endAt);
+      this.updateCountdown(task.end_at);
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
@@ -41,6 +40,7 @@ Page({
   },
 
   initMockData() {
+    if (process.env.NODE_ENV !== 'development') return;
     // 模拟数据用于开发和测试
     const mockTask = {
       id: 'CC-20260418-000126',
@@ -55,7 +55,7 @@ Page({
       videoDuration: '30s',
       endAt: '2026-04-24 18:00',
       merchantName: '美寓家居旗舰店',
-      merchantAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+      merchantAvatar: '',
       isBrandEnterprise: true,
       adoptionRate: '86',
       totalTasks: 120,
@@ -64,9 +64,9 @@ Page({
     };
 
     const mockMaterials = [
-      { id: 1, file_path: 'https://img.yzcdn.cn/vant/cat.jpeg', file_type: 'image' },
-      { id: 2, file_path: 'https://img.yzcdn.cn/vant/cat.jpeg', file_type: 'image' },
-      { id: 3, file_path: 'https://img.yzcdn.cn/vant/cat.jpeg', file_type: 'image' },
+      { id: 1, file_path: '', file_type: 'image' },
+      { id: 2, file_path: '', file_type: 'image' },
+      { id: 3, file_path: '', file_type: 'image' },
     ];
 
     const mockRecommendations = [

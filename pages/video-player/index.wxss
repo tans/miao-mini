@@ -1,0 +1,45 @@
+.page {
+  min-height: 100vh;
+  background: #000;
+}
+
+/* 导航栏 */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 88rpx;
+  padding: 0 32rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.nav-left, .nav-right {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+}
+
+.nav-back {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 900;
+  color: #333;
+}
+
+/* 视频区域 */
+.video-section {
+  background: #000;
+  width: 100%;
+  height: 100vh;
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+}

@@ -45,7 +45,7 @@ Page({
     sort: 'latest',
     keyword: '',
     searchValue: '',
-    searchBarHidden: true,
+    searchBarHidden: false,
     activeTag: '全部',
     tags: TAG_OPTIONS,
     page: 1,
@@ -65,45 +65,7 @@ Page({
   },
 
   onPageScroll(e) {
-    const scrollTop = Math.max((e && e.scrollTop) || 0, 0);
-
-    if (scrollTop <= SEARCH_BAR_SHOW_AT_TOP) {
-      if (this.data.searchBarHidden) {
-        this.setData({ searchBarHidden: false });
-      }
-      this._resetSearchBarScrollState(scrollTop);
-      return;
-    }
-
-    const delta = scrollTop - this._lastScrollTop;
-    this._lastScrollTop = scrollTop;
-
-    if (Math.abs(delta) < 2) {
-      return;
-    }
-
-    const direction = delta > 0 ? 'down' : 'up';
-    if (direction !== this._scrollDirection) {
-      this._scrollDirection = direction;
-      this._scrollAnchorTop = scrollTop;
-      return;
-    }
-
-    const travelled = Math.abs(scrollTop - this._scrollAnchorTop);
-    if (travelled < SEARCH_BAR_TOGGLE_DISTANCE) {
-      return;
-    }
-
-    if (direction === 'down' && !this.data.searchBarHidden) {
-      this.setData({ searchBarHidden: true });
-      this._scrollAnchorTop = scrollTop;
-      return;
-    }
-
-    if (direction === 'up' && this.data.searchBarHidden) {
-      this.setData({ searchBarHidden: false });
-      this._scrollAnchorTop = scrollTop;
-    }
+    // 搜索栏固定显示，不随滚动隐藏
   },
 
   onPullDownRefresh() {
@@ -164,7 +126,7 @@ Page({
     this.setData({ loading: true });
     try {
       const tag = this.data.activeTag === '全部' ? '' : this.data.activeTag;
-      const res = await Api.getWorks({
+      const res = await Api.getInspirationList({
         sort: this.data.sort,
         keyword: this.data.keyword,
         tag,
@@ -190,13 +152,20 @@ Page({
     const isVideo = e.currentTarget.dataset.isVideo;
     if (!id) return;
 
-    // 视频作品直接播放，不跳转
+    // 视频作品跳转播放页
     if (isVideo) {
+      const work = this.data.works.find(w => w.id === id);
+      if (work && work.previewVideoSrc) {
+        wx.navigateTo({ url: `/pages/video-player/index?url=${encodeURIComponent(work.previewVideoSrc)}` });
+      } else {
+        wx.showToast({ title: '视频加载中...', icon: 'none' });
+      }
       return;
     }
 
     this.navigating = true;
-    wx.showToast({ title: '作品预览开发中', icon: 'none' });
+    const workData = encodeURIComponent(JSON.stringify(this.data.works.find(w => w.id === id) || {}));
+    wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
     setTimeout(() => {
       this.navigating = false;
     }, 400);
@@ -214,11 +183,9 @@ Page({
     const materials = Array.isArray(item.materials) ? item.materials : [];
     const firstMaterial = materials[0] || null;
     const coverType = item.cover_type || (firstMaterial && firstMaterial.file_type) || 'image';
-    const previewVideoSrc =
-      item.cover_url ||
-      item.image ||
-      (firstMaterial && firstMaterial.file_path) ||
-      '';
+    const previewVideoSrc = coverType === 'video'
+      ? (item.video_url || item.previewVideoSrc || firstMaterial && firstMaterial.file_path || '')
+      : (item.cover_url || item.image || firstMaterial && firstMaterial.file_path || '');
 
     let displayCover = '';
     if (coverType === 'video') {

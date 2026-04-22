@@ -1,0 +1,51 @@
+<view class="help-container">
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back-white.png" />
+    </view>
+    <text class="nav-title">帮助中心</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 帮助分类 -->
+  <view class="help-list">
+    <view class="help-item" bindtap="goHelpDetail" data-type="creator">
+      <image class="help-icon" src="/assets/icons/help-creator.png" />
+      <view class="help-content">
+        <text class="help-title">创作者指南</text>
+        <text class="help-desc">如何接任务、提交作品、获取收益</text>
+      </view>
+      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+    </view>
+    <view class="help-item" bindtap="goHelpDetail" data-type="merchant">
+      <image class="help-icon" src="/assets/icons/help-merchant.png" />
+      <view class="help-content">
+        <text class="help-title">商家指南</text>
+        <text class="help-desc">如何发布任务、审核作品、结算费用</text>
+      </view>
+      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+    </view>
+    <view class="help-item" bindtap="goHelpDetail" data-type="wallet">
+      <image class="help-icon" src="/assets/icons/help-wallet.png" />
+      <view class="help-content">
+        <text class="help-title">钱包与提现</text>
+        <text class="help-desc">充值、提现、结算等问题</text>
+      </view>
+      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+    </view>
+    <view class="help-item" bindtap="goHelpDetail" data-type="common">
+      <image class="help-icon" src="/assets/icons/help-common.png" />
+      <view class="help-content">
+        <text class="help-title">常见问题</text>
+        <text class="help-desc">账号、绑定、认证等问题</text>
+      </view>
+      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+    </view>
+  </view>
+
+  <!-- 联系客服 -->
+  <view class="contact-section">
+    <button class="contact-btn" bindtap="contactService">联系客服</button>
+  </view>
+</view>

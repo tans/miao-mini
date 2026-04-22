@@ -15,6 +15,7 @@ Page({
     jimeng_link: '',
     selectedIndustries: [],
     selectedStyles: [],
+    refImages: [],
     industryOptions: [
       { id: 1001, name: '餐饮美食' },
       { id: 1002, name: '酒店民宿' },
@@ -76,6 +77,14 @@ Page({
     this.setData({ description: e.detail.value });
   },
 
+  isIndustrySelected(id) {
+    return this.data.selectedIndustries.indexOf(id) > -1;
+  },
+
+  isStyleSelected(style) {
+    return this.data.selectedStyles.indexOf(style) > -1;
+  },
+
   toggleIndustry(e) {
     const id = e.currentTarget.dataset.id;
     const { selectedIndustries } = this.data;
@@ -106,6 +115,29 @@ Page({
 
   toggleJimeng() {
     this.setData({ jimengEnabled: !this.data.jimengEnabled });
+  },
+
+  addRefImage() {
+    if (this.data.refImages.length >= 3) {
+      wx.showToast({ title: '最多上传3张图片', icon: 'none' });
+      return;
+    }
+    wx.chooseImage({
+      count: 3 - this.data.refImages.length,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        this.setData({
+          refImages: this.data.refImages.concat(res.tempFilePaths)
+        });
+      }
+    });
+  },
+
+  removeRefImage(e) {
+    const index = e.currentTarget.dataset.index;
+    this.data.refImages.splice(index, 1);
+    this.setData({ refImages: this.data.refImages });
   },
 
   onJimengLinkInput(e) {
@@ -153,11 +185,44 @@ Page({
   },
 
   aiWriteDesc() {
-    wx.showToast({ title: 'AI帮写功能开发中', icon: 'none' });
+    const { title, selectedIndustries, selectedStyles } = this.data;
+
+    if (!title) {
+      wx.showToast({ title: '请先填写任务标题', icon: 'none' });
+      return;
+    }
+
+    // Convert industry IDs to names
+    const industryNames = selectedIndustries.map(id => {
+      const industry = this.data.industryOptions.find(i => i.id === id);
+      return industry ? industry.name : '';
+    }).filter(name => name);
+
+    wx.showLoading({ title: 'AI帮写中...' });
+
+    Api.aiWriteTaskDescription({
+      title: title,
+      industries: industryNames,
+      styles: selectedStyles
+    }).then(res => {
+      wx.hideLoading();
+      if (res.data && res.data.success && res.data.description) {
+        this.setData({ description: res.data.description });
+        wx.showToast({ title: 'AI帮写成功', icon: 'success' });
+      } else if (res.data && res.data.error) {
+        wx.showToast({ title: res.data.error, icon: 'none', duration: 3000 });
+      } else {
+        wx.showToast({ title: 'AI帮写失败', icon: 'none' });
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      const msg = err && err.message || 'AI帮写失败';
+      wx.showToast({ title: msg, icon: 'none', duration: 3000 });
+    });
   },
 
   showJimengTutorial() {
-    wx.showToast({ title: '教程页面开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/employer/jimeng-tutorial/index' });
   },
 
   goBack() {

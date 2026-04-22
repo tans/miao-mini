@@ -40,7 +40,7 @@ Page({
         realNameVerified: user.real_name_verified || false
       });
     } catch (err) {
-      console.error('loadWalletInfo error:', err);
+      wx.showToast({ title: '加载失败', icon: 'none' });
     }
   },
 
@@ -86,7 +86,7 @@ Page({
         cancelText: '取消',
         success: (res) => {
           if (res.confirm) {
-            wx.navigateTo({ url: '/pages/mine/index' });
+            wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });
           }
         }
       });

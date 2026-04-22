@@ -35,9 +35,30 @@
     <view class="masonry-grid">
       <!-- 左列 -->
       <view class="masonry-column">
-        <view class="inspiration-card" wx:for="{{leftColumn}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="inspiration-card" wx:for="{{leftColumn}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" data-is-video="{{item.isVideo}}">
           <view class="card-image-wrap">
-            <image class="card-image" src="{{item.cover}}" mode="aspectFill"/>
+            <image wx:if="{{item.displayCover}}" class="card-image" src="{{item.displayCover}}" mode="aspectFill"/>
+            <image wx:else class="card-image" src="{{item.cover}}" mode="aspectFill"/>
+            <video
+              wx:if="{{item.isVideo && item.previewVideoSrc}}"
+              class="card-video-preview"
+              src="{{item.previewVideoSrc}}"
+              objectFit="cover"
+              autoplay="{{false}}"
+              loop="{{false}}"
+              muted="{{true}}"
+              controls="{{false}}"
+              show-center-play-btn="{{false}}"
+              show-play-btn="{{false}}"
+              show-fullscreen-btn="{{false}}"
+              show-mute-btn="{{false}}"
+              enable-play-gesture="{{false}}"
+              enable-progress-gesture="{{false}}"
+            ></video>
+            <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
+            <view class="media-badge" wx:if="{{item.isVideo}}">
+              <view class="media-play-icon"></view>
+            </view>
             <view class="like-btn">
               <text class="like-icon">♡</text>
               <text class="like-count">{{item.likes}}</text>
@@ -54,9 +75,30 @@
       </view>
       <!-- 右列 -->
       <view class="masonry-column">
-        <view class="inspiration-card" wx:for="{{rightColumn}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="inspiration-card" wx:for="{{rightColumn}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" data-is-video="{{item.isVideo}}">
           <view class="card-image-wrap">
-            <image class="card-image" src="{{item.cover}}" mode="aspectFill"/>
+            <image wx:if="{{item.displayCover}}" class="card-image" src="{{item.displayCover}}" mode="aspectFill"/>
+            <image wx:else class="card-image" src="{{item.cover}}" mode="aspectFill"/>
+            <video
+              wx:if="{{item.isVideo && item.previewVideoSrc}}"
+              class="card-video-preview"
+              src="{{item.previewVideoSrc}}"
+              objectFit="cover"
+              autoplay="{{false}}"
+              loop="{{false}}"
+              muted="{{true}}"
+              controls="{{false}}"
+              show-center-play-btn="{{false}}"
+              show-play-btn="{{false}}"
+              show-fullscreen-btn="{{false}}"
+              show-mute-btn="{{false}}"
+              enable-play-gesture="{{false}}"
+              enable-progress-gesture="{{false}}"
+            ></video>
+            <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
+            <view class="media-badge" wx:if="{{item.isVideo}}">
+              <view class="media-play-icon"></view>
+            </view>
             <view class="like-btn">
               <text class="like-icon">♡</text>
               <text class="like-count">{{item.likes}}</text>

@@ -206,16 +206,17 @@ Page({
   },
 
   getClaimStatusText(status) {
-    const map = { 2: '待审核', 3: '已采纳', 4: '已取消', 5: '已淘汰', 6: '已举报' };
+    const map = { 1: '待提交', 2: '待审核', 3: '已采纳', 4: '已取消', 5: '已淘汰', 6: '已举报' };
     return map[status] || `未知(${status})`;
   },
 
   getClaimStatusClass(status) {
-    const map = { 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'rejected', 6: 'reported' };
+    const map = { 1: 'draft', 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'rejected', 6: 'reported' };
     return map[status] || 'draft';
   },
 
   getFilterKey(status) {
+    if (status === 1) return 'draft';
     if (status === 2) return 'pending';
     if (status === 3) return 'passed';
     if (status === 5) return 'rejected';
@@ -229,29 +230,41 @@ Page({
   },
 
   applyFilter(filter) {
+    // Clear selections for claims that won't be visible under the new filter
+    const visibleIds = filter === 'all'
+      ? this.data.claims.map(c => c.id)
+      : this.data.claims.filter(item => item.filterKey === filter).map(c => c.id);
+    const selectedClaims = {};
+    Object.keys(this.data.selectedClaims).forEach(id => {
+      if (this.data.selectedClaims[id] && visibleIds.includes(id)) {
+        selectedClaims[id] = true;
+      }
+    });
+    const selectedCount = Object.values(selectedClaims).filter(Boolean).length;
+
     const filteredClaims = filter === 'all'
       ? this.data.claims
       : this.data.claims.filter(item => item.filterKey === filter);
-    this.setData({ activeFilter: filter, filteredClaims });
+    this.setData({ activeFilter: filter, filteredClaims, selectedClaims, selectedCount });
   },
 
   async reviewClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     const result = Number(e.currentTarget.dataset.result);
-    if (!claimId || ![1, 2, 3].includes(result)) {
+    if (!claimId || ![3, 4, 5, 6].includes(result)) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
 
     let reason = null;
-    if (result === 3) {
+    if (result === 6) {
       reason = await this.showReportModal();
       if (!reason) return;
     }
 
     try {
       await Api.reviewClaim(claimId, result, reason);
-      const msg = result === 1 ? '已采纳' : result === 2 ? '已淘汰' : '已举报';
+      const msg = result === 3 ? '已采纳' : result === 4 || result === 5 ? '已拒绝' : '已举报';
       wx.showToast({ title: msg, icon: 'success' });
       this._initPage();
     } catch (err) {
@@ -276,16 +289,26 @@ Page({
 
   async batchReview(e) {
     const action = e.currentTarget.dataset.action;
-    if (![1, 2, 3].includes(action)) return;
+    if (![3, 4, 5, 6].includes(action)) return;
 
-    const selectedClaims = this.data.filteredClaims.filter(c => c.selected);
+    const selectedClaims = this.data.filteredClaims.filter(c => this.data.selectedClaims[c.id]);
     if (selectedClaims.length === 0) {
       wx.showToast({ title: '请先选择作品', icon: 'none' });
       return;
     }
 
+    // Check if any selected claims are no longer in filteredClaims (filter changed)
+    const invalidSelected = Object.keys(this.data.selectedClaims).filter(id => this.data.selectedClaims[id] && !this.data.filteredClaims.find(c => c.id === id));
+    if (invalidSelected.length > 0) {
+      wx.showModal({
+        title: '提示',
+        content: `已选中 ${invalidSelected.length} 个作品不在当前筛选范围内，将被忽略`,
+        showCancel: false
+      });
+    }
+
     let reason = null;
-    if (action === 3) {
+    if (action === 6) {
       reason = await this.showReportModal();
       if (!reason) return;
     }
@@ -294,7 +317,7 @@ Page({
     try {
       const claimIds = selectedClaims.map(c => c.id);
       await Api.batchReviewClaim(claimIds, action, reason);
-      const msg = action === 1 ? '批量采纳成功' : action === 2 ? '批量淘汰成功' : '批量举报成功';
+      const msg = action === 3 ? '批量采纳成功' : action === 4 || action === 5 ? '批量拒绝成功' : '批量举报成功';
       wx.showToast({ title: msg, icon: 'success' });
       this.setData({ batchMode: false, selectedClaims: {} });
       this._initPage();
@@ -307,6 +330,13 @@ Page({
 
   toggleClaimSelection(e) {
     const claimId = e.currentTarget.dataset.claimId;
+    const claim = this.data.filteredClaims.find(c => c.id === claimId);
+    if (!claim) return;
+    // Cannot select items that are not yet submittable (status !== 2)
+    if (claim.status !== 2 && !this.data.selectedClaims[claimId]) {
+      wx.showToast({ title: '该作品无法审核', icon: 'none' });
+      return;
+    }
     const selected = { ...this.data.selectedClaims, [claimId]: !this.data.selectedClaims[claimId] };
     const selectedCount = Object.values(selected).filter(Boolean).length;
     this.setData({ selectedClaims: selected, selectedCount });
@@ -316,7 +346,7 @@ Page({
     this.setData({ batchMode: !this.data.batchMode, selectedClaims: {}, selectedCount: 0 });
   },
 
-  downloadSelected() {
+  async downloadSelected() {
     const selectedClaims = this.data.filteredClaims.filter(c => this.data.selectedClaims[c.id]);
     if (selectedClaims.length === 0) {
       wx.showToast({ title: '请先选择作品', icon: 'none' });
@@ -326,15 +356,76 @@ Page({
     const urls = [];
     selectedClaims.forEach(claim => {
       if (claim.previewImages) {
-        claim.previewImages.forEach(img => urls.push(img));
+        claim.previewImages.forEach(img => urls.push({ url: img, name: claim.creatorName }));
       }
     });
     if (urls.length === 0) {
       wx.showToast({ title: '没有可下载的内容', icon: 'none' });
       return;
     }
-    wx.showToast({ title: `开始下载 ${urls.length} 个文件`, icon: 'none' });
-    // Note: WeChat doesn't support bulk download directly, show message
+
+    wx.showLoading({ title: `正在下载 0/${urls.length}...` });
+    let successCount = 0;
+    let failCount = 0;
+
+    for (let i = 0; i < urls.length; i++) {
+      const { url } = urls[i];
+      try {
+        const [tempFilePath] = await this.downloadFile(url);
+        await this.saveImageToAlbum(tempFilePath);
+        successCount++;
+        wx.showLoading({ title: `正在下载 ${successCount}/${urls.length}...` });
+      } catch (err) {
+        console.error(`下载失败: ${url}`, err);
+        failCount++;
+      }
+    }
+
+    wx.hideLoading();
+    const message = failCount === 0
+      ? `已下载 ${successCount} 个文件`
+      : `成功 ${successCount} 个，失败 ${failCount} 个`;
+    wx.showToast({ title: message, icon: 'none' });
+  },
+
+  downloadFile(url) {
+    return new Promise((resolve, reject) => {
+      wx.downloadFile({
+        url,
+        success: (res) => {
+          if (res.statusCode === 200 && res.tempFilePath) {
+            resolve([res.tempFilePath]);
+          } else {
+            reject(new Error('下载失败'));
+          }
+        },
+        fail: (err) => reject(err)
+      });
+    });
+  },
+
+  saveImageToAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+      wx.saveImageToPhotosAlbum({
+        filePath,
+        success: () => resolve(),
+        fail: (err) => {
+          if (err.errMsg && err.errMsg.includes('auth deny')) {
+            wx.showModal({
+              title: '提示',
+              content: '需要您授权保存图片到相册',
+              confirmText: '去授权',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.openSetting();
+                }
+              }
+            });
+          }
+          reject(err);
+        }
+      });
+    });
   },
 
   previewImages(e) {

@@ -36,7 +36,7 @@ Page({
         balanceDisplay: Number(balance).toLocaleString('zh-CN', { minimumFractionDigits: 2 }),
       });
     } catch (err) {
-      console.error('loadWallet error:', err);
+      wx.showToast({ title: '加载钱包数据失败', icon: 'none' });
     }
   },
 

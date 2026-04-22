@@ -17,15 +17,24 @@
     "pages/wallet/withdraw/index",
     "pages/employer/recharge/index",
     "pages/inspiration/index",
-    "pages/creator/task-detail/index"
+    "pages/inspiration-detail/index",
+    "pages/creator/task-detail/index",
+    "pages/creator/submit-work/index",
+    "pages/mine/profile/index",
+    "pages/mine/help/index",
+    "pages/mine/help-detail/index",
+    "pages/mine/about/index",
+    "pages/mine/merchant-auth/index",
+    "pages/mine/appeal/index",
+    "pages/mine/customer-service/index",
+    "pages/work-preview/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "创意喵",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true,
-    "navigationStyle": "custom"
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#999",

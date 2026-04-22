@@ -249,8 +249,8 @@
       </view>
       <view class="batch-actions">
         <text class="batch-btn batch-download" bindtap="downloadSelected">批量下载</text>
-        <text class="batch-btn batch-reject" data-action="2" bindtap="batchReview">批量淘汰</text>
-        <text class="batch-btn batch-accept" data-action="1" bindtap="batchReview">批量通过</text>
+        <text class="batch-btn batch-reject" data-action="5" bindtap="batchReview">批量淘汰</text>
+        <text class="batch-btn batch-accept" data-action="3" bindtap="batchReview">批量通过</text>
       </view>
     </view>
 
@@ -320,9 +320,9 @@
         <view class="claim-footer">
           <text class="submit-time">{{item.displayDate}}</text>
           <view class="action-btns" wx:if="{{item.canReview}}">
-            <text class="action-btn reject" data-claim-id="{{item.id}}" data-result="2" bindtap="reviewClaim">拒绝</text>
-            <text class="action-btn report" data-claim-id="{{item.id}}" data-result="3" bindtap="reviewClaim">举报</text>
-            <text class="action-btn accept" data-claim-id="{{item.id}}" data-result="1" bindtap="reviewClaim">采纳</text>
+            <text class="action-btn reject" data-claim-id="{{item.id}}" data-result="4" bindtap="reviewClaim">拒绝</text>
+            <text class="action-btn report" data-claim-id="{{item.id}}" data-result="6" bindtap="reviewClaim">举报</text>
+            <text class="action-btn accept" data-claim-id="{{item.id}}" data-result="3" bindtap="reviewClaim">采纳</text>
           </view>
         </view>
       </view>

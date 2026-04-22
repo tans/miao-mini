@@ -97,28 +97,32 @@ Page({
   },
 
   onShow() {
-    if (this._initialized && this.data.tasks.length > 0) {
-      this.setData({ page: 1, hasMore: true, tasks: [], displayTasks: [] });
-      this.loadTasks();
+    // 页面可见时确保定时器运行，并刷新倒计时
+    this._ensureCountdownTimer();
+    if (this.data.tasks.length > 0) {
+      this._refreshCountdowns();
     }
-    // 页面可见时刷新倒计时
-    this._refreshCountdowns();
   },
 
   onHide() {
     this._stopCountdownTimer();
+    this._initialized = false;
   },
 
   onUnload() {
     this._stopCountdownTimer();
   },
 
-  _startCountdownTimer() {
-    // 每分钟刷新一次倒计时
+  _ensureCountdownTimer() {
+    // 确保定时器已启动，避免重复创建
     if (this._countdownTimer) return;
     this._countdownTimer = setInterval(() => {
       this._refreshCountdowns();
     }, 60000);
+  },
+
+  _startCountdownTimer() {
+    this._ensureCountdownTimer();
   },
 
   _stopCountdownTimer() {
@@ -243,7 +247,7 @@ Page({
 
   goTaskDetail(e) {
     const taskId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${taskId}` });
+    wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${taskId}` });
   },
 
   goCreateTask() {

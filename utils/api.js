@@ -1,16 +1,18 @@
 // utils/api.js - 创意喵小程序 API 服务层
+const config = require('./config.js');
+
 const Api = {
   tokenKey: 'miao_token',
   userKey: 'miao_user',
 
-  // API 璇锋眰鍩虹鍦板潃锛屽彲閫氳繃 setApiBase 淇敼
+  // API 请求地址级别，可通过 setApiBase 修改
   _apiBase: '',
 
   getApiBase() {
     if (this._apiBase) return this._apiBase;
-    // 浼樺厛浣跨敤 app.globalData 涓厤缃殑鍚庣鍦板潃
+    // 优先使用 app.globalData 中配置的后端地址
     const app = getApp();
-    return app && app.globalData && app.globalData.apiBase || 'https://miao-test.clawos.cc/api/v1';
+    return app && app.globalData && app.globalData.apiBase || config.apiBase;
   },
 
   setApiBase(base) {
@@ -94,12 +96,12 @@ const Api = {
           if (data && data.code === 0) {
             resolve(data);
           } else {
-            const msg = (data && data.message) || '璇锋眰澶辫触';
+            const msg = (data && data.message) || '请求失败';
             reject(new Error(msg));
           }
         },
         fail: (err) => {
-          const msg = err && (err.message || err.errMsg) || '缃戠粶璇锋眰澶辫触';
+          const msg = err && (err.message || err.errMsg) || '网络请求失败';
           reject(new Error(msg));
         }
       });
@@ -151,7 +153,7 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
-              // 淇濆瓨涓婁紶鏃堕棿
+              // 保存上传时间
               wx.setStorageSync('lastUploadTime', new Date().toISOString());
               // Ensure URL is absolute for WeChat image component
               const url = data.data.url;
@@ -163,17 +165,17 @@ const Api = {
                 resolve(url);
               }
             } else {
-              const msg = (data && data.message) || '涓婁紶澶辫触';
+              const msg = (data && data.message) || '上传失败';
               wx.showToast({ title: msg, icon: 'none' });
               reject(new Error(msg));
             }
           } catch (e) {
-            wx.showToast({ title: '涓婁紶鍝嶅簲瑙ｆ瀽澶辫触', icon: 'none' });
+            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
             reject(e);
           }
         },
         fail: (err) => {
-          wx.showToast({ title: '涓婁紶澶辫触', icon: 'none' });
+          wx.showToast({ title: '上传失败', icon: 'none' });
           reject(err);
         },
       });
@@ -198,7 +200,7 @@ const Api = {
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
-              // 淇濆瓨涓婁紶鏃堕棿
+              // 保存上传时间
               wx.setStorageSync('lastUploadTime', new Date().toISOString());
               // Ensure URL is absolute for WeChat video component
               const url = data.data.url;
@@ -209,17 +211,17 @@ const Api = {
                 resolve(url);
               }
             } else {
-              const msg = (data && data.message) || '涓婁紶澶辫触';
+              const msg = (data && data.message) || '上传失败';
               wx.showToast({ title: msg, icon: 'none' });
               reject(new Error(msg));
             }
           } catch (e) {
-            wx.showToast({ title: '涓婁紶鍝嶅簲瑙ｆ瀽澶辫触', icon: 'none' });
+            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
             reject(e);
           }
         },
         fail: (err) => {
-          wx.showToast({ title: '涓婁紶澶辫触', icon: 'none' });
+          wx.showToast({ title: '上传失败', icon: 'none' });
           reject(err);
         },
       });
@@ -248,6 +250,16 @@ const Api = {
     return this.request('POST', '/business/tasks', data);
   },
 
+  // Merchant Auth
+  getMerchantAuthStatus() {
+    return this.request('GET', '/business/merchant/auth/status');
+  },
+
+  submitMerchantAuth(data) {
+    // data: { company_name, contact_name, contact_phone, license_url }
+    return this.request('POST', '/business/merchant/auth', data);
+  },
+
   getMyBusinessTasks(params = {}) {
     const q = [];
     if (params.page) q.push(`page=${params.page}`);
@@ -261,14 +273,14 @@ const Api = {
   },
 
   reviewClaim(claimId, result, reason) {
-    // result: 1=通过, 2=拒绝, 3=举报
+    // result: 3=已采纳, 4=已取消, 5=已淘汰, 6=已举报
     const data = { result };
     if (reason) data.reason = reason;
     return this.request('PUT', `/business/claim/${claimId}/review`, data);
   },
 
   batchReviewClaim(claimIds, result, reason) {
-    // result: 1=通过, 2=拒绝, 3=举报
+    // result: 3=已采纳, 4=已取消, 5=已淘汰, 6=已举报
     const data = { claim_ids: claimIds, result };
     if (reason) data.reason = reason;
     return this.request('PUT', `/business/claims/batch-review`, data);
@@ -276,6 +288,12 @@ const Api = {
 
   updateTaskJimengLink(taskId, jimengLink) {
     return this.request('PUT', `/business/tasks/${taskId}`, { jimeng_link: jimengLink });
+  },
+
+  // AI task description generation
+  aiWriteTaskDescription(data) {
+    // data: { title, industries, styles }
+    return this.request('POST', '/business/tasks/ai-write', data);
   },
 
   // Creator
@@ -305,6 +323,20 @@ const Api = {
 
   getClaimByTaskId(taskId) {
     return this.request('GET', `/creator/claim/by-task/${taskId}`);
+  },
+
+  // Appeals
+  createAppeal(data) {
+    // data: { type: 1, target_id: claimId, reason: string, evidence: string (optional, image urls joined by comma) }
+    return this.request('POST', '/appeals', data);
+  },
+
+  getAppeals(params = {}) {
+    const q = [];
+    if (params.limit) q.push(`limit=${params.limit}`);
+    if (params.offset) q.push(`offset=${params.offset}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/appeals' + qs);
   },
 
   // Wallet
@@ -350,9 +382,10 @@ const Api = {
     return this.request('DELETE', `/inspirations/${id}/like`);
   },
 
-  getWorks(params = {}) {
+  getInspirationList(params = {}) {
     const q = [];
-    if (params.sort) q.push(`sort=${encodeURIComponent(params.sort)}`);
+    if (params.category && params.category !== 'all') q.push(`category=${encodeURIComponent(params.category)}`);
+    if (params.sort && params.sort !== 'default') q.push(`sort=${encodeURIComponent(params.sort)}`);
     if (params.keyword) q.push(`keyword=${encodeURIComponent(params.keyword)}`);
     if (params.tag) q.push(`tag=${encodeURIComponent(params.tag)}`);
     if (params.page) q.push(`page=${params.page}`);

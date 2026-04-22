@@ -1,0 +1,90 @@
+<view class="page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <image class="nav-back" src="/assets/icons/back.png" />
+    </view>
+    <text class="nav-title">灵感详情</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 视频播放区域 -->
+  <view class="video-section">
+    <view class="video-container" wx:if="{{inspiration.video_url || inspiration.previewVideoSrc}}" bindtap="playVideo">
+      <video
+        id="inspirationVideo"
+        class="video-player"
+        src="{{inspiration.video_url || inspiration.previewVideoSrc}}"
+        poster="{{inspiration.displayCover || inspiration.cover}}"
+        controls
+        show-center-play-btn
+        enable-progress-gesture
+      ></video>
+    </view>
+    <view class="video-placeholder" wx:else>
+      <image class="cover-image" src="{{inspiration.cover}}" mode="aspectFill"/>
+    </view>
+  </view>
+
+  <!-- 视频信息（可编辑） -->
+  <view class="spec-section">
+    <view class="section-title">视频规格</view>
+    <view class="spec-row">
+      <text class="spec-label">视频比例</text>
+      <input class="spec-input" value="{{editVideoAspect}}" placeholder="如 9:16 竖屏" bindinput="onVideoAspectInput"/>
+    </view>
+    <view class="spec-row">
+      <text class="spec-label">分辨率</text>
+      <input class="spec-input" value="{{editVideoResolution}}" placeholder="如 1080P" bindinput="onVideoResolutionInput"/>
+    </view>
+    <view class="spec-row">
+      <text class="spec-label">时长</text>
+      <input class="spec-input" value="{{editVideoDuration}}" placeholder="如 30s" bindinput="onVideoDurationInput"/>
+    </view>
+  </view>
+
+  <!-- 时间与奖金（可编辑） -->
+  <view class="reward-section">
+    <view class="section-title">奖励设置</view>
+    <view class="reward-row">
+      <view class="reward-item">
+        <text class="reward-label">采纳奖励</text>
+        <input class="reward-input" type="digit" value="{{editReward}}" placeholder="0" bindinput="onRewardInput"/>
+        <text class="reward-unit">元/条</text>
+      </view>
+      <view class="reward-plus">+</view>
+      <view class="reward-item">
+        <text class="reward-label">参与奖励</text>
+        <input class="reward-input" type="digit" value="{{editParticipationReward}}" placeholder="0" bindinput="onParticipationRewardInput"/>
+        <text class="reward-unit">元/条</text>
+      </view>
+    </view>
+    <view class="time-row">
+      <text class="time-label">截稿时间</text>
+      <input class="time-input" value="{{editDeadline}}" placeholder="如 2026-04-25 18:00" bindinput="onDeadlineInput"/>
+    </view>
+  </view>
+
+  <!-- 灵感信息 -->
+  <view class="info-section">
+    <view class="info-card">
+      <text class="inspiration-title">{{inspiration.title}}</text>
+      <view class="author-row">
+        <image class="author-avatar" src="{{inspiration.authorAvatar}}" mode="aspectFill"/>
+        <text class="author-name">{{inspiration.authorName}}</text>
+      </view>
+      <view class="stats-row">
+        <view class="stat-item">
+          <text class="stat-icon">♡</text>
+          <text class="stat-value">{{inspiration.likes}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <mp-loading type="circle"></mp-loading>
+    <text>加载中...</text>
+  </view>
+</view>

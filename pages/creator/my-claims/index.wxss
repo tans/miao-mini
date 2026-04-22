@@ -162,6 +162,11 @@
   text-align: center;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 16rpx;
+}
+
 .action-btn.btn-submit {
   background: #ff9f2f;
   color: #fff;
@@ -171,6 +176,12 @@
   background: #f5f5f5;
   color: #333;
   border: 1px solid #ececef;
+}
+
+.action-btn.btn-cancel {
+  background: #fff;
+  color: #ef4444;
+  border: 1px solid #ef4444;
 }
 
 /* 空状态 */

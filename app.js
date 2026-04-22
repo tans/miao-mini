@@ -1,9 +1,9 @@
-// 创意喵 - 视频任务平台
+const config = require('./utils/config.js');
 App({
   globalData: {
     user: null,
     token: null,
-    apiBase: '', // 动态设置
+    apiBase: config.apiBase,
     worksMode: 'public',
     statusBarHeight: 20,
   },
@@ -16,8 +16,6 @@ App({
     // 获取状态栏高度和设备信息
     const info = wx.getSystemInfoSync();
     this.globalData.statusBarHeight = info.statusBarHeight || 20;
-    const isDevtools = info.platform === 'devtools';
-    this.globalData.apiBase = 'https://miao-test.clawos.cc/api/v1';
 
     // 读取缓存（同步），已登录则直接用缓存，未登录则静默登录
     const token = wx.getStorageSync("miao_token");
@@ -55,16 +53,37 @@ App({
   },
 
   async _doSilentLogin() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       wx.login({
         success: (res) => {
-          const code = res.code || 'dev_' + Date.now();
+          if (!res.code) {
+            wx.showModal({
+              title: '登录失败',
+              content: '微信登录code无效，请检查网络后重试',
+              showCancel: false,
+            });
+            return reject(new Error('invalid code'));
+          }
           const Api = require('./utils/api.js');
-          Api.loginByWechat(code)
+          Api.loginByWechat(res.code)
             .then(() => resolve())
-            .catch(() => resolve()); // 静默失败不影响主流程
+            .catch((err) => {
+              wx.showModal({
+                title: '登录失败',
+                content: '服务器错误，请稍后重试',
+                showCancel: false,
+              });
+              reject(err);
+            });
         },
-        fail: () => resolve(), // 微信登录失败也继续
+        fail: () => {
+          wx.showModal({
+            title: '登录失败',
+            content: '无法连接微信，请检查网络后重试',
+            showCancel: false,
+          });
+          reject(new Error('wx.login failed'));
+        },
       });
     });
   },

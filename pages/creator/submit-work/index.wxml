@@ -1,0 +1,71 @@
+<view class="submit-work-container">
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="goBack">
+      <text class="nav-back-text">←</text>
+    </view>
+    <text class="nav-title">上传稿件</text>
+    <view class="nav-right"></view>
+  </view>
+
+  <scroll-view scroll-y="true" class="content-scroll">
+    <view class="task-card">
+      <text class="task-title">{{task.title}}</text>
+      <view class="task-info-row">
+        <text class="info-label">采纳奖励</text>
+        <text class="info-value accent">{{task.unitPrice}}元/条</text>
+        <text class="info-plus">+</text>
+        <text class="info-label">参与奖励</text>
+        <text class="info-value">{{task.awardPrice}}元/条</text>
+      </view>
+    </view>
+
+    <view class="video-section">
+      <view class="section-header">
+        <text class="section-title">上传视频</text>
+        <text class="section-tip">要求：{{task.videoAspect}} / {{task.videoResolution}} / {{task.videoDuration}}</text>
+      </view>
+
+      <view class="video-preview" wx:if="{{videoUrl}}">
+        <view class="video-cover">
+          <text class="video-placeholder">视频已选择</text>
+          <view class="play-icon">
+            <text>▶</text>
+          </view>
+        </view>
+        <view class="video-actions">
+          <view class="action-btn preview-btn" bindtap="previewVideo">
+            <text>预览</text>
+          </view>
+          <view class="action-btn delete-btn" bindtap="deleteVideo">
+            <text>删除</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="upload-btn" bindtap="chooseVideo" wx:if="{{!videoUrl}}">
+        <view class="upload-icon">
+          <text class="upload-icon-text">+</text>
+        </view>
+        <text class="upload-text">点击上传视频</text>
+        <text class="upload-hint">建议尺寸 1080P，时长30秒内</text>
+      </view>
+    </view>
+
+    <view class="desc-section">
+      <view class="section-header">
+        <text class="section-title">视频描述</text>
+        <text class="section-tip">选填</text>
+      </view>
+      <view class="desc-input-wrapper">
+        <textarea class="desc-input" placeholder="简单描述一下你的创作思路..." bindinput="bindDescriptionInput" value="{{description}}" maxlength="200" />
+        <text class="desc-count">{{description.length}}/200</text>
+      </view>
+    </view>
+
+    <view class="submit-section">
+      <button class="submit-btn {{isSubmitting ? 'disabled' : ''}}" bindtap="submitWork" disabled="{{isSubmitting || !videoUrl}}">
+        <text>{{isSubmitting ? '上传中...' : '提交作品'}}</text>
+      </button>
+    </view>
+  </scroll-view>
+</view>

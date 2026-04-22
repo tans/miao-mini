@@ -8,6 +8,7 @@ Page({
     inspirationList: [],
     leftColumn: [],
     rightColumn: [],
+    navigating: false,
   },
 
   onLoad() {
@@ -33,16 +34,32 @@ Page({
   },
 
   processColumns(list) {
-    // 简单的瀑布流分配：奇数项放左列，偶数项放右列
+    // 瀑布流分配：根据预估高度分配到较短的列
     const leftColumn = [];
     const rightColumn = [];
-    list.forEach((item, index) => {
-      if (index % 2 === 0) {
+    let leftHeight = 0;
+    let rightHeight = 0;
+
+    // 预估卡片高度（图片区域 + 信息区域）
+    const getEstimatedCardHeight = () => {
+      // 图片宽度为 100%，高度按宽高比 3:4 估算（实际高度由 aspectFill 决定）
+      const imageHeight = 250; // 图片区域预估高度
+      const infoHeight = 100;  // 标题+作者信息区域
+      return imageHeight + infoHeight;
+    };
+
+    list.forEach((item) => {
+      const cardHeight = getEstimatedCardHeight();
+
+      if (leftHeight <= rightHeight) {
         leftColumn.push(item);
+        leftHeight += cardHeight;
       } else {
         rightColumn.push(item);
+        rightHeight += cardHeight;
       }
     });
+
     this.setData({
       inspirationList: list,
       leftColumn,
@@ -65,8 +82,24 @@ Page({
   },
 
   goDetail(e) {
+    if (this.navigating) return;
     const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
+    const isVideo = e.currentTarget.dataset.isVideo;
+    if (!id) return;
+
+    this.navigating = true;
+
+    // 视频卡片跳转至播放页面，非视频跳转到预览页面
+    if (isVideo) {
+      wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
+    } else {
+      const workData = encodeURIComponent(JSON.stringify(this.data.inspirationList.find(item => item.id === id) || {}));
+      wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
+    }
+
+    setTimeout(() => {
+      this.navigating = false;
+    }, 400);
   },
 
   goHome() {
@@ -87,50 +120,62 @@ Page({
       {
         id: 1,
         title: '春日家居焕新脚本拆解',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 2300,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '镜头研究社'
+        authorAvatar: '',
+        authorName: '镜头研究社',
+        isVideo: true,
+        previewVideoSrc: '',
+        displayCover: ''
       },
       {
         id: 2,
         title: '探店美食拍摄技巧分享',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 1800,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '美食摄影君'
+        authorAvatar: '',
+        authorName: '美食摄影君',
+        isVideo: false
       },
       {
         id: 3,
         title: '酒店民宿宣传片拍摄思路',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 1200,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '旅拍达人'
+        authorAvatar: '',
+        authorName: '旅拍达人',
+        isVideo: true,
+        previewVideoSrc: '',
+        displayCover: ''
       },
       {
         id: 4,
         title: '地产项目短视频营销方案',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 980,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '地产视频圈'
+        authorAvatar: '',
+        authorName: '地产视频圈',
+        isVideo: false
       },
       {
         id: 5,
         title: '本地生活服务类视频创作指南',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 2100,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '生活记录者'
+        authorAvatar: '',
+        authorName: '生活记录者',
+        isVideo: true,
+        previewVideoSrc: '',
+        displayCover: ''
       },
       {
         id: 6,
         title: '美妆产品种草视频脚本',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 3500,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
-        authorName: '美妆控'
+        authorAvatar: '',
+        authorName: '美妆控',
+        isVideo: false
       }
     ];
   }
