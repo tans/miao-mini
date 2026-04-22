@@ -63,6 +63,10 @@ Page({
   },
 
   async submitWork() {
+    if (this.data.isSubmitting) {
+      return;
+    }
+
     if (!this.data.videoUrl) {
       wx.showToast({ title: '请先选择视频', icon: 'none' });
       return;
