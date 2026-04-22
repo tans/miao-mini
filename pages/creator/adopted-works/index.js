@@ -106,8 +106,9 @@ Page({
     const id = e.currentTarget.dataset.id;
     if (!id) return;
     this.navigating = true;
-    const workData = encodeURIComponent(JSON.stringify(this.data.works.find(w => w.id === id) || {}));
-    wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
+    const workData = this.data.works.find(w => w.id === id) || {};
+    wx.setStorageSync(`work_preview_${id}`, workData);
+    wx.navigateTo({ url: `/pages/work-preview/index?id=${id}` });
     setTimeout(() => {
       this.navigating = false;
     }, 400);
