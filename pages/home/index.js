@@ -247,7 +247,7 @@ Page({
 
   goTaskDetail(e) {
     const taskId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${taskId}` });
+    wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${taskId}` });
   },
 
   goCreateTask() {
