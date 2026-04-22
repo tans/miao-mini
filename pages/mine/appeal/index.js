@@ -128,7 +128,7 @@ Page({
             const url = await Api.uploadImage(img);
             uploadedUrls.push(url);
           } catch (e) {
-            // image upload failed, skip
+            wx.showToast({ title: '图片上传失败，请重试', icon: 'none' });
           }
         }
         evidence = uploadedUrls.join(',');
