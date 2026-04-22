@@ -24,7 +24,6 @@ async function upload() {
 
   const project = new ci.Project({
     appid,
-    appid: process.env.MINI_APPID,
     type: 'miniProgram',
     projectPath,
     privateKeyPath,
