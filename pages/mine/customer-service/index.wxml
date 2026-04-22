@@ -16,7 +16,7 @@
       </view>
       <view class="hotline-info">
         <text class="hotline-title">客服热线</text>
-        <text class="hotline-number">400-xxx-xxxx</text>
+        <text class="hotline-number">{{customerServicePhone}}</text>
         <text class="hotline-time">服务时间：工作日 9:00-18:00</text>
       </view>
     </view>

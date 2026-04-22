@@ -1,3 +1,5 @@
+const config = require('../../../utils/config.js');
+
 const helpContent = {
   creator: {
     title: '创作者指南',
@@ -79,7 +81,7 @@ const helpContent = {
       },
       {
         title: '申诉与反馈',
-        content: 'Q: 对审核结果有异议怎么办？\nA: 可以在任务详情页点击"申诉"按钮，提交申诉理由和证据，平台将在2个工作日内处理\n\nQ: 如何联系客服？\nA: 在帮助中心页面点击"联系客服"按钮，或拨打客服热线：400-xxx-xxxx'
+        content: `Q: 对审核结果有异议怎么办？\nA: 可以在任务详情页点击"申诉"按钮，提交申诉理由和证据，平台将在2个工作日内处理\n\nQ: 如何联系客服？\nA: 在帮助中心页面点击"联系客服"按钮，或拨打客服热线：${config.customerServicePhone}`
       }
     ]
   }

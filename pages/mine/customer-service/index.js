@@ -1,5 +1,9 @@
+const config = require('../../../utils/config.js');
+
 Page({
-  data: {},
+  data: {
+    customerServicePhone: config.customerServicePhone
+  },
 
   goBack() {
     wx.navigateBack({ delta: 1 });
@@ -25,7 +29,7 @@ Page({
 
   callHotline() {
     wx.makePhoneCall({
-      phoneNumber: '400-xxx-xxxx'
+      phoneNumber: config.customerServicePhone
     });
   }
 });

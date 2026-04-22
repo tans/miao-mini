@@ -53,7 +53,7 @@
     <text class="contact-title">联系我们</text>
     <view class="contact-row">
       <text class="contact-label">客服热线</text>
-      <text class="contact-value">400-xxx-xxxx</text>
+      <text class="contact-value">{{customerServicePhone}}</text>
     </view>
     <view class="contact-row">
       <text class="contact-label">官方邮箱</text>
