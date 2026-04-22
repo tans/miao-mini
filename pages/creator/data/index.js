@@ -34,6 +34,10 @@ Page({
   },
 
   onPullDownRefresh() {
+    if (this.data.loading) {
+      wx.stopPullDownRefresh();
+      return;
+    }
     this.loadData().finally(() => wx.stopPullDownRefresh());
   },
 
