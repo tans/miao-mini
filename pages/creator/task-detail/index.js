@@ -11,12 +11,20 @@ Page({
     hasSignedUp: false,
     canSubmit: false,
     countdownText: '',
+    countdownTimer: null,
   },
 
   onLoad(options) {
     if (options.id) {
       this.setData({ taskId: options.id });
       this.loadTaskDetail(options.id);
+    }
+  },
+
+  onUnload() {
+    if (this.data.countdownTimer) {
+      clearInterval(this.data.countdownTimer);
+      this.setData({ countdownTimer: null });
     }
   },
 
@@ -31,7 +39,7 @@ Page({
         hasSignedUp: task.has_signed_up || false,
         canSubmit: task.can_submit || false,
       });
-      this.updateCountdown(task.end_at);
+      this.startCountdownTimer(task.end_at);
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
@@ -101,7 +109,18 @@ Page({
       materials: mockMaterials,
       recommendations: mockRecommendations,
     });
-    this.updateCountdown(mockTask.endAt);
+    this.startCountdownTimer(mockTask.endAt);
+  },
+
+  startCountdownTimer(endAt) {
+    if (this.data.countdownTimer) {
+      clearInterval(this.data.countdownTimer);
+    }
+    this.updateCountdown(endAt);
+    const timer = setInterval(() => {
+      this.updateCountdown(endAt);
+    }, 60000);
+    this.setData({ countdownTimer: timer });
   },
 
   updateCountdown(endAt) {
@@ -111,6 +130,10 @@ Page({
     const diff = endTime - now;
     if (diff <= 0) {
       this.setData({ countdownText: '已截止' });
+      if (this.data.countdownTimer) {
+        clearInterval(this.data.countdownTimer);
+        this.setData({ countdownTimer: null });
+      }
       return;
     }
     const hours = Math.floor(diff / (1000 * 60 * 60));
