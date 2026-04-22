@@ -21,8 +21,6 @@ const TAG_OPTIONS = [
 ];
 
 const COVER_THEME_COUNT = 6;
-const SEARCH_BAR_TOGGLE_DISTANCE = 36;
-const SEARCH_BAR_SHOW_AT_TOP = 24;
 
 function createFallbackCover(seedText, description) {
   const text = (description || seedText || '').replace(/\s+/g, ' ').trim();
@@ -62,10 +60,6 @@ Page({
     if (this.data.works.length === 0) {
       this.resetAndLoad();
     }
-  },
-
-  onPageScroll(e) {
-    // 搜索栏固定显示，不随滚动隐藏
   },
 
   onPullDownRefresh() {
