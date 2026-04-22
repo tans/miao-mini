@@ -36,8 +36,13 @@
           <text class="time-label">剩余：</text>
           <text class="time-value {{item.remainingTimeClass}}">{{item.remainingTimeDisplay}}</text>
         </view>
-        <view class="action-btn btn-ended" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">
-          <text>查看详情</text>
+        <view class="action-buttons">
+          <view class="action-btn btn-cancel" bindtap="cancelClaim" data-claim-id="{{item.id}}" wx:if="{{item.status === 1}}">
+            <text>取消</text>
+          </view>
+          <view class="action-btn btn-ended" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">
+            <text>查看详情</text>
+          </view>
         </view>
       </view>
     </view>
