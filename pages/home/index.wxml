@@ -8,15 +8,15 @@
     <scroll-view class="banner-scroll" scroll-x>
       <view class="banner-list">
         <view class="banner-item">
-          <image src="../../images/home/FigmaDDSSlicePNGc75faa1c8dcb90839a3c0761ac45a37b.png" class="banner-img" />
+          <image src="../../images/home/banner-default.png" class="banner-img" />
           <view class="banner-tag">学会这招，收益稳稳到账</view>
         </view>
         <view class="banner-item">
-          <image src="../../images/home/FigmaDDSSlicePNGc75faa1c8dcb90839a3c0761ac45a37b.png" class="banner-img" />
+          <image src="../../images/home/banner-default.png" class="banner-img" />
           <view class="banner-tag">学会这招，收益稳稳到账</view>
         </view>
         <view class="banner-item">
-          <image src="../../images/home/FigmaDDSSlicePNGc75faa1c8dcb90839a3c0761ac45a37b.png" class="banner-img" />
+          <image src="../../images/home/banner-default.png" class="banner-img" />
           <view class="banner-tag">学会这招，收益稳稳到账</view>
         </view>
       </view>
@@ -75,15 +75,15 @@
         <!-- 标签区域 -->
         <view class="task-tags">
           <view class="badge badge-reward" wx:if="{{item.award_price > 0}}">
-            <image src="../../images/home/FigmaDDSSlicePNG58cc34ab5d3eaf106c83cb9a4a0ffb1b.png" class="badge-icon" />
+            <image src="../../images/home/badge-reward.png" class="badge-icon" />
             <text>参与奖励:¥{{item.award_price}}</text>
           </view>
           <view class="badge badge-brand">
-            <image src="../../images/home/FigmaDDSSlicePNGcae4433a55ff92f1ae3b0e756f4191b6.png" class="badge-icon" />
+            <image src="../../images/home/badge-brand.png" class="badge-icon" />
             <text>品牌名企</text>
           </view>
           <view class="badge badge-trusted">
-            <image src="../../images/home/FigmaDDSSlicePNG3ccd7683dca9220cf92fd2f444f08690.png" class="badge-icon" />
+            <image src="../../images/home/badge-trusted.png" class="badge-icon" />
             <text>资金已托管</text>
           </view>
         </view>
@@ -107,7 +107,7 @@
         <!-- 底部操作区 -->
         <view class="task-action">
           <view class="task-deadline">
-            <image src="../../images/home/FigmaDDSSlicePNG5e5354f18caa98b588ce4f1dd488f0b2.png" class="clock-icon" />
+            <image src="../../images/home/icon-clock.png" class="clock-icon" />
             <text class="deadline-text" wx:if="{{item.countdown}}">{{item.countdown}}后截止投稿</text>
             <text class="deadline-text" wx:else>截止时间未知</text>
           </view>
@@ -132,7 +132,7 @@
   <!-- 发布任务悬浮按钮 -->
   <view class="fab-container">
     <button class="fab" bindtap="goCreateTask">
-      <image src="../../images/home/FigmaDDSSlicePNG454d10efd52a38cba530e202a537c04c.png" class="fab-icon" />
+      <image src="../../images/home/fab-icon.png" class="fab-icon" />
       <text>发布任务</text>
     </button>
   </view>

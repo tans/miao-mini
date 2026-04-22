@@ -16,7 +16,7 @@
         <text class="help-title">创作者指南</text>
         <text class="help-desc">如何接任务、提交作品、获取收益</text>
       </view>
-      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+      <image class="help-arrow" src="../../images/mine/arrow-right.png" />
     </view>
     <view class="help-item" bindtap="goHelpDetail" data-type="merchant">
       <image class="help-icon" src="/assets/icons/help-merchant.png" />
@@ -24,7 +24,7 @@
         <text class="help-title">商家指南</text>
         <text class="help-desc">如何发布任务、审核作品、结算费用</text>
       </view>
-      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+      <image class="help-arrow" src="../../images/mine/arrow-right.png" />
     </view>
     <view class="help-item" bindtap="goHelpDetail" data-type="wallet">
       <image class="help-icon" src="/assets/icons/help-wallet.png" />
@@ -32,7 +32,7 @@
         <text class="help-title">钱包与提现</text>
         <text class="help-desc">充值、提现、结算等问题</text>
       </view>
-      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+      <image class="help-arrow" src="../../images/mine/arrow-right.png" />
     </view>
     <view class="help-item" bindtap="goHelpDetail" data-type="common">
       <image class="help-icon" src="/assets/icons/help-common.png" />
@@ -40,7 +40,7 @@
         <text class="help-title">常见问题</text>
         <text class="help-desc">账号、绑定、认证等问题</text>
       </view>
-      <image class="help-arrow" src="/assets/images/mine/FigmaDDSSlicePNG8b21e3a9b28f162726154b0c06c2bbd4.png" />
+      <image class="help-arrow" src="../../images/mine/arrow-right.png" />
     </view>
   </view>
 

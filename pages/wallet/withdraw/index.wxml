@@ -2,7 +2,7 @@
   <!-- 顶部导航栏 -->
   <view class="nav-bar">
     <view class="nav-left" bindtap="goBack">
-      <image src="./images/FigmaDDSSlicePNG57366755f4568c54b01b53a090c4e21a.png" class="nav-back"></image>
+      <image src="./images/nav-back.png" class="nav-back"></image>
     </view>
     <text class="nav-title">提现</text>
     <view class="nav-right"></view>

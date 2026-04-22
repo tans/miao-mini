@@ -21,7 +21,7 @@ module.exports = {
     <view class="flow-section">
       <view class="flow-header">
         <view class="flow-header-left">
-          <image class="flow-icon" src="./images/FigmaDDSSlicePNGcf51c47f1d7ec2c2219965b59a7f190c.png" />
+          <image class="flow-icon" src="./images/flow-headline-icon.png" />
           <text class="flow-headline">发单先托管</text>
           <text class="flow-headline-highlight">验收再放款</text>
         </view>
@@ -30,37 +30,37 @@ module.exports = {
       <view class="flow-body">
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG29823902767c2a9879c703aaa86a61c9.png" />
+            <image class="flow-step-icon" src="./images/step-icon-publish.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">发布任务</text>
             <text class="flow-step-sub">托管奖金</text>
           </view>
         </view>
-        <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
+        <image class="flow-arrow" src="./images/arrow-right-gray.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNG552002459c165b264bfde3d79e34f6b4.png" />
+            <image class="flow-step-icon" src="./images/step-icon-apply.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">创作者报名</text>
             <text class="flow-step-sub">提交视频</text>
           </view>
         </view>
-        <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
+        <image class="flow-arrow" src="./images/arrow-right-gray.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/7910abfa6305424ab23076f704592295_mergeImage.png" />
+            <image class="flow-step-icon" src="./images/step-icon-review.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">商家审核</text>
             <text class="flow-step-sub">验收视频</text>
           </view>
         </view>
-        <image class="flow-arrow" src="./images/FigmaDDSSlicePNGf073435c15d339606c2ed999a7869ba3.png" />
+        <image class="flow-arrow" src="./images/arrow-right-gray.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/FigmaDDSSlicePNGae94ccf4fbc29229298c9051993d4ba9.png" />
+            <image class="flow-step-icon" src="./images/step-icon-finish.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">任务结束</text>
@@ -112,7 +112,7 @@ module.exports = {
         <view class="desc-area">
           <textarea class="desc-textarea" placeholder="请输入不少于10个字的描述" value="{{description}}" bindinput="onDescInput" maxlength="500"/>
           <view class="ai-write-btn" bindtap="aiWriteDesc">
-            <image class="ai-icon" src="./images/FigmaDDSSlicePNGe4091db8f20a5f20d3fd34f7c653a856.png" />
+            <image class="ai-icon" src="./images/icon-ai.png" />
             <text>AI帮写</text>
           </view>
         </view>
@@ -124,11 +124,11 @@ module.exports = {
           <view wx:for="{{refImages}}" wx:key="*this" class="ref-image-item">
             <image class="ref-image" src="{{item}}" mode="aspectFill"/>
             <view class="ref-image-remove" bindtap="removeRefImage" data-index="{{index}}">
-              <image class="remove-icon" src="./images/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png"/>
+              <image class="remove-icon" src="./images/icon-remove.png"/>
             </view>
           </view>
           <view wx:if="{{refImages.length < 3}}" class="ref-upload" bindtap="addRefImage">
-            <image class="upload-icon" src="./images/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" />
+            <image class="upload-icon" src="./images/icon-upload-plus.png" />
           </view>
         </view>
       </view>
@@ -147,7 +147,7 @@ module.exports = {
           <text class="switch-title">开启稿件隐私保护</text>
           <text class="switch-desc">开启后，创作者的投稿仅商家可见</text>
         </view>
-        <image class="switch-icon" src="./images/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png" />
+        <image class="switch-icon" src="./images/icon-remove.png" />
       </view>
     </view>
 
@@ -160,7 +160,7 @@ module.exports = {
             <text class="switch-title">即梦合拍设置</text>
             <text class="switch-desc">商家提供数字人模型给创作者用于合成视频</text>
           </view>
-          <image class="switch-icon" src="./images/FigmaDDSSlicePNG732ce1700f6939b0b12e9f14ee049ade.png" />
+          <image class="switch-icon" src="./images/icon-remove.png" />
         </view>
         <view wx:if="{{jimengEnabled}}" class="jimeng-content">
           <view class="jimeng-input-box">
@@ -169,7 +169,7 @@ module.exports = {
           </view>
           <view class="jimeng-tutorial" bindtap="showJimengTutorial">
             <view class="tutorial-icon-wrapper">
-              <image class="tutorial-icon" src="./images/FigmaDDSSlicePNG20979d6c51ab0792453db68935a556d7.png" />
+              <image class="tutorial-icon" src="./images/icon-upload-plus.png" />
             </view>
             <text>查看即梦合拍教程</text>
           </view>
@@ -211,7 +211,7 @@ module.exports = {
           <text class="picker-label">投稿截止时间</text>
           <view class="picker-row">
             <text class="picker-value">{{deadline || '请选择'}}</text>
-            <image class="picker-arrow" src="./images/FigmaDDSSlicePNG238c6963ed8330276941b8174e02ee6d.png" />
+            <image class="picker-arrow" src="./images/arrow-down.png" />
           </view>
         </view>
       </picker>
