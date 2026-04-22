@@ -183,8 +183,9 @@ Page({
     const id = e.currentTarget.dataset.id;
     if (id) {
       const work = this.data.filteredWorks.find(w => w.id === id) || {};
-      const workData = encodeURIComponent(JSON.stringify(work));
-      wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
+      // 使用 storage 传递，避免 URL 长度超限
+      wx.setStorageSync(`work_preview_${id}`, work);
+      wx.navigateTo({ url: `/pages/work-preview/index?id=${id}` });
     }
   },
 
