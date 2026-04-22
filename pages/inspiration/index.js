@@ -9,9 +9,18 @@ Page({
     leftColumn: [],
     rightColumn: [],
     navigating: false,
+    columnWidth: 0, // 瀑布列宽度，用于计算图片真实高度
   },
 
   onLoad() {
+    // 获取设备信息，计算瀑布列宽度
+    const sysInfo = wx.getSystemInfoSync();
+    const screenWidth = sysInfo.screenWidth;
+    // 瀑布流容器左右各24rpx内边距，列间距24rpx
+    // 每列宽度 = (屏幕宽度 - 48rpx - 24rpx) / 2
+    const padding = 24 * (screenWidth / 750);
+    const gap = 24 * (screenWidth / 750);
+    this.data.columnWidth = (screenWidth - padding * 2 - gap) / 2;
     this.loadInspirationList();
   },
 
@@ -34,22 +43,29 @@ Page({
   },
 
   processColumns(list) {
-    // 瀑布流分配：根据预估高度分配到较短的列
+    // 瀑布流分配：根据实际图片尺寸分配到较短的列
     const leftColumn = [];
     const rightColumn = [];
     let leftHeight = 0;
     let rightHeight = 0;
 
-    // 预估卡片高度（图片区域 + 信息区域）
-    const getEstimatedCardHeight = () => {
-      // 图片宽度为 100%，高度按宽高比 3:4 估算（实际高度由 aspectFill 决定）
-      const imageHeight = 250; // 图片区域预估高度
-      const infoHeight = 100;  // 标题+作者信息区域
-      return imageHeight + infoHeight;
+    // 计算卡片高度（图片区域 + 信息区域）
+    // 图片使用 aspectFill，宽度100%，高度按宽高比计算
+    // 信息区域高度约100rpx（标题2行+作者信息）
+    const getCardHeight = (item) => {
+      const infoHeight = 100; // 信息区域高度（rpx转px）
+      const infoHeightPx = infoHeight * (this.data.columnWidth / 750);
+
+      // 使用真实图片尺寸计算图片高度
+      const coverWidth = item.cover_width || 3;
+      const coverHeight = item.cover_height || 4;
+      const imageHeight = (this.data.columnWidth / coverWidth) * coverHeight;
+
+      return imageHeight + infoHeightPx;
     };
 
     list.forEach((item) => {
-      const cardHeight = getEstimatedCardHeight();
+      const cardHeight = getCardHeight(item);
 
       if (leftHeight <= rightHeight) {
         leftColumn.push(item);
