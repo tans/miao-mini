@@ -448,6 +448,30 @@ Page({
     });
   },
 
+  saveVideoToAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+      wx.saveVideoToPhotosAlbum({
+        filePath,
+        success: () => resolve(),
+        fail: (err) => {
+          if (err.errMsg && err.errMsg.includes('auth deny')) {
+            wx.showModal({
+              title: '提示',
+              content: '需要您授权保存视频到相册',
+              confirmText: '去授权',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.openSetting();
+                }
+              }
+            });
+          }
+          reject(err);
+        }
+      });
+    });
+  },
+
   previewImages(e) {
     const { current, claimIndex } = e.currentTarget.dataset;
     const claim = this.data.filteredClaims[Number(claimIndex)];
