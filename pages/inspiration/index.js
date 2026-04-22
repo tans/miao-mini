@@ -93,8 +93,10 @@ Page({
     if (isVideo) {
       wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
     } else {
-      const workData = encodeURIComponent(JSON.stringify(this.data.inspirationList.find(item => item.id === id) || {}));
-      wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
+      const workData = this.data.inspirationList.find(item => item.id === id) || {};
+      // 使用 storage 传递数据，避免 URL 长度超限
+      wx.setStorageSync(`work_preview_${id}`, workData);
+      wx.navigateTo({ url: `/pages/work-preview/index?id=${id}` });
     }
 
     setTimeout(() => {
