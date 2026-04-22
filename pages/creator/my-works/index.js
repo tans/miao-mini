@@ -73,6 +73,14 @@ Page({
       ? (firstMaterial.thumbnail_path || firstMaterial.file_path || '')
       : (firstMaterial.thumbnail_path || firstMaterial.file_path || '');
     const previewVideoSrc = firstMaterial.file_path || '';
+    const processStatus = firstMaterial.process_status || (coverType === 'video' && !previewVideoSrc ? 'processing' : '');
+    const processStatusText = coverType !== 'video'
+      ? ''
+      : processStatus === 'failed'
+        ? '视频处理失败'
+        : processStatus && processStatus !== 'done'
+          ? '压缩加水印处理中'
+          : '';
 
     let incomeLabel = '';
     let incomeText = '';
@@ -118,6 +126,8 @@ Page({
       isVideo: coverType === 'video',
       previewVideoSrc,
       thumbnail: firstMaterial.thumbnail_path || '',
+      processStatus,
+      processStatusText,
       incomeLabel,
       incomeText,
       rejectReason,
@@ -183,6 +193,10 @@ Page({
     const id = e.currentTarget.dataset.id;
     if (id) {
       const work = this.data.filteredWorks.find(w => w.id === id) || {};
+      if (work.isVideo && !work.previewVideoSrc) {
+        wx.showToast({ title: work.processStatusText || '视频处理中', icon: 'none' });
+        return;
+      }
       // 使用 storage 传递，避免 URL 长度超限
       wx.setStorageSync(`work_preview_${id}`, work);
       wx.navigateTo({ url: `/pages/work-preview/index?id=${id}` });

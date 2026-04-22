@@ -16,6 +16,12 @@
       />
     </block>
 
+    <block wx:elif="{{isVideo && processStatusText}}">
+      <view class="empty-wrap">
+        <text>{{processStatusText}}</text>
+      </view>
+    </block>
+
     <block wx:elif="{{images.length > 0}}">
       <view class="image-list">
         <view

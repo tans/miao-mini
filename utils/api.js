@@ -183,45 +183,55 @@ const Api = {
   },
 
 
-  // 上传视频到服务器，返回永久 URL
-  uploadVideo(tempFilePath) {
+  // Upload video. By default returns URL; returnMeta=true returns upload metadata.
+  uploadVideo(tempFilePath, options = {}) {
+    const query = ['type=video'];
+    if (options.bizType) query.push(`biz_type=${encodeURIComponent(options.bizType)}`);
+    if (options.bizId) query.push(`biz_id=${encodeURIComponent(options.bizId)}`);
+    if (options.jobId) query.push(`job_id=${encodeURIComponent(options.jobId)}`);
+
     return new Promise((resolve, reject) => {
       wx.uploadFile({
-        url: this.getApiBase() + '/upload?type=video',
+        url: this.getApiBase() + '/upload?' + query.join('&'),
         filePath: tempFilePath,
         name: 'file',
         header: { Authorization: 'Bearer ' + this.getToken() },
         success: (res) => {
           if (res.statusCode === 401) {
             Api.clearAuth();
-            reject(new Error('登录已过期'));
+            reject(new Error('Login expired'));
             return;
           }
           try {
             const data = JSON.parse(res.data);
             if (data.code === 0 && data.data && data.data.url) {
-              // 保存上传时间
               wx.setStorageSync('lastUploadTime', new Date().toISOString());
-              // Ensure URL is absolute for WeChat video component
-              const url = data.data.url;
+              let url = data.data.url;
               if (url.startsWith('/')) {
                 const base = this.getApiBase().replace(/\/api\/v1$/, '');
-                resolve(base + url);
-              } else {
-                resolve(url);
+                url = base + url;
               }
-            } else {
-              const msg = (data && data.message) || '上传失败';
-              wx.showToast({ title: msg, icon: 'none' });
-              reject(new Error(msg));
+              const result = {
+                url,
+                key: data.data.key || '',
+                jobId: data.data.job_id || options.jobId || '',
+                filename: data.data.filename || '',
+                size: data.data.size || 0,
+                type: data.data.type || 'video',
+              };
+              resolve(options.returnMeta ? result : result.url);
+              return;
             }
+            const msg = (data && data.message) || 'Upload failed';
+            wx.showToast({ title: msg, icon: 'none' });
+            reject(new Error(msg));
           } catch (e) {
-            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
+            wx.showToast({ title: 'Upload parse failed', icon: 'none' });
             reject(e);
           }
         },
         fail: (err) => {
-          wx.showToast({ title: '上传失败', icon: 'none' });
+          wx.showToast({ title: 'Upload failed', icon: 'none' });
           reject(err);
         },
       });
@@ -436,8 +446,6 @@ const Api = {
 };
 
 module.exports = Api;
-
-
 
 
 

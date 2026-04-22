@@ -65,6 +65,7 @@
         </view>
 
         <text class="submit-time">投稿时间 {{item.submittedAt}}</text>
+        <text class="submit-time" wx:if="{{item.processStatusText}}">{{item.processStatusText}}</text>
 
         <!-- 收入信息 -->
         <view class="income-row" wx:if="{{item.statusClass !== 'reported'}}">

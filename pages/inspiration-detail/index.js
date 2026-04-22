@@ -4,6 +4,7 @@ Page({
   data: {
     inspiration: null,
     loading: true,
+    processStatusText: '',
     // 可编辑字段
     editVideoAspect: '',
     editVideoResolution: '',
@@ -31,6 +32,8 @@ Page({
       clearTimeout(timeoutId);
 
       const inspiration = res.data;
+      const materials = Array.isArray(inspiration && inspiration.materials) ? inspiration.materials : [];
+      const pendingVideo = materials.find(item => item.file_type === 'video' && !item.file_path);
 
       if (!inspiration) {
         wx.showToast({ title: '灵感不存在', icon: 'none' });
@@ -42,6 +45,7 @@ Page({
 
       this.setData({
         inspiration,
+        processStatusText: pendingVideo ? (pendingVideo.process_status === 'failed' ? '视频处理失败' : '视频压缩加水印处理中') : '',
         editVideoAspect: inspiration.videoAspect || '9:16 竖屏',
         editVideoResolution: inspiration.videoResolution || '1080P',
         editVideoDuration: inspiration.videoDuration || '30s',

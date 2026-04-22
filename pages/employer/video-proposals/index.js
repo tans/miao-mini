@@ -56,8 +56,14 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const [taskRes, claimsRes] = await Promise.all([
-        Api.getTask(this.data.taskId).catch(() => ({ data: null })),
-        Api.getTaskClaims(this.data.taskId).catch(() => ({ data: [] }))
+        Api.getTask(this.data.taskId).catch((err) => {
+          console.error('获取任务详情失败:', err);
+          return { data: null };
+        }),
+        Api.getTaskClaims(this.data.taskId).catch((err) => {
+          console.error('获取应征者列表失败:', err);
+          return { data: [] };
+        })
       ]);
       const task = taskRes.data || null;
       const materials = task && task.materials ? task.materials : [];
@@ -150,6 +156,7 @@ Page({
     const materials = Array.isArray(claim.materials) ? claim.materials : [];
     const imageMaterials = materials.filter(m => m.file_type === 'image' && m.file_path);
     const videoMaterials = materials.filter(m => m.file_type === 'video' && m.file_path);
+    const pendingVideoMaterials = materials.filter(m => m.file_type === 'video' && !m.file_path);
     const previewImages = imageMaterials.map(m => m.file_path);
     const fallbackPoster = imageMaterials[0] ? imageMaterials[0].file_path : '';
     const previewVideos = videoMaterials.map(m => ({
@@ -166,6 +173,9 @@ Page({
     const displayCover = coverType === 'video'
       ? (firstMaterial.thumbnail_path || firstMaterial.file_path || '')
       : (firstMaterial.thumbnail_path || firstMaterial.file_path || '');
+    const processStatusText = pendingVideoMaterials.length > 0
+      ? (pendingVideoMaterials.some(m => m.process_status === 'failed') ? '视频处理失败' : '视频压缩加水印处理中')
+      : '';
 
     return {
       ...claim,
@@ -190,6 +200,7 @@ Page({
       coverType,
       isVideo: coverType === 'video',
       displayCover,
+      processStatusText,
       taskTitle: task ? task.title : ''
     };
   },

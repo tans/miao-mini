@@ -286,6 +286,10 @@
           <text class="content-text">{{item.contentText}}</text>
         </view>
 
+        <view class="claim-content" wx:if="{{item.processStatusText}}">
+          <text class="content-text">{{item.processStatusText}}</text>
+        </view>
+
         <!-- Media Preview -->
         <view class="media-preview" wx:if="{{item.hasMaterials}}">
           <image

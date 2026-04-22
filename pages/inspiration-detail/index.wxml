@@ -21,6 +21,9 @@
         enable-progress-gesture
       ></video>
     </view>
+    <view class="video-placeholder" wx:elif="{{processStatusText}}">
+      <text class="video-hint">{{processStatusText}}</text>
+    </view>
     <view class="video-placeholder" wx:else>
       <image class="cover-image" src="{{inspiration.cover}}" mode="aspectFill"/>
     </view>

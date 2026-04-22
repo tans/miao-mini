@@ -1,5 +1,4 @@
 const Api = require('../../../utils/api.js');
-const app = getApp();
 
 Page({
   data: {
@@ -19,13 +18,11 @@ Page({
   },
 
   loadTaskInfo(taskId) {
-    Api.getClaimByTaskId(taskId).then(res => {
+    Api.getClaimByTaskId(taskId).then((res) => {
       if (res.data && res.data.claim) {
         this.setData({ task: res.data.claim.task || res.data.claim });
       }
-    }).catch(err => {
-      // load task failed
-    });
+    }).catch(() => {});
   },
 
   chooseVideo() {
@@ -38,10 +35,10 @@ Page({
       success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath;
         this.setData({ videoUrl: tempFilePath });
-        wx.showToast({ title: '视频选择成功', icon: 'success' });
+        wx.showToast({ title: 'Video selected', icon: 'success' });
       },
-      fail: (err) => {
-        wx.showToast({ title: '选择失败', icon: 'none' });
+      fail: () => {
+        wx.showToast({ title: 'Select failed', icon: 'none' });
       }
     });
   },
@@ -68,42 +65,52 @@ Page({
     }
 
     if (!this.data.videoUrl) {
-      wx.showToast({ title: '请先选择视频', icon: 'none' });
+      wx.showToast({ title: 'Please choose a video', icon: 'none' });
       return;
     }
 
     const claimId = this.data.task.claim_id || this.data.task.id;
     if (!claimId) {
-      wx.showToast({ title: '任务信息不完整', icon: 'none' });
+      wx.showToast({ title: 'Invalid task info', icon: 'none' });
       return;
     }
 
     this.setData({ isSubmitting: true });
-    wx.showLoading({ title: '上传中...' });
+    wx.showLoading({ title: 'Uploading...' });
 
     try {
-      const videoUrl = await Api.uploadVideo(this.data.videoUrl);
-      wx.showLoading({ title: '提交中...' });
+      const uploadJobId = `claim-${claimId}-${Date.now()}`;
+      const uploadRes = await Api.uploadVideo(this.data.videoUrl, {
+        bizType: 'claim_source',
+        bizId: claimId,
+        jobId: uploadJobId,
+        returnMeta: true,
+      });
 
-      const submitData = {
+      wx.showLoading({ title: 'Submitting...' });
+
+      const submitRes = await Api.submitClaim(claimId, {
         content: this.data.description,
         materials: [{
-          file_name: 'video.mp4',
-          file_path: videoUrl,
+          file_name: uploadRes.filename || 'video.mp4',
+          file_path: uploadRes.url,
           file_type: 'video',
         }],
-      };
-
-      await Api.submitClaim(claimId, submitData);
+      });
 
       wx.hideLoading();
-      wx.showToast({ title: '提交成功', icon: 'success' });
+      const summary = submitRes && submitRes.data && submitRes.data.process_status_summary;
+      const pendingCount = summary ? ((summary.pending || 0) + (summary.processing || 0)) : 0;
+      wx.showToast({
+        title: pendingCount ? 'Submitted, processing' : 'Submitted',
+        icon: 'success'
+      });
       setTimeout(() => {
         wx.navigateBack();
       }, 1500);
     } catch (err) {
       wx.hideLoading();
-      wx.showToast({ title: err.message || '提交失败', icon: 'none' });
+      wx.showToast({ title: err.message || 'Submit failed', icon: 'none' });
     } finally {
       this.setData({ isSubmitting: false });
     }
