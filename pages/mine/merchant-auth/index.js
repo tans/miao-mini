@@ -21,14 +21,17 @@ Page({
   loadAuthStatus() {
     Api.getMerchantAuthStatus().then(res => {
       const data = res.data || {};
+      // Normalize status: API may return numeric (0=uncertified, 1=pending, 2=certified) or string
+      const statusMap = { 0: 'uncertified', 1: 'pending', 2: 'certified' };
+      const normalizedStatus = statusMap[data.status] || data.status || 'uncertified';
       this.setData({
-        status: data.status || 'uncertified',
+        status: normalizedStatus,
         companyName: data.company_name || '',
         contactName: data.contact_name || '',
         contactPhone: data.contact_phone || '',
         licenseUrl: data.license_url || ''
       });
-      this._updateStatusUI(data.status);
+      this._updateStatusUI(normalizedStatus);
     }).catch(err => {
       console.error('获取认证状态失败', err);
     });
