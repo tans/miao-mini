@@ -33,7 +33,6 @@ Page({
       });
       this._updateStatusUI(normalizedStatus);
     }).catch(err => {
-      console.error('获取认证状态失败', err);
     });
   },
 

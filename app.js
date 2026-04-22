@@ -92,6 +92,19 @@ App({
     return !!this.globalData.token;
   },
 
+  // 等待登录完成（从缓存或静默登录）
+  // 如果已登录则立即 resolve；如果正在登录则等待；如果未登录且无缓存则触发登录并等待
+  waitForLogin() {
+    const token = wx.getStorageSync("miao_token");
+    const userStr = wx.getStorageSync("miao_user");
+    if (token && userStr) {
+      // 已有缓存，直接 resolve
+      return Promise.resolve();
+    }
+    // 未登录，返回静默登录的 promise
+    return this.silentLogin().catch(() => {});
+  },
+
   getUser() {
     return this.globalData.user;
   },

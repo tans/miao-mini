@@ -382,8 +382,8 @@ Page({
         successCount++;
         wx.showLoading({ title: `正在下载 ${successCount}/${totalCount}...` });
       } catch (err) {
-        console.error(`下载图片失败: ${url}`, err);
         failCount++;
+        wx.showToast({ title: '有图片下载失败', icon: 'none' });
       }
     }
 
@@ -396,8 +396,8 @@ Page({
         successCount++;
         wx.showLoading({ title: `正在下载 ${successCount}/${totalCount}...` });
       } catch (err) {
-        console.error(`下载视频失败: ${url}`, err);
         failCount++;
+        wx.showToast({ title: '有视频下载失败', icon: 'none' });
       }
     }
 

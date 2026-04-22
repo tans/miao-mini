@@ -16,6 +16,14 @@ Page({
     selectedIndustries: [],
     selectedStyles: [],
     refImages: [],
+    videoSpecOptions: {
+      duration: ['15秒', '30秒', '60秒', '90秒'],
+      ratio: ['9:16', '16:9', '1:1'],
+      quality: ['720P', '1080P', '4K']
+    },
+    selectedDuration: '30秒',
+    selectedRatio: '9:16',
+    selectedQuality: '1080P',
     industryOptions: [
       { id: 1001, name: '餐饮美食' },
       { id: 1002, name: '酒店民宿' },
@@ -138,6 +146,21 @@ Page({
     const index = e.currentTarget.dataset.index;
     this.data.refImages.splice(index, 1);
     this.setData({ refImages: this.data.refImages });
+  },
+
+  onDurationChange(e) {
+    const value = this.data.videoSpecOptions.duration[e.detail.value];
+    this.setData({ selectedDuration: value });
+  },
+
+  onRatioChange(e) {
+    const value = this.data.videoSpecOptions.ratio[e.detail.value];
+    this.setData({ selectedRatio: value });
+  },
+
+  onQualityChange(e) {
+    const value = this.data.videoSpecOptions.quality[e.detail.value];
+    this.setData({ selectedQuality: value });
   },
 
   onJimengLinkInput(e) {

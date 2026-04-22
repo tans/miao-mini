@@ -498,6 +498,10 @@
   justify-content: center;
 }
 
+picker.spec-item {
+  cursor: pointer;
+}
+
 .spec-value {
   font-size: 25rpx;
   font-weight: 900;

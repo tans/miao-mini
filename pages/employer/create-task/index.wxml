@@ -186,18 +186,18 @@ module.exports = {
     <view class="form-card card-with-shadow">
       <view class="card-title">视频规格</view>
       <view class="spec-box">
-        <view class="spec-item">
-          <text class="spec-value">30</text>
-          <text class="spec-unit">秒内</text>
-        </view>
-        <view class="spec-item">
-          <text class="spec-value">9:16</text>
-          <text class="spec-unit">竖版</text>
-        </view>
-        <view class="spec-item">
-          <text class="spec-value">1080P</text>
-          <text class="spec-unit">高清</text>
-        </view>
+        <picker class="spec-item" mode="selector" range="{{videoSpecOptions.duration}}" value="{{durationIndex}}" bindchange="onDurationChange">
+          <text class="spec-value">{{selectedDuration}}</text>
+          <text class="spec-unit">时长</text>
+        </picker>
+        <picker class="spec-item" mode="selector" range="{{videoSpecOptions.ratio}}" value="{{ratioIndex}}" bindchange="onRatioChange">
+          <text class="spec-value">{{selectedRatio}}</text>
+          <text class="spec-unit">比例</text>
+        </picker>
+        <picker class="spec-item" mode="selector" range="{{videoSpecOptions.quality}}" value="{{qualityIndex}}" bindchange="onQualityChange">
+          <text class="spec-value">{{selectedQuality}}</text>
+          <text class="spec-unit">清晰度</text>
+        </picker>
       </view>
     </view>
 
@@ -206,13 +206,15 @@ module.exports = {
       <view class="card-title">时间与奖金</view>
 
       <!-- 投稿截止时间 -->
-      <view class="picker-box">
-        <text class="picker-label">投稿截止时间</text>
-        <view class="picker-row">
-          <text class="picker-value">{{deadline || '2026-04-24 18:00'}}</text>
-          <image class="picker-arrow" src="./images/FigmaDDSSlicePNG238c6963ed8330276941b8174e02ee6d.png" />
+      <picker class="picker-box" mode="date" value="{{deadline}}" start="{{minDeadline}}" end="{{maxDeadline}}" bindchange="onDeadlineChange">
+        <view class="picker-box">
+          <text class="picker-label">投稿截止时间</text>
+          <view class="picker-row">
+            <text class="picker-value">{{deadline || '请选择'}}</text>
+            <image class="picker-arrow" src="./images/FigmaDDSSlicePNG238c6963ed8330276941b8174e02ee6d.png" />
+          </view>
         </view>
-      </view>
+      </picker>
 
       <!-- 参与奖 -->
       <view class="input-box">
