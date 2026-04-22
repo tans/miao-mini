@@ -52,9 +52,8 @@
   <view class="works-grid" wx:if="{{works.length > 0}}">
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}" data-is-video="{{item.isVideo}}">
       <view class="work-cover-wrap">
-        <image wx:if="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
         <video
-          wx:elif="{{item.isVideo && item.previewVideoSrc}}"
+          wx:if="{{item.isVideo && item.previewVideoSrc}}"
           class="work-cover work-video-preview"
           src="{{item.previewVideoSrc}}"
           objectFit="cover"
@@ -69,13 +68,14 @@
           enable-play-gesture="{{false}}"
           enable-progress-gesture="{{false}}"
         ></video>
+        <image wx:elif="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
         <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
           <view class="fallback-badge">创作说明</view>
           <text class="fallback-summary">{{item.fallbackSummary}}</text>
           <text class="fallback-title">{{item.task_title || item.title}}</text>
         </view>
         <view class="cover-tap-mask" wx:if="{{item.isVideo}}" bindtap="goWorkDetail" data-id="{{item.id}}" data-is-video="{{item.isVideo}}"></view>
-        <view class="media-badge" wx:if="{{item.isVideo}}" bindtap="goWorkDetail" data-id="{{item.id}}" data-is-video="{{item.isVideo}}">
+        <view class="media-badge" wx:if="{{item.isVideo && item.previewVideoSrc}}" bindtap="goWorkDetail" data-id="{{item.id}}" data-is-video="{{item.isVideo}}">
           <view class="media-play-icon"></view>
         </view>
       </view>
