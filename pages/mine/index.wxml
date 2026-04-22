@@ -16,7 +16,7 @@
   <!-- 顶部区域 -->
   <view class="header-section">
     <!-- 用户信息卡片 -->
-    <view class="user-card">
+    <view class="user-card" bindtap="goProfile">
       <view class="user-info-row">
         <image class="user-avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
         <view class="user-detail">
