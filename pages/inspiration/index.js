@@ -34,16 +34,32 @@ Page({
   },
 
   processColumns(list) {
-    // 简单的瀑布流分配：奇数项放左列，偶数项放右列
+    // 瀑布流分配：根据预估高度分配到较短的列
     const leftColumn = [];
     const rightColumn = [];
-    list.forEach((item, index) => {
-      if (index % 2 === 0) {
+    let leftHeight = 0;
+    let rightHeight = 0;
+
+    // 预估卡片高度（图片区域 + 信息区域）
+    const getEstimatedCardHeight = () => {
+      // 图片宽度为 100%，高度按宽高比 3:4 估算（实际高度由 aspectFill 决定）
+      const imageHeight = 250; // 图片区域预估高度
+      const infoHeight = 100;  // 标题+作者信息区域
+      return imageHeight + infoHeight;
+    };
+
+    list.forEach((item) => {
+      const cardHeight = getEstimatedCardHeight();
+
+      if (leftHeight <= rightHeight) {
         leftColumn.push(item);
+        leftHeight += cardHeight;
       } else {
         rightColumn.push(item);
+        rightHeight += cardHeight;
       }
     });
+
     this.setData({
       inspirationList: list,
       leftColumn,
