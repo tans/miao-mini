@@ -7,13 +7,25 @@ page {
   --weui-BRAND-color: #EF8802;
 }
 
-/* 按钮主题色改为weui默认绿色 */
+/* 统一Primary按钮样式 */
 .btn-primary {
-  background: #EF8802;
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
+  color: #fff;
+  border: none;
+  border-radius: 48rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .btn-primary:not(.btn-disabled):active {
-  background: #D66E00;
+  background: linear-gradient(135deg, #e88a10 0%, #d66000 100%);
+}
+
+.btn-primary.btn-disabled {
+  background: #ccc;
+  color: #fff;
 }
 
 /* 表单样式覆盖 */

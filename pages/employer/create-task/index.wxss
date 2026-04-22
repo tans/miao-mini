@@ -671,12 +671,13 @@ picker.spec-item {
   width: 100%;
   height: 96rpx;
   line-height: 96rpx;
-  background: linear-gradient(135deg, #ff9f4f 0%, #ff7f00 100%);
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   border: none;
-  border-radius: 19998rpx;
+  border-radius: 48rpx;
   color: #fff;
   font-size: 30rpx;
   font-weight: 900;
+  text-align: center;
 }
 
 .submit-btn::after {

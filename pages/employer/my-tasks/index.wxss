@@ -191,7 +191,7 @@
 }
 
 .action-btn.btn-review {
-  background: #ff9f2f;
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   color: #fff;
   margin-left: auto;
 }
@@ -225,7 +225,7 @@
 
 .empty-btn {
   padding: 16rpx 48rpx;
-  background: #ff9f2f;
+  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   color: #fff;
   border-radius: 36rpx;
   font-size: 28rpx;
