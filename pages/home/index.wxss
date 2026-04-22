@@ -3,11 +3,57 @@
   background: #f5f5f5;
   min-height: 100vh;
   padding-bottom: 180rpx;
+  
 }
 
+/* 顶部导航 */
+.block_1{
+  display: flex;
+  padding: 30rpx 32rpx;
+  align-items: center;
+}
+.block_1>image{
+  width: 96rpx;
+  height: 96rpx;
+  margin-right: 16rpx;
+}
+.block_1 .title-container{
+  flex: 1;
+}
+.block_1 text{
+  display: block;
+}
+.block_1 .text_1{
+  font-family: PingFang SC, PingFang SC;
+  font-weight: bold;
+  font-size: 32rpx;
+  color: #000000;
+  line-height: 48rpx;
+}
+.block_1 .text_2{
+  font-family: PingFang SC, PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #000000;
+  line-height: 36rpx;
+  margin-top: 10rpx;
+}
+.notice-container{
+  width: 80rpx;
+  height: 80rpx;
+  background: #FFFFFF;
+  box-shadow: 0rpx 4rpx 16rpx 0rpx rgba(17,17,17,0.04);
+  border-radius: 19998rpx 19998rpx 19998rpx 19998rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notice-container image{
+  width: 100%;
+  height: 100%;
+}
 /* 顶部渐变区域 */
 .header-gradient {
-  background: linear-gradient(66deg, #FF7C09 0%, #FFAF55 32%, #FFCD42 72%, #FFE177 100%);
   padding: 16rpx 32rpx 32rpx;
 }
 
@@ -81,6 +127,11 @@
   position: relative;
   flex-shrink: 0;
   background: linear-gradient(135deg, #5b86e5, #36d1dc);
+
+  width: 280rpx;
+  height: 160rpx;
+  border-radius: 16rpx 16rpx 16rpx 16rpx;
+  border: 2rpx solid #FFFFFF;
 }
 
 .banner-img {
@@ -102,21 +153,23 @@
 
 /* 分类标签栏 */
 .category-bar {
+  position: relative;
+  z-index: 1;
   background: #fff;
   white-space: nowrap;
-  margin-top: -16rpx;
   border-radius: 24rpx 24rpx 0 0;
+  margin-top: -24rpx;
 }
 
 .category-inner {
   display: flex;
   align-items: center;
-  padding: 24rpx 28rpx 20rpx;
+  padding: 32rpx;
   gap: 20rpx;
 }
 
 .category-label {
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: 600;
   color: #EF8802;
   flex-shrink: 0;
@@ -127,53 +180,54 @@
   display: inline-block;
   padding: 10rpx 22rpx;
   border-radius: 24rpx;
-  font-size: 26rpx;
-  color: #666;
-  background: #f5f5f5;
+  font-size: 32rpx;
+  color: #1D2129;
+  /* background: #f5f5f5; */
   white-space: nowrap;
   flex-shrink: 0;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 .category-tag.active {
-  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
-  color: #fff;
-  font-weight: 600;
+  /* background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%); */
+  color: #EF8802;
+  /* font-weight: 600; */
 }
+.category-tag.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 4rpx;
+  background: #EF8802;
+  border-radius: 4rpx 4rpx 4rpx 4rpx;
 
+}
 /* 排序栏 */
 .sort-bar {
   display: flex;
   background: #fff;
   padding: 0 32rpx;
   margin-bottom: 20rpx;
-  border-top: 1rpx solid #f5f5f5;
 }
 
 .sort-item {
-  flex: 1;
   text-align: center;
-  padding: 20rpx 0;
-  font-size: 26rpx;
-  color: #666;
+  padding: 12rpx 32rpx;
+  font-size: 24rpx;
+  color: #1D2129;
   position: relative;
+  background: #ECEEF4;
+  border-radius: 8rpx 8rpx 8rpx 8rpx;
+  margin-right: 16rpx;
 }
 
 .sort-item.active {
-  color: #EF8802;
-  font-weight: 600;
-}
-
-.sort-item.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 48rpx;
-  height: 4rpx;
-  background: #EF8802;
-  border-radius: 2rpx;
+  color: #FFFFFF;
+  background: #000000;
 }
 
 /* 任务列表 */
@@ -197,8 +251,14 @@
 }
 
 /* 标题行 */
+.task-title-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .task-title-row {
-  margin-bottom: 8rpx;
+  width: 60%;
+  display: block;
 }
 
 .task-title {
@@ -206,13 +266,17 @@
   font-weight: 700;
   color: #0f172a;
   line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  display: block;
 }
 
 /* 价格行 */
 .task-price-row {
   display: flex;
   align-items: baseline;
-  margin-bottom: 20rpx;
 }
 
 .task-price {
@@ -254,12 +318,12 @@
 
 .badge-brand {
   background: #F0F7FF;
-  color: #3388FF;
+  color: #616878;
 }
 
 .badge-trusted {
   background: #E9FFEE;
-  color: #34A853;
+  color: #616878;
 }
 
 .badge-icon {
@@ -276,16 +340,16 @@
 }
 
 .industry-tag {
-  background: #FFFBF3;
-  color: #EF8802;
+  background: #F5F5F5;
+  color: #878FA1;
   font-size: 22rpx;
   padding: 4rpx 12rpx;
   border-radius: 4rpx;
 }
 
 .style-tag {
-  background: #fff3e0;
-  color: #e65100;
+  background: #F5F5F5;
+  color: #878FA1;
   font-size: 22rpx;
   padding: 4rpx 12rpx;
   border-radius: 4rpx;
@@ -303,7 +367,7 @@
 
 .progress-label {
   font-size: 24rpx;
-  color: #999;
+  color: #64748B;
 }
 
 .progress-info {
@@ -314,13 +378,13 @@
 
 .progress-text {
   font-size: 24rpx;
-  color: #666;
+  color: #000000;
 }
 
 .progress-num {
   font-size: 28rpx;
   font-weight: 700;
-  color: #333;
+  color: #DE872C;
 }
 
 /* 底部操作区 */
@@ -347,12 +411,17 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
+  background: #F99935;
   color: #fff;
-  padding: 14rpx 32rpx;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  font-weight: 600;
+  border-radius: 100rpx;
+  font-size: 24rpx;
+  width: 176rpx;
+  height: 52rpx;
+  background: #F99935;
+  border-radius: 19998rpx 19998rpx 19998rpx 19998rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 空状态 */
@@ -379,18 +448,51 @@
 .fab {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 240rpx;
+  height: 72rpx;
+  box-shadow: 0rpx 20rpx 52rpx 0rpx rgba(20,42,31,0.08);
+  border-radius: 0rpx 0rpx 0rpx 0rpx;
   gap: 8rpx;
-  background: #EF8802;
+  background: linear-gradient( 0deg, #F97F00 0%, #FFA84C 100%);
   color: #fff;
-  border: none;
-  border-radius: 40rpx;
-  padding: 16rpx 32rpx;
-  font-size: 28rpx;
-  font-weight: 600;
-  box-shadow: 0 8rpx 32rpx rgba(239,136,2,0.4);
+  font-size: 26rpx;
+  border-radius: 19998rpx 19998rpx 19998rpx 19998rpx;
 }
 
 .fab-icon {
   width: 32rpx;
   height: 32rpx;
+  margin-right: 4rpx;
+}
+
+.shared-bg-container {
+  position: relative;
+  width: 100%;
+  background-image: linear-gradient(66deg, rgba(255,124,9,1.000000) 0, rgba(255,175,85,1.000000) 31.999999%, rgba(255,205,66,1.000000) 72.000003%, rgba(255,225,119,1.000000) 100.000000%);
+  padding-bottom: 24rpx;
+}
+
+.shared-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.shared-bg image {
+  width: 750rpx;
+  height: 242rpx;
+}
+
+.shared-bg-container /deep/ custom-nav {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+.block_1 {
+  position: relative;
+  z-index: 1;
 }

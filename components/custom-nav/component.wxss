@@ -1,6 +1,11 @@
 .custom-nav {
-  background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  /* background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%); */
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); */
+  /* position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999; */
 }
 
 .nav-content {
@@ -60,12 +65,16 @@
 }
 
 .title-text {
-  font-size: 16px;
-  font-weight: 600;
-  color: #111827;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: 68rpx;
+height: 48rpx;
+font-family: PingFang SC, PingFang SC;
+font-weight: bold;
+font-size: 34rpx;
+color: #333333;
+line-height: 48rpx;
+text-align: center;
+font-style: normal;
+text-transform: none;
 }
 
 .subtitle-text {

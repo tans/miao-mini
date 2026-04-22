@@ -1,35 +1,56 @@
 <!-- pages/home/index.wxml -->
-<custom-nav title="创意喵｜AI视频众包撮合平台" subtitle="双向信用管控 100%资金托管" msgCount="{{8}}" />
-
+<!-- 共用背景图容器 -->
 <view class="home-container">
-  <!-- 顶部渐变区域 -->
+<view class="shared-bg-container">
+  <!-- 顶部背景图 -->
+  <view class="shared-bg">
+    <image src="../../images/home/nav-bg.png"/>
+  </view>
+  <custom-nav title="首页"/>
+  <!-- 顶部内容 -->
+  <view class="block_1">
+    <image src="../../images/home/msg-icon.png" class="banner-img" />
+    <view class="title-container">
+      <text lines="1" class="text_1">创意喵｜AI视频众包撮合平台</text>
+      <text lines="1" decode="true" class="text_2">双向信用管控&nbsp;100%资金托管</text>
+    </view>
+    <view class="notice-container">
+      <image src="../../images/home/notice-icon.png" class="banner-img" />
+    </view>
+  </view>
   <view class="header-gradient">
     <!-- Banner轮播 -->
     <scroll-view class="banner-scroll" scroll-x>
       <view class="banner-list">
         <view class="banner-item">
           <image src="../../images/home/banner-default.png" class="banner-img" />
-          <view class="banner-tag">学会这招，收益稳稳到账</view>
+          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
         <view class="banner-item">
           <image src="../../images/home/banner-default.png" class="banner-img" />
-          <view class="banner-tag">学会这招，收益稳稳到账</view>
+          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
         <view class="banner-item">
           <image src="../../images/home/banner-default.png" class="banner-img" />
-          <view class="banner-tag">学会这招，收益稳稳到账</view>
+          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
+        </view>
+        <view class="banner-item">
+          <image src="../../images/home/banner-default.png" class="banner-img" />
+          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
       </view>
     </scroll-view>
   </view>
+</view>
+
 
   <!-- 分类标签栏 (在排序栏上方) -->
   <scroll-view class="category-bar" scroll-x wx:if="{{industryTags.length > 0}}">
     <view class="category-inner">
-      <text class="category-label">推荐</text>
+      <!-- <text class="category-label">推荐</text> -->
       <view
         wx:for="{{industryTags}}" wx:key="index"
-        class="category-tag {{activeIndustry === item ? 'active' : ''}}"
+        class="category-tag {{(activeIndustry === item || (activeIndustry === '' && index === 0)) ? 'active' : ''}}"
         bindtap="setIndustry" data-industry="{{item}}"
       >{{item}}</view>
     </view>
@@ -64,14 +85,15 @@
     >
       <view class="task-card-body">
         <!-- 标题和价格 -->
-        <view class="task-title-row">
-          <text class="task-title">{{item.title}}</text>
-        </view>
-        <view class="task-price-row">
-          <text class="task-price">¥{{item.unit_price}}</text>
-          <text class="task-price-unit">元/条</text>
-        </view>
-
+         <view class="task-title-container">
+           <view class="task-title-row">
+              <text class="task-title">{{item.title}}</text>
+            </view>
+            <view class="task-price-row">
+              <text class="task-price">¥{{item.unit_price}}</text>
+              <text class="task-price-unit">元/条</text>
+            </view>
+         </view>
         <!-- 标签区域 -->
         <view class="task-tags">
           <view class="badge badge-reward" wx:if="{{item.award_price > 0}}">
@@ -131,9 +153,9 @@
 
   <!-- 发布任务悬浮按钮 -->
   <view class="fab-container">
-    <button class="fab" bindtap="goCreateTask">
+    <view class="fab" bindtap="goCreateTask">
       <image src="../../images/home/fab-icon.png" class="fab-icon" />
       <text>发布任务</text>
-    </button>
+    </view>
   </view>
 </view>
