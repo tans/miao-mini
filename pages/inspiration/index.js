@@ -104,60 +104,60 @@ Page({
       {
         id: 1,
         title: '春日家居焕新脚本拆解',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 2300,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorAvatar: '',
         authorName: '镜头研究社',
         isVideo: true,
-        previewVideoSrc: 'https://v.megajinghua.com/template/20250421/1587627825767211008/transcode/1f65a77dd7d94e1593e7c3ea7a3ad8f4.mp4',
-        displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg'
+        previewVideoSrc: '',
+        displayCover: ''
       },
       {
         id: 2,
         title: '探店美食拍摄技巧分享',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 1800,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorAvatar: '',
         authorName: '美食摄影君',
         isVideo: false
       },
       {
         id: 3,
         title: '酒店民宿宣传片拍摄思路',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 1200,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorAvatar: '',
         authorName: '旅拍达人',
         isVideo: true,
-        previewVideoSrc: 'https://v.megajinghua.com/template/20250421/1587627825767211008/transcode/1f65a77dd7d94e1593e7c3ea7a3ad8f4.mp4',
-        displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg'
+        previewVideoSrc: '',
+        displayCover: ''
       },
       {
         id: 4,
         title: '地产项目短视频营销方案',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 980,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorAvatar: '',
         authorName: '地产视频圈',
         isVideo: false
       },
       {
         id: 5,
         title: '本地生活服务类视频创作指南',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 2100,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorAvatar: '',
         authorName: '生活记录者',
         isVideo: true,
-        previewVideoSrc: 'https://v.megajinghua.com/template/20250421/1587627825767211008/transcode/1f65a77dd7d94e1593e7c3ea7a3ad8f4.mp4',
-        displayCover: 'https://img.yzcdn.cn/vant/cat.jpeg'
+        previewVideoSrc: '',
+        displayCover: ''
       },
       {
         id: 6,
         title: '美妆产品种草视频脚本',
-        cover: 'https://img.yzcdn.cn/vant/cat.jpeg',
+        cover: '',
         likes: 3500,
-        authorAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+        authorAvatar: '',
         authorName: '美妆控',
         isVideo: false
       }

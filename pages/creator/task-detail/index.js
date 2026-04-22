@@ -55,7 +55,7 @@ Page({
       videoDuration: '30s',
       endAt: '2026-04-24 18:00',
       merchantName: '美寓家居旗舰店',
-      merchantAvatar: 'https://img.yzcdn.cn/vant/avatar.jpg',
+      merchantAvatar: '',
       isBrandEnterprise: true,
       adoptionRate: '86',
       totalTasks: 120,
@@ -64,9 +64,9 @@ Page({
     };
 
     const mockMaterials = [
-      { id: 1, file_path: 'https://img.yzcdn.cn/vant/cat.jpeg', file_type: 'image' },
-      { id: 2, file_path: 'https://img.yzcdn.cn/vant/cat.jpeg', file_type: 'image' },
-      { id: 3, file_path: 'https://img.yzcdn.cn/vant/cat.jpeg', file_type: 'image' },
+      { id: 1, file_path: '', file_type: 'image' },
+      { id: 2, file_path: '', file_type: 'image' },
+      { id: 3, file_path: '', file_type: 'image' },
     ];
 
     const mockRecommendations = [
