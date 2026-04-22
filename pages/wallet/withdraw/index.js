@@ -32,7 +32,7 @@ Page({
       const user = userRes.data || {};
       const balance = wallet.balance || 0;
       const frozenAmount = wallet.frozen_amount || 0;
-      const withdrawableAmount = Math.max(0, balance - frozenAmount).toFixed(2);
+      const withdrawableAmount = Math.max(0, balance - frozenAmount);
 
       this.setData({
         balance: balance,
