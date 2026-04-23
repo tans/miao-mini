@@ -209,9 +209,8 @@
 /* 排序栏 */
 .sort-bar {
   display: flex;
-  background: #fff;
-  padding: 0 32rpx;
-  margin-bottom: 20rpx;
+  background: linear-gradient( 180deg, #FFFFFF 0%, #F1F1F1 100%);
+  padding: 0 32rpx 32rpx 20rpx;
 }
 
 .sort-item {
@@ -247,7 +246,7 @@
 
 /* 卡片内容区 */
 .task-card-body {
-  padding: 28rpx;
+  padding: 32rpx 32rpx 40rpx 32rpx;
 }
 
 /* 标题行 */
@@ -362,7 +361,6 @@
   align-items: center;
   margin-bottom: 20rpx;
   padding-top: 16rpx;
-  border-top: 1rpx solid #f0f0f0;
 }
 
 .progress-label {
@@ -382,9 +380,20 @@
 }
 
 .progress-num {
-  font-size: 28rpx;
-  font-weight: 700;
+  font-size: 24rpx;
   color: #DE872C;
+}
+.progress-bar-body {
+  width: 100%;
+  margin-top: 10rpx;
+}
+.progress-bar {
+  width: 100%;
+  border-radius: 4px;
+}
+.progress-bar /deep/ .progress__bar {
+  background-color: #1677ff;
+  border-radius: 4px;
 }
 
 /* 底部操作区 */
@@ -392,6 +401,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 30rpx;
 }
 
 .task-deadline {
@@ -415,13 +425,13 @@
   color: #fff;
   border-radius: 100rpx;
   font-size: 24rpx;
-  width: 176rpx;
-  height: 52rpx;
+  padding: 14rpx 40rpx;
   background: #F99935;
   border-radius: 19998rpx 19998rpx 19998rpx 19998rpx;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 400;
 }
 
 /* 空状态 */
