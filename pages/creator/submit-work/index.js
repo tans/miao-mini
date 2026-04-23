@@ -4,6 +4,7 @@ const app = getApp();
 Page({
   data: {
     taskId: '',
+    claimId: '',
     task: {},
     videoUrl: '',
     coverUrl: '',
@@ -21,7 +22,12 @@ Page({
   loadTaskInfo(taskId) {
     Api.getClaimByTaskId(taskId).then(res => {
       if (res.data && res.data.claim) {
-        this.setData({ task: res.data.claim.task || res.data.claim });
+        const claim = res.data.claim;
+        this.setData({
+          claimId: claim.id || '',
+          task: claim.task || claim,
+          description: claim.content || '',
+        });
       }
     }).catch(err => {
       // load task failed
@@ -72,7 +78,7 @@ Page({
       return;
     }
 
-    const claimId = this.data.task.claim_id || this.data.task.id;
+    const claimId = this.data.claimId || this.data.task.claim_id || this.data.task.id;
     if (!claimId) {
       wx.showToast({ title: '任务信息不完整', icon: 'none' });
       return;
