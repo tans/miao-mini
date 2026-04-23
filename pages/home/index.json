@@ -1,6 +1,8 @@
 {
-  "navigationStyle": "custom",
   "navigationBarTitleText": "首页",
   "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark"
+  "backgroundTextStyle": "dark",
+  "navigationBarBackgroundColor": "#00000000",
+  "navigationBarTransparent": true,
+  "navigationStyle": "custom"
 }

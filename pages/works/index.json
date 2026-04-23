@@ -1,5 +1,4 @@
 {
-  "navigationStyle": "custom",
   "usingComponents": {},
   "navigationBarTitleText": "灵感",
   "enablePullDownRefresh": true

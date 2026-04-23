@@ -149,13 +149,10 @@ Page({
     const work = this.data.works.find(w => w.id === id);
     if (!work) return;
 
-    // 视频作品跳转播放页
+    // 视频作品跳转详情页
     if (isVideo) {
-      if (work.previewVideoSrc) {
-        wx.navigateTo({ url: `/pages/video-player/index?url=${encodeURIComponent(work.previewVideoSrc)}` });
-      } else {
-        wx.showToast({ title: '视频加载中...', icon: 'none' });
-      }
+      wx.setStorageSync(`work_preview_${id}`, work);
+      wx.navigateTo({ url: `/pages/inspiration-detail/index?id=${id}` });
       return;
     }
 

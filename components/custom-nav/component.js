@@ -8,7 +8,7 @@ Component({
     },
     subtitle: {
       type: String,
-      value: '双向信用管控 100%资金托管'
+      value: ''
     },
     msgCount: {
       type: Number,

@@ -1,18 +1,5 @@
 <!-- pages/mine/index.wxml -->
 <view class="mine-container">
-  <!-- 顶部导航栏 -->
-  <view class="nav-bar">
-    <view class="nav-left">
-      <text class="nav-title">我的</text>
-    </view>
-    <view class="nav-right">
-      <view class="nav-capsule">
-        <image class="nav-icon" src="/assets/icons/notice.png" />
-        <view class="nav-dot" wx:if="{{noticeCount > 0}}"></view>
-      </view>
-    </view>
-  </view>
-
   <!-- 顶部区域 -->
   <view class="header-section">
     <!-- 用户信息卡片 -->
