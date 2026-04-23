@@ -138,6 +138,7 @@
 
       <!-- 任务详情卡片 -->
       <view class="detail-card">
+        <text class="detail-card-title">任务详情</text>
         <text class="detail-title">{{task.title || '高端楼盘春日氛围视频'}}</text>
 
         <!-- 奖励 -->

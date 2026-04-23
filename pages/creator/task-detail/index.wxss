@@ -325,6 +325,13 @@
 }
 
 /* 详情卡片 */
+.detail-card-title{
+  font-family: PingFang SC, PingFang SC;
+  font-weight: bold;
+  font-size: 32rpx;
+  color: #333333;
+  line-height: 48rpx;
+}
 .detail-card {
   background: #fff;
   padding: 32rpx;
@@ -332,27 +339,29 @@
 }
 
 .detail-title {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 700;
   color: #333;
   margin-bottom: 24rpx;
   display: block;
+  margin-top: 24rpx;
 }
 
 .reward-row {
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center ; */
   gap: 32rpx;
   margin-bottom: 32rpx;
-  padding: 24rpx;
-  background: #fff4e8;
+  /* padding: 24rpx ; */
+  /* background: #fff4e8 ; */
   border-radius: 12rpx;
+  justify-content: space-between;
 }
 
 .reward-item {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
   gap: 8rpx;
 }
