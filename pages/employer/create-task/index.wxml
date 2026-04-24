@@ -34,7 +34,7 @@ module.exports = {
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">发布任务</text>
-            <text class="flow-step-sub">托管奖金</text>
+            <text class="flow-step-title">托管奖金</text>
           </view>
         </view>
         <image class="flow-arrow" src="./images/arrow-right-gray.png" />
@@ -44,7 +44,7 @@ module.exports = {
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">创作者报名</text>
-            <text class="flow-step-sub">提交视频</text>
+            <text class="flow-step-title">提交视频</text>
           </view>
         </view>
         <image class="flow-arrow" src="./images/arrow-right-gray.png" />
@@ -54,7 +54,7 @@ module.exports = {
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">商家审核</text>
-            <text class="flow-step-sub">验收视频</text>
+            <text class="flow-step-title">验收视频</text>
           </view>
         </view>
         <image class="flow-arrow" src="./images/arrow-right-gray.png" />
@@ -64,7 +64,7 @@ module.exports = {
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">任务结束</text>
-            <text class="flow-step-sub">解冻剩余资金</text>
+            <text class="flow-step-title">解冻剩余资金</text>
           </view>
         </view>
       </view>
@@ -109,7 +109,7 @@ module.exports = {
 
       <!-- 任务描述 -->
       <view class="desc-field">
-        <text class="desc-label">任务描述</text>
+        <text class="desc-label" >任务描述</text>
         <view class="desc-area">
           <textarea class="desc-textarea" placeholder="请输入不少于10个字的描述" value="{{description}}" bindinput="onDescInput" maxlength="500"/>
           <view class="ai-write-btn" bindtap="aiWriteDesc">
@@ -122,7 +122,7 @@ module.exports = {
       <!-- 图片参考 -->
         <view class="image-reference" style="margin-top: 32rpx;">
           <view class="field-label-row" style="width: 100%;">
-            <text class="field-label">任务素材</text>
+            <text class="field-label" style="margin-bottom: 16rpx;">任务素材</text>
             <text class="field-hint">(可提供指定素材做为创作要求或参考)</text>
           </view>
           <view class="ref-images-box">
@@ -151,12 +151,13 @@ module.exports = {
     <!-- 隐私保护 -->
     <view class="form-card card-with-shadow">
       <view class="card-title">隐私保护</view>
-      <view class="switch-box" bindtap="togglePrivacy">
+      <view class="switch-box" bindtap="">
         <view class="switch-info">
           <text class="switch-title">开启稿件隐私保护</text>
           <text class="switch-desc">开启后，创作者的投稿仅商家可见</text>
         </view>
-        <image class="switch-icon" src="./images/icon-remove.png" />
+        <!-- <image class="switch-icon" src="./images/icon-remove.png" /> -->
+        <switch class="switch-icon" checked="{{privacyEnabled}}" bindchange="togglePrivacy" color="#FF9F2F"/>
       </view>
     </view>
 
@@ -164,30 +165,33 @@ module.exports = {
     <view class="form-card card-with-shadow">
       <view class="card-title">即梦合拍</view>
       <view class="jimeng-box">
-        <view class="switch-row" bindtap="toggleJimeng">
+        <view class="switch-row flex" bindtap="">
           <view class="switch-info">
             <text class="switch-title">即梦合拍设置</text>
             <text class="switch-desc">商家提供数字人模型给创作者用于合成视频</text>
           </view>
-          <image class="switch-icon" src="./images/icon-remove.png" />
+          <!-- <image class="switch-icon" src="./images/icon-remove.png" /> -->
+          <switch class="switch-icon" checked="{{jimengEnabled}}" bindchange="toggleJimeng" color="#FF9F2F"/>
         </view>
         <view wx:if="{{jimengEnabled}}" class="jimeng-content">
           <view class="jimeng-input-box">
-            <input class="jimeng-input" placeholder="请粘贴即梦邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="200"/>
+            <textarea class="jimeng-input" placeholder="请粘贴即梦邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="200"/>
             <text class="char-count">{{jimeng_link.length}}/200</text>
           </view>
           <view class="jimeng-tutorial" bindtap="showJimengTutorial">
-            <view class="tutorial-icon-wrapper">
+            <!-- <view class="tutorial-icon-wrapper">
               <image class="tutorial-icon" src="./images/icon-upload-plus.png" />
-            </view>
-            <text>查看即梦合拍教程</text>
+            </view> -->
+            <video src="" class="video-box"></video>
+            <!-- <text>查看即梦合拍教程</text> -->
           </view>
         </view>
-        <view class="jimeng-tips">
-          <text class="tips-main">tips：即梦合拍邀请</text>
-          <text class="tips-highlight">链接仅48小时有效</text>
-          <text class="tips-sub">，请在我的-任务管理-任务详情中更新链接。</text>
-        </view>
+        
+      </view>
+      <view class="jimeng-tips">
+        <text class="tips-main">tips：即梦合拍邀请</text>
+        <text class="tips-highlight">链接仅48小时有效</text>
+        <text class="tips-sub">，请在我的-任务管理-任务详情中更新链接。</text>
       </view>
     </view>
 
@@ -197,15 +201,15 @@ module.exports = {
       <view class="spec-box">
         <picker class="spec-item" mode="selector" range="{{videoSpecOptions.duration}}" value="{{durationIndex}}" bindchange="onDurationChange">
           <text class="spec-value">{{selectedDuration}}</text>
-          <text class="spec-unit">时长</text>
+          <text class="spec-value">内</text>
         </picker>
         <picker class="spec-item" mode="selector" range="{{videoSpecOptions.ratio}}" value="{{ratioIndex}}" bindchange="onRatioChange">
           <text class="spec-value">{{selectedRatio}}</text>
-          <text class="spec-unit">比例</text>
+          <!-- <text class="spec-unit">比例</text> -->
         </picker>
         <picker class="spec-item" mode="selector" range="{{videoSpecOptions.quality}}" value="{{qualityIndex}}" bindchange="onQualityChange">
           <text class="spec-value">{{selectedQuality}}</text>
-          <text class="spec-unit">清晰度</text>
+          <!-- <text class="spec-unit">清晰度</text> -->
         </picker>
       </view>
     </view>
@@ -216,7 +220,7 @@ module.exports = {
 
       <!-- 投稿截止时间 -->
       <picker class="picker-box" mode="date" value="{{deadline}}" start="{{minDeadline}}" end="{{maxDeadline}}" bindchange="onDeadlineChange">
-        <view class="picker-box" style="margin-top:0;">
+        <view class="picker-row-box">
           <text class="picker-label">投稿截止时间</text>
           <view class="picker-row">
             <text class="picker-value">{{deadline || '请选择'}}</text>
@@ -229,7 +233,7 @@ module.exports = {
       <view class="input-box">
         <text class="input-label">参与奖</text>
         <view class="input-row">
-          <input type="number" class="price-input" placeholder="2" value="{{unit_price}}" bindinput="onUnitPriceInput"/>
+          <input type="number" class="price-input" placeholder="2" value="{{unit_price}}" bindinput="onUnitPriceInput" style="text-align: right;"/>
           <text class="input-unit">元/条</text>
         </view>
       </view>
@@ -238,7 +242,7 @@ module.exports = {
       <view class="input-box">
         <text class="input-label">采纳奖</text>
         <view class="input-row">
-          <input type="number" class="price-input" placeholder="20" value="{{award_price}}" bindinput="onAwardPriceInput"/>
+          <input type="number" class="price-input" placeholder="20" value="{{award_price}}" bindinput="onAwardPriceInput" style="text-align: right;"/>
           <text class="input-unit">元/条</text>
         </view>
       </view>
@@ -249,7 +253,7 @@ module.exports = {
       <view class="input-box">
         <text class="input-label">报名人数上限</text>
         <view class="input-row">
-          <input type="number" class="price-input" placeholder="10" value="{{total_count}}" bindinput="onTotalCountInput"/>
+          <input type="number" class="price-input" placeholder="10" value="{{total_count}}" bindinput="onTotalCountInput" style="text-align: right;"/>
           <text class="input-unit">人</text>
         </view>
       </view>
@@ -270,10 +274,22 @@ module.exports = {
           <text class="budget-label">平台服务费</text>
           <text class="budget-value">¥{{platformFee}}</text>
         </view>
+        <view class="budget-row">
+          <view class="flex" style="">
+            <image src="../../../images/home/youhui.png" style="width: 125rpx;
+height: 32rpx;"/>
+          <text class="budget-label" style="font-size:24rpx;">服务费减免(5%)</text>
+          </view>
+          <text class="budget-total-value">¥{{platformFee}}</text>
+        </view>
         <view class="budget-divider"></view>
         <view class="budget-total-row">
           <text class="budget-total-label">需预支付总金额</text>
           <text class="budget-total-value">¥{{totalBudget}}</text>
+        </view>
+        <view class="budget-total-row" >
+          <text class="budget-total-label" style="color:#878FA1;font-weight:400;">当前钱包可用余额</text>
+          <text class="budget-total-value" style="color:#878FA1;font-weight:400;">¥10000</text>
         </view>
         <view class="budget-tips">tips：活动金额按报名人数上限全额冻结，审核完全部稿件48小时后，剩余活动金即可解冻。</view>
       </view>
@@ -281,8 +297,8 @@ module.exports = {
 
     <!-- 提交按钮 -->
     <view class="submit-section">
-      <button class="submit-btn" bindtap="handleSubmit">托管奖金并发布</button>
-      <view class="submit-indicator"></view>
+      <view class="submit-btn" bindtap="handleSubmit">托管奖金并发布</view>
+      <!-- <view class="submit-indicator"></view> -->
     </view>
   </scroll-view>
 
@@ -295,10 +311,10 @@ module.exports = {
     <view class="tag-group" slot="desc">
       <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
     </view>
-    <view class="tag-btn-group" slot="footer">
+    <!-- <view class="tag-btn-group" slot="footer">
       <view class="reset-btn" bindtap="onCloseDialog">重置</view>
       <view class="confirm-btn" bindtap="onCloseDialog">确认</view>
-    </view>
+    </view> -->
   </mp-half-screen-dialog>
   <mp-half-screen-dialog 
     title="选择风格" 
@@ -309,9 +325,9 @@ module.exports = {
     <view class="tag-group" slot="desc">
       <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
     </view>
-    <view class="tag-btn-group" slot="footer">
+    <!-- <view class="tag-btn-group" slot="footer">
       <view class="reset-btn" bindtap="onCloseStyleDialog">重置</view>
       <view class="confirm-btn" bindtap="onCloseStyleDialog">确认</view>
-    </view>
+    </view> -->
   </mp-half-screen-dialog>
 </view>
