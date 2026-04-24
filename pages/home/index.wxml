@@ -45,7 +45,7 @@
 
 
   <!-- 分类标签栏 (在排序栏上方) -->
-  <scroll-view class="category-bar" scroll-x wx:if="{{industryTags.length > 0}}">
+  <scroll-view class="category-bar" scroll-x>
     <view class="category-inner">
       <!-- <text class="category-label">推荐</text> -->
       <view
@@ -144,7 +144,9 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{displayTasks.length === 0 && !loading}}">
-    <mp-msg type="info" title="暂无相关任务" />
+    <!-- <mp-msg type="info" title="暂无相关任务" /> -->
+    <image src="../../images/home/empty.png" class="clock-icon" style="width:300rpx;height:300rpx;"/>
+    <text>暂无任务哦</text>
   </view>
 
   <!-- 加载更多 -->
