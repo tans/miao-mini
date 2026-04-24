@@ -635,7 +635,7 @@ picker.spec-item {
   margin-top: 0;
   display: flex;
   justify-content: space-between;
-  width: 100%
+  width: 580rpx;
 }
 
 .picker-value {
