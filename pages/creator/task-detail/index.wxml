@@ -330,17 +330,6 @@
           <text class="upload-text">点击选择视频</text>
           <text class="upload-hint">要求：{{task.videoAspect}} / {{task.videoResolution}} / {{task.videoDuration}}</text>
         </view>
-        <!-- 描述输入 -->
-        <view class="desc-section">
-          <view class="section-header">
-            <text class="section-title">视频描述</text>
-            <text class="section-tip">选填</text>
-          </view>
-          <view class="desc-input-wrapper">
-            <textarea class="desc-input" placeholder="简单描述一下你的创作思路..." bindinput="onDescriptionInput" value="{{submitDescription}}" maxlength="200" />
-            <text class="desc-count">{{submitDescription.length || 0}}/200</text>
-          </view>
-        </view>
       </view>
       <view class="modal-footer">
         <button class="submit-btn {{submitting || !submitVideoUrl ? 'disabled' : ''}}" bindtap="onSubmitWork" disabled="{{submitting || !submitVideoUrl}}">

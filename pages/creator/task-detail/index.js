@@ -16,7 +16,6 @@ Page({
     showSubmitModal: false,
     submitClaimId: '',
     submitVideoUrl: '',
-    submitDescription: '',
     submitting: false,
   },
 
@@ -133,11 +132,11 @@ Page({
     if (!this.data.submitClaimId) {
       this.loadClaimId();
     }
-    this.setData({ showSubmitModal: true, submitVideoUrl: '', submitDescription: '' });
+    this.setData({ showSubmitModal: true, submitVideoUrl: '' });
   },
 
   onCloseSubmitModal() {
-    this.setData({ showSubmitModal: false, submitVideoUrl: '', submitDescription: '', submitting: false });
+    this.setData({ showSubmitModal: false, submitVideoUrl: '', submitting: false });
   },
 
   onChooseVideo() {
@@ -156,10 +155,6 @@ Page({
         wx.showToast({ title: '选择失败', icon: 'none' });
       }
     });
-  },
-
-  onDescriptionInput(e) {
-    this.setData({ submitDescription: e.detail.value });
   },
 
   async onSubmitWork() {
@@ -189,7 +184,7 @@ Page({
       wx.showLoading({ title: '提交中...' });
 
       await Api.submitClaim(claimId, {
-        content: this.data.submitDescription,
+        content: '',
         materials: [{
           file_name: uploadRes.filename || 'video.mp4',
           file_path: uploadRes.url,

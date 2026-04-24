@@ -183,58 +183,49 @@ const Api = {
   },
 
 
-  // Upload video. By default returns URL; returnMeta=true returns upload metadata.
+  // Upload video using Tencent COS pre-signed URL
   uploadVideo(tempFilePath, options = {}) {
-    const query = ['type=video'];
-    if (options.bizType) query.push(`biz_type=${encodeURIComponent(options.bizType)}`);
-    if (options.bizId) query.push(`biz_id=${encodeURIComponent(options.bizId)}`);
-    if (options.jobId) query.push(`job_id=${encodeURIComponent(options.jobId)}`);
+    // Get file extension from tempFilePath
+    const ext = tempFilePath.split('.').pop() || 'mp4';
 
-    return new Promise((resolve, reject) => {
-      wx.uploadFile({
-        url: this.getApiBase() + '/upload?' + query.join('&'),
-        filePath: tempFilePath,
-        name: 'file',
-        header: { Authorization: 'Bearer ' + this.getToken() },
-        success: (res) => {
-          if (res.statusCode === 401) {
-            Api.clearAuth();
-            reject(new Error('Login expired'));
-            return;
-          }
-          try {
-            const data = JSON.parse(res.data);
-            if (data.code === 0 && data.data && data.data.url) {
-              wx.setStorageSync('lastUploadTime', new Date().toISOString());
-              let url = data.data.url;
-              if (url.startsWith('/')) {
-                const base = this.getApiBase().replace(/\/api\/v1$/, '');
-                url = base + url;
-              }
+    // First get COS pre-signed credential from backend
+    return this.request('GET', `/cos/credential?type=video&ext=.${ext}&biz_type=${encodeURIComponent(options.bizType || '')}&biz_id=${encodeURIComponent(options.bizId || '')}&job_id=${encodeURIComponent(options.jobId || '')}`).then(credRes => {
+      const { upload_url, key, file_url } = credRes.data;
+
+      // Upload directly to COS using pre-signed URL
+      return new Promise((resolve, reject) => {
+        wx.uploadFile({
+          url: upload_url,
+          filePath: tempFilePath,
+          name: 'file',
+          header: {
+            'Content-Type': 'video/mp4',
+          },
+          success: (res) => {
+            if (res.statusCode === 200 || res.statusCode === 201) {
+              wx.setStorageSync('lastUploadTime', new Date().ISOString());
               const result = {
-                url,
-                key: data.data.key || '',
-                jobId: data.data.job_id || options.jobId || '',
-                filename: data.data.filename || '',
-                size: data.data.size || 0,
-                type: data.data.type || 'video',
+                url: file_url,
+                key: key,
+                jobId: options.jobId || '',
+                filename: key.split('/').pop() || 'video.mp4',
+                size: 0,
+                type: 'video/mp4',
               };
               resolve(options.returnMeta ? result : result.url);
-              return;
+            } else {
+              reject(new Error('COS upload failed: ' + res.statusCode));
             }
-            const msg = (data && data.message) || 'Upload failed';
-            wx.showToast({ title: msg, icon: 'none' });
-            reject(new Error(msg));
-          } catch (e) {
-            wx.showToast({ title: 'Upload parse failed', icon: 'none' });
-            reject(e);
-          }
-        },
-        fail: (err) => {
-          wx.showToast({ title: 'Upload failed', icon: 'none' });
-          reject(err);
-        },
+          },
+          fail: (err) => {
+            wx.showToast({ title: '上传失败', icon: 'none' });
+            reject(err);
+          },
+        });
       });
+    }).catch(err => {
+      wx.showToast({ title: '获取上传凭证失败', icon: 'none' });
+      throw err;
     });
   },
 
