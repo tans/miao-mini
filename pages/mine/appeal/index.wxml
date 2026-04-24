@@ -1,9 +1,4 @@
 <view class="appeal-container">
-  <!-- 导航栏 -->
-  <view class="nav-bar">
-    <view class="nav-left" bindtap="goBack">
-      <image class="nav-back" src="/assets/icons/back-white.png" />
-    </view>
     <text class="nav-title">申诉与纠纷</text>
     <view class="nav-right"></view>
   </view>
