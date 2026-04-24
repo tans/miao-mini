@@ -438,8 +438,23 @@
 .empty-state {
   text-align: center;
   padding: 80rpx 40rpx;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
 }
-
+.empty-state image,text {
+  display: block;
+}
+.empty-state text {
+  font-family: PingFang SC, PingFang SC;
+  font-weight: 500;
+  font-size: 24rpx;
+  color: #878FA1;
+  line-height: 36rpx;
+  margin-top: 16rpx;
+}
 /* 加载更多 */
 .load-more {
   text-align: center;
