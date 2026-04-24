@@ -6,3 +6,4 @@ scripts/upload.js
 miniprogram_npm/
 weui-miniprogram/
 
+.DS_Store
