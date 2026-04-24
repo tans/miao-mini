@@ -304,4 +304,49 @@
       <text>{{hasSignedUp ? '上传稿件' : '截稿倒计时：'+countdownText+'，立即报名'}}</text>
     </button>
   </view>
+
+  <!-- 提交模态框 -->
+  <view class="submit-modal-mask" hidden="{{!showSubmitModal}}" bindtap="onCloseSubmitModal">
+    <view class="submit-modal" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">上传稿件</text>
+        <view class="modal-close" bindtap="onCloseSubmitModal">
+          <text>×</text>
+        </view>
+      </view>
+      <view class="modal-body">
+        <!-- 视频预览 -->
+        <view class="video-preview" wx:if="{{submitVideoUrl}}">
+          <video src="{{submitVideoUrl}}" class="modal-video" />
+          <view class="video-cover-overlay">
+            <text class="cover-text">视频已选择</text>
+          </view>
+        </view>
+        <!-- 选择视频按钮 -->
+        <view class="upload-btn" bindtap="onChooseVideo" wx:if="{{!submitVideoUrl}}">
+          <view class="upload-icon">
+            <text class="upload-icon-text">+</text>
+          </view>
+          <text class="upload-text">点击选择视频</text>
+          <text class="upload-hint">要求：{{task.videoAspect}} / {{task.videoResolution}} / {{task.videoDuration}}</text>
+        </view>
+        <!-- 描述输入 -->
+        <view class="desc-section">
+          <view class="section-header">
+            <text class="section-title">视频描述</text>
+            <text class="section-tip">选填</text>
+          </view>
+          <view class="desc-input-wrapper">
+            <textarea class="desc-input" placeholder="简单描述一下你的创作思路..." bindinput="onDescriptionInput" value="{{submitDescription}}" maxlength="200" />
+            <text class="desc-count">{{submitDescription.length || 0}}/200</text>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="submit-btn {{submitting || !submitVideoUrl ? 'disabled' : ''}}" bindtap="onSubmitWork" disabled="{{submitting || !submitVideoUrl}}">
+          <text>{{submitting ? '提交中...' : '提交作品'}}</text>
+        </button>
+      </view>
+    </view>
+  </view>
 </view>
