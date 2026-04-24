@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: #f5f5f5;
   padding-bottom: 160rpx;
+  overflow: hidden;
 }
 
 /* 流程图 */
@@ -10,7 +11,7 @@
   margin: 32rpx 24rpx;
   border-radius: 16rpx;
   box-shadow: 0px 10rpx 26rpx rgba(20,42,31,0.08);
-  padding-bottom: 24rpx;
+  padding-bottom: 16rpx;
 }
 
 .flow-header {
@@ -75,8 +76,8 @@
 }
 
 .flow-step-icon {
-  width: 36rpx;
-  height: 36rpx;
+  width: 60rpx;
+  height: 60rpx;
 }
 
 .flow-step-text {
@@ -101,7 +102,7 @@
 }
 
 .flow-arrow {
-  width: 68rpx;
+  width: 90rpx;
   height: 20rpx;
   flex-shrink: 0;
   margin: 20rpx 0 0 -12rpx;
@@ -367,8 +368,8 @@
 }
 
 .reward-label {
-  font-size: 22rpx;
-  color: #666;
+  font-size: 24rpx;
+  color: #8C8C98;
 }
 
 .reward-value-row {
@@ -380,12 +381,12 @@
 .reward-value {
   font-size: 40rpx;
   font-weight: 700;
-  color: #ef8802;
+  color: #EF4444;
 }
 
 .reward-unit {
-  font-size: 22rpx;
-  color: #999;
+  font-size: 24rpx;
+  color: #8C8C98;
 }
 
 .reward-plus {
@@ -401,7 +402,6 @@
 }
 
 .tag-group {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8rpx;
@@ -423,57 +423,60 @@
 
 /* 描述 */
 .desc-section {
-  padding: 20rpx;
-  background: #fafafa;
-  border-radius: 12rpx;
+  padding: 24rpx 32rpx;
+  background: #EEF5FF;
+  border-radius: 16rpx;
   margin-bottom: 24rpx;
 }
 
 .desc-text {
-  font-size: 26rpx;
-  color: #333;
+  font-size: 28rpx;
+  color: #333333;
   line-height: 1.6;
 }
 
 /* 规格 */
 .specs-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16rpx;
   margin-bottom: 24rpx;
 }
 
 .spec-item {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: 4rpx;
+  border-bottom: 1px solid #ECECEF;
+  padding-bottom: 16rpx;
+  padding-top: 16rpx;
 }
 
 .spec-label {
-  font-size: 22rpx;
-  color: #999;
+  font-size: 28rpx;
+  color: #555562;
 }
 
 .spec-value {
-  font-size: 26rpx;
+  font-size: 28rpx;
   color: #333;
   font-weight: 500;
 }
 
 .spec-value.deadline {
-  color: #ef8802;
+  color: #333;
 }
 
 /* 平台禁忌 */
 .restriction-section {
   padding: 16rpx 20rpx;
-  background: #fff4e8;
+  background: rgba(239,68,68,0.08);
   border-radius: 8rpx;
 }
 
 .restriction-text {
-  font-size: 22rpx;
-  color: #ef8802;
+  font-size: 24rpx;
+  color: #EF4444;
   line-height: 1.5;
 }
 
@@ -488,7 +491,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20rpx;
 }
 
 .header-title {
@@ -529,9 +531,12 @@
 
 /* 即梦卡片 */
 .jimeng-card {
-  background: #fff;
+  background: #F5F5F7;
   padding: 32rpx;
   margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .jimeng-content {
@@ -548,16 +553,15 @@
 }
 
 .jimeng-lock {
-  margin-top: 16rpx;
-  padding: 20rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
+  padding: 8rpx 16rpx;
+  background: #EEF5FF;
+  border-radius: 12rpx;
   text-align: center;
 }
 
 .lock-text {
   font-size: 24rpx;
-  color: #999;
+  color: #8C8C98;
 }
 
 /* 安全提醒 */
@@ -592,7 +596,7 @@
 
 /* 热门推荐 */
 .recommend-section {
-  background: #fff;
+  /* background: #fff; */
   padding: 32rpx;
   margin-bottom: 24rpx;
 }
@@ -602,6 +606,7 @@
   align-items: center;
   gap: 12rpx;
   margin-bottom: 24rpx;
+  justify-content: center;
 }
 
 .recommend-icon {
@@ -634,10 +639,10 @@
 }
 
 .recommend-title {
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: 600;
   color: #333;
-  flex: 1;
+  /* flex: 1; */
   margin-right: 16rpx;
 }
 
@@ -768,6 +773,7 @@
   background: linear-gradient(135deg, #ff9a1f, #ef6c00);
   border-radius: 48rpx;
   border: none;
+  width: 100%;
 }
 
 .signup-btn text, .submit-btn text {

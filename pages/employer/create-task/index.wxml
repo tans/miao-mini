@@ -8,20 +8,20 @@ module.exports = {
 
 <view class="create-container">
   <!-- 顶部导航栏 -->
-  <view class="nav-bar">
+  <!-- <view class="nav-bar">
     <view class="nav-left" bindtap="goBack">
       <image class="nav-back" src="/assets/icons/back.png" />
     </view>
     <text class="nav-title">发布任务</text>
     <view class="nav-right"></view>
-  </view>
+  </view> -->
 
   <scroll-view scroll-y="true" class="form-scroll">
     <!-- 流程图 -->
     <view class="flow-section">
       <view class="flow-header">
         <view class="flow-header-left">
-          <image class="flow-icon" src="./images/flow-headline-icon.png" />
+          <image class="flow-icon" src="../../../images/home/msg-icon.png" />
           <text class="flow-headline">发单先托管</text>
           <text class="flow-headline-highlight">验收再放款</text>
         </view>
@@ -30,7 +30,7 @@ module.exports = {
       <view class="flow-body">
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/step-icon-publish.png" />
+            <image class="flow-step-icon" src="../../../images/home/create-icon1.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">发布任务</text>
@@ -40,7 +40,7 @@ module.exports = {
         <image class="flow-arrow" src="./images/arrow-right-gray.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/step-icon-apply.png" />
+            <image class="flow-step-icon" src="../../../images/home/detail-icon1.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">创作者报名</text>
@@ -50,7 +50,7 @@ module.exports = {
         <image class="flow-arrow" src="./images/arrow-right-gray.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/step-icon-review.png" />
+            <image class="flow-step-icon" src="../../../images/home/detail-icon2.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">商家审核</text>
@@ -60,7 +60,7 @@ module.exports = {
         <image class="flow-arrow" src="./images/arrow-right-gray.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/step-icon-finish.png" />
+            <image class="flow-step-icon" src="../../../images/home/create-icon2.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">任务结束</text>
@@ -86,11 +86,11 @@ module.exports = {
           <text class="field-label">行业</text>
           <text class="field-hint">（可多选）</text>
         </view>
-        <scroll-view scroll-x="true" class="tag-scroll">
-          <view class="tag-group">
-            <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
-          </view>
-        </scroll-view>
+        <view>选择</view>
+        <!-- <view class="tag-group" slot="desc" bindtap="openDialog">
+          <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
+        </view> -->
+        
       </view>
 
       <!-- 风格 -->
@@ -276,4 +276,19 @@ module.exports = {
       <view class="submit-indicator"></view>
     </view>
   </scroll-view>
+
+  <mp-half-screen-dialog 
+    title="选择行业" 
+    ext-class="custom-class"
+    show="{{showDialog}}" 
+    bindclose="onCloseDialog"
+  >
+    <view class="tag-group" slot="desc">
+      <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
+    </view>
+    <view class="tag-btn-group" slot="footer">
+      <view class="reset-btn" bindtap="onCloseDialog">重置</view>
+      <view class="confirm-btn" bindtap="onCloseDialog">确认</view>
+    </view>
+  </mp-half-screen-dialog>
 </view>

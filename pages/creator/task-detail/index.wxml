@@ -3,7 +3,7 @@
     <view class="flow-section">
       <view class="flow-header">
         <view class="flow-header-left">
-          <image class="flow-icon" src="./images/flow-headline-icon.png" />
+          <image class="flow-icon" src="../../../images/home/msg-icon.png" />
           <text class="flow-headline">新手不踩坑</text>
           <text class="flow-headline-highlight">投稿看流程</text>
         </view>
@@ -12,7 +12,7 @@
       <view class="flow-body">
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/step-icon-publish.png" />
+            <image class="flow-step-icon" src="../../../images/home/detail-icon1.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">报名后按时交稿</text>
@@ -21,16 +21,16 @@
         <image class="flow-arrow" src="../../../images/home/right.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="../../../images/home/detail-icon01.png" />
+            <image class="flow-step-icon" src="../../../images/home/detail-icon2.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">商家审核付款</text>
           </view>
         </view>
-        <image class="flow-arrow" src="./images/arrow-right-gray.png" />
+        <image class="flow-arrow" src="../../../images/home/right.png" />
         <view class="flow-step">
           <view class="flow-icon-wrapper">
-            <image class="flow-step-icon" src="./images/step-icon-review.png" />
+            <image class="flow-step-icon" src="../../../images/home/detail-icon3.png" />
           </view>
           <view class="flow-step-text">
             <text class="flow-step-title">钱包提现奖励</text>
@@ -163,11 +163,11 @@
         <!-- 标签 -->
         <view class="tags-row">
           <view class="tag-group">
-            <text class="tag-label">行业标签</text>
+            <!-- <text class="tag-label">行业标签</text> -->
             <view class="tag-value">{{task.industry || '房产家居'}}</view>
           </view>
           <view class="tag-group">
-            <text class="tag-label">风格标签</text>
+            <!-- <text class="tag-label">风格标签</text> -->
             <view class="tag-value">{{task.style || '房产家居'}}</view>
           </view>
         </view>
@@ -216,39 +216,42 @@
             <image class="material-thumb" src="{{item.file_path}}" mode="aspectFill"/>
           </view>
         </view>
+        <!-- 即梦合拍 -->
+        <view class="jimeng-card" wx:if="{{task.jimengLink}}">
+          <view class="card-header">
+            <text class="header-title">即梦合拍邀拍链接</text>
+          </view>
+          <view class="jimeng-content">
+            <text class="jimeng-link">{{task.jimengLink}}</text>
+          </view>
+        </view>
+        <view class="jimeng-card" wx:if="{{!task.jimengLink && !hasSignedUp}}">
+          <view class="card-header">
+            <text class="header-title">即梦合拍邀拍链接</text>
+          </view>
+          <view class="jimeng-lock">
+            <text class="lock-text">报名后可见</text>
+          </view>
+        </view>
       </view>
 
-      <!-- 即梦合拍 -->
-      <view class="jimeng-card" wx:if="{{task.jimengLink}}">
-        <view class="card-header">
-          <text class="header-title">即梦合拍邀拍链接</text>
-        </view>
-        <view class="jimeng-content">
-          <text class="jimeng-link">{{task.jimengLink}}</text>
-        </view>
-      </view>
-      <view class="jimeng-card" wx:if="{{!task.jimengLink && !hasSignedUp}}">
-        <view class="card-header">
-          <text class="header-title">即梦合拍邀拍链接</text>
-        </view>
-        <view class="jimeng-lock">
-          <text class="lock-text">报名后可见</text>
-        </view>
-      </view>
+      
 
       <!-- 安全提醒 -->
       <view class="safety-card">
         <view class="safety-header">
-          <text class="safety-icon">🛡️</text>
-          <text class="safety-title">创意喵 安全提醒</text>
+          <image style="width:30rpx;height:30rpx;" src="../../../images/home/msg-icon.png" />
+          <text style="color:#F58A1F" class="safety-title">创意喵</text>
+          <text class="safety-title">安全提醒</text>
         </view>
-        <text class="safety-text">如发现商家发布违规需求可立即举报。创作者请勿提交无关稿件或违规稿件，被效举报超过 5 次将永久封号。</text>
+        <text class="safety-text">如发现商家发布违规需求可立即举报。创作者请勿提交无关稿件或违规稿件，</text>
+        <text style="color:#F58A1F" class="safety-text">被效举报超过 5 次将永久封号。</text>
       </view>
 
       <!-- 热门推荐 -->
       <view class="recommend-section">
         <view class="recommend-header">
-          <text class="recommend-icon">🔥</text>
+          <image style="width:48rpx;height:48rpx;" src="../../../images/home/hot.png" />
           <text class="recommend-title">热门推荐</text>
         </view>
         <view class="recommend-list">
@@ -293,12 +296,12 @@
 
   <!-- 底部操作栏 -->
   <view class="action-bar">
-    <view class="countdown-section">
+    <!-- <view class="countdown-section">
       <text class="countdown-label">截稿倒计时：</text>
       <text class="countdown-value">{{countdownText || '23小时28分'}}</text>
-    </view>
-    <button class="action-btn {{hasSignedUp ? 'submit-work-btn' : 'signup-btn'}}" bindtap="{{hasSignedUp ? 'goSubmitWork' : 'handleSignUp'}}">
-      <text>{{hasSignedUp ? '上传稿件' : '立即报名'}}</text>
+    </view> -->
+    <button style="width:100%" class="action-btn {{hasSignedUp ? 'submit-work-btn' : 'signup-btn'}}" bindtap="{{hasSignedUp ? 'goSubmitWork' : 'handleSignUp'}}">
+      <text>{{hasSignedUp ? '上传稿件' : '截稿倒计时：'+countdownText+'，立即报名'}}</text>
     </button>
   </view>
 </view>
