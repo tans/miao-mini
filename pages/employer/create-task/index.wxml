@@ -86,7 +86,7 @@ module.exports = {
           <text class="field-label">行业</text>
           <text class="field-hint">（可多选）</text>
         </view>
-        <view>选择</view>
+        <view bindtap="openDialog">选择</view>
         <!-- <view class="tag-group" slot="desc" bindtap="openDialog">
           <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
         </view> -->
