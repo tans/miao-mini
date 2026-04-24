@@ -288,6 +288,11 @@ Page({
       return;
     }
 
+    const industryNames = selectedIndustries.map(id => {
+      const industry = this.data.industryOptions.find(i => i.id === id);
+      return industry ? industry.name : '';
+    }).filter(name => name);
+
     wx.showLoading({ title: '发布中...' });
     try {
       await Api.createTask({
@@ -298,11 +303,10 @@ Page({
         award_price: Number(this.data.award_price) || 0,
         deadline: this.data.deadline,
         video_duration: this.data.video_duration,
-        privacy_protected: privacyProtected ? 1 : 0,
-        industries: selectedIndustries,
+        public: !privacyProtected,
+        industries: industryNames,
         styles: selectedStyles,
-        jimeng_link: jimengEnabled ? jimeng_link : '',
-        jimeng_code: '',
+        jimeng_text: jimengEnabled ? jimeng_link : '',
       });
       wx.showToast({ title: '发布成功！', icon: 'success' });
       setTimeout(() => {

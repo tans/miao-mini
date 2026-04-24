@@ -151,7 +151,7 @@ module.exports = {
     <!-- 隐私保护 -->
     <view class="form-card card-with-shadow">
       <view class="card-title">隐私保护</view>
-      <view class="switch-box">
+      <view class="switch-box" bindtap="togglePrivacy">
         <view class="switch-info">
           <text class="switch-title">开启稿件隐私保护</text>
           <text class="switch-desc">开启后，创作者的投稿仅商家可见</text>
@@ -164,7 +164,7 @@ module.exports = {
     <view class="form-card card-with-shadow">
       <view class="card-title">即梦合拍</view>
       <view class="jimeng-box">
-        <view class="switch-row">
+        <view class="switch-row" bindtap="toggleJimeng">
           <view class="switch-info">
             <text class="switch-title">即梦合拍设置</text>
             <text class="switch-desc">商家提供数字人模型给创作者用于合成视频</text>
@@ -173,8 +173,8 @@ module.exports = {
         </view>
         <view wx:if="{{jimengEnabled}}" class="jimeng-content">
           <view class="jimeng-input-box">
-            <input class="jimeng-input" placeholder="请输入邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="50"/>
-            <text class="char-count">{{jimeng_link.length}}/50</text>
+            <input class="jimeng-input" placeholder="请粘贴即梦邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="200"/>
+            <text class="char-count">{{jimeng_link.length}}/200</text>
           </view>
           <view class="jimeng-tutorial" bindtap="showJimengTutorial">
             <view class="tutorial-icon-wrapper">
@@ -307,9 +307,7 @@ module.exports = {
     bindclose="onCloseStyleDialog"
   >
     <view class="tag-group" slot="desc">
-      <view class="tag-group">
-        <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
-      </view>
+      <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
     </view>
     <view class="tag-btn-group" slot="footer">
       <view class="reset-btn" bindtap="onCloseStyleDialog">重置</view>

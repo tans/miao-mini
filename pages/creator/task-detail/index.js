@@ -193,7 +193,8 @@ Page({
         materials: [{
           file_name: uploadRes.filename || 'video.mp4',
           file_path: uploadRes.url,
-          file_type: 'video',
+          file_size: uploadRes.size || 0,
+          file_type: uploadRes.type || 'video/mp4',
         }],
       });
 
