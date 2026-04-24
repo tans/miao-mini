@@ -86,11 +86,9 @@ module.exports = {
           <text class="field-label">行业</text>
           <text class="field-hint">（可多选）</text>
         </view>
-        <view bindtap="openDialog">选择</view>
-        <!-- <view class="tag-group" slot="desc" bindtap="openDialog">
-          <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
-        </view> -->
-        
+        <view class="tag-group" bindtap="openDialog">
+          <text wx:for="{{industryOptions}}" wx:key="id" wx:if="{{utils.includes(selectedIndustries, item.id)}}" class="show-tag" data-id="{{item.id}}">{{item.name}}</text>
+        </view>
       </view>
 
       <!-- 风格 -->
@@ -99,11 +97,14 @@ module.exports = {
           <text class="field-label">风格</text>
           <text class="field-hint">（可多选）</text>
         </view>
-        <scroll-view scroll-x="true" class="tag-scroll">
+        <view class="tag-group" bindtap="openStyleDialog">
+          <text wx:for="{{styleOptions}}" wx:key="index" wx:if="{{utils.includes(selectedStyles, item)}}" class="show-tag" data-style="{{item}}">{{item}}</text>
+        </view>
+        <!-- <scroll-view scroll-x="true" class="tag-scroll">
           <view class="tag-group">
             <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
           </view>
-        </scroll-view>
+        </scroll-view> -->
       </view>
 
       <!-- 任务描述 -->
@@ -116,23 +117,31 @@ module.exports = {
             <text>AI帮写</text>
           </view>
         </view>
-      </view>
+      
 
       <!-- 图片参考 -->
-      <view class="image-reference">
-        <view class="ref-images-box">
-          <view wx:for="{{refImages}}" wx:key="*this" class="ref-image-item">
-            <image class="ref-image" src="{{item}}" mode="aspectFill"/>
-            <view class="ref-image-remove" bindtap="removeRefImage" data-index="{{index}}">
-              <image class="remove-icon" src="./images/icon-remove.png"/>
-            </view>
+        <view class="image-reference" style="margin-top: 32rpx;">
+          <view class="field-label-row" style="width: 100%;">
+            <text class="field-label">任务素材</text>
+            <text class="field-hint">(可提供指定素材做为创作要求或参考)</text>
           </view>
-          <view wx:if="{{refImages.length < 3}}" class="ref-upload" bindtap="addRefImage">
-            <image class="upload-icon" src="./images/icon-upload-plus.png" />
+          <view class="ref-images-box">
+            <view wx:for="{{refImages}}" wx:key="*this" class="ref-image-item">
+              <image class="ref-image" src="{{item}}" mode="aspectFill"/>
+              <view class="ref-image-remove" bindtap="removeRefImage" data-index="{{index}}">
+                <image class="remove-icon" src="./images/icon-remove.png"/>
+              </view>
+            </view>
+            <view wx:if="{{refImages.length < 3}}" class="ref-upload" bindtap="addRefImage">
+              <!-- <image class="upload-icon" src="./images/icon-upload-plus.png" /> -->
+               <view class="upload-icon-wrapper">
+                <view class="dashed-border"></view>
+                <text class="plus-icon">+</text>
+              </view>
+            </view>
           </view>
         </view>
       </view>
-
       <!-- 平台禁忌 -->
       <view class="forbidden-notice">
         <text>平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
@@ -207,7 +216,7 @@ module.exports = {
 
       <!-- 投稿截止时间 -->
       <picker class="picker-box" mode="date" value="{{deadline}}" start="{{minDeadline}}" end="{{maxDeadline}}" bindchange="onDeadlineChange">
-        <view class="picker-box">
+        <view class="picker-box" style="margin-top:0;">
           <text class="picker-label">投稿截止时间</text>
           <view class="picker-row">
             <text class="picker-value">{{deadline || '请选择'}}</text>
@@ -289,6 +298,22 @@ module.exports = {
     <view class="tag-btn-group" slot="footer">
       <view class="reset-btn" bindtap="onCloseDialog">重置</view>
       <view class="confirm-btn" bindtap="onCloseDialog">确认</view>
+    </view>
+  </mp-half-screen-dialog>
+  <mp-half-screen-dialog 
+    title="选择风格" 
+    ext-class="custom-class"
+    show="{{showStyleDialog}}" 
+    bindclose="onCloseStyleDialog"
+  >
+    <view class="tag-group" slot="desc">
+      <view class="tag-group">
+        <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
+      </view>
+    </view>
+    <view class="tag-btn-group" slot="footer">
+      <view class="reset-btn" bindtap="onCloseStyleDialog">重置</view>
+      <view class="confirm-btn" bindtap="onCloseStyleDialog">确认</view>
     </view>
   </mp-half-screen-dialog>
 </view>

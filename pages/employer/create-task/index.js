@@ -49,18 +49,8 @@ Page({
     totalBudget: '230.00',
     minDeadline: '',
     maxDeadline: '',
-    buttons: [
-      {
-        type: 'default',
-        text: '取消',
-        extClass: 'cancel-btn'
-      },
-      {
-        type: 'primary', 
-        text: '确定',
-        extClass: 'confirm-btn'
-      }
-    ]
+    showDialog: false,
+    showStyleDialog: false,
   },
 
   onLoad() {
@@ -85,15 +75,16 @@ Page({
   onCloseDialog() {
     this.setData({ showDialog: false });
   },
-  
-  // 按钮点击事件
-  onButtonTap(e) {
-    const { index } = e.detail;
-    if (index === 1) { // 确定按钮
-      // 处理确定逻辑
-    }
-    this.setData({ showDialog: false });
-  },
+    // 打开对话框
+    openStyleDialog() {
+      this.setData({ showStyleDialog: true });
+    },
+    
+    // 关闭对话框
+    onCloseStyleDialog() {
+      this.setData({ showStyleDialog: false });
+    },
+
   initDeadlineRange() {
     const today = new Date();
     const minDate = new Date(today);
