@@ -1,6 +1,6 @@
 // pages/employer/my-tasks/index.js
 const Api = require('../../../utils/api.js');
-const { formatDate } = require('../../../utils/util.js');
+const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -82,6 +82,11 @@ Page({
       filtered = tasks.filter(task => task.status === 'ended' || task.status === 3 || task.status === 4);
     }
 
+    filtered = filtered.map(task => ({
+      ...task,
+      created_at: this.formatDateTime(task.created_at)
+    }));
+
     this.setData({ filteredTasks: filtered });
   },
 
@@ -112,7 +117,7 @@ Page({
     wx.navigateTo({ url: '/pages/wallet/index' });
   },
 
-  formatDate(dateStr) {
-    return formatDate(dateStr);
+  formatDateTime(dateStr) {
+    return formatDateTime(dateStr);
   }
 });

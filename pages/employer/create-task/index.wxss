@@ -152,12 +152,11 @@
 }
 
 .card-with-shadow {
-  box-shadow: 0px 2rpx 8rpx rgba(17,17,17,0.04);
+  box-shadow: 0rpx 4rpx 16rpx 0rpx rgba(17,17,17,0.04);
 }
 
 .card-title {
   font-size: 32rpx;
-  font-weight: 700;
   color: #8c8c98;
   margin-bottom: 32rpx;
 }
@@ -204,7 +203,6 @@
   display: flex;
   align-items: center;
   gap: 8rpx;
-  margin-bottom: 16rpx;
   width: 50%;
 }
 
@@ -233,7 +231,7 @@
 }
 
 .tag {
-  width: 200rpx;
+  width: 180rpx;
   height: 72rpx;
   background: #F5F5F7;
   border-radius: 4rpx 4rpx 4rpx 4rpx;
@@ -502,11 +500,12 @@
   flex-direction: column;
   height: 206rpx;
   margin-bottom: 24rpx;
+  padding: 24rpx;
 }
 
 .jimeng-input {
   flex: 1;
-  padding: 24rpx;
+  width: 100%;
   font-size: 28rpx;
   color: #c9cdd4;
   line-height: 44rpx;
@@ -528,6 +527,11 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 24rpx;
+}
+
+.video-box{
+  width: 574rpx;
+  height: 328rpx;
 }
 
 .tutorial-icon-wrapper {
@@ -627,6 +631,12 @@ picker.spec-item {
   display: flex;
   align-items: center;
 }
+.picker-row-box{
+  margin-top: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 580rpx;
+}
 
 .picker-value {
   font-size: 28rpx;
@@ -666,7 +676,6 @@ picker.spec-item {
 
 .price-input {
   font-size: 28rpx;
-  font-weight: 900;
   color: #333;
   text-align: center;
   min-width: 80rpx;
@@ -682,12 +691,8 @@ picker.spec-item {
 /* 提示 */
 .tips-notice {
   padding: 8rpx 0;
-}
-
-.tips-notice text {
   font-size: 24rpx;
   color: #8c8c98;
-  margin-left: 32rpx;
 }
 
 /* 预算框 */
@@ -706,14 +711,13 @@ picker.spec-item {
 }
 
 .budget-label {
-  font-size: 26rpx;
-  font-weight: 900;
+  font-size: 28rpx;
   color: #333;
 }
 
 .budget-value {
-  font-size: 24rpx;
-  font-weight: 900;
+  font-size: 28rpx;
+  font-weight: 800;
   color: #333;
 }
 
@@ -744,9 +748,6 @@ picker.spec-item {
 
 .budget-tips {
   margin-top: 16rpx;
-}
-
-.budget-tips text {
   font-size: 24rpx;
   color: #8c8c98;
   line-height: 36rpx;
@@ -755,15 +756,16 @@ picker.spec-item {
 /* 提交区域 */
 .submit-section {
   padding: 26rpx 32rpx;
-  margin: 0 0 40rpx 0;
   position: relative;
+  background-color: #fff;
+  border-top: 2rpx solid #ECECEF;
 }
 
 .submit-btn {
   width: 100%;
   height: 96rpx;
   line-height: 96rpx;
-  background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
+  background: #FF9F2F;
   border: none;
   border-radius: 48rpx;
   color: #fff;
@@ -844,4 +846,7 @@ picker.spec-item {
 .add-tag {
   background-color: #f5f5f5;
   color: #999;
+}
+.flex{
+  display: flex;
 }

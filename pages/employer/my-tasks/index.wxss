@@ -39,7 +39,7 @@
   display: flex;
   gap: 24rpx;
   padding: 24rpx 32rpx;
-  background: #fff;
+  background: #FAFAFA;
 }
 
 .filter-tab {
@@ -155,7 +155,7 @@
 /* 进度条 */
 .progress-bar {
   height: 16rpx;
-  background: #000;
+  background: #F2EEEB;
   border-radius: 16rpx;
   margin-top: 16rpx;
   overflow: hidden;
@@ -163,7 +163,7 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ff9f2f 0%, #ef6c00 100%);
+  background: #F99935;
   border-radius: 16rpx;
   transition: width 0.3s ease;
 }
