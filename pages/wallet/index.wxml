@@ -1,14 +1,4 @@
 <view class="wallet-container">
-<<<<<<< HEAD
-=======
-    <text class="nav-title">我的钱包</text>
-    <view class="nav-right">
-      <image src="./images/nav-icon-settings.png" class="nav-icon"></image>
-      <image src="./images/nav-icon-help.png" class="nav-icon"></image>
-    </view>
-  </view>
->>>>>>> a888eaeb485c2ad190814e905f00a818844cac7d
-
   <!-- 余额区域 -->
   <view class="balance-section">
     <view class="balance-bg">
