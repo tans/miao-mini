@@ -14,7 +14,9 @@ Page({
     jimengEnabled: false,
     jimeng_link: '',
     selectedIndustries: [],
+    tempSelectedIndustries: [],
     selectedStyles: [],
+    tempSelectedStyles: [],
     refImages: [],
     videoSpecOptions: {
       duration: ['15秒', '30秒', '60秒', '90秒'],
@@ -24,6 +26,9 @@ Page({
     selectedDuration: '30秒',
     selectedRatio: '9:16',
     selectedQuality: '1080P',
+    durationIndex: 1,
+    ratioIndex: 0,
+    qualityIndex: 1,
     industryOptions: [
       { id: 1001, name: '餐饮美食' },
       { id: 1002, name: '酒店民宿' },
@@ -68,21 +73,59 @@ Page({
   },
   // 打开对话框
   openDialog() {
-    this.setData({ showDialog: true });
+    this.setData({
+      tempSelectedIndustries: [...this.data.selectedIndustries],
+      showDialog: true
+    });
   },
   
   // 关闭对话框
   onCloseDialog() {
-    this.setData({ showDialog: false });
+    this.setData({ 
+      showDialog: false,
+      tempSelectedIndustries: []
+    });
+  },
+  
+  // 确认选择
+  confirmIndustrySelection() {
+    this.setData({
+      selectedIndustries: [...this.data.tempSelectedIndustries],
+      showDialog: false
+    });
+  },
+  
+  // 重置选择
+  resetIndustrySelection() {
+    this.setData({ tempSelectedIndustries: [] });
+  },
+  
+  // 确认风格选择
+  confirmStyleSelection() {
+    this.setData({
+      selectedStyles: [...this.data.tempSelectedStyles],
+      showStyleDialog: false
+    });
+  },
+  
+  // 重置风格选择
+  resetStyleSelection() {
+    this.setData({ tempSelectedStyles: [] });
   },
     // 打开对话框
     openStyleDialog() {
-      this.setData({ showStyleDialog: true });
+      this.setData({
+        tempSelectedStyles: [...this.data.selectedStyles],
+        showStyleDialog: true
+      });
     },
     
     // 关闭对话框
     onCloseStyleDialog() {
-      this.setData({ showStyleDialog: false });
+      this.setData({ 
+        showStyleDialog: false,
+        tempSelectedStyles: []
+      });
     },
 
   initDeadlineRange() {
@@ -115,26 +158,26 @@ Page({
 
   toggleIndustry(e) {
     const id = e.currentTarget.dataset.id;
-    const { selectedIndustries } = this.data;
-    const index = selectedIndustries.indexOf(id);
+    const { tempSelectedIndustries } = this.data;
+    const index = tempSelectedIndustries.indexOf(id);
     if (index > -1) {
-      selectedIndustries.splice(index, 1);
+      tempSelectedIndustries.splice(index, 1);
     } else {
-      selectedIndustries.push(id);
+      tempSelectedIndustries.push(id);
     }
-    this.setData({ selectedIndustries });
+    this.setData({ tempSelectedIndustries });
   },
 
   toggleStyle(e) {
     const style = e.currentTarget.dataset.style;
-    const { selectedStyles } = this.data;
-    const index = selectedStyles.indexOf(style);
+    const { tempSelectedStyles } = this.data;
+    const index = tempSelectedStyles.indexOf(style);
     if (index > -1) {
-      selectedStyles.splice(index, 1);
+      tempSelectedStyles.splice(index, 1);
     } else {
-      selectedStyles.push(style);
+      tempSelectedStyles.push(style);
     }
-    this.setData({ selectedStyles });
+    this.setData({ tempSelectedStyles });
   },
 
   togglePrivacy() {
@@ -168,19 +211,75 @@ Page({
     this.setData({ refImages: this.data.refImages });
   },
 
-  onDurationChange(e) {
-    const value = this.data.videoSpecOptions.duration[e.detail.value];
-    this.setData({ selectedDuration: value });
+  // ActionSheet for duration selection
+  showDurationActionSheet() {
+    const that = this;
+    const durationOptions = this.data.videoSpecOptions.duration;
+    const itemList = durationOptions.map((option, index) => {
+      return `${option}`;
+    });
+    
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        const selectedIndex = res.tapIndex;
+        that.setData({
+          selectedDuration: durationOptions[selectedIndex],
+          durationIndex: selectedIndex
+        });
+      },
+      fail(res) {
+        console.log(res.errMsg);
+      }
+    });
   },
 
-  onRatioChange(e) {
-    const value = this.data.videoSpecOptions.ratio[e.detail.value];
-    this.setData({ selectedRatio: value });
+  // ActionSheet for ratio selection
+  showRatioActionSheet() {
+    const that = this;
+    const ratioOptions = this.data.videoSpecOptions.ratio;
+    const itemList = [
+      '9:16 (抖音/小红书竖屏)',
+      '16:9 (抖音/视频号横屏)',
+      '1:1 (小红书正方形)'
+    ];
+    
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        const selectedIndex = res.tapIndex;
+        that.setData({
+          selectedRatio: ratioOptions[selectedIndex],
+          ratioIndex: selectedIndex
+        });
+      },
+      fail(res) {
+        console.log(res.errMsg);
+      }
+    });
   },
 
-  onQualityChange(e) {
-    const value = this.data.videoSpecOptions.quality[e.detail.value];
-    this.setData({ selectedQuality: value });
+  // ActionSheet for quality selection
+  showQualityActionSheet() {
+    const that = this;
+    const qualityOptions = this.data.videoSpecOptions.quality;
+    const itemList = qualityOptions.map((option) => {
+      return option;
+    });
+    
+    wx.showActionSheet({
+      itemList: itemList,
+      success(res) {
+        const selectedIndex = res.tapIndex;
+        that.setData({
+          selectedQuality: qualityOptions[selectedIndex],
+          qualityIndex: selectedIndex
+        });
+      },
+      fail(res) {
+        console.log(res.errMsg);
+      }
+    });
   },
 
   onJimengLinkInput(e) {
@@ -320,3 +419,10 @@ Page({
     }
   }
 });
+
+
+
+
+
+
+

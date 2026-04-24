@@ -102,7 +102,7 @@ module.exports = {
         </view>
         <!-- <scroll-view scroll-x="true" class="tag-scroll">
           <view class="tag-group">
-            <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
+            <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(tempSelectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
           </view>
         </scroll-view> -->
       </view>
@@ -199,18 +199,16 @@ module.exports = {
     <view class="form-card card-with-shadow">
       <view class="card-title">视频规格</view>
       <view class="spec-box">
-        <picker class="spec-item" mode="selector" range="{{videoSpecOptions.duration}}" value="{{durationIndex}}" bindchange="onDurationChange">
-          <text class="spec-value">{{selectedDuration}}</text>
-          <text class="spec-value">内</text>
-        </picker>
-        <picker class="spec-item" mode="selector" range="{{videoSpecOptions.ratio}}" value="{{ratioIndex}}" bindchange="onRatioChange">
+        <view class="spec-item" bindtap="showDurationActionSheet">
+          <text class="spec-value">{{selectedDuration}}内</text>
+          <!--<text class="spec-value">内</text>-->
+        </view>
+        <view class="spec-item" bindtap="showRatioActionSheet">
           <text class="spec-value">{{selectedRatio}}</text>
-          <!-- <text class="spec-unit">比例</text> -->
-        </picker>
-        <picker class="spec-item" mode="selector" range="{{videoSpecOptions.quality}}" value="{{qualityIndex}}" bindchange="onQualityChange">
+        </view>
+        <view class="spec-item" bindtap="showQualityActionSheet">
           <text class="spec-value">{{selectedQuality}}</text>
-          <!-- <text class="spec-unit">清晰度</text> -->
-        </picker>
+        </view>
       </view>
     </view>
 
@@ -309,12 +307,12 @@ height: 32rpx;"/>
     bindclose="onCloseDialog"
   >
     <view class="tag-group" slot="desc">
-      <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(selectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
+      <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(tempSelectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
     </view>
-    <!-- <view class="tag-btn-group" slot="footer">
-      <view class="reset-btn" bindtap="onCloseDialog">重置</view>
-      <view class="confirm-btn" bindtap="onCloseDialog">确认</view>
-    </view> -->
+    <view class="tag-btn-group" slot="footer">
+      <view class="reset-btn" bindtap="resetIndustrySelection">重置</view>
+      <view class="confirm-btn" bindtap="confirmIndustrySelection">确认</view>
+    </view>
   </mp-half-screen-dialog>
   <mp-half-screen-dialog 
     title="选择风格" 
@@ -323,11 +321,11 @@ height: 32rpx;"/>
     bindclose="onCloseStyleDialog"
   >
     <view class="tag-group" slot="desc">
-      <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(selectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
+      <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(tempSelectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
     </view>
-    <!-- <view class="tag-btn-group" slot="footer">
-      <view class="reset-btn" bindtap="onCloseStyleDialog">重置</view>
-      <view class="confirm-btn" bindtap="onCloseStyleDialog">确认</view>
-    </view> -->
+    <view class="tag-btn-group" slot="footer">
+      <view class="reset-btn" bindtap="resetStyleSelection">重置</view>
+      <view class="confirm-btn" bindtap="confirmStyleSelection">确认</view>
+    </view>
   </mp-half-screen-dialog>
 </view>

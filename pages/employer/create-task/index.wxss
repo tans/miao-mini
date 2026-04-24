@@ -850,3 +850,8 @@ picker.spec-item {
 .flex{
   display: flex;
 }
+
+/* 覆盖半屏对话框底部样式 */
+.weui-half-screen-dialog__ft {
+  padding: 10px 0 20px 0;
+}
