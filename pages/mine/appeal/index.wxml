@@ -1,10 +1,5 @@
 <view class="appeal-container">
 
-    <text class="nav-title">申诉与纠纷</text>
-    <view class="nav-right"></view>
-  </view>
->>>>>>> a888eaeb485c2ad190814e905f00a818844cac7d
-
   <!-- 提示信息 -->
   <view class="tips-section">
     <text class="tips-text">如果您对任务结果有异议，可以提交申诉。平台将在1-3个工作日内处理。</text>

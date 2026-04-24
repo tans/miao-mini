@@ -1,10 +1,4 @@
 <view class="help-detail-container">
-
-    <text class="nav-title">{{title}}</text>
-    <view class="nav-right"></view>
-  </view>
->>>>>>> a888eaeb485c2ad190814e905f00a818844cac7d
-
   <!-- 帮助内容 -->
   <scroll-view scroll-y="true" class="content-scroll">
     <view class="help-header">
