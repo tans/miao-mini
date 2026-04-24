@@ -1,4 +1,10 @@
 <view class="withdraw-container">
+<<<<<<< HEAD
+=======
+    <text class="nav-title">提现</text>
+    <view class="nav-right"></view>
+  </view>
+>>>>>>> a888eaeb485c2ad190814e905f00a818844cac7d
 
   <!-- 可提现余额 -->
   <view class="balance-section">

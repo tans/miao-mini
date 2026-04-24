@@ -1,4 +1,11 @@
 <view class="page">
+<<<<<<< HEAD
+=======
+    <text class="nav-title">商家任务详情</text>
+    <view class="nav-right"></view>
+  </view>
+
+>>>>>>> a888eaeb485c2ad190814e905f00a818844cac7d
   <!-- 标签切换 -->
   <view class="tab-switch">
     <view class="tab-item {{currentTab === 'video' ? 'active' : ''}}" data-tab="video" bindtap="switchTab">

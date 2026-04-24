@@ -1,4 +1,10 @@
 <view class="appeal-container">
+<<<<<<< HEAD
+=======
+    <text class="nav-title">申诉与纠纷</text>
+    <view class="nav-right"></view>
+  </view>
+>>>>>>> a888eaeb485c2ad190814e905f00a818844cac7d
 
   <!-- 提示信息 -->
   <view class="tips-section">

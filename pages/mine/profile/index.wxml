@@ -1,4 +1,10 @@
 <view class="profile-container">
+<<<<<<< HEAD
+=======
+    <text class="nav-title">个人资料</text>
+    <view class="nav-right"></view>
+  </view>
+>>>>>>> a888eaeb485c2ad190814e905f00a818844cac7d
 
   <!-- 用户信息卡片 -->
   <view class="user-card">
