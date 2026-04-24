@@ -1,6 +1,5 @@
 <view class="help-detail-container">
-<<<<<<< HEAD
-=======
+
     <text class="nav-title">{{title}}</text>
     <view class="nav-right"></view>
   </view>

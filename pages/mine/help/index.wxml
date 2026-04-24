@@ -1,6 +1,5 @@
 <view class="help-container">
-<<<<<<< HEAD
-=======
+
     <text class="nav-title">帮助中心</text>
     <view class="nav-right"></view>
   </view>

@@ -1,6 +1,5 @@
 <view class="withdraw-container">
-<<<<<<< HEAD
-=======
+
     <text class="nav-title">提现</text>
     <view class="nav-right"></view>
   </view>

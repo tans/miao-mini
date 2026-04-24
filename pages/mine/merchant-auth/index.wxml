@@ -1,6 +1,5 @@
 <view class="auth-container">
-<<<<<<< HEAD
-=======
+
     <text class="nav-title">商家认证</text>
     <view class="nav-right"></view>
   </view>

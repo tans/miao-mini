@@ -1,6 +1,5 @@
 <view class="page">
-<<<<<<< HEAD
-=======
+
     <text class="nav-title">视频预览</text>
     <view class="nav-right"></view>
   </view>

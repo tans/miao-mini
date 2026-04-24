@@ -1,6 +1,5 @@
 <view class="profile-container">
-<<<<<<< HEAD
-=======
+
     <text class="nav-title">个人资料</text>
     <view class="nav-right"></view>
   </view>

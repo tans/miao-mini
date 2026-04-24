@@ -1,6 +1,5 @@
 <view class="recharge-container">
-<<<<<<< HEAD
-=======
+
     <text class="nav-title">账户充值</text>
     <view class="nav-right"></view>
   </view>
