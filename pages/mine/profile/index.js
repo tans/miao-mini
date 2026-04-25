@@ -4,7 +4,8 @@ const app = getApp();
 Page({
   data: {
     user: null,
-    nickname: ''
+    nickname: '',
+    phone: ''
   },
 
   onLoad() {
@@ -15,12 +16,17 @@ Page({
     const user = app.globalData.user;
     this.setData({
       user: user,
-      nickname: user && (user.nickname || user.username) || ''
+      nickname: user && (user.nickname || user.username) || '',
+      phone: user && user.phone || ''
     });
   },
 
   onNicknameInput(e) {
     this.setData({ nickname: e.detail.value });
+  },
+
+  onPhoneInput(e) {
+    this.setData({ phone: e.detail.value });
   },
 
   goBack() {
@@ -56,15 +62,21 @@ Page({
 
   saveProfile() {
     const nickname = this.data.nickname.trim();
+    const phone = this.data.phone.trim();
     if (!nickname) {
       wx.showToast({ title: '请输入昵称', icon: 'none' });
       return;
     }
+    if (phone && !/^1\d{10}$/.test(phone)) {
+      wx.showToast({ title: '请输入正确手机号', icon: 'none' });
+      return;
+    }
 
     wx.showLoading({ title: '保存中...' });
-    Api.updateProfile({ nickname }).then(() => {
+    Api.updateProfile({ nickname, phone }).then(() => {
       const user = this.data.user || {};
       user.nickname = nickname;
+      user.phone = phone;
       app.setAuth(app.getToken(), user);
       wx.hideLoading();
       wx.showToast({ title: '保存成功', icon: 'success' });
