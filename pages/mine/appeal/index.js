@@ -25,11 +25,11 @@ Page({
   loadMyTasks() {
     return Api.getMyClaims({ page: 1, limit: 100 }).then(res => {
       if (res.data && res.data.length > 0) {
-        // Map claims to task list for picker
+        // Map claims to task list for picker; appeal target uses task ID
         const taskList = res.data.map(claim => ({
           id: claim.id,
-          task_id: claim.task_id,
-          title: claim.task_title,
+          taskId: claim.task_id,
+          title: claim.task_title || `任务 #${claim.task_id}`,
           status: claim.status
         }));
         this.setData({ taskList });
@@ -45,11 +45,10 @@ Page({
         // Build task title lookup from loaded tasks (from loadMyTasks)
         const taskMap = {};
         (this.data.taskList || []).forEach(task => {
-          // key by claim id
-          taskMap[task.id] = task.title;
+          taskMap[task.taskId] = task.title;
         });
         const records = res.data.appeals.map(appeal => {
-          // Try to get task title from cached taskList, fallback to target_id
+          // target_id is task ID on task appeals
           const taskTitle = taskMap[appeal.target_id] || `任务 #${appeal.target_id}`;
           return {
             id: appeal.id,
@@ -136,7 +135,7 @@ Page({
 
       return Api.createAppeal({
         type: 1, // 任务申诉
-        target_id: this.data.selectedTask.id, // claim ID
+        target_id: this.data.selectedTask.taskId, // task ID
         reason: this.data.selectedType.name + ': ' + this.data.reason,
         evidence: evidence
       });

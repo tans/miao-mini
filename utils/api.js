@@ -203,7 +203,7 @@ const Api = {
           },
           success: (res) => {
             if (res.statusCode === 200 || res.statusCode === 201) {
-              wx.setStorageSync('lastUploadTime', new Date().ISOString());
+              wx.setStorageSync('lastUploadTime', new Date().toISOString());
               const result = {
                 url: file_url,
                 key: key,
@@ -305,6 +305,7 @@ const Api = {
   getMyClaims(params = {}) {
     const q = [];
     if (params.page) q.push(`page=${params.page}`);
+    if (params.limit) q.push(`limit=${params.limit}`);
     const qs = q.length ? '?' + q.join('&') : '';
     return this.request('GET', '/creator/claims' + qs);
   },
@@ -437,6 +438,4 @@ const Api = {
 };
 
 module.exports = Api;
-
-
 
