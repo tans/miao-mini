@@ -202,7 +202,7 @@
 
         <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
           <text class="jimeng-link">{{task.jimengLink || '暂未设置'}}</text>
-          <text class="jimeng-count">{{(task.jimengLink || '').length}}/50</text>
+          <text class="jimeng-count">{{task.jimengLinkLength || 0}}/50</text>
         </view>
         <view wx:else class="jimeng-edit-row">
           <input

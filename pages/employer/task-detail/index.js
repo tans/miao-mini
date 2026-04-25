@@ -60,6 +60,7 @@ function normalizeTask(task = {}) {
     deadlineText: getDeadlineText(endAt),
     videoUrl: pick(task.video_url, task.videoUrl, ''),
     jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
+    jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
     jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
     materials,
     pendingReviewCount: Number(pick(task.pending_review_count, task.pendingReviewCount, 0)) || 0,
@@ -144,6 +145,7 @@ Page({
         proposalCount,
         showEditJimeng: false,
         editJimengLink: task.jimengLink || '',
+        'task.jimengLinkLength': (task.jimengLink || '').length,
         loading: false,
       });
 
@@ -245,6 +247,7 @@ Page({
       wx.showToast({ title: '更新成功', icon: 'success' });
       this.setData({
         'task.jimengLink': editJimengLink,
+        'task.jimengLinkLength': editJimengLink.length,
         showEditJimeng: false,
       });
     } catch (err) {
