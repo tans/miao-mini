@@ -42,7 +42,7 @@
       <!-- 底部操作 -->
       <view class="card-footer">
         <text class="pending-notice" wx:if="{{item.pending_review_count > 0}}">您有{{item.pending_review_count}}条视频未审核，请尽快处理</text>
-        <view class="action-btn {{item.actionTap === 'goTaskResult' ? 'btn-result' : (item.actionTap === 'goTaskDetail' ? 'btn-pending' : 'btn-review')}}" bindtap="{{item.actionTap}}" data-id="{{item.id}}">
+        <view class="action-btn {{item.actionTap === 'goTaskResult' ? 'btn-result' : (item.actionTap === 'goTaskDetail' ? 'btn-pending' : 'btn-review')}}" bindtap="handleTaskAction" data-id="{{item.id}}" data-action="{{item.actionTap}}">
           <text>{{item.actionText}}</text>
         </view>
       </view>

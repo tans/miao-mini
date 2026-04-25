@@ -52,6 +52,8 @@ function getClaimStatusText(status) {
   return map[value] || '未知状态';
 }
 
+const CLAIM_BLOCKED_CODES = new Set([40002, 40004, 40302, 40303, 40304]);
+
 Page({
   data: {
     taskId: '',
@@ -164,6 +166,18 @@ Page({
     wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${id}` });
   },
 
+  handleMainAction() {
+    if (!this.data.hasSignedUp) {
+      this.handleSignUp();
+      return;
+    }
+    if (this.data.canSubmit) {
+      this.goSubmitWork();
+      return;
+    }
+    wx.showToast({ title: '当前状态不可提交', icon: 'none' });
+  },
+
   handleSignUp() {
     if (this.data.hasSignedUp) {
       wx.showToast({ title: '已报名', icon: 'none' });
@@ -178,7 +192,16 @@ Page({
       wx.showToast({ title: '报名成功', icon: 'success' });
       this.loadTaskDetail(this.data.taskId);
     }).catch((err) => {
-      wx.showToast({ title: err.message || '报名失败', icon: 'none' });
+      const msg = err && err.message ? err.message : '报名失败';
+      if (err && CLAIM_BLOCKED_CODES.has(Number(err.code))) {
+        wx.showModal({
+          title: '无法报名',
+          content: msg,
+          showCancel: false,
+        });
+        return;
+      }
+      wx.showToast({ title: msg, icon: 'none' });
     }).finally(() => {
       wx.hideLoading();
     });
@@ -291,7 +314,5 @@ Page({
     }
   },
 
-  stopPropagation() {},
-
-  noop() {}
+  stopPropagation() {}
 });

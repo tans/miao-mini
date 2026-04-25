@@ -97,12 +97,18 @@ const Api = {
             resolve(data);
           } else {
             const msg = (data && data.message) || '请求失败';
-            reject(new Error(msg));
+            const err = new Error(msg);
+            err.code = data && data.code;
+            err.data = data && data.data;
+            err.raw = data;
+            reject(err);
           }
         },
         fail: (err) => {
           const msg = err && (err.message || err.errMsg) || '网络请求失败';
-          reject(new Error(msg));
+          const error = new Error(msg);
+          error.raw = err;
+          reject(error);
         }
       });
     });
@@ -438,4 +444,3 @@ const Api = {
 };
 
 module.exports = Api;
-
