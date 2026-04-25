@@ -1,35 +1,50 @@
 <!-- pages/mine/index.wxml -->
 <view class="mine-container">
+  <!-- 背景图片 -->
+  <image class="bg-image" src="https://public.jisuhudong.com/minapp/mine-bg.png" mode="widthFix" />
+  <!-- 自定义导航栏 -->
+  <custom-nav title="我的"/>
   <!-- 顶部区域 -->
   <view class="header-section">
     <!-- 用户信息卡片 -->
-    <view class="user-card" bindtap="goProfile">
+    <view class="user-card">
       <view class="user-info-row">
         <image class="user-avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
         <view class="user-detail">
           <view class="user-name-row">
             <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
-            <image class="user-arrow" src="../../images/mine/arrow-right.png" />
+            <view class="user-right">
+              <text class="user-id">ID：{{user.id || '--'}}</text>
+              <image class="user-arrow" src="../../images/mine/arrow-right.png" bindtap="copyUserId" />
+            </view>
           </view>
-          <text class="user-id">ID：{{user.id || '--'}}</text>
+          <view class="user-level-row">
+            <view class="level-info">
+              <view class="level-badge">
+                <text class="level-num">Lv.{{creatorStats.level || 0}}</text>
+                <text class="level-name">{{creatorStats.level_name || '创作者'}}</text>
+              </view>
+              <text class="level-sep">·</text>
+              <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
+            </view>
+            <view class="go-profile-btn" bindtap="goProfile">
+              <image class="wallet-arrow" src="../../images/mine/right.png" />
+            </view>
+          </view>
         </view>
       </view>
-      <view class="user-level-row">
-        <text class="level-badge">Lv.{{creatorStats.level || 0}} {{creatorStats.level_name || '创作者'}}</text>
-        <text class="level-sep">·</text>
-        <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
-      </view>
+      
     </view>
 
     <!-- 钱包入口 -->
     <view class="wallet-card" bindtap="goWallet">
       <view class="wallet-left">
-        <text class="wallet-title">钱包</text>
+        <view class="wallet-header">
+          <text class="wallet-title">钱包</text>
+          <image class="wallet-arrow" src="../../images/mine/right.png" />
+        </view>
         <text class="wallet-balance">¥{{balance || '0.00'}}</text>
-      </view>
-      <view class="wallet-right">
         <text class="wallet-desc">可提现余额</text>
-        <image class="wallet-arrow" src="../../images/mine/arrow-right.png" />
       </view>
     </view>
   </view>
@@ -41,20 +56,27 @@
       <view class="zone-title">创作者专区</view>
       <view class="zone-items">
         <view class="zone-item" bindtap="goMyClaims">
-          <image class="zone-icon" src="../../images/mine/icon-task.png" />
-          <view class="zone-item-content">
-            <text class="zone-item-title">我的任务</text>
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-task.png" />
+            <view class="zone-item-content">
+              <text class="zone-item-title">我的任务</text>
+              
+            </view>
+          </view>
+          <view class="zone-item-right">
             <view class="zone-item-badge" wx:if="{{bizStats.pending_count > 0}}">
               <text class="badge-num">{{bizStats.pending_count}}</text>
               <text class="badge-text">个任务待交稿</text>
             </view>
+            <image class="zone-arrow" src="../../images/mine/right.png" />
           </view>
-          <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
         </view>
         <view class="zone-item" bindtap="goWorks">
-          <image class="zone-icon" src="../../images/mine/icon-works.png" />
-          <text class="zone-item-title">我的作品</text>
-          <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-works.png" />
+            <text class="zone-item-title">我的作品</text>
+          </view>
+          <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
       </view>
     </view>
@@ -64,30 +86,38 @@
       <view class="zone-title">商家专区</view>
       <view class="zone-items">
         <view class="zone-item" bindtap="goMerchantAuth">
-          <image class="zone-icon" src="../../images/mine/icon-auth.png" />
-          <text class="zone-item-title">商家认证</text>
-          <view class="zone-action">
-            <view class="action-tag">
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-auth.png" />
+            <text class="zone-item-title">商家认证</text>
+          </view>
+          <view class="zone-item-right">
+           <view class="action-tag">
               <text class="action-tag-text">去认证</text>
             </view>
-            <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
           </view>
         </view>
         <view class="zone-item" bindtap="goMyTasks">
-          <image class="zone-icon" src="../../images/mine/icon-task-manage.png" />
-          <view class="zone-item-content">
-            <text class="zone-item-title">任务管理</text>
-            <view class="zone-item-badge" wx:if="{{bizStats.pending_count > 0}}">
-              <text class="badge-num">{{bizStats.pending_count}}</text>
-              <text class="badge-text">个视频待审核</text>
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-task-manage.png" />
+            <view class="zone-item-content">
+              <text class="zone-item-title">任务管理</text>
+              
             </view>
           </view>
-          <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
+          <view class="zone-item-right">
+            <view class="zone-item-badge" wx:if="{{bizStats.pending_count > 0}}">
+                <text class="badge-num">{{bizStats.pending_count}}</text>
+                <text class="badge-text">个视频待审核</text>
+              </view>
+            <image class="zone-arrow" src="../../images/mine/right.png" />
+          </view>
         </view>
         <view class="zone-item" bindtap="goPurchasedWorks">
-          <image class="zone-icon" src="../../images/mine/icon-task-manage.png" />
-          <text class="zone-item-title">已购作品库</text>
-          <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-task-manage.png" />
+            <text class="zone-item-title">已购作品库</text>
+          </view>
+          <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
       </view>
     </view>
@@ -97,24 +127,30 @@
       <view class="zone-title">通用功能</view>
       <view class="zone-items">
         <view class="zone-item" bindtap="goHelp">
-          <image class="zone-icon" src="../../images/mine/icon-help.png" />
-          <text class="zone-item-title">帮助中心</text>
-          <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-help.png" />
+            <text class="zone-item-title">帮助中心</text>
+          </view>
+          <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
         <view class="zone-item" bindtap="goAppeal">
-          <image class="zone-icon" src="../../images/mine/icon-appeal.png" />
-          <text class="zone-item-title">申诉与纠纷</text>
-          <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-appeal.png" />
+            <text class="zone-item-title">申诉与纠纷</text>
+          </view>
+          <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
         <view class="zone-item" bindtap="goCustomerService">
-          <image class="zone-icon" src="../../images/mine/icon-service.png" />
-          <text class="zone-item-title">联系客服</text>
-          <image class="zone-arrow" src="../../images/mine/arrow-right.png" />
+          <view class="zone-item-left">
+            <image class="zone-icon" src="../../images/mine/icon-service.png" />
+            <text class="zone-item-title">联系客服</text>
+          </view>
+          <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
       </view>
     </view>
   </view>
 
   <!-- 更新时间（commit hook自动更新） -->
-  <view class="update-time">最后更新：{{displayText}}</view>
+  <!-- <view class="update-time">最后更新：{{displayText}}</view> -->
 </view>

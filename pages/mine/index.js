@@ -243,4 +243,25 @@ Page({
   goBack() {
     wx.navigateBack({ delta: 1 });
   },
+
+  copyUserId() {
+    const userId = this.data.user?.id;
+    if (userId) {
+      wx.setClipboardData({
+        data: String(userId),
+        success: () => {
+          wx.showToast({
+            title: '复制成功',
+            icon: 'success'
+          });
+        },
+        fail: () => {
+          wx.showToast({
+            title: '复制失败',
+            icon: 'none'
+          });
+        }
+      });
+    }
+  },
 });
