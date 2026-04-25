@@ -1,164 +1,242 @@
 <view class="page">
-  <!-- 标签切换 -->
-  <view class="tab-switch">
-    <view class="tab-item {{currentTab === 'video' ? 'active' : ''}}" data-tab="video" bindtap="switchTab">
-      <text class="tab-text {{currentTab === 'video' ? 'active' : ''}}">任务视频</text>
+  <view class="header">
+    <view class="header-top">
+      <view class="back-btn" bindtap="goBack"></view>
+      <text class="page-title">商家任务详情</text>
+      <view class="header-action" bindtap="copyTaskId">
+        <text>复制ID</text>
+      </view>
     </view>
-    <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">
-      <text class="tab-text {{currentTab === 'detail' ? 'active' : ''}}">任务详情</text>
+
+    <view class="tab-switch">
+      <view class="tab-item {{currentTab === 'video' ? 'active' : ''}}" data-tab="video" bindtap="switchTab">
+        <text>任务视频</text>
+      </view>
+      <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">
+        <text>任务详情</text>
+      </view>
+      <view class="tab-indicator" style="left: {{currentTab === 'video' ? '86rpx' : '430rpx'}}"></view>
     </view>
-    <view class="tab-indicator" style="left: {{currentTab === 'video' ? '48rpx' : '296rpx'}}"></view>
   </view>
 
-  <!-- 任务视频 -->
-  <view class="tab-content" wx:if="{{currentTab === 'video'}}">
-    <view class="video-section">
-      <!-- 视频提案审核入口 -->
+  <view class="content">
+    <view class="tab-content" wx:if="{{currentTab === 'video'}}">
       <view class="proposal-review-card" wx:if="{{proposalCount > 0}}" bindtap="goToProposalReview">
         <view class="proposal-info">
           <text class="proposal-title">视频提案</text>
           <text class="proposal-count">{{proposalCount}}个提案待审核</text>
         </view>
-        <view class="proposal-arrow">
-          <text class="arrow-text">></text>
+        <view class="proposal-arrow"></view>
+      </view>
+
+      <view class="video-card">
+        <view class="section-header">
+          <text class="header-title">任务视频</text>
+          <text class="header-hint">{{task.deadlineText || ''}}</text>
+        </view>
+
+        <view class="video-container" wx:if="{{task.videoUrl}}">
+          <video
+            id="taskVideo"
+            class="video-player"
+            src="{{task.videoUrl}}"
+            controls
+            show-center-play-btn
+            enable-progress-gesture
+          ></video>
+        </view>
+        <view class="video-placeholder" wx:else>
+          <view class="play-btn"></view>
+          <text class="video-hint">暂无任务视频</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="tab-content" wx:if="{{currentTab === 'detail'}}">
+      <view class="merchant-card">
+        <view class="merchant-main">
+          <image wx:if="{{task.businessAvatar}}" class="merchant-avatar" src="{{task.businessAvatar}}" mode="aspectFill" />
+          <view wx:else class="merchant-avatar merchant-avatar-fallback">商</view>
+          <view class="merchant-info">
+            <text class="merchant-name">{{task.businessName || '美寓家居旗舰店'}}</text>
+            <view class="merchant-badges">
+              <view class="badge badge-brand">
+                <text class="badge-dot"></text>
+                <text class="badge-text">品牌名企</text>
+              </view>
+              <view class="badge badge-trusted">
+                <text class="badge-dot"></text>
+                <text class="badge-text">资金已托管</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="merchant-stats">
+          <view class="stat-item">
+            <text class="stat-label">平均采纳率</text>
+            <text class="stat-value">{{task.adoptionRate || 86}}%</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">累计发布</text>
+            <text class="stat-value">{{task.totalPublished || 120}}</text>
+            <text class="stat-unit">个任务</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">累计支出</text>
+            <text class="stat-value">¥{{task.totalSpent || 6800}}</text>
+          </view>
         </view>
       </view>
 
-      <!-- 视频播放区域 -->
-      <view class="video-container" wx:if="{{task.video_url}}" bindtap="playVideo">
-        <video id="taskVideo" class="video-player" src="{{task.video_url}}" controls />
+      <view class="task-id-card">
+        <view class="id-info">
+          <text class="id-label">任务ID</text>
+          <text class="id-value">{{task.id || 'CC-20260418-000126'}}</text>
+        </view>
+        <view class="copy-btn" bindtap="copyTaskId">
+          <text>复制</text>
+        </view>
       </view>
-      <view class="video-placeholder" wx:else bindtap="playVideo">
-        <view class="play-btn"></view>
-        <text class="video-hint">点击播放任务视频</text>
+
+      <view class="detail-card">
+        <text class="detail-card-title">任务详情</text>
+        <text class="detail-title">{{task.title || '高端楼盘春日氛围视频'}}</text>
+
+        <view class="reward-row">
+          <view class="reward-item">
+            <text class="reward-label">采纳奖励</text>
+            <view class="reward-value-row">
+              <text class="reward-value">{{task.unitPrice || 100}}</text>
+              <text class="reward-unit">元/条</text>
+            </view>
+          </view>
+          <text class="reward-plus">+</text>
+          <view class="reward-item">
+            <text class="reward-label">参与奖励</text>
+            <view class="reward-value-row">
+              <text class="reward-value reward-value-dark">{{task.awardPrice || 10}}</text>
+              <text class="reward-unit">元/条</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="tags-row">
+          <view class="tag-group">
+            <text class="tag-label">行业标签</text>
+            <view class="tag-list">
+              <view class="tag-chip" wx:for="{{task.industryTags}}" wx:key="*this">
+                <text class="tag-chip-text">{{item}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="tag-group">
+            <text class="tag-label">风格标签</text>
+            <view class="tag-list">
+              <view class="tag-chip" wx:for="{{task.styleTags}}" wx:key="*this">
+                <text class="tag-chip-text">{{item}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="desc-section">
+          <text class="desc-text">{{task.description || '突出空间通透感与生活方式场景，口语化表达，避免过度摆拍。适合地产、家居类创作者参与。'}}</text>
+        </view>
+
+        <view class="spec-item">
+          <text class="spec-label">视频尺寸</text>
+          <text class="spec-value">{{task.videoAspect || '9:16 竖屏'}}</text>
+        </view>
+        <view class="spec-item">
+          <text class="spec-label">分辨率</text>
+          <text class="spec-value">{{task.videoResolution || '1080P'}}</text>
+        </view>
+        <view class="spec-item">
+          <text class="spec-label">视频时长</text>
+          <text class="spec-value">{{task.videoDuration || '30s'}}</text>
+        </view>
+        <view class="spec-item">
+          <text class="spec-label">截稿时间</text>
+          <text class="spec-value">{{task.endAt || '2026-04-24 18:00'}}</text>
+        </view>
+
+        <view class="restriction-section">
+          <text class="restriction-text">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+        </view>
+      </view>
+
+      <view class="material-card">
+        <view class="section-header">
+          <text class="header-title">商家素材</text>
+          <view class="header-link" bindtap="downloadAllMaterials">
+            <text>下载全部</text>
+          </view>
+        </view>
+        <view class="material-grid" wx:if="{{materials.length > 0}}">
+          <view
+            class="material-item"
+            wx:for="{{materials}}"
+            wx:key="file_path"
+            bindtap="previewMaterial"
+            data-url="{{item.file_path}}"
+            data-type="{{item.file_type}}"
+            data-poster="{{item.thumbnail_path}}"
+          >
+            <image
+              class="material-thumb"
+              src="{{item.file_type === 'video' ? (item.thumbnail_path || item.file_path) : item.file_path}}"
+              mode="aspectFill"
+            />
+            <view class="material-video-badge" wx:if="{{item.file_type === 'video'}}"></view>
+          </view>
+        </view>
+        <view class="empty-tip" wx:else>暂无商家素材</view>
+      </view>
+
+      <view class="jimeng-card">
+        <view class="section-header">
+          <text class="header-title">即梦合拍</text>
+          <text class="header-hint">商家提供数字人模型给创作者用于合成视频</text>
+        </view>
+
+        <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
+          <text class="jimeng-link">{{task.jimengLink || '暂未设置'}}</text>
+          <text class="jimeng-count">{{(task.jimengLink || '').length}}/50</text>
+        </view>
+        <view wx:else class="jimeng-edit-row">
+          <input
+            class="jimeng-edit-input"
+            placeholder="请输入新的邀请链接"
+            value="{{editJimengLink}}"
+            bindinput="onJimengLinkInput"
+            maxlength="50"
+          />
+          <text class="jimeng-count">{{editJimengLink.length}}/50</text>
+        </view>
+
+        <view class="jimeng-actions">
+          <view class="jimeng-tutorial" bindtap="showJimengTutorial">
+            <text>查看即梦合拍教程</text>
+          </view>
+          <view class="jimeng-btn" bindtap="toggleEditJimeng">
+            <text>{{showEditJimeng ? '取消' : '更新链接'}}</text>
+          </view>
+        </view>
+        <view wx:if="{{showEditJimeng}}" class="jimeng-confirm" bindtap="updateJimengLink">
+          <text>确认更新</text>
+        </view>
+      </view>
+
+      <view class="safety-card">
+        <view class="safety-header">
+          <image class="safety-icon" src="/pages/employer/task-detail/images/FigmaDDSSlicePNGcf51c47f1d7ec2c2219965b59a7f190c.png" />
+          <text class="safety-title accent">创意喵</text>
+          <text class="safety-title">安全提醒</text>
+        </view>
+        <text class="safety-text">如发现商家发布违规需求可立即举报。创作者请勿提交无关稿件或违规稿件，</text>
+        <text class="safety-text accent">被举报超过 5 次将永久封号。</text>
       </view>
     </view>
   </view>
-
-  <!-- 任务详情 -->
-  <view class="tab-content" wx:if="{{currentTab === 'detail'}}">
-    <!-- 任务ID卡片 -->
-    <view class="task-id-card">
-      <view class="id-info">
-        <text class="id-label">任务ID</text>
-        <text class="id-value">{{task.id || 'CC-20260418-000126'}}</text>
-      </view>
-      <view class="copy-btn" bindtap="copyTaskId">
-        <text>复制</text>
-      </view>
-    </view>
-
-    <!-- 任务详情卡片 -->
-    <view class="detail-card">
-      <text class="detail-title">{{task.title || '高端楼盘春日氛围视频'}}</text>
-
-      <!-- 奖励信息 -->
-      <view class="reward-row">
-        <view class="reward-item">
-          <text class="reward-label">采纳奖励</text>
-        </view>
-        <text class="reward-value">{{task.unit_price || 100}}</text>
-        <text class="reward-unit">元/</text>
-        <text class="reward-unit">条</text>
-        <text class="reward-plus">+</text>
-        <view class="reward-item">
-          <text class="reward-label">参与奖励</text>
-        </view>
-        <text class="reward-value-dark">{{task.award_price || 10}}</text>
-        <text class="reward-unit">元/</text>
-        <text class="reward-unit">条</text>
-      </view>
-
-      <!-- 标签 -->
-      <view class="tags-row">
-        <view class="tag-group">
-          <text class="tag-label">行业标签</text>
-        </view>
-        <view class="tag-group">
-          <text class="tag-label">风格标签</text>
-        </view>
-        <view class="tag-content">
-          <text class="tag-value">{{task.industry || '房产家居'}}</text>
-        </view>
-        <view class="tag-content">
-          <text class="tag-value">{{task.style || '房产家居'}}</text>
-        </view>
-      </view>
-
-      <!-- 描述 -->
-      <view class="desc-section">
-        <text class="desc-text">{{task.description || '突出空间通透感与生活方式场景，口语化表达，避免过度摆拍。适合地产、家居类创作者参与。'}}</text>
-      </view>
-
-      <!-- 视频规格 -->
-      <view class="spec-row">
-        <text class="spec-label">视频尺寸</text>
-        <text class="spec-value">{{task.video_aspect || '9:16 竖屏'}}</text>
-      </view>
-      <view class="spec-row">
-        <text class="spec-label">分辨率</text>
-        <text class="spec-value">{{task.video_resolution || '1080P'}}</text>
-      </view>
-      <view class="spec-row">
-        <text class="spec-label">视频时长</text>
-        <text class="spec-value">{{task.video_duration || '30s'}}</text>
-      </view>
-      <view class="spec-row">
-        <text class="spec-label">截稿时间</text>
-        <text class="spec-value">{{task.end_at || '2026-04-24 18:00'}}</text>
-      </view>
-
-      <!-- 平台禁忌 -->
-      <view class="restriction-section">
-        <text class="restriction-text">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
-      </view>
-    </view>
-
-    <!-- 商家素材 -->
-    <view class="material-card" wx:if="{{materials.length > 0}}">
-      <view class="card-header">
-        <text class="header-title">商家素材</text>
-      </view>
-      <view class="material-grid">
-        <view class="material-item" wx:for="{{materials}}" wx:key="id" bindtap="previewMaterial" data-url="{{item.file_path}}">
-          <image wx:if="{{item.file_type === 'image'}}" class="material-thumb" src="{{item.file_path}}" mode="aspectFill"/>
-          <video wx:if="{{item.file_type === 'video'}}" class="material-thumb" src="{{item.file_path}}" controls/>
-        </view>
-      </view>
-    </view>
-
-    <!-- 即梦合拍 -->
-    <view class="jimeng-card" wx:if="{{task.jimeng_link || task.jimeng_enabled}}">
-      <view class="card-header">
-        <text class="header-title">即梦合拍</text>
-      </view>
-      <view class="jimeng-content">
-        <view class="jimeng-info">
-          <text class="jimeng-name">即梦合拍设置</text>
-          <text class="jimeng-desc">商家提供数字人模型给创作者用于合成视频</text>
-        </view>
-        <image class="jimeng-icon" src="/assets/icons/jimeng.png" />
-      </view>
-      <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
-        <text class="link-text">{{task.jimeng_link || '暂未设置'}}</text>
-        <text class="link-count">{{task.jimeng_link ? task.jimeng_link.length : 0}}/50</text>
-      </view>
-      <view wx:if="{{showEditJimeng}}" class="jimeng-edit-row">
-        <input class="jimeng-edit-input" placeholder="请输入新的邀请链接" value="{{editJimengLink}}" bindinput="onJimengLinkInput" maxlength="50"/>
-        <text class="link-count">{{editJimengLink.length}}/50</text>
-      </view>
-      <view class="jimeng-tutorial" bindtap="showJimengTutorial">
-        <text>查看即梦合拍教程</text>
-      </view>
-      <view class="update-link-btn" bindtap="toggleEditJimeng">
-        <text>{{showEditJimeng ? '取消' : '更新链接'}}</text>
-      </view>
-      <view wx:if="{{showEditJimeng}}" class="confirm-update-btn" bindtap="updateJimengLink">
-        <text>确认更新</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 底部占位 -->
-  <view class="bottom-placeholder"></view>
 </view>
