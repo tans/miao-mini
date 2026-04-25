@@ -305,7 +305,11 @@ const Api = {
 
   // Creator
   claimTask(taskId) {
-    return this.request('POST', '/creator/claim', { task_id: taskId });
+    const numericTaskId = Number(taskId);
+    const payloadTaskId = Number.isFinite(numericTaskId) && String(numericTaskId) === String(taskId).trim()
+      ? numericTaskId
+      : taskId;
+    return this.request('POST', '/creator/claim', { task_id: payloadTaskId });
   },
 
   getMyClaims(params = {}) {
