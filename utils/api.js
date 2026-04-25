@@ -191,47 +191,56 @@ const Api = {
 
   // Upload video using Tencent COS pre-signed URL
   uploadVideo(tempFilePath, options = {}) {
-    // Get file extension from tempFilePath
-    const ext = tempFilePath.split('.').pop() || 'mp4';
+    const query = [
+      'type=video',
+      `biz_type=${encodeURIComponent(options.bizType || '')}`,
+      `biz_id=${encodeURIComponent(options.bizId || '')}`,
+      `job_id=${encodeURIComponent(options.jobId || '')}`,
+    ].join('&');
+    const url = `${this.getApiBase()}/upload?${query}`;
+    const token = this.getToken();
 
-    // First get COS pre-signed credential from backend
-    return this.request('GET', `/cos/credential?type=video&ext=.${ext}&biz_type=${encodeURIComponent(options.bizType || '')}&biz_id=${encodeURIComponent(options.bizId || '')}&job_id=${encodeURIComponent(options.jobId || '')}`).then(credRes => {
-      const { upload_url, key, file_url } = credRes.data;
-
-      // Upload directly to COS using pre-signed URL
-      return new Promise((resolve, reject) => {
-        wx.uploadFile({
-          url: upload_url,
-          filePath: tempFilePath,
-          name: 'file',
-          header: {
-            'Content-Type': 'video/mp4',
-          },
-          success: (res) => {
-            if (res.statusCode === 200 || res.statusCode === 201) {
-              wx.setStorageSync('lastUploadTime', new Date().toISOString());
-              const result = {
-                url: file_url,
-                key: key,
-                jobId: options.jobId || '',
-                filename: key.split('/').pop() || 'video.mp4',
-                size: 0,
-                type: 'video/mp4',
-              };
-              resolve(options.returnMeta ? result : result.url);
-            } else {
-              reject(new Error('COS upload failed: ' + res.statusCode));
+    return new Promise((resolve, reject) => {
+      wx.uploadFile({
+        url,
+        filePath: tempFilePath,
+        name: 'file',
+        header: token ? { Authorization: 'Bearer ' + token } : {},
+        success: (res) => {
+          if (res.statusCode === 401) {
+            Api.clearAuth();
+            reject(new Error('登录已过期'));
+            return;
+          }
+          let data = res.data;
+          if (typeof data === 'string') {
+            try {
+              data = JSON.parse(data);
+            } catch (e) {
+              reject(new Error('上传响应解析失败'));
+              return;
             }
-          },
-          fail: (err) => {
-            wx.showToast({ title: '上传失败', icon: 'none' });
-            reject(err);
-          },
-        });
+          }
+          if (data && data.code === 0 && data.data && data.data.url) {
+            wx.setStorageSync('lastUploadTime', new Date().toISOString());
+            const result = {
+              url: data.data.url,
+              key: data.data.key || '',
+              jobId: data.data.job_id || options.jobId || '',
+              filename: data.data.filename || tempFilePath.split('/').pop() || 'video.mp4',
+              size: data.data.size || 0,
+              type: data.data.type || 'video',
+            };
+            resolve(options.returnMeta ? result : result.url);
+            return;
+          }
+          reject(new Error((data && data.message) || '上传失败'));
+        },
+        fail: (err) => {
+          const msg = err && (err.message || err.errMsg) || '上传失败';
+          reject(new Error(msg));
+        },
       });
-    }).catch(err => {
-      wx.showToast({ title: '获取上传凭证失败', icon: 'none' });
-      throw err;
     });
   },
 
