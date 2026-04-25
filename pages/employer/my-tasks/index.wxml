@@ -14,7 +14,7 @@
 
   <!-- 任务列表 -->
   <view class="tasks-list" wx:if="{{filteredTasks.length > 0}}">
-    <view class="task-card {{item.status === 'active' ? 'card-active' : 'card-ended'}}" wx:for="{{filteredTasks}}" wx:key="id">
+    <view class="task-card {{item.cardClass}}" wx:for="{{filteredTasks}}" wx:key="id">
       <!-- 卡片主体 -->
       <view class="card-main">
         <view class="card-left">
@@ -23,8 +23,8 @@
           <text class="progress-label">投稿进度</text>
         </view>
         <view class="card-right">
-          <view class="status-tag {{item.status === 'active' ? 'status-active' : 'status-ended'}}">
-            <text>{{item.status === 'active' ? '征稿中' : '已结束'}}</text>
+          <view class="status-tag {{item.statusClass}}">
+            <text>{{item.statusText}}</text>
           </view>
           <view class="submission-info">
             <text class="info-label">已投稿</text>
@@ -42,8 +42,8 @@
       <!-- 底部操作 -->
       <view class="card-footer">
         <text class="pending-notice" wx:if="{{item.pending_review_count > 0}}">您有{{item.pending_review_count}}条视频未审核，请尽快处理</text>
-        <view class="action-btn {{item.pending_review_count > 0 ? 'btn-review' : (item.status === 'active' ? 'btn-review' : 'btn-result')}}" bindtap="{{item.pending_review_count > 0 || item.status === 'active' ? 'goReviewTask' : 'goTaskResult'}}" data-id="{{item.id}}">
-          <text>{{item.pending_review_count > 0 || item.status === 'active' ? '去审核' : '查看结果'}}</text>
+        <view class="action-btn {{item.actionTap === 'goTaskResult' ? 'btn-result' : (item.actionTap === 'goTaskDetail' ? 'btn-pending' : 'btn-review')}}" bindtap="{{item.actionTap}}" data-id="{{item.id}}">
+          <text>{{item.actionText}}</text>
         </view>
       </view>
     </view>

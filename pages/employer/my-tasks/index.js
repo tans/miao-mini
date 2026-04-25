@@ -3,6 +3,54 @@ const Api = require('../../../utils/api.js');
 const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
+function normalizeTaskStatus(rawStatus) {
+  const statusTextMap = {
+    pending: '待审核',
+    active: '征稿中',
+    ended: '已结束',
+  };
+
+  const statusCode = typeof rawStatus === 'string' ? Number(rawStatus) : rawStatus;
+  if (rawStatus === 'pending' || statusCode === 1) {
+    return {
+      statusKey: 'pending',
+      statusText: statusTextMap.pending,
+      cardClass: 'card-pending',
+      statusClass: 'status-pending',
+      actionText: '待审核',
+      actionTap: 'goTaskDetail',
+    };
+  }
+
+  if (rawStatus === 'active' || rawStatus === 'ongoing' || statusCode === 2 || statusCode === 3) {
+    return {
+      statusKey: 'active',
+      statusText: statusTextMap.active,
+      cardClass: 'card-active',
+      statusClass: 'status-active',
+      actionText: '去审核',
+      actionTap: 'goReviewTask',
+    };
+  }
+
+  return {
+    statusKey: 'ended',
+    statusText: statusTextMap.ended,
+    cardClass: 'card-ended',
+    statusClass: 'status-ended',
+    actionText: '查看结果',
+    actionTap: 'goTaskResult',
+  };
+}
+
+function normalizeTask(task = {}) {
+  const meta = normalizeTaskStatus(task.status);
+  return {
+    ...task,
+    ...meta,
+  };
+}
+
 Page({
   data: {
     tasks: [],
@@ -47,7 +95,7 @@ Page({
         Api.getMyBusinessTasks({ page: 1 }),
         Api.getWallet()
       ]);
-      const tasks = tasksRes.data || [];
+      const tasks = (tasksRes.data || []).map(normalizeTask);
       const pendingCount = tasks.reduce((sum, task) => sum + (task.pending_review_count || 0), 0);
 
       this.setData({
@@ -77,9 +125,9 @@ Page({
     let filtered = tasks;
 
     if (currentFilter === 'active') {
-      filtered = tasks.filter(task => task.status === 'active' || task.status === 1);
+      filtered = tasks.filter(task => task.statusKey === 'active');
     } else if (currentFilter === 'ended') {
-      filtered = tasks.filter(task => task.status === 'ended' || task.status === 3 || task.status === 4);
+      filtered = tasks.filter(task => task.statusKey === 'ended');
     }
 
     filtered = filtered.map(task => ({

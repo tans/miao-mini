@@ -73,6 +73,18 @@
   box-shadow: 0 2rpx 8rpx rgba(17, 17, 17, 0.04);
 }
 
+.task-card.card-pending {
+  border: 1rpx solid #dbe6ff;
+}
+
+.task-card.card-active {
+  border: 1rpx solid #ffe2bf;
+}
+
+.task-card.card-ended {
+  border: 1rpx solid #ececef;
+}
+
 .card-main {
   display: flex;
   justify-content: space-between;
@@ -123,6 +135,11 @@
 .status-tag.status-active {
   background: #fff4ea;
   color: #ef8802;
+}
+
+.status-tag.status-pending {
+  background: #eef4ff;
+  color: #2f6fed;
 }
 
 .status-tag.status-ended {
@@ -193,6 +210,12 @@
 .action-btn.btn-review {
   background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   color: #fff;
+  margin-left: auto;
+}
+
+.action-btn.btn-pending {
+  background: #eef4ff;
+  color: #2f6fed;
   margin-left: auto;
 }
 
