@@ -200,7 +200,7 @@ function summarizeClaimMaterials(materials = []) {
   if (counts.done) parts.push(`${counts.done} 个视频可查看`);
   if (counts.processing) parts.push(`${counts.processing} 个视频处理中`);
   if (counts.pending) parts.push(`${counts.pending} 个视频待处理`);
-  if (counts.failed) parts.push(`${counts.failed} 个视频展示原片`);
+  if (counts.failed) parts.push(`${counts.failed} 个视频处理失败`);
   return parts.join('，');
 }
 
