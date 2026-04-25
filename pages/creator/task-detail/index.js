@@ -10,9 +10,43 @@ function toList(value) {
   return [value];
 }
 
+function isVideoType(value) {
+  return String(value || '').toLowerCase().indexOf('video') !== -1;
+}
+
+function isImageType(value) {
+  return String(value || '').toLowerCase().indexOf('image') !== -1;
+}
+
+function formatDateTime(value) {
+  if (!value) return '';
+  const text = String(value)
+    .replace('T', ' ')
+    .replace(/Z$/, '')
+    .replace(/\.\d+/, '');
+  if (text.indexOf('+') !== -1) {
+    return text.split('+')[0].slice(0, 16);
+  }
+  return text.slice(0, 16);
+}
+
+function getClaimStatusClass(status) {
+  const value = Number(status);
+  const map = {
+    1: 'pending',
+    2: 'submitted',
+    3: 'approved',
+    4: 'cancelled',
+    5: 'expired',
+  };
+  return map[value] || 'unknown';
+}
+
 function normalizeTask(task = {}) {
-  const claim = task.claim || null;
-  const claimMaterials = Array.isArray(task.claim_materials) ? task.claim_materials : [];
+  const claim = task.claim ? normalizeClaim(task.claim) : null;
+  const claimMaterials = Array.isArray(task.claim_materials)
+    ? task.claim_materials.map(item => normalizeClaimMaterial(item))
+    : [];
   const industries = toList(task.industries);
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
@@ -36,7 +70,8 @@ function normalizeTask(task = {}) {
     canSubmit: task.canSubmit != null ? task.canSubmit : (task.can_submit != null ? task.can_submit : (claim ? Number(claim.status) === 1 : false)),
     claim,
     claimMaterials,
-    claimStatusText: claim ? getClaimStatusText(claim.status) : '',
+    claimStatusText: claim ? claim.statusText : '',
+    claimSubmissionSummary: summarizeClaimMaterials(claimMaterials),
   };
 }
 
@@ -50,6 +85,123 @@ function getClaimStatusText(status) {
     5: '已超时',
   };
   return map[value] || '未知状态';
+}
+
+function normalizeClaim(claim = {}) {
+  const status = Number(claim.status);
+  const submitAt = claim.submitAt || claim.submit_at || '';
+  const createdAt = claim.createdAt || claim.created_at || '';
+  const reviewAt = claim.reviewAt || claim.review_at || '';
+
+  return {
+    ...claim,
+    status,
+    statusText: getClaimStatusText(status),
+    statusClass: getClaimStatusClass(status),
+    submitAt,
+    submit_at: submitAt,
+    submitAtText: formatDateTime(submitAt),
+    createdAt,
+    created_at: createdAt,
+    createdAtText: formatDateTime(createdAt),
+    reviewAt,
+    review_at: reviewAt,
+    reviewAtText: formatDateTime(reviewAt),
+  };
+}
+
+function normalizeClaimMaterial(material = {}) {
+  const fileType = material.fileType || material.file_type || '';
+  const fileName = material.fileName || material.file_name || '';
+  const filePath = material.filePath || material.file_path || '';
+  const processedFilePath = material.processedFilePath || material.processed_file_path || '';
+  const sourceFilePath = material.sourceFilePath || material.source_file_path || '';
+  const thumbnailPath = material.thumbnailPath || material.thumbnail_path || '';
+  const processStatus = String(material.processStatus || material.process_status || (isVideoType(fileType) ? 'done' : ''))
+    .trim()
+    .toLowerCase();
+  const processError = material.processError || material.process_error || '';
+  const isVideo = isVideoType(fileType);
+  const isImage = isImageType(fileType);
+  const previewUrl = isVideo
+    ? (filePath || processedFilePath || sourceFilePath || '')
+    : (filePath || processedFilePath || thumbnailPath || '');
+  const hasPreview = !!previewUrl;
+
+  return {
+    ...material,
+    fileType,
+    fileName,
+    filePath,
+    file_path: filePath,
+    processedFilePath,
+    processed_file_path: processedFilePath,
+    sourceFilePath,
+    source_file_path: sourceFilePath,
+    thumbnailPath,
+    thumbnail_path: thumbnailPath,
+    processStatus,
+    process_status: processStatus,
+    processError,
+    process_error: processError,
+    isVideo,
+    isImage,
+    previewUrl,
+    hasPreview,
+    processStatusText: getMaterialProcessStatusText(processStatus, isVideo, hasPreview),
+    processStatusClass: getMaterialProcessStatusClass(processStatus, isVideo),
+  };
+}
+
+function getMaterialProcessStatusText(status, isVideo, hasPreview) {
+  if (!isVideo) return '';
+  if (status === 'failed') {
+    return hasPreview ? '处理失败，展示原视频' : '视频处理失败';
+  }
+  if (status === 'processing') {
+    return hasPreview ? '处理中，可先看原视频' : '视频处理中';
+  }
+  if (status === 'pending') {
+    return hasPreview ? '待处理，可先看原视频' : '等待处理';
+  }
+  return '已生成可播放版本';
+}
+
+function getMaterialProcessStatusClass(status, isVideo) {
+  if (!isVideo) return 'done';
+  if (status === 'failed') return 'failed';
+  if (status === 'processing') return 'processing';
+  if (status === 'pending') return 'pending';
+  return 'done';
+}
+
+function summarizeClaimMaterials(materials = []) {
+  if (!materials.length) return '';
+  const videos = materials.filter(item => item.isVideo);
+  if (!videos.length) {
+    return `已上传 ${materials.length} 个稿件`;
+  }
+
+  const counts = videos.reduce((acc, item) => {
+    const status = item.processStatus || 'done';
+    if (status === 'failed') {
+      acc.failed += 1;
+    } else if (status === 'processing') {
+      acc.processing += 1;
+    } else if (status === 'pending') {
+      acc.pending += 1;
+    } else {
+      acc.done += 1;
+    }
+    return acc;
+  }, { pending: 0, processing: 0, failed: 0, done: 0 });
+
+  const parts = [];
+  if (counts.done) parts.push(`${counts.done} 个视频可查看`);
+  if (counts.processing) parts.push(`${counts.processing} 个视频处理中`);
+  if (counts.pending) parts.push(`${counts.pending} 个视频待处理`);
+  if (counts.failed) parts.push(`${counts.failed} 个视频展示原片`);
+  return parts.join('，');
 }
 
 const CLAIM_BLOCKED_CODES = new Set([40002, 40004, 40302, 40303, 40304]);
@@ -319,7 +471,8 @@ Page({
         icon: 'success'
       });
       this.onCloseSubmitModal();
-      this.loadTaskDetail(this.data.taskId);
+      await this.loadTaskDetail(this.data.taskId, { silent: true });
+      this.setData({ currentTab: 'submissions' });
     } catch (err) {
       wx.hideLoading();
       wx.showToast({ title: err.message || '提交失败', icon: 'none' });

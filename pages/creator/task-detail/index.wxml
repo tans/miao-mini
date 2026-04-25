@@ -291,8 +291,66 @@
 
     <!-- 全部投稿内容 -->
     <view class="submissions-content" wx:if="{{currentTab === 'submissions'}}">
-      <view class="submissions-empty">
-        <text>暂无投稿记录</text>
+      <view class="submission-card" wx:if="{{task.claim}}">
+        <view class="submission-header">
+          <view class="submission-header-main">
+            <text class="submission-title">我的投稿</text>
+            <text class="submission-time">{{task.claim.submitAtText ? '提交时间 ' + task.claim.submitAtText : '报名时间 ' + task.claim.createdAtText}}</text>
+          </view>
+          <view class="submission-status status-{{task.claim.statusClass}}">
+            <text>{{task.claim.statusText}}</text>
+          </view>
+        </view>
+
+        <view class="submission-summary" wx:if="{{task.claimSubmissionSummary}}">
+          <text>{{task.claimSubmissionSummary}}</text>
+        </view>
+
+        <view class="submission-content" wx:if="{{task.claim.content}}">
+          <text>{{task.claim.content}}</text>
+        </view>
+
+        <view class="submission-material-list" wx:if="{{claimMaterials.length > 0}}">
+          <view class="submission-material" wx:for="{{claimMaterials}}" wx:key="id">
+            <view class="submission-material-head">
+              <text class="submission-material-name">{{item.fileName || (item.isVideo ? '视频稿件' : '图片稿件')}}</text>
+              <text class="submission-material-status status-{{item.processStatusClass}}" wx:if="{{item.processStatusText}}">{{item.processStatusText}}</text>
+            </view>
+
+            <video
+              wx:if="{{item.isVideo && item.previewUrl}}"
+              class="submission-video"
+              src="{{item.previewUrl}}"
+              poster="{{item.thumbnailPath}}"
+              controls
+            />
+
+            <view wx:elif="{{item.isVideo}}" class="submission-placeholder">
+              <text>视频地址同步中</text>
+            </view>
+
+            <image
+              wx:elif="{{item.isImage && item.previewUrl}}"
+              class="submission-image"
+              src="{{item.previewUrl}}"
+              mode="aspectFill"
+              bindtap="previewMaterial"
+              data-url="{{item.previewUrl}}"
+            />
+
+            <view wx:else class="submission-placeholder">
+              <text>素材暂不可预览</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="submission-empty-tip" wx:else>
+          <text>{{task.claim.status === 1 ? '你已报名，提交作品后会显示在这里' : '稿件已提交，素材同步中'}}</text>
+        </view>
+      </view>
+
+      <view class="submissions-empty" wx:else>
+        <text>暂无投稿记录，先报名再上传稿件</text>
       </view>
     </view>
   </scroll-view>

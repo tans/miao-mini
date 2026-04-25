@@ -728,13 +728,204 @@
 
 /* 投稿内容 */
 .submissions-content {
-  padding: 120rpx 0;
+  padding: 32rpx 24rpx 120rpx;
+}
+
+.submission-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0rpx 20rpx 52rpx 0rpx rgba(20,42,31,0.08);
+}
+
+.submission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24rpx;
+}
+
+.submission-header-main {
+  flex: 1;
+}
+
+.submission-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.submission-time {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.submission-status {
+  flex-shrink: 0;
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  background: #fff4e8;
+}
+
+.submission-status text {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #ef8802;
+}
+
+.submission-status.status-approved {
+  background: #e8f7eb;
+}
+
+.submission-status.status-approved text {
+  color: #16a34a;
+}
+
+.submission-status.status-cancelled,
+.submission-status.status-expired {
+  background: #f3f4f6;
+}
+
+.submission-status.status-cancelled text,
+.submission-status.status-expired text {
+  color: #6b7280;
+}
+
+.submission-summary {
+  margin-top: 24rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  background: #f7fafc;
+}
+
+.submission-summary text {
+  font-size: 24rpx;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.submission-content {
+  margin-top: 20rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  background: #fff7ed;
+}
+
+.submission-content text {
+  font-size: 24rpx;
+  color: #9a3412;
+  line-height: 1.6;
+}
+
+.submission-material-list {
+  margin-top: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.submission-material {
+  padding-top: 24rpx;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.submission-material:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.submission-material-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.submission-material-name {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #111827;
+}
+
+.submission-material-status {
+  flex-shrink: 0;
+  font-size: 22rpx;
+  line-height: 1.4;
+}
+
+.submission-material-status.status-done {
+  color: #16a34a;
+}
+
+.submission-material-status.status-processing,
+.submission-material-status.status-pending {
+  color: #ef8802;
+}
+
+.submission-material-status.status-failed {
+  color: #dc2626;
+}
+
+.submission-video,
+.submission-image,
+.submission-placeholder {
+  width: 100%;
+  height: 720rpx;
+  border-radius: 20rpx;
+  background: #0f172a;
+}
+
+.submission-image {
+  background: #f3f4f6;
+}
+
+.submission-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submission-placeholder text {
+  font-size: 26rpx;
+  color: #cbd5e1;
+}
+
+.submission-error {
+  display: block;
+  margin-top: 16rpx;
+  font-size: 22rpx;
+  color: #dc2626;
+  line-height: 1.5;
+}
+
+.submission-empty-tip {
+  margin-top: 24rpx;
+  padding: 28rpx 24rpx;
+  border-radius: 16rpx;
+  background: #f8fafc;
+  text-align: center;
+}
+
+.submission-empty-tip text {
+  font-size: 24rpx;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.submissions-empty {
+  padding: 160rpx 32rpx;
   text-align: center;
 }
 
 .submissions-empty text {
   font-size: 28rpx;
   color: #999;
+  line-height: 1.6;
 }
 
 /* 底部操作栏 */
