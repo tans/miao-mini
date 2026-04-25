@@ -299,7 +299,7 @@
 
   <!-- 底部操作栏 -->
   <view class="action-bar">
-    <button style="width:100%" class="action-btn {{!hasSignedUp || canSubmit ? 'submit-work-btn' : 'signup-btn'}}" bindtap="{{!hasSignedUp ? 'handleSignUp' : canSubmit ? 'goSubmitWork' : 'noop'}}" disabled="{{hasSignedUp && !canSubmit}}">
+    <button style="width:100%" class="action-btn {{!hasSignedUp || canSubmit ? 'submit-work-btn' : 'signup-btn'}}" bindtap="handleMainAction" disabled="{{hasSignedUp && !canSubmit}}">
       <text>{{!hasSignedUp ? '截稿倒计时：'+countdownText+'，立即报名' : canSubmit ? '上传稿件' : '已报名，等待审核'}}</text>
     </button>
   </view>

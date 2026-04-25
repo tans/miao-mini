@@ -157,6 +157,23 @@ Page({
     wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${taskId}&result=1` });
   },
 
+  handleTaskAction(e) {
+    const { action, id } = e.currentTarget.dataset;
+    if (!id) return;
+
+    if (action === 'goTaskDetail') {
+      wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${id}` });
+      return;
+    }
+
+    if (action === 'goReviewTask') {
+      wx.navigateTo({ url: `/pages/employer/video-proposals/index?taskId=${id}` });
+      return;
+    }
+
+    wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${id}&result=1` });
+  },
+
   goCreateTask() {
     wx.navigateTo({ url: '/pages/employer/create-task/index' });
   },
