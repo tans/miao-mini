@@ -87,8 +87,11 @@ Page({
     }
   },
 
-  async loadTaskDetail(taskId) {
-    wx.showLoading({ title: '加载中...' });
+  async loadTaskDetail(taskId, options = {}) {
+    const { silent = false } = options;
+    if (!silent) {
+      wx.showLoading({ title: '加载中...' });
+    }
     try {
       const res = await Api.getTask(taskId);
       const task = normalizeTask(res.data || {});
@@ -104,7 +107,9 @@ Page({
     } catch (err) {
       wx.showToast({ title: '加载失败', icon: 'none' });
     } finally {
-      wx.hideLoading();
+      if (!silent) {
+        wx.hideLoading();
+      }
     }
   },
 
@@ -178,20 +183,27 @@ Page({
     wx.showToast({ title: '当前状态不可提交', icon: 'none' });
   },
 
-  handleSignUp() {
+  async handleSignUp() {
     if (this.data.hasSignedUp) {
       wx.showToast({ title: '已报名', icon: 'none' });
       return;
     }
     wx.showLoading({ title: '报名中...' });
-    Api.claimTask(this.data.taskId).then((res) => {
+    try {
+      const res = await Api.claimTask(this.data.taskId);
       const claimId = res.data && res.data.claim_id ? String(res.data.claim_id) : '';
       if (claimId) {
         this.setData({ submitClaimId: claimId });
       }
+      this.setData({
+        hasSignedUp: true,
+        canSubmit: false,
+      });
+      await this.loadTaskDetail(this.data.taskId, { silent: true });
+      wx.hideLoading();
       wx.showToast({ title: '报名成功', icon: 'success' });
-      this.loadTaskDetail(this.data.taskId);
-    }).catch((err) => {
+    } catch (err) {
+      wx.hideLoading();
       const msg = err && err.message ? err.message : '报名失败';
       if (err && CLAIM_BLOCKED_CODES.has(Number(err.code))) {
         wx.showModal({
@@ -202,9 +214,7 @@ Page({
         return;
       }
       wx.showToast({ title: msg, icon: 'none' });
-    }).finally(() => {
-      wx.hideLoading();
-    });
+    }
   },
 
   loadClaimId() {
