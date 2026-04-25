@@ -11,14 +11,14 @@
 
   <!-- 报名列表 -->
   <view class="claims-list" wx:if="{{filteredClaims.length > 0}}">
-    <view class="claim-card {{item.status === 1 ? 'card-active' : 'card-ended'}}" wx:for="{{filteredClaims}}" wx:key="id">
+    <view class="claim-card {{item.isActive ? 'card-active' : 'card-ended'}}" wx:for="{{filteredClaims}}" wx:key="id">
       <view class="card-main">
         <view class="card-info">
           <text class="task-title">{{item.task_title || '任务' + item.task_id}}</text>
-          <text class="deadline-text">投稿截止时间 {{item.end_at || '2026-04-18 10:26'}}</text>
+          <text class="deadline-text">投稿截止时间 {{item.deadlineText}}</text>
         </view>
-        <view class="status-tag {{item.status === 1 ? 'tag-active' : 'tag-ended'}}">
-          <text>{{item.status === 1 ? '征稿中' : '已截止'}}</text>
+        <view class="status-tag {{item.isActive ? 'tag-active' : 'tag-ended'}}">
+          <text>{{item.statusLabel}}</text>
         </view>
       </view>
 
@@ -28,7 +28,7 @@
           <text class="time-value {{item.remainingTimeClass}}">{{item.remainingTimeDisplay}}</text>
         </view>
         <view class="action-buttons">
-          <view class="action-btn btn-cancel" bindtap="cancelClaim" data-claim-id="{{item.id}}" wx:if="{{item.status === 1}}">
+          <view class="action-btn btn-cancel" bindtap="cancelClaim" data-claim-id="{{item.id}}" wx:if="{{item.claimStatus === 1}}">
             <text>取消</text>
           </view>
           <view class="action-btn btn-ended" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">

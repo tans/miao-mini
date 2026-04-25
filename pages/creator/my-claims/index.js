@@ -2,6 +2,33 @@ const Api = require('../../../utils/api.js');
 const { getClaimStatusText, formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
+function normalizeClaim(claim = {}) {
+  const claimStatus = Number(claim.claim_status != null ? claim.claim_status : claim.status || 0);
+  const taskStatus = Number(claim.task_status || 0);
+  const endAt = claim.endAt || claim.end_at || '';
+  const now = Date.now();
+  const endAtMs = endAt ? new Date(endAt).getTime() : 0;
+
+  let isActive = claimStatus === 1 || claimStatus === 2;
+  if (taskStatus) {
+    isActive = isActive && (taskStatus === 2 || taskStatus === 3);
+  }
+  if (endAtMs) {
+    isActive = isActive && endAtMs > now;
+  }
+
+  return {
+    ...claim,
+    claimStatus,
+    taskStatus,
+    endAt,
+    end_at: endAt,
+    deadlineText: formatDateTime(endAt) || '待更新',
+    statusLabel: isActive ? '征稿中' : '已截止',
+    isActive,
+  };
+}
+
 Page({
   data: {
     claims: [],
@@ -45,7 +72,7 @@ Page({
   },
 
   onShow() {
-    if (this.data.claims.length > 0) {
+    if (app.isLoggedIn()) {
       this.loadClaims();
     }
   },
@@ -56,7 +83,7 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getMyClaims({ page: 1 });
-      let claims = (res.data || []).map(c => this.calculateRemainingTime(c));
+      let claims = (res.data || []).map(c => this.calculateRemainingTime(normalizeClaim(c)));
       claims.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       this.setData({ claims, loading: false });
       this.applyFilter(this.data.currentFilter);
@@ -70,7 +97,14 @@ Page({
 
   calculateRemainingTime(claim) {
     const now = Date.now();
-    const endAt = claim.end_at ? new Date(claim.end_at).getTime() : now + 86400000 * 7;
+    const endAt = claim.end_at ? new Date(claim.end_at).getTime() : 0;
+    if (!endAt) {
+      return {
+        ...claim,
+        remainingTimeDisplay: '待更新',
+        remainingTimeClass: claim.isActive ? 'active' : 'ended'
+      };
+    }
     const diff = endAt - now;
 
     let remainingTimeDisplay = '0秒';
@@ -110,11 +144,9 @@ Page({
   applyFilter(filter) {
     let filtered = this.data.claims;
     if (filter === 'active') {
-      // 进行中：已提交(2)及以上，排除待提交(1)
-      filtered = this.data.claims.filter(c => c.status >= 2);
+      filtered = this.data.claims.filter(c => c.isActive);
     } else if (filter === 'ended') {
-      // 已结束：已取消(4)或已超时(5)
-      filtered = this.data.claims.filter(c => c.status >= 4);
+      filtered = this.data.claims.filter(c => !c.isActive);
     }
     this.setData({ filteredClaims: filtered });
   },

@@ -248,8 +248,8 @@ const Api = {
   },
 
   async getTask(id) {
-    // Use single task endpoint from OpenAPI: GET /tasks/{id}
-    return this.request('GET', `/tasks/${id}`, null, true);
+    // Carry auth when available so task detail can include current user's claim state.
+    return this.request('GET', `/tasks/${id}`);
   },
 
   // Business

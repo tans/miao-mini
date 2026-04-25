@@ -195,11 +195,14 @@ Page({
       if (claimId) {
         this.setData({ submitClaimId: claimId });
       }
-      this.setData({
-        hasSignedUp: true,
-        canSubmit: false,
-      });
       await this.loadTaskDetail(this.data.taskId, { silent: true });
+      if (!this.data.hasSignedUp) {
+        this.setData({
+          hasSignedUp: true,
+          canSubmit: true,
+          submitClaimId: claimId || this.data.submitClaimId,
+        });
+      }
       wx.hideLoading();
       wx.showToast({ title: '报名成功', icon: 'success' });
     } catch (err) {
@@ -224,9 +227,10 @@ Page({
       return Promise.resolve(task.claim.id);
     }
     return Api.getClaimByTaskId(this.data.taskId).then((res) => {
-      if (res.data && res.data.claim) {
-        this.setData({ submitClaimId: String(res.data.claim.id || '') });
-        return res.data.claim.id;
+      const claim = res && res.data ? (res.data.claim || res.data) : null;
+      if (claim && claim.id) {
+        this.setData({ submitClaimId: String(claim.id) });
+        return claim.id;
       }
       this.setData({ submitClaimId: '' });
     }).catch(() => {
