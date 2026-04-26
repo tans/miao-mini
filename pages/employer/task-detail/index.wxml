@@ -6,7 +6,6 @@
     <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">
       <text>任务详情</text>
     </view>
-    <view class="tab-indicator tab-indicator-{{currentTab}}"></view>
   </view>
 
   <view class="content">
