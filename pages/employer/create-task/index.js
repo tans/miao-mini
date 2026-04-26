@@ -392,8 +392,29 @@ Page({
       return industry ? industry.name : '';
     }).filter(name => name);
 
-    wx.showLoading({ title: '发布中...' });
+    const hasMaterials = this.data.refImages.length > 0;
+    wx.showLoading({ title: hasMaterials ? '上传素材中...' : '发布中...' });
     try {
+      const materials = [];
+      if (hasMaterials) {
+        const jobBase = `task-${Date.now()}`;
+        for (let i = 0; i < this.data.refImages.length; i += 1) {
+          const uploadRes = await Api.uploadImage(this.data.refImages[i], {
+            returnMeta: true,
+            bizType: 'task_material',
+            jobId: `${jobBase}-${i + 1}`,
+          });
+          materials.push({
+            file_name: uploadRes.filename || `material-${i + 1}.jpg`,
+            file_path: uploadRes.url,
+            file_size: uploadRes.size || 0,
+            file_type: 'image',
+            sort_order: i + 1,
+          });
+        }
+      }
+
+      wx.showLoading({ title: '发布中...' });
       await Api.createTask({
         title,
         description,
@@ -406,6 +427,7 @@ Page({
         industries: industryNames,
         styles: selectedStyles,
         jimeng_text: jimengEnabled ? jimeng_link : '',
+        materials,
       });
       wx.showToast({ title: '发布成功！', icon: 'success' });
       setTimeout(() => {
@@ -419,7 +441,6 @@ Page({
     }
   }
 });
-
 
 
 

@@ -134,7 +134,7 @@ const Api = {
 
   updateProfile(data) {
     // data: { nickname, phone, avatar }
-    return this.request('PUT', '/users/me', data);
+    return this.request('PUT', '/user/profile', data);
   },
 
   bindPhone(detail) {
@@ -142,99 +142,98 @@ const Api = {
     return this.request('POST', '/users/bind-phone', detail);
   },
 
-  // 上传图片到服务器，返回永久 URL
-  uploadImage(tempFilePath) {
+  getFileNameFromPath(filePath) {
+    const cleanPath = (filePath || '').split('?')[0].split('#')[0];
+    const parts = cleanPath.split('/');
+    return parts[parts.length - 1] || '';
+  },
+
+  getFileExt(filePath) {
+    const name = this.getFileNameFromPath(filePath).toLowerCase();
+    const idx = name.lastIndexOf('.');
+    return idx >= 0 ? name.slice(idx) : '';
+  },
+
+  getCosContentType(fileType, ext) {
+    if (fileType === 'video') {
+      return 'video/mp4';
+    }
+    return 'image/jpeg';
+  },
+
+  async getCosCredential(fileType, ext, options = {}) {
+    const query = [
+      `type=${encodeURIComponent(fileType)}`,
+      `ext=${encodeURIComponent(ext)}`,
+    ];
+    if (options.bizType) query.push(`biz_type=${encodeURIComponent(options.bizType)}`);
+    if (options.bizId) query.push(`biz_id=${encodeURIComponent(options.bizId)}`);
+    if (options.jobId) query.push(`job_id=${encodeURIComponent(options.jobId)}`);
+    const res = await this.request('GET', `/cos/credential?${query.join('&')}`);
+    return res.data || {};
+  },
+
+  readFileAsArrayBuffer(filePath) {
     return new Promise((resolve, reject) => {
-      wx.uploadFile({
-        url: this.getApiBase() + '/upload?type=image',
-        filePath: tempFilePath,
-        name: 'file',
-        header: { Authorization: 'Bearer ' + this.getToken() },
-        success: (res) => {
-          if (res.statusCode === 401) {
-            Api.clearAuth();
-            reject(new Error('登录已过期'));
-            return;
-          }
-          try {
-            const data = JSON.parse(res.data);
-            if (data.code === 0 && data.data && data.data.url) {
-              // 保存上传时间
-              wx.setStorageSync('lastUploadTime', new Date().toISOString());
-              // Ensure URL is absolute for WeChat image component
-              const url = data.data.url;
-              if (url.startsWith('/')) {
-                // Prepend API base (without /api/v1) to relative URLs
-                const base = this.getApiBase().replace(/\/api\/v1$/, '');
-                resolve(base + url);
-              } else {
-                resolve(url);
-              }
-            } else {
-              const msg = (data && data.message) || '上传失败';
-              wx.showToast({ title: msg, icon: 'none' });
-              reject(new Error(msg));
-            }
-          } catch (e) {
-            wx.showToast({ title: '上传响应解析失败', icon: 'none' });
-            reject(e);
-          }
-        },
-        fail: (err) => {
-          wx.showToast({ title: '上传失败', icon: 'none' });
-          reject(err);
-        },
+      wx.getFileSystemManager().readFile({
+        filePath,
+        success: (res) => resolve(res.data),
+        fail: reject,
       });
     });
   },
 
-
-  // Upload video using Tencent COS pre-signed URL
-  uploadVideo(tempFilePath, options = {}) {
-    const query = [
-      'type=video',
-      `biz_type=${encodeURIComponent(options.bizType || '')}`,
-      `biz_id=${encodeURIComponent(options.bizId || '')}`,
-      `job_id=${encodeURIComponent(options.jobId || '')}`,
-    ].join('&');
-    const url = `${this.getApiBase()}/upload?${query}`;
-    const token = this.getToken();
-
+  getFileInfo(filePath) {
     return new Promise((resolve, reject) => {
-      wx.uploadFile({
-        url,
-        filePath: tempFilePath,
-        name: 'file',
-        header: token ? { Authorization: 'Bearer ' + token } : {},
+      wx.getFileInfo({
+        filePath,
+        success: resolve,
+        fail: reject,
+      });
+    });
+  },
+
+  resolvePublicUrl(url) {
+    if (!url) return '';
+    if (url.startsWith('/')) {
+      const base = this.getApiBase().replace(/\/api\/v1$/, '');
+      return base + url;
+    }
+    return url;
+  },
+
+  async uploadToCos(tempFilePath, options = {}) {
+    const fileType = options.type || 'image';
+    const ext = (options.ext || this.getFileExt(tempFilePath) || (fileType === 'video' ? '.mp4' : '.jpg')).toLowerCase();
+    const filename = options.filename || this.getFileNameFromPath(tempFilePath) || (fileType === 'video' ? 'video.mp4' : 'image.jpg');
+    const credential = await this.getCosCredential(fileType, ext, options);
+    const uploadUrl = credential.upload_url || credential.uploadUrl;
+    const fileUrl = credential.file_url || credential.fileUrl || '';
+    const key = credential.key || '';
+    if (!uploadUrl) {
+      throw new Error('获取上传凭证失败');
+    }
+
+    const fileData = await this.readFileAsArrayBuffer(tempFilePath);
+    const fileInfo = await this.getFileInfo(tempFilePath).catch(() => ({ size: 0 }));
+    const contentType = this.getCosContentType(fileType, ext);
+
+    await new Promise((resolve, reject) => {
+      wx.request({
+        url: uploadUrl,
+        method: 'PUT',
+        data: fileData,
+        header: {
+          'Content-Type': contentType,
+        },
+        timeout: options.timeout || (fileType === 'video' ? 600000 : 120000),
+        responseType: 'text',
         success: (res) => {
-          if (res.statusCode === 401) {
-            Api.clearAuth();
-            reject(new Error('登录已过期'));
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve();
             return;
           }
-          let data = res.data;
-          if (typeof data === 'string') {
-            try {
-              data = JSON.parse(data);
-            } catch (e) {
-              reject(new Error('上传响应解析失败'));
-              return;
-            }
-          }
-          if (data && data.code === 0 && data.data && data.data.url) {
-            wx.setStorageSync('lastUploadTime', new Date().toISOString());
-            const result = {
-              url: data.data.url,
-              key: data.data.key || '',
-              jobId: data.data.job_id || options.jobId || '',
-              filename: data.data.filename || tempFilePath.split('/').pop() || 'video.mp4',
-              size: data.data.size || 0,
-              type: data.data.type || 'video',
-            };
-            resolve(options.returnMeta ? result : result.url);
-            return;
-          }
-          reject(new Error((data && data.message) || '上传失败'));
+          reject(new Error(`上传失败(${res.statusCode})`));
         },
         fail: (err) => {
           const msg = err && (err.message || err.errMsg) || '上传失败';
@@ -242,6 +241,28 @@ const Api = {
         },
       });
     });
+
+    wx.setStorageSync('lastUploadTime', new Date().toISOString());
+    const result = {
+      url: this.resolvePublicUrl(fileUrl),
+      key,
+      jobId: credential.job_id || options.jobId || '',
+      filename,
+      size: fileInfo.size || 0,
+      type: fileType,
+      ext,
+    };
+
+    return options.returnMeta ? result : result.url;
+  },
+
+  // 直传 COS，默认返回永久 URL；returnMeta 时返回完整元数据
+  uploadImage(tempFilePath, options = {}) {
+    return this.uploadToCos(tempFilePath, { ...options, type: 'image' });
+  },
+
+  uploadVideo(tempFilePath, options = {}) {
+    return this.uploadToCos(tempFilePath, { ...options, type: 'video' });
   },
 
   // Tasks

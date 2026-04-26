@@ -228,7 +228,11 @@ Page({
   onLoad(options) {
     if (options.id) {
       this.setData({ taskId: options.id });
-      this.loadTaskDetail(options.id);
+      this.loadTaskDetail(options.id).then(() => {
+        if (options.action === 'submit') {
+          this.goSubmitWork();
+        }
+      });
     }
   },
 

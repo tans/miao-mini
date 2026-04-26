@@ -46,25 +46,31 @@ Page({
   },
 
   onLoad(options) {
+    const afterLoad = () => {
+      if (options.claimId && options.action === 'submit') {
+        this.autoShowSubmitModal(options.claimId);
+      }
+    };
     if (!app.isLoggedIn()) {
       app.silentLogin().then(() => {
         if (app.isLoggedIn()) {
-          this.loadClaims();
-          if (options.claimId && options.action === 'submit') {
-            this.autoShowSubmitModal(options.claimId);
-          }
+          this.loadClaims().then(afterLoad);
         }
       });
       return;
     }
-    this.loadClaims();
-    if (options.claimId && options.action === 'submit') {
-      this.autoShowSubmitModal(options.claimId);
-    }
+    this.loadClaims().then(afterLoad);
   },
 
   autoShowSubmitModal(claimId) {
-    this.setData({ showSubmitModal: true, submitClaimId: claimId, submitUrl: '', submitNote: '' });
+    const claim = (this.data.claims || []).find(item => String(item.id) === String(claimId));
+    if (!claim || !claim.task_id) {
+      wx.showToast({ title: '未找到对应任务', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({
+      url: `/pages/creator/task-detail/index?id=${claim.task_id}&action=submit`
+    });
   },
 
   onPullDownRefresh() {

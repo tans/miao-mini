@@ -63,6 +63,7 @@ Page({
   saveProfile() {
     const nickname = this.data.nickname.trim();
     const phone = this.data.phone.trim();
+    const avatar = this.data.user && this.data.user.avatar || '';
     if (!nickname) {
       wx.showToast({ title: '请输入昵称', icon: 'none' });
       return;
@@ -73,11 +74,13 @@ Page({
     }
 
     wx.showLoading({ title: '保存中...' });
-    Api.updateProfile({ nickname, phone }).then(() => {
+    Api.updateProfile({ nickname, phone, avatar }).then(() => {
       const user = this.data.user || {};
       user.nickname = nickname;
       user.phone = phone;
+      user.avatar = avatar;
       app.setAuth(app.getToken(), user);
+      this.setData({ user });
       wx.hideLoading();
       wx.showToast({ title: '保存成功', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1500);
