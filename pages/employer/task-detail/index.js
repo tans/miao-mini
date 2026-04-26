@@ -20,16 +20,6 @@ function pick(...values) {
   return '';
 }
 
-function getDeadlineText(endAt) {
-  if (!endAt) return '未设置';
-  const diff = new Date(endAt).getTime() - Date.now();
-  if (Number.isNaN(diff)) return '未设置';
-  if (diff <= 0) return '已截止';
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  return `${hours}小时${minutes}分`;
-}
-
 function normalizeTask(task = {}) {
   const endAt = pick(task.end_at, task.endAt, '');
   const industryTags = toList(pick(task.industries, task.industry));
@@ -55,8 +45,6 @@ function normalizeTask(task = {}) {
     videoResolution: pick(task.video_resolution, task.videoResolution, '1080P'),
     videoDuration: pick(task.video_duration, task.videoDuration, '30s'),
     endAt,
-    deadlineText: getDeadlineText(endAt),
-    videoUrl: pick(task.video_url, task.videoUrl, ''),
     jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
     jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
     jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
@@ -143,7 +131,7 @@ function normalizeClaim(claim = {}, task = {}) {
 Page({
   data: {
     taskId: '',
-    currentTab: 'detail',
+    currentTab: 'proposals',
     loading: false,
     task: {
       industryTags: ['房产家居'],
@@ -174,10 +162,10 @@ Page({
 
   onLoad(options = {}) {
     const taskId = options.id || options.taskId || '';
-    const validTabs = ['video', 'detail', 'proposals'];
+    const validTabs = ['detail', 'proposals'];
     const initialTab = validTabs.includes(options.tab)
       ? options.tab
-      : (options.result === '1' ? 'proposals' : 'detail');
+      : 'proposals';
 
     this.setData({ taskId, currentTab: initialTab });
     wx.setNavigationBarTitle({ title: '商家任务详情' });
@@ -272,9 +260,7 @@ Page({
     const tab = e.currentTarget.dataset.tab;
     if (!tab || tab === this.data.currentTab) return;
     this.setData({ currentTab: tab });
-    if (tab === 'proposals') {
-      this.applyFilter(this.data.activeFilter);
-    }
+    if (tab === 'proposals') this.applyFilter(this.data.activeFilter);
   },
 
   switchFilter(e) {
@@ -303,27 +289,12 @@ Page({
     });
   },
 
-  goBack() {
-    wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
-  },
-
   copyTaskId() {
     if (!this.data.task.id) return;
     wx.setClipboardData({
       data: String(this.data.task.id),
       success: () => wx.showToast({ title: '已复制', icon: 'success' }),
     });
-  },
-
-  goToProposalReview() {
-    this.setData({ currentTab: 'proposals' });
-    this.applyFilter('pending');
-  },
-
-  playVideo() {
-    const url = this.data.task.videoUrl;
-    if (!url) return;
-    wx.navigateTo({ url: `/pages/video-player/index?url=${encodeURIComponent(url)}` });
   },
 
   previewMaterial(e) {
