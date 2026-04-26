@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npx serve . -p 3000",
     "start": "npx serve . -p 3000",
+    "prepare:weui": "rm -rf weui-miniprogram && cp -R node_modules/weui-miniprogram ./weui-miniprogram",
     "upload": "node scripts/ci-upload.js"
   },
   "dependencies": {
