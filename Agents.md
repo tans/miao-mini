@@ -59,3 +59,13 @@
 - 改灵感流/作品卡片: [`pages/works/index.js`](./pages/works/index.js)
 - 改任务创建表单: [`pages/employer/create-task/index.js`](./pages/employer/create-task/index.js)
 
+## 上传体验版
+
+- 执行命令: `npm run upload`
+- 上传脚本: [`scripts/ci-upload.js`](./scripts/ci-upload.js)
+- 默认读取 [`project.config.json`](./project.config.json) 里的 `appid`
+- 默认使用项目根目录的 [`private.key`](./private.key)，也可用环境变量 `PRIVATE_KEY_PATH` 覆盖
+- 上传版本默认是 `1.0.0`，可用环境变量 `VERSION` 覆盖
+- 上传描述默认是 `CI Upload`，可用环境变量 `COMMIT_MESSAGE` 覆盖
+- 脚本会自动重写 [`build-info.js`](./build-info.js) 的 `uploadTime`，`mine` 页会读取这个时间展示“最后更新”
+- 如果只改了后端 `/data/miao`，通常不需要执行这里的小程序上传

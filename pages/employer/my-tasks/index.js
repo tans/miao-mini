@@ -149,7 +149,7 @@ Page({
 
   goReviewTask(e) {
     const taskId = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/employer/video-proposals/index?taskId=${taskId}` });
+    wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${taskId}&tab=proposals` });
   },
 
   goTaskResult(e) {
@@ -167,7 +167,7 @@ Page({
     }
 
     if (action === 'goReviewTask') {
-      wx.navigateTo({ url: `/pages/employer/video-proposals/index?taskId=${id}` });
+      wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${id}&tab=proposals` });
       return;
     }
 

@@ -11,7 +11,6 @@
     "pages/employer/purchased-works/index",
     "pages/creator/level/index",
     "pages/employer/create-task/index",
-    "pages/employer/video-proposals/index",
     "pages/employer/task-detail/index",
     "pages/wallet/index",
     "pages/wallet/withdraw/index",
