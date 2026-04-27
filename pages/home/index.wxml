@@ -86,19 +86,19 @@
       <view class="task-card-body">
         <!-- 标题和价格 -->
          <view class="task-title-container">
-           <view class="task-title-row">
+            <view class="task-title-row">
               <text class="task-title">{{item.title}}</text>
             </view>
             <view class="task-price-row">
-              <text class="task-price">¥{{item.unit_price}}</text>
-              <text class="task-price-unit">元/条</text>
+              <text class="task-price">¥{{item.award_price}}</text>
+              <text class="task-price-unit">采纳</text>
             </view>
          </view>
         <!-- 标签区域 -->
         <view class="task-tags">
-          <view class="badge badge-reward" wx:if="{{item.award_price > 0}}">
+          <view class="badge badge-reward" wx:if="{{item.unit_price > 0}}">
             <image src="../../images/home/badge-reward.png" class="badge-icon" />
-            <text>采纳奖励:¥{{item.award_price}}</text>
+            <text>基础:¥{{item.unit_price}}</text>
           </view>
           <view class="badge badge-brand">
             <image src="../../images/home/badge-brand.png" class="badge-icon" />

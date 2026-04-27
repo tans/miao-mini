@@ -34,7 +34,7 @@
         <text class="form-label">上传凭证</text>
         <view class="upload-list">
           <view class="upload-item" wx:for="{{uploadImages}}" wx:key="index">
-            <image class="upload-preview" src="{{item}}" />
+            <image class="upload-preview" src="{{item.previewUrl || item.tempFilePath || item}}" />
             <view class="upload-remove" bindtap="removeImage" data-index="{{index}}">×</view>
           </view>
           <view class="upload-add" bindtap="uploadImage" wx:if="{{uploadImages.length < 3}}">

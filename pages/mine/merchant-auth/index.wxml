@@ -29,7 +29,7 @@
         <text class="form-label">营业执照</text>
         <view class="upload-area" bindtap="uploadLicense">
           <image class="upload-icon" src="/assets/icons/upload.png" wx:if="{{!licenseUrl}}" />
-          <image class="upload-preview" src="{{licenseUrl}}" wx:else />
+          <image class="upload-preview" src="{{licensePreviewUrl || licenseUrl}}" wx:else />
           <text class="upload-text" wx:if="{{!licenseUrl}}">点击上传营业执照</text>
         </view>
       </view>

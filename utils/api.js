@@ -209,6 +209,7 @@ const Api = {
     const credential = await this.getCosCredential(fileType, ext, options);
     const uploadUrl = credential.upload_url || credential.uploadUrl;
     const fileUrl = credential.file_url || credential.fileUrl || '';
+    const previewUrl = credential.preview_url || credential.previewUrl || fileUrl || '';
     const key = credential.key || '';
     if (!uploadUrl) {
       throw new Error('获取上传凭证失败');
@@ -245,6 +246,7 @@ const Api = {
     wx.setStorageSync('lastUploadTime', new Date().toISOString());
     const result = {
       url: this.resolvePublicUrl(fileUrl),
+      previewUrl: this.resolvePublicUrl(previewUrl),
       key,
       jobId: credential.job_id || options.jobId || '',
       filename,

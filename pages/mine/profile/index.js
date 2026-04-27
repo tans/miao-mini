@@ -41,7 +41,11 @@ Page({
       success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath;
         wx.showLoading({ title: '上传中...' });
-        Api.uploadImage(tempFilePath).then((url) => {
+        const currentUser = this.data.user || app.globalData.user || {};
+        Api.uploadImage(tempFilePath, {
+          bizType: 'avatar',
+          bizId: currentUser.id ? String(currentUser.id) : '',
+        }).then((url) => {
           const user = this.data.user || {};
           user.avatar = url;
           this.setData({ user });
