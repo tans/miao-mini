@@ -310,7 +310,7 @@
           <text>{{task.claim.content}}</text>
         </view> -->
 
-        <view class="submission-material-list" wx:if="{{claimMaterials.length > 0 && task.isPublic}}">
+        <view class="submission-material-list" wx:if="{{claimMaterials.length > 0}}">
           <view class="submission-material" wx:for="{{claimMaterials}}" wx:key="id">
             <view class="submission-material-head">
               <text class="submission-material-name">{{item.fileName || (item.isVideo ? '视频稿件' : '图片稿件')}}</text>
@@ -385,19 +385,6 @@
                 </view>
               </view>
             </view>
-          </view>
-        </view>
-
-        <view class="submission-material-list" wx:elif="{{claimMaterials.length > 0 && !task.isPublic}}">
-          <view class="submission-material">
-            <view class="submission-material-head">
-              <text class="submission-material-name">投稿内容仅商家可见</text>
-            </view>
-            <image
-              class="submission-image submission-private-cover"
-              src="../../../images/home/banner-default.png"
-              mode="aspectFill"
-            />
           </view>
         </view>
 
