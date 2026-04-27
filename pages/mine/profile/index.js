@@ -5,7 +5,8 @@ Page({
   data: {
     user: null,
     nickname: '',
-    phone: ''
+    phone: '',
+    avatarSrc: '/assets/icons/avatar-default.jpg'
   },
 
   onLoad() {
@@ -17,7 +18,8 @@ Page({
     this.setData({
       user: user,
       nickname: user && (user.nickname || user.username) || '',
-      phone: user && user.phone || ''
+      phone: user && user.phone || '',
+      avatarSrc: user && user.avatar || '/assets/icons/avatar-default.jpg'
     });
   },
 
@@ -48,7 +50,7 @@ Page({
         }).then((url) => {
           const user = this.data.user || {};
           user.avatar = url;
-          this.setData({ user });
+          this.setData({ user, avatarSrc: url || '/assets/icons/avatar-default.jpg' });
           wx.hideLoading();
         }).catch((err) => {
           wx.hideLoading();
@@ -84,7 +86,7 @@ Page({
       user.phone = phone;
       user.avatar = avatar;
       app.setAuth(app.getToken(), user);
-      this.setData({ user });
+      this.setData({ user, avatarSrc: avatar || '/assets/icons/avatar-default.jpg' });
       wx.hideLoading();
       wx.showToast({ title: '保存成功', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1500);
@@ -92,5 +94,11 @@ Page({
       wx.hideLoading();
       wx.showToast({ title: err.message || '保存失败', icon: 'none' });
     });
+  },
+
+  onAvatarError() {
+    if (this.data.avatarSrc !== '/assets/icons/avatar-default.jpg') {
+      this.setData({ avatarSrc: '/assets/icons/avatar-default.jpg' });
+    }
   }
 });
