@@ -31,8 +31,8 @@
           <view class="action-btn btn-cancel" bindtap="cancelClaim" data-claim-id="{{item.id}}" wx:if="{{item.claimStatus === 1}}">
             <text>取消</text>
           </view>
-          <view class="action-btn btn-ended" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">
-            <text>查看详情</text>
+          <view class="action-btn btn-submit" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">
+            <text>立即交稿</text>
           </view>
         </view>
       </view>
@@ -49,7 +49,7 @@
   <!-- 安全提醒 -->
   <view class="safety-card" wx:if="{{filteredClaims.length > 0}}">
     <view class="safety-header">
-      <image src="/assets/icons/safety-icon.png" class="safety-logo" />
+      <image src="../../../images/home/msg-icon.png" class="safety-logo" />
       <text class="safety-brand">创意喵</text>
       <text class="safety-title">安全提醒</text>
     </view>

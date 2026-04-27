@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "任务详情",
-  "usingComponents": {}
+  "usingComponents": {
+    "circle-progress": "/components/circle-progress/circle-progress"
+  }
 }

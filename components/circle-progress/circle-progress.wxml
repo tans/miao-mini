@@ -1,0 +1,15 @@
+<view class="circle-progress" style="width: {{size}}px; height: {{size}}px;">
+  <canvas
+    class="circle-progress-canvas"
+    canvas-id="{{bgCanvasId}}"
+    style="width: {{size}}px; height: {{size}}px;"
+  />
+  <canvas
+    class="circle-progress-canvas"
+    canvas-id="{{fgCanvasId}}"
+    style="width: {{size}}px; height: {{size}}px;"
+  />
+  <view class="circle-progress-slot">
+    <slot />
+  </view>
+</view>

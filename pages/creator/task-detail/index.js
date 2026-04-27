@@ -223,6 +223,9 @@ Page({
     countdownTimer: null,
     // 提交模态框相关
     showSubmitModal: false,
+    showCreatorNoticeModal: false,
+    showUploadProgressModal: false,
+    uploadProgress: 10,
     submitClaimId: '',
     submitVideoUrl: '',
     submitting: false,
@@ -243,6 +246,10 @@ Page({
     if (this.data.countdownTimer) {
       clearInterval(this.data.countdownTimer);
       this.setData({ countdownTimer: null });
+    }
+    if (this.uploadProgressTimer) {
+      clearInterval(this.uploadProgressTimer);
+      this.uploadProgressTimer = null;
     }
   },
 
@@ -409,11 +416,55 @@ Page({
       wx.showToast({ title: '认领不存在，请先报名', icon: 'none' });
       return;
     }
-    this.setData({ showSubmitModal: true, submitVideoUrl: '' });
+    this.setData({ showCreatorNoticeModal: true});
   },
 
   onCloseSubmitModal() {
     this.setData({ showSubmitModal: false, submitVideoUrl: '', submitting: false });
+  },
+
+  onCloseCreatorNotice() {
+    this.setData({ showCreatorNoticeModal: false });
+  },
+
+  onAcknowledgeCreatorNotice() {
+    this.setData({ showCreatorNoticeModal: false });
+    this.setData({ showSubmitModal: true, submitVideoUrl: '' });
+  },
+
+  updateUploadProgress(progress) {
+    const value = Math.max(0, Math.min(100, Number(progress) || 0));
+    this.setData({
+      uploadProgress: Math.round(value),
+    });
+  },
+
+  startUploadProgress() {
+    if (this.uploadProgressTimer) {
+      clearInterval(this.uploadProgressTimer);
+    }
+    this.updateUploadProgress(1);
+    this.uploadProgressTimer = setInterval(() => {
+      const current = this.data.uploadProgress || 0;
+      if (current >= 85) return;
+      this.updateUploadProgress(current + 3);
+    }, 350);
+  },
+
+  stopUploadProgress() {
+    if (this.uploadProgressTimer) {
+      clearInterval(this.uploadProgressTimer);
+      this.uploadProgressTimer = null;
+    }
+  },
+
+  onCloseUploadProgressModal() {
+    if (this.data.submitting) {
+      wx.showToast({ title: '视频上传中，请稍候', icon: 'none' });
+      return;
+    }
+    this.stopUploadProgress();
+    this.setData({ showUploadProgressModal: false });
   },
 
   onChooseVideo() {
@@ -446,8 +497,9 @@ Page({
       return;
     }
 
-    this.setData({ submitting: true });
-    wx.showLoading({ title: '上传中...' });
+    this.setData({ submitting: true, showUploadProgressModal: true, uploadProgress: 0 }, () => {
+      this.startUploadProgress();
+    });
 
     try {
       const uploadJobId = `claim-${claimId}-${Date.now()}`;
@@ -458,7 +510,7 @@ Page({
         returnMeta: true,
       });
 
-      wx.showLoading({ title: '提交中...' });
+      this.updateUploadProgress(86);
 
       const submitRes = await Api.submitClaim(claimId, {
         content: `视频稿件：${uploadRes.filename || 'video.mp4'}`,
@@ -470,9 +522,12 @@ Page({
         }],
       });
 
-      wx.hideLoading();
+      this.updateUploadProgress(100);
+      this.stopUploadProgress();
+      await new Promise(resolve => setTimeout(resolve, 220));
       const summary = submitRes.data && submitRes.data.process_status_summary;
       const pendingCount = summary ? ((summary.pending || 0) + (summary.processing || 0)) : 0;
+      this.setData({ showUploadProgressModal: false });
       wx.showToast({
         title: pendingCount ? '提交成功，处理中' : '提交成功',
         icon: 'success'
@@ -481,7 +536,8 @@ Page({
       await this.loadTaskDetail(this.data.taskId, { silent: true });
       this.setData({ currentTab: 'submissions' });
     } catch (err) {
-      wx.hideLoading();
+      this.stopUploadProgress();
+      this.setData({ showUploadProgressModal: false });
       wx.showToast({ title: err.message || '提交失败', icon: 'none' });
     } finally {
       this.setData({ submitting: false });
