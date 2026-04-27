@@ -295,7 +295,7 @@ height: 32rpx;"/>
 
     <!-- 提交按钮 -->
     <view class="submit-section">
-      <view class="submit-btn" bindtap="handleSubmit">托管奖金并发布</view>
+      <view class="submit-btn" bindtap="handleSubmit">托管奖金并提交审核</view>
       <!-- <view class="submit-indicator"></view> -->
     </view>
   </scroll-view>

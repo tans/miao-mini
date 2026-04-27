@@ -420,7 +420,7 @@ Page({
     }).filter(name => name);
 
     const hasMaterials = this.data.refImages.length > 0;
-    wx.showLoading({ title: hasMaterials ? '上传素材中...' : '发布中...' });
+    wx.showLoading({ title: hasMaterials ? '上传素材中...' : '提交中...' });
     try {
       const materials = [];
       if (hasMaterials) {
@@ -441,8 +441,8 @@ Page({
         }
       }
 
-      wx.showLoading({ title: '发布中...' });
-      await Api.createTask({
+      wx.showLoading({ title: '提交审核中...' });
+      const res = await Api.createTask({
         title,
         description,
         unit_price: Number(unit_price),
@@ -458,7 +458,7 @@ Page({
         jimeng_link: jimengEnabled ? jimeng_link : '',
         materials,
       });
-      wx.showToast({ title: '发布成功！', icon: 'success' });
+      wx.showToast({ title: (res && res.message) || '提交成功，等待审核', icon: 'success' });
       setTimeout(() => {
         wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
       }, 1500);
@@ -470,7 +470,6 @@ Page({
     }
   }
 });
-
 
 
 
