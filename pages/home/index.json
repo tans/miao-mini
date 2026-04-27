@@ -3,6 +3,5 @@
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark",
   "navigationBarBackgroundColor": "#00000000",
-  "navigationBarTransparent": true,
   "navigationStyle": "custom"
 }
