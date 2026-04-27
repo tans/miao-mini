@@ -53,6 +53,7 @@ function normalizeTask(task = {}) {
 
   return {
     ...task,
+    businessId: task.business_id || task.businessId || '',
     merchantName: task.business_name || task.merchantName || '',
     merchantAvatar: task.business_avatar || task.merchantAvatar || '',
     industry: task.industry || industries[0] || '',
@@ -210,6 +211,11 @@ function summarizeClaimMaterials(materials = []) {
 
 const CLAIM_BLOCKED_CODES = new Set([40002, 40004, 40302, 40303, 40304]);
 
+function getCurrentUserId() {
+  const user = (app && typeof app.getUser === 'function' && app.getUser()) || Api.getUser();
+  return user && user.id != null ? String(user.id) : '';
+}
+
 Page({
   data: {
     taskId: '',
@@ -220,6 +226,7 @@ Page({
     currentTab: 'detail',
     hasSignedUp: false,
     canSubmit: false,
+    isMerchantTask: false,
     countdownText: '',
     countdownTimer: null,
     // 提交模态框相关
@@ -243,6 +250,15 @@ Page({
     }
   },
 
+  onShow() {
+    if (!this.data.taskId || !this.data.task) return;
+    const currentUserId = getCurrentUserId();
+    const isMerchantTask = !!(currentUserId && String(this.data.task.businessId || this.data.task.business_id || '') === currentUserId);
+    if (isMerchantTask !== this.data.isMerchantTask) {
+      this.setData({ isMerchantTask });
+    }
+  },
+
   onUnload() {
     if (this.data.countdownTimer) {
       clearInterval(this.data.countdownTimer);
@@ -262,6 +278,7 @@ Page({
     try {
       const res = await Api.getTask(taskId);
       const task = normalizeTask(res.data || {});
+      const currentUserId = getCurrentUserId();
       this.setData({
         task,
         materials: task.materials || [],
@@ -269,6 +286,7 @@ Page({
         hasSignedUp: !!task.hasSignedUp,
         canSubmit: !!task.canSubmit,
         submitClaimId: task.claim && task.claim.id ? String(task.claim.id) : '',
+        isMerchantTask: !!(currentUserId && String(task.businessId || task.business_id || '') === currentUserId),
       });
       this.startCountdownTimer(task.endAt);
     } catch (err) {
@@ -339,6 +357,10 @@ Page({
   },
 
   handleMainAction() {
+    if (this.data.isMerchantTask) {
+      wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${this.data.taskId}` });
+      return;
+    }
     if (!this.data.hasSignedUp) {
       this.handleSignUp();
       return;
