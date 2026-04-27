@@ -1010,6 +1010,10 @@
   background: #f3f4f6;
 }
 
+.submission-private-cover {
+  object-fit: cover;
+}
+
 .submission-placeholder {
   display: flex;
   align-items: center;

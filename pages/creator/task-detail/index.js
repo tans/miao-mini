@@ -67,6 +67,7 @@ function normalizeTask(task = {}) {
     adoptionRate: task.adoptionRate ?? task.adoption_rate ?? 0,
     totalPublished: task.totalPublished ?? task.total_published ?? task.totalTasks ?? 0,
     totalSpent: task.totalSpent ?? task.total_spent ?? task.totalSpend ?? 0,
+    isPublic: task.public != null ? !!task.public : (task.open_submission != null ? !!task.open_submission : true),
     endAt,
     end_at: endAt,
     hasSignedUp: task.hasSignedUp != null ? task.hasSignedUp : (task.has_signed_up != null ? task.has_signed_up : !!claim),
