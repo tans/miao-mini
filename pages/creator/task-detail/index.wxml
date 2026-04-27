@@ -108,18 +108,18 @@
         <view class="merchant-stats">
           <view class="stat-item">
             <text class="stat-label">平均采纳率</text>
-            <text class="stat-value">{{task.adoptionRate || '86'}}%</text>
+            <text class="stat-value">{{task.adoptionRate || 0}}%</text>
           </view>
           <!-- <view class="stat-divider"></view> -->
           <view class="stat-item">
             <text class="stat-label">累计发布</text>
-            <text class="stat-value">{{task.totalTasks || 120}}</text>
+            <text class="stat-value">{{task.totalPublished || 0}}</text>
             <text class="stat-unit">个任务</text>
           </view>
           <!-- <view class="stat-divider"></view> -->
           <view class="stat-item">
             <text class="stat-label">累计支出</text>
-            <text class="stat-value">¥{{task.totalSpend || 6800}}</text>
+            <text class="stat-value">¥{{task.totalSpent || 0}}</text>
           </view>
         </view>
       <!-- 任务ID -->
@@ -144,7 +144,7 @@
         <!-- 奖励 -->
         <view class="reward-row">
           <view class="reward-item">
-            <text class="reward-label">采纳奖励</text>
+            <text class="reward-label">参与奖励</text>
             <view class="reward-value-row">
               <text class="reward-value">{{task.unitPrice || 100}}</text>
               <text class="reward-unit">元/条</text>
@@ -152,7 +152,7 @@
           </view>
           <text class="reward-plus">+</text>
           <view class="reward-item">
-            <text class="reward-label">参与奖励</text>
+            <text class="reward-label">采纳奖励</text>
             <view class="reward-value-row">
               <text class="reward-value">{{task.awardPrice || 10}}</text>
               <text class="reward-unit">元/条</text>

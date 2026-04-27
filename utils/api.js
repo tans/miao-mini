@@ -369,7 +369,7 @@ const Api = {
 
   // Appeals
   createAppeal(data) {
-    // data: { type: 1, target_id: claimId, reason: string, evidence: string (optional, image urls joined by comma) }
+    // data: { type: 1, task_id?: taskId, target_id?: taskId, reason: string, evidence?: string }
     return this.request('POST', '/appeals', data);
   },
 

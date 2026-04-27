@@ -18,29 +18,14 @@
   justify-content: center;
   font-size: 28rpx;
   color: #1d2129;
+  box-sizing: border-box;
+  border-bottom: 4rpx solid transparent;
 }
 
 .tab-item.active {
   color: #ef8802;
   font-weight: 600;
-}
-
-.tab-indicator {
-  position: absolute;
-  bottom: 0;
-  width: 104rpx;
-  height: 4rpx;
-  background: #ef8802;
-  border-radius: 4rpx;
-  transition: left 0.3s ease;
-}
-
-.tab-indicator-proposals {
-  left: 136rpx;
-}
-
-.tab-indicator-detail {
-  left: 510rpx;
+  border-bottom-color: #ef8802;
 }
 
 .content {

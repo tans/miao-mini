@@ -15,6 +15,16 @@ Page({
     loading: false,
   },
 
+  getFilteredTransactions(tab, transactions) {
+    if (tab === 'income') {
+      return transactions.filter((t) => t.amount > 0);
+    }
+    if (tab === 'expense') {
+      return transactions.filter((t) => t.amount < 0);
+    }
+    return transactions;
+  },
+
   onLoad() {
     if (!app.isLoggedIn()) {
       app.silentLogin().then(() => {
@@ -53,14 +63,16 @@ Page({
       const balance = wallet.balance || 0;
       const frozenAmount = wallet.frozen_amount || 0;
       const withdrawableAmount = Math.max(0, balance - frozenAmount);
+      const filteredTransactions = this.getFilteredTransactions(this.data.currentTab, transactions);
 
       this.setData({
         balance: wallet.balance || 0,
         balanceDisplay: Number(wallet.balance || 0).toLocaleString('zh-CN', { minimumFractionDigits: 2 }),
         frozenAmount: frozenAmount.toFixed(2),
-        withdrawableAmount: withdrawableAmount,
+        withdrawableAmount: withdrawableAmount.toFixed(2),
         totalIncome: wallet.total_income || 0,
         transactions,
+        filteredTransactions,
         loading: false,
       });
     } catch (err) {
@@ -74,13 +86,7 @@ Page({
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab;
     const tabPositions = { all: '32rpx', income: '160rpx', expense: '288rpx' };
-    const transactions = this.data.transactions;
-    let filteredTransactions = transactions;
-    if (tab === 'income') {
-      filteredTransactions = transactions.filter(t => t.amount > 0);
-    } else if (tab === 'expense') {
-      filteredTransactions = transactions.filter(t => t.amount < 0);
-    }
+    const filteredTransactions = this.getFilteredTransactions(tab, this.data.transactions);
     this.setData({
       currentTab: tab,
       tabIndicatorLeft: tabPositions[tab] || '32rpx',

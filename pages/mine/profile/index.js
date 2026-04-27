@@ -46,9 +46,9 @@ Page({
           user.avatar = url;
           this.setData({ user });
           wx.hideLoading();
-        }).catch(() => {
+        }).catch((err) => {
           wx.hideLoading();
-          wx.showToast({ title: '上传失败', icon: 'none' });
+          wx.showToast({ title: err.message || '上传失败', icon: 'none' });
         });
       },
       fail: (res) => {

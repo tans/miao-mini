@@ -135,7 +135,7 @@ Page({
 
       return Api.createAppeal({
         type: 1, // 任务申诉
-        target_id: this.data.selectedTask.taskId, // task ID
+        task_id: this.data.selectedTask.taskId,
         reason: this.data.selectedType.name + ': ' + this.data.reason,
         evidence: evidence
       });

@@ -157,7 +157,7 @@ module.exports = {
           <text class="switch-desc">开启后，创作者的投稿仅商家可见</text>
         </view>
         <!-- <image class="switch-icon" src="./images/icon-remove.png" /> -->
-        <switch class="switch-icon" checked="{{privacyEnabled}}" bindchange="togglePrivacy" color="#FF9F2F"/>
+        <switch class="switch-icon" checked="{{privacyProtected}}" bindchange="togglePrivacy" color="#FF9F2F"/>
       </view>
     </view>
 
@@ -287,7 +287,7 @@ height: 32rpx;"/>
         </view>
         <view class="budget-total-row" >
           <text class="budget-total-label" style="color:#878FA1;font-weight:400;">当前钱包可用余额</text>
-          <text class="budget-total-value" style="color:#878FA1;font-weight:400;">¥10000</text>
+          <text class="budget-total-value" style="color:#878FA1;font-weight:400;">¥{{walletBalanceDisplay}}</text>
         </view>
         <view class="budget-tips">tips：活动金额按报名人数上限全额冻结，审核完全部稿件48小时后，剩余活动金即可解冻。</view>
       </view>

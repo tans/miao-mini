@@ -74,9 +74,9 @@ Page({
         Api.uploadImage(tempFilePath).then((url) => {
           this.setData({ licenseUrl: url });
           wx.hideLoading();
-        }).catch(() => {
+        }).catch((err) => {
           wx.hideLoading();
-          wx.showToast({ title: '上传失败', icon: 'none' });
+          wx.showToast({ title: err.message || '上传失败', icon: 'none' });
         });
       }
     });
