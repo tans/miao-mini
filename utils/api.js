@@ -204,8 +204,9 @@ const Api = {
   },
 
   getDisplayUrl(url) {
-    const raw = (url || '').trim();
+    let raw = (url || '').trim();
     if (!raw) return '';
+    raw = this.getRawDisplayUrl(raw);
     if (
       raw.startsWith('data:') ||
       raw.startsWith('wxfile://') ||
@@ -215,14 +216,7 @@ const Api = {
     ) {
       return raw;
     }
-    if (raw.includes('/api/v1/assets/preview?raw=')) {
-      return raw;
-    }
     if (/^https?:\/\//i.test(raw)) {
-      if (/\.(cos\.[^/]+\.myqcloud\.com|myqcloud\.com)/i.test(raw) || raw.includes('clawos-')) {
-        const base = this.getApiBase().replace(/\/api\/v1$/, '');
-        return `${base}/api/v1/assets/preview?raw=${encodeURIComponent(raw)}`;
-      }
       return raw;
     }
     return this.resolvePublicUrl(raw);
