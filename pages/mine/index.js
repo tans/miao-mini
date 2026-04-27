@@ -54,12 +54,13 @@ Page({
         Api.getWallet()
       ]);
       const user = userRes.data || {};
+      const normalizedUser = { ...user, avatar: Api.getRawDisplayUrl(user.avatar) };
       const wallet = walletRes.data || {};
       // 更新全局用户缓存
-      app.setAuth(app.getToken(), user);
+      app.setAuth(app.getToken(), normalizedUser);
       this.setData({
-        user,
-        avatarSrc: user.avatar || '/assets/icons/avatar-default.jpg',
+        user: normalizedUser,
+        avatarSrc: Api.getDisplayUrl(normalizedUser.avatar) || '/assets/icons/avatar-default.jpg',
         balance: (wallet.balance || 0).toFixed(2)
       });
     } catch (err) {

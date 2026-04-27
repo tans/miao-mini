@@ -51,10 +51,11 @@ const Api = {
   },
 
   setAuth(token, user) {
+    const normalizedUser = this.normalizeUserAvatar(user);
     this.setToken(token);
-    this.setUser(user);
+    this.setUser(normalizedUser);
     getApp().globalData.token = token;
-    getApp().globalData.user = user;
+    getApp().globalData.user = normalizedUser;
   },
 
   clearAuth() {
@@ -202,36 +203,71 @@ const Api = {
     return url;
   },
 
-  async uploadToCos(tempFilePath, options = {}) {
-    const fileType = options.type || 'image';
-    const ext = (options.ext || this.getFileExt(tempFilePath) || (fileType === 'video' ? '.mp4' : '.jpg')).toLowerCase();
-    const filename = options.filename || this.getFileNameFromPath(tempFilePath) || (fileType === 'video' ? 'video.mp4' : 'image.jpg');
-    const credential = await this.getCosCredential(fileType, ext, options);
-    const uploadUrl = credential.upload_url || credential.uploadUrl;
-    const fileUrl = credential.file_url || credential.fileUrl || '';
-    const previewUrl = credential.preview_url || credential.previewUrl || fileUrl || '';
-    const key = credential.key || '';
-    if (!uploadUrl) {
-      throw new Error('获取上传凭证失败');
+  getDisplayUrl(url) {
+    const raw = (url || '').trim();
+    if (!raw) return '';
+    if (
+      raw.startsWith('data:') ||
+      raw.startsWith('wxfile://') ||
+      raw.startsWith('cloud://') ||
+      raw.startsWith('/assets/') ||
+      raw.startsWith('/images/')
+    ) {
+      return raw;
     }
+    if (raw.includes('/api/v1/assets/preview?raw=')) {
+      return raw;
+    }
+    if (/^https?:\/\//i.test(raw)) {
+      if (/\.(cos\.[^/]+\.myqcloud\.com|myqcloud\.com)/i.test(raw) || raw.includes('clawos-')) {
+        const base = this.getApiBase().replace(/\/api\/v1$/, '');
+        return `${base}/api/v1/assets/preview?raw=${encodeURIComponent(raw)}`;
+      }
+      return raw;
+    }
+    return this.resolvePublicUrl(raw);
+  },
 
-    const fileData = await this.readFileAsArrayBuffer(tempFilePath);
-    const fileInfo = await this.getFileInfo(tempFilePath).catch(() => ({ size: 0 }));
-    const contentType = this.getCosContentType(fileType, ext);
+  getRawDisplayUrl(url) {
+    const raw = (url || '').trim();
+    if (!raw) return '';
+    const marker = '/api/v1/assets/preview?raw=';
+    const idx = raw.indexOf(marker);
+    if (idx < 0) return raw;
+    const encoded = raw.slice(idx + marker.length);
+    try {
+      return decodeURIComponent(encoded);
+    } catch (e) {
+      return raw;
+    }
+  },
 
-    await new Promise((resolve, reject) => {
-      wx.request({
+  normalizeUserAvatar(user) {
+    if (!user || typeof user !== 'object') return user;
+    const next = { ...user };
+    next.avatar = this.getRawDisplayUrl(next.avatar);
+    return next;
+  },
+
+  async uploadViaBackend(tempFilePath, options = {}, fileType = 'image', ext = '', filename = '') {
+    const uploadUrl = this.getApiBase().replace(/\/api\/v1$/, '') + '/api/v1/upload';
+    const formData = {
+      type: fileType,
+    };
+    if (options.bizType) formData.biz_type = options.bizType;
+    if (options.bizId) formData.biz_id = options.bizId;
+    if (options.jobId) formData.job_id = options.jobId;
+
+    const uploadRes = await new Promise((resolve, reject) => {
+      wx.uploadFile({
         url: uploadUrl,
-        method: 'PUT',
-        data: fileData,
-        header: {
-          'Content-Type': contentType,
-        },
+        filePath: tempFilePath,
+        name: 'file',
+        formData,
         timeout: options.timeout || (fileType === 'video' ? 600000 : 120000),
-        responseType: 'text',
         success: (res) => {
           if (res.statusCode >= 200 && res.statusCode < 300) {
-            resolve();
+            resolve(res);
             return;
           }
           reject(new Error(`上传失败(${res.statusCode})`));
@@ -243,12 +279,97 @@ const Api = {
       });
     });
 
+    let payload = uploadRes.data;
+    if (typeof payload === 'string') {
+      try {
+        payload = JSON.parse(payload);
+      } catch (e) {
+        throw new Error('服务器响应异常');
+      }
+    }
+    if (!payload || payload.code !== 0) {
+      throw new Error((payload && payload.message) || '上传失败');
+    }
+
+    const fileData = payload.data || {};
+    const fileInfo = await this.getFileInfo(tempFilePath).catch(() => ({ size: 0 }));
+    const fileUrl = fileData.url || '';
+    return {
+      url: this.resolvePublicUrl(fileUrl),
+      previewUrl: this.getDisplayUrl(fileUrl),
+      key: fileData.key || '',
+      jobId: fileData.job_id || options.jobId || '',
+      filename: fileData.filename || filename,
+      size: fileInfo.size || 0,
+      type: fileType,
+      ext,
+    };
+  },
+
+  async uploadToCos(tempFilePath, options = {}) {
+    const fileType = options.type || 'image';
+    const ext = (options.ext || this.getFileExt(tempFilePath) || (fileType === 'video' ? '.mp4' : '.jpg')).toLowerCase();
+    const filename = options.filename || this.getFileNameFromPath(tempFilePath) || (fileType === 'video' ? 'video.mp4' : 'image.jpg');
+    const fileInfo = await this.getFileInfo(tempFilePath).catch(() => ({ size: 0 }));
+    const contentType = this.getCosContentType(fileType, ext);
+    let fileUrl = '';
+    let previewUrl = '';
+    let key = '';
+    let credentialJobId = options.jobId || '';
+
+    try {
+      const credential = await this.getCosCredential(fileType, ext, options);
+      const uploadUrl = credential.upload_url || credential.uploadUrl;
+      fileUrl = credential.file_url || credential.fileUrl || '';
+      previewUrl = credential.preview_url || credential.previewUrl || fileUrl || '';
+      key = credential.key || '';
+      credentialJobId = credential.job_id || options.jobId || '';
+      if (!uploadUrl) {
+        throw new Error('获取上传凭证失败');
+      }
+
+      const fileData = await this.readFileAsArrayBuffer(tempFilePath);
+
+      await new Promise((resolve, reject) => {
+        wx.request({
+          url: uploadUrl,
+          method: 'PUT',
+          data: fileData,
+          header: {
+            'Content-Type': contentType,
+          },
+          timeout: options.timeout || (fileType === 'video' ? 600000 : 120000),
+          responseType: 'text',
+          success: (res) => {
+            if (res.statusCode >= 200 && res.statusCode < 300) {
+              resolve();
+              return;
+            }
+            reject(new Error(`上传失败(${res.statusCode})`));
+          },
+          fail: (err) => {
+            const msg = err && (err.message || err.errMsg) || '上传失败';
+            reject(new Error(msg));
+          },
+        });
+      });
+    } catch (err) {
+      const errMsg = (err && (err.message || err.errMsg)) || '';
+      const shouldFallback = !errMsg || errMsg.includes('url not in domain list') || errMsg.includes('request:fail');
+      if (!shouldFallback) {
+        throw err;
+      }
+      const backendResult = await this.uploadViaBackend(tempFilePath, options, fileType, ext, filename);
+      wx.setStorageSync('lastUploadTime', new Date().toISOString());
+      return options.returnMeta ? backendResult : backendResult.url;
+    }
+
     wx.setStorageSync('lastUploadTime', new Date().toISOString());
     const result = {
       url: this.resolvePublicUrl(fileUrl),
-      previewUrl: this.resolvePublicUrl(previewUrl),
+      previewUrl: previewUrl ? this.getDisplayUrl(previewUrl) : this.getDisplayUrl(fileUrl),
       key,
-      jobId: credential.job_id || options.jobId || '',
+      jobId: credentialJobId,
       filename,
       size: fileInfo.size || 0,
       type: fileType,

@@ -29,8 +29,9 @@ App({
     if (token && userStr) {
       this.globalData.token = token;
       try {
-        this.globalData.user =
+        const parsedUser =
           typeof userStr === "string" ? JSON.parse(userStr) : userStr;
+        this.globalData.user = Api.normalizeUserAvatar ? Api.normalizeUserAvatar(parsedUser) : parsedUser;
       } catch (e) {
         this.globalData.user = null;
       }
@@ -124,10 +125,11 @@ App({
   },
 
   setAuth(token, user) {
+    const normalizedUser = Api.normalizeUserAvatar ? Api.normalizeUserAvatar(user) : user;
     this.globalData.token = token;
-    this.globalData.user = user;
+    this.globalData.user = normalizedUser;
     wx.setStorageSync("miao_token", token);
-    wx.setStorageSync("miao_user", JSON.stringify(user));
+    wx.setStorageSync("miao_user", JSON.stringify(normalizedUser));
   },
 
   clearAuth() {

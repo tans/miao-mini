@@ -15,11 +15,12 @@ Page({
 
   loadUser() {
     const user = app.globalData.user;
+    const rawAvatar = Api.getRawDisplayUrl(user && user.avatar);
     this.setData({
-      user: user,
+      user: user ? { ...user, avatar: rawAvatar } : user,
       nickname: user && (user.nickname || user.username) || '',
       phone: user && user.phone || '',
-      avatarSrc: user && user.avatar || '/assets/icons/avatar-default.jpg'
+      avatarSrc: Api.getDisplayUrl(rawAvatar) || '/assets/icons/avatar-default.jpg'
     });
   },
 
@@ -50,7 +51,7 @@ Page({
         }).then((url) => {
           const user = this.data.user || {};
           user.avatar = url;
-          this.setData({ user, avatarSrc: url || '/assets/icons/avatar-default.jpg' });
+          this.setData({ user, avatarSrc: Api.getDisplayUrl(url) || '/assets/icons/avatar-default.jpg' });
           wx.hideLoading();
         }).catch((err) => {
           wx.hideLoading();
@@ -69,7 +70,7 @@ Page({
   saveProfile() {
     const nickname = this.data.nickname.trim();
     const phone = this.data.phone.trim();
-    const avatar = this.data.user && this.data.user.avatar || '';
+    const avatar = Api.getRawDisplayUrl(this.data.user && this.data.user.avatar || '');
     if (!nickname) {
       wx.showToast({ title: '请输入昵称', icon: 'none' });
       return;
@@ -86,7 +87,7 @@ Page({
       user.phone = phone;
       user.avatar = avatar;
       app.setAuth(app.getToken(), user);
-      this.setData({ user, avatarSrc: avatar || '/assets/icons/avatar-default.jpg' });
+      this.setData({ user, avatarSrc: Api.getDisplayUrl(avatar) || '/assets/icons/avatar-default.jpg' });
       wx.hideLoading();
       wx.showToast({ title: '保存成功', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1500);

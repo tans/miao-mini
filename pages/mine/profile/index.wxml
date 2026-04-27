@@ -2,8 +2,7 @@
   <!-- 头像卡片 -->
   <view class="avatar-card">
     <view class="avatar-section">
-      <image class="avatar" src="/assets/icons/avatar-default.jpg" mode="aspectFill" />
-      <text class="avatar-debug">{{avatarSrc}}</text>
+      <image class="avatar" src="{{avatarSrc}}" mode="aspectFill" binderror="onAvatarError" />
       <view class="avatar-edit" bindtap="changeAvatar">
         <text class="avatar-edit-text">更换头像</text>
       </view>
