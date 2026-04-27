@@ -38,7 +38,7 @@
             <view class="upload-remove" bindtap="removeImage" data-index="{{index}}">×</view>
           </view>
           <view class="upload-add" bindtap="uploadImage" wx:if="{{uploadImages.length < 3}}">
-            <image class="upload-icon" src="/assets/icons/upload.png" />
+            <image class="upload-icon" src="/pages/employer/create-task/images/icon-upload-plus.png" />
             <text class="upload-text">添加凭证</text>
           </view>
         </view>

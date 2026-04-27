@@ -98,7 +98,7 @@
         <view class="task-tags">
           <view class="badge badge-reward" wx:if="{{item.award_price > 0}}">
             <image src="../../images/home/badge-reward.png" class="badge-icon" />
-            <text>参与奖励:¥{{item.award_price}}</text>
+            <text>采纳奖励:¥{{item.award_price}}</text>
           </view>
           <view class="badge badge-brand">
             <image src="../../images/home/badge-brand.png" class="badge-icon" />
