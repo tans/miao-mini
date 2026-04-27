@@ -1,7 +1,7 @@
 <view class="page">
   <view class="tab-switch">
     <view class="tab-item {{currentTab === 'proposals' ? 'active' : ''}}" data-tab="proposals" bindtap="switchTab">
-      <text>全部投稿</text>
+      <text>任务视频</text>
     </view>
     <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" data-tab="detail" bindtap="switchTab">
       <text>任务详情</text>
@@ -10,20 +10,14 @@
 
   <view class="content">
     <view class="tab-content" wx:if="{{currentTab === 'proposals'}}">
-      <view class="task-id-card compact-card">
-        <view class="id-info">
-          <text class="id-label">任务ID</text>
-          <text class="id-value">{{task.id || '--'}}</text>
-        </view>
-        <view class="copy-btn" bindtap="copyTaskId">
-          <text>复制</text>
-        </view>
-      </view>
 
       <view class="stats-cards">
         <view class="stat-card">
           <text class="stat-card-label">总投稿数</text>
-          <text class="stat-card-value">{{totalSubmitted}}</text>
+          <view class="stat-card-number-row">
+            <text class="stat-card-value">{{totalSubmitted}}</text>
+            <text class="stat-card-unit">/10</text>
+          </view>
           <text class="stat-card-hint">{{proposalCount}} 个待审核</text>
         </view>
         <view class="stat-card">
@@ -40,35 +34,39 @@
 
       <view class="review-tip-card">
         <view class="safety-header">
-          <view class="safety-badge">审</view>
-          <text class="safety-title">审核规则</text>
+          <image class="safety-badge" src="../../../images/home/msg-icon.png" />
+          <text class="safety-title"><text class="safety-title-brand">创意喵</text>安全提醒</text>
         </view>
-        <text class="safety-text">采纳发放采纳奖与参与奖，淘汰默认发放参与奖；遇到违规稿件可直接举报。</text>
+        <view class="safety-text">
+          请在<text class="safety-highlight">收到投稿后48小时内审核稿件</text>，超时未审核将自动为创作者发放参与奖，后续继续采纳可自动补发采纳奖。
+          采纳稿件后自动为创作者发放采纳奖+参与奖；淘汰自动发放参与奖；
+          <text class="safety-highlight">如遇恶意低质量水稿件可直接举报</text>，平台介入确认事实后，退还此稿参与奖至商家钱包。
+        </view>
       </view>
-
-      <view class="filter-tabs">
-        <text
-          wx:for="{{filters}}"
-          wx:key="key"
-          class="filter-chip {{activeFilter === item.key ? 'active' : ''}}"
-          data-filter="{{item.key}}"
-          bindtap="switchFilter"
-        >{{item.label}}</text>
-      </view>
-
-      <view class="batch-bar" wx:if="{{batchMode}}">
+      <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false">
+        <view class="filter-tabs">
+          <text
+            wx:for="{{filters}}"
+            wx:key="key"
+            class="filter-chip {{activeFilter === item.key ? 'active' : ''}}"
+            data-filter="{{item.key}}"
+            bindtap="switchFilter"
+          >{{item.label}}</text>
+        </view>
+      </scroll-view>
+      <!-- <view class="batch-bar" wx:if="{{batchMode}}">
         <text class="batch-info">已选 {{selectedCount}} 个作品</text>
         <view class="batch-actions">
           <text class="batch-btn batch-download" bindtap="downloadSelected">下载</text>
           <text class="batch-btn batch-reject" data-action="5" bindtap="batchReview">淘汰</text>
           <text class="batch-btn batch-accept" data-action="3" bindtap="batchReview">采纳</text>
         </view>
-      </view>
+      </view> -->
 
       <view class="claims-list" wx:if="{{filteredClaims.length > 0}}">
-        <view class="batch-toggle" bindtap="toggleBatchMode">
+        <!-- <view class="batch-toggle" bindtap="toggleBatchMode">
           <text class="batch-toggle-text">{{batchMode ? '完成' : '批量操作'}}</text>
-        </view>
+        </view> -->
 
         <view class="claim-item {{selectedClaims[claim.id] ? 'selected' : ''}}" wx:for="{{filteredClaims}}" wx:key="id" wx:for-item="claim">
           <view class="claim-checkbox {{!claim.canReview ? 'disabled' : ''}}" wx:if="{{batchMode}}" bindtap="toggleClaimSelection" data-claim-id="{{claim.id}}">
@@ -81,17 +79,17 @@
               <text class="creator-avatar-text" wx:else>{{claim.creatorInitial}}</text>
               <view class="creator-meta">
                 <text class="creator-name">{{claim.creatorName}}</text>
-                <text class="submit-time">{{claim.displayDate}}</text>
+                <text class="submit-time">{{claim.displayDate}}提交</text>
               </view>
             </view>
-            <view class="status-badge status-{{claim.statusClass}}">
+            <view class="status-badge {{claim.statusClass}}">
               <text>{{claim.statusText}}</text>
             </view>
           </view>
 
-          <view class="claim-content" wx:if="{{claim.hasContent}}">
+          <!-- <view class="claim-content" wx:if="{{claim.hasContent}}">
             <text class="content-text">{{claim.contentText}}</text>
-          </view>
+          </view> -->
 
           <view class="claim-content claim-processing" wx:if="{{claim.processStatusText}}">
             <text class="content-text">{{claim.processStatusText}}</text>
@@ -128,11 +126,11 @@
           </view>
 
           <view class="claim-footer">
-            <text class="claim-title">{{claim.taskTitle}}</text>
+            <!-- <text class="claim-title">{{claim.taskTitle}}</text> -->
             <view class="action-btns" wx:if="{{claim.canReview}}">
+              <text class="action-btn accept" data-claim-id="{{claim.id}}" data-result="3" bindtap="reviewClaim">采纳</text>
               <text class="action-btn reject" data-claim-id="{{claim.id}}" data-result="5" bindtap="reviewClaim">淘汰</text>
               <text class="action-btn report" data-claim-id="{{claim.id}}" data-result="6" bindtap="reviewClaim">举报</text>
-              <text class="action-btn accept" data-claim-id="{{claim.id}}" data-result="3" bindtap="reviewClaim">采纳</text>
             </view>
           </view>
         </view>
@@ -146,7 +144,7 @@
     </view>
 
     <view class="tab-content" wx:if="{{currentTab === 'detail'}}">
-      <view class="merchant-card">
+      <!-- <view class="merchant-card">
         <view class="merchant-main">
           <image wx:if="{{task.businessAvatar}}" class="merchant-avatar" src="{{task.businessAvatar}}" mode="aspectFill" />
           <view wx:else class="merchant-avatar merchant-avatar-fallback">商</view>
@@ -180,7 +178,7 @@
             <text class="stat-value">¥{{totalSpent || task.totalSpent || 0}}</text>
           </view>
         </view>
-      </view>
+      </view> -->
 
       <view class="task-id-card">
         <view class="id-info">
@@ -194,7 +192,7 @@
 
       <view class="detail-card">
         <text class="detail-card-title">任务详情</text>
-        <text class="detail-title">{{task.title || '高端楼盘春日氛围视频'}}</text>
+        <text class="detail-title">{{task.title || ''}}</text>
 
         <view class="reward-row">
           <view class="reward-item">
@@ -215,20 +213,12 @@
         </view>
 
         <view class="tags-row">
-          <view class="tag-group">
-            <text class="tag-label">行业标签</text>
-            <view class="tag-list">
-              <view class="tag-chip" wx:for="{{task.industryTags}}" wx:key="*this">
-                <text class="tag-chip-text">{{item}}</text>
-              </view>
+          <view class="tag-list">
+            <view class="tag-chip" wx:for="{{task.industryTags}}" wx:key="index">
+              <text class="tag-chip-text">{{item}}</text>
             </view>
-          </view>
-          <view class="tag-group">
-            <text class="tag-label">风格标签</text>
-            <view class="tag-list">
-              <view class="tag-chip" wx:for="{{task.styleTags}}" wx:key="*this">
-                <text class="tag-chip-text">{{item}}</text>
-              </view>
+            <view class="tag-chip" wx:for="{{task.styleTags}}" wx:key="index">
+              <text class="tag-chip-text">{{item}}</text>
             </view>
           </view>
         </view>
@@ -237,21 +227,23 @@
           <text class="desc-text">{{task.description || '暂无任务描述'}}</text>
         </view>
 
-        <view class="spec-item">
-          <text class="spec-label">视频尺寸</text>
-          <text class="spec-value">{{task.videoAspect || '未设置'}}</text>
-        </view>
-        <view class="spec-item">
-          <text class="spec-label">分辨率</text>
-          <text class="spec-value">{{task.videoResolution || '未设置'}}</text>
-        </view>
-        <view class="spec-item">
-          <text class="spec-label">视频时长</text>
-          <text class="spec-value">{{task.videoDuration || '未设置'}}</text>
-        </view>
-        <view class="spec-item">
-          <text class="spec-label">截稿时间</text>
-          <text class="spec-value">{{task.endAt || '未设置'}}</text>
+        <view class="specs-grid">
+          <view class="spec-item">
+            <text class="spec-label">视频尺寸</text>
+            <text class="spec-value">{{task.videoAspect || '未设置'}}</text>
+          </view>
+          <view class="spec-item">
+            <text class="spec-label">分辨率</text>
+            <text class="spec-value">{{task.videoResolution || '未设置'}}</text>
+          </view>
+          <view class="spec-item">
+            <text class="spec-label">视频时长</text>
+            <text class="spec-value">{{task.videoDuration || '未设置'}}</text>
+          </view>
+          <view class="spec-item">
+            <text class="spec-label">截稿时间</text>
+            <text class="spec-value">{{task.endAt || '未设置'}}</text>
+          </view>
         </view>
 
         <view class="restriction-section">
@@ -289,44 +281,53 @@
       <view class="jimeng-card">
         <view class="section-header">
           <text class="header-title">即梦合拍</text>
-          <text class="header-hint">商家提供数字人模型给创作者用于合成视频</text>
         </view>
-
-        <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
+        <view class="jimeng-content">
+          <view class="jimeng-content-main">
+            <view class="jimeng-content-header">
+              <text class="header-hint">即梦合拍设置</text>
+              <text class="header-hint">商家提供数字人模型给创作者用于合成视频</text>
+            </view>
+            <switch class="switch-icon" checked="{{jimengEnabled}}" color="#FF9F2F" disabled/>
+          </view>
+          
+          <!-- <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
           <text class="jimeng-link">{{task.jimengLink || '暂未设置'}}</text>
           <text class="jimeng-count">{{task.jimengLinkLength || 0}}/50</text>
-        </view>
-        <view wx:else class="jimeng-edit-row">
-          <input
-            class="jimeng-edit-input"
-            placeholder="请输入新的邀请链接"
-            value="{{editJimengLink}}"
-            bindinput="onJimengLinkInput"
-            maxlength="50"
-          />
-          <text class="jimeng-count">{{editJimengLink.length}}/50</text>
-        </view>
+          </view> -->
+          
+          <view class="jimeng-edit-row">
+            <input
+              class="jimeng-edit-input"
+              placeholder="请输入新的邀请链接"
+              value="{{editJimengLink}}"
+              bindinput="onJimengLinkInput"
+              maxlength="50"
+            />
+            <text class="jimeng-count">{{editJimengLink.length}}/50</text>
+          </view>
 
-        <view class="jimeng-actions">
-          <view class="jimeng-tutorial" bindtap="showJimengTutorial">
-            <text>查看教程</text>
-          </view>
-          <view class="jimeng-btn" bindtap="toggleEditJimeng">
-            <text>{{showEditJimeng ? '取消' : '更新链接'}}</text>
+          <view class="jimeng-actions">
+            <view class="jimeng-tutorial" bindtap="showJimengTutorial">
+              <text>查看即梦合拍教程</text>
+            </view>
           </view>
         </view>
-        <view wx:if="{{showEditJimeng}}" class="jimeng-confirm" bindtap="updateJimengLink">
-          <text>确认更新</text>
+        
+
+        
+        <view class="jimeng-confirm" bindtap="updateJimengLink">
+          <text>更新链接</text>
         </view>
       </view>
 
-      <view class="safety-card">
+      <!-- <view class="safety-card">
         <view class="safety-header">
           <view class="safety-badge">安</view>
           <text class="safety-title">安全提醒</text>
         </view>
         <text class="safety-text">如发现违规需求或恶意灌水稿件，可在“全部投稿”中直接处理或举报。</text>
-      </view>
+      </view> -->
     </view>
   </view>
 </view>
