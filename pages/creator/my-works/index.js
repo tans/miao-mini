@@ -47,9 +47,9 @@ Page({
     try {
       const res = await Api.getMyClaims({ page: 1 });
       const claims = res.data || [];
-      // 筛选已提交的作品（status >= 2）
+      // 筛选已提交的作品，保留退回/举报这类已处理记录
       const submittedWorks = claims
-        .filter(c => Number(c.status) >= 2)
+        .filter(c => Number(c.status) >= 2 || Number(c.review_result || c.reviewResult || 0) > 0)
         .map(c => this.formatWork(c));
       this.setData({ works: submittedWorks, loading: false });
       this.applyFilter(this.data.currentFilter);
@@ -63,6 +63,7 @@ Page({
 
   formatWork(claim) {
     const status = Number(claim.status);
+    const reviewResult = Number(claim.review_result || claim.reviewResult || 0);
     const materials = Array.isArray(claim.materials) ? claim.materials : [];
     const imageMaterials = materials.filter(m => m.file_type === 'image');
     const videoMaterials = materials.filter(m => m.file_type === 'video');
@@ -87,7 +88,15 @@ Page({
     let rejectReason = '';
     let reportReason = '';
 
-    if (status === 2) {
+    if (status === 1 && reviewResult === 2) {
+      incomeLabel = '收入(已退回，可重提)';
+      incomeText = '¥0';
+      rejectReason = claim.review_comment || claim.reviewComment || '';
+    } else if (status === 1 && reviewResult === 3) {
+      incomeLabel = '收入(被举报)';
+      incomeText = '¥0';
+      reportReason = claim.review_comment || claim.reviewComment || '';
+    } else if (status === 2) {
       // 待验收/审核中
       incomeLabel = '收入(审核超时自动补发参与金)';
       incomeText = '¥5';
@@ -112,9 +121,10 @@ Page({
       title: claim.title || '',
       content: claim.content || '',
       status,
-      statusText: this.getStatusText(status),
-      statusClass: this.getStatusClass(status),
-      filterKey: this.getFilterKey(status),
+      reviewResult,
+      statusText: this.getStatusText(status, reviewResult),
+      statusClass: this.getStatusClass(status, reviewResult),
+      filterKey: this.getFilterKey(status, reviewResult),
       previewImages: imageMaterials.map(m => m.file_path),
       previewVideos: videoMaterials.map(m => ({
         url: m.file_path,
@@ -135,7 +145,9 @@ Page({
     };
   },
 
-  getStatusText(status) {
+  getStatusText(status, reviewResult = 0) {
+    if (status === 1 && reviewResult === 2) return '已退回';
+    if (status === 1 && reviewResult === 3) return '已举报';
     const map = {
       2: '商家审核中',
       3: '已采纳',
@@ -146,7 +158,9 @@ Page({
     return map[status] || '未知';
   },
 
-  getStatusClass(status) {
+  getStatusClass(status, reviewResult = 0) {
+    if (status === 1 && reviewResult === 2) return 'rejected';
+    if (status === 1 && reviewResult === 3) return 'reported';
     const map = {
       2: 'pending',
       3: 'adopted',
@@ -157,7 +171,9 @@ Page({
     return map[status] || 'draft';
   },
 
-  getFilterKey(status) {
+  getFilterKey(status, reviewResult = 0) {
+    if (status === 1 && reviewResult === 2) return 'rejected';
+    if (status === 1 && reviewResult === 3) return 'reported';
     if (status === 2) return 'pending';
     if (status === 3) return 'adopted';
     if (status === 5) return 'rejected';

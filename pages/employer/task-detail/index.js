@@ -71,12 +71,20 @@ function extractVideoLink(content) {
   return match ? match[1].trim() : '';
 }
 
-function getClaimStatusText(status) {
+function getClaimStatusText(claim = {}) {
+  const status = Number(claim.status);
+  const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  if (status === 1 && reviewResult === 2) return '已退回';
+  if (status === 1 && reviewResult === 3) return '已举报';
   const map = { 1: '待提交', 2: '待审核', 3: '已采纳', 4: '已取消', 5: '已淘汰', 6: '已举报' };
   return map[status] || `未知(${status})`;
 }
 
-function getClaimStatusClass(status) {
+function getClaimStatusClass(claim = {}) {
+  const status = Number(claim.status);
+  const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  if (status === 1 && reviewResult === 2) return 'rejected';
+  if (status === 1 && reviewResult === 3) return 'reported';
   const map = { 1: 'draft', 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'rejected', 6: 'reported' };
   return map[status] || 'draft';
 }
@@ -91,6 +99,7 @@ function getFilterKey(status) {
 
 function normalizeClaim(claim = {}, task = {}) {
   const status = Number(claim.status);
+  const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
   const materials = Array.isArray(claim.materials) ? claim.materials : [];
   const imageMaterials = materials.filter((item) => item.file_type === 'image' && item.file_path);
   const videoMaterials = materials.filter((item) => item.file_type === 'video' && item.file_path);
@@ -107,9 +116,10 @@ function normalizeClaim(claim = {}, task = {}) {
     ...claim,
     id: claim.id,
     status,
-    statusText: getClaimStatusText(status),
-    statusClass: getClaimStatusClass(status),
-    filterKey: getFilterKey(status),
+    reviewResult,
+    statusText: getClaimStatusText(claim),
+    statusClass: getClaimStatusClass(claim),
+    filterKey: status === 1 && reviewResult === 0 ? 'draft' : getFilterKey(status),
     creatorName: claim.creator_name || '匿名创作者',
     creatorAvatar: claim.creator_avatar || '',
     creatorInitial: (claim.creator_name || '匿').slice(0, 1),
@@ -224,7 +234,7 @@ Page({
 
       const task = normalizeTask(rawTask);
       const claims = (Array.isArray(claimsRes.data) ? claimsRes.data : [])
-        .filter((item) => Number(item.status) !== 1)
+        .filter((item) => Number(item.status) !== 1 || Number(pick(item.review_result, item.reviewResult, 0)) > 0)
         .map((item) => normalizeClaim(item, task));
       const pendingClaims = claims.filter((item) => item.filterKey === 'pending');
       const totalSubmitted = claims.length;
