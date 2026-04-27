@@ -447,6 +447,29 @@ const Api = {
     return this.request('GET', '/business/inspirations' + qs);
   },
 
+  // Notifications
+  getNotifications(params = {}) {
+    const q = [];
+    if (params.page) q.push(`page=${params.page}`);
+    if (params.limit) q.push(`limit=${params.limit}`);
+    if (params.type) q.push(`type=${encodeURIComponent(params.type)}`);
+    if (params.isRead != null) q.push(`is_read=${params.isRead ? 1 : 0}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/notifications' + qs);
+  },
+
+  markNotificationRead(id) {
+    return this.request('PUT', `/notifications/${id}/read`, {});
+  },
+
+  markAllNotificationsRead() {
+    return this.request('PUT', '/notifications/read-all', {});
+  },
+
+  getUnreadNotificationCount() {
+    return this.request('GET', '/notifications/unread-count');
+  },
+
   // Admin - User Management
   getAdminUsers(params = {}) {
     const q = [];

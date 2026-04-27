@@ -1,0 +1,253 @@
+.messages-page {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, #fff5e7 0%, #fff9f2 220rpx, #f7f8fa 500rpx);
+}
+
+.messages-header {
+  padding: 24rpx 24rpx 20rpx;
+}
+
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24rpx;
+}
+
+.header-title {
+  display: block;
+  font-size: 40rpx;
+  line-height: 56rpx;
+  font-weight: 700;
+  color: #2f2f33;
+}
+
+.header-subtitle {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  color: #8d8d99;
+}
+
+.header-action {
+  flex-shrink: 0;
+  margin-top: 6rpx;
+  padding: 16rpx 24rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.72);
+  color: #9b9ba3;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(43, 31, 14, 0.06);
+}
+
+.header-action.active {
+  background: #fff;
+  color: #ef8802;
+}
+
+.filter-row {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 24rpx;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 14rpx 24rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.72);
+  color: #777783;
+  font-size: 26rpx;
+  line-height: 26rpx;
+}
+
+.filter-pill.active {
+  background: #2f2f33;
+  color: #fff;
+}
+
+.pill-badge {
+  min-width: 32rpx;
+  height: 32rpx;
+  padding: 0 10rpx;
+  border-radius: 999rpx;
+  background: #ef8802;
+  color: #fff;
+  font-size: 20rpx;
+  line-height: 32rpx;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.messages-scroll {
+  height: calc(100vh - 232rpx);
+}
+
+.messages-list {
+  padding: 8rpx 24rpx 36rpx;
+}
+
+.message-card {
+  display: flex;
+  gap: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14rpx 40rpx rgba(27, 24, 19, 0.06);
+}
+
+.message-card.unread {
+  background: #fff;
+  box-shadow: 0 18rpx 48rpx rgba(239, 136, 2, 0.08);
+}
+
+.message-icon {
+  flex-shrink: 0;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-icon text {
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.message-icon.orange {
+  background: #fff2d8;
+  color: #d77a00;
+}
+
+.message-icon.blue {
+  background: #ebf4ff;
+  color: #3278d8;
+}
+
+.message-icon.success {
+  background: #e9f8ef;
+  color: #25925e;
+}
+
+.message-icon.danger {
+  background: #ffefeb;
+  color: #db5f3e;
+}
+
+.message-icon.purple {
+  background: #f2edff;
+  color: #6f58c9;
+}
+
+.message-icon.gray {
+  background: #f1f3f7;
+  color: #697181;
+}
+
+.message-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  min-width: 0;
+}
+
+.message-title {
+  max-width: 360rpx;
+  font-size: 32rpx;
+  line-height: 44rpx;
+  font-weight: 700;
+  color: #33333a;
+}
+
+.type-tag {
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+  background: #fff5e8;
+  color: #b87018;
+  font-size: 20rpx;
+  line-height: 20rpx;
+}
+
+.time-group {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  flex-shrink: 0;
+}
+
+.unread-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: #ff6a3d;
+}
+
+.message-time {
+  font-size: 22rpx;
+  line-height: 32rpx;
+  color: #9696a2;
+}
+
+.message-content {
+  display: block;
+  margin-top: 16rpx;
+  font-size: 28rpx;
+  line-height: 42rpx;
+  color: #5f6170;
+}
+
+.empty-state,
+.loading-state {
+  padding: 160rpx 48rpx 0;
+  text-align: center;
+}
+
+.empty-illustration {
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 auto 28rpx;
+  border-radius: 48rpx;
+  background: linear-gradient(180deg, #ffe7c1 0%, #ffd6a1 100%);
+  color: #a76000;
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 160rpx;
+}
+
+.empty-title {
+  display: block;
+  font-size: 32rpx;
+  line-height: 44rpx;
+  color: #35353b;
+  font-weight: 700;
+}
+
+.empty-desc,
+.loading-state text {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 26rpx;
+  line-height: 40rpx;
+  color: #8d8d99;
+}

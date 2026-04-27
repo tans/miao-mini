@@ -1,4 +1,9 @@
 const config = require('./utils/config.js');
+const Api = require('./utils/api.js');
+
+const MESSAGE_TAB_PATH = '/pages/messages/index';
+const MESSAGE_TAB_INDEX = 1;
+
 App({
   globalData: {
     user: null,
@@ -6,6 +11,7 @@ App({
     apiBase: config.apiBase,
     worksMode: 'public',
     statusBarHeight: 20,
+    unreadNotificationCount: 0,
   },
 
   // 登录锁，防止 onLaunch 和 onShow 并发登录
@@ -33,6 +39,10 @@ App({
       this.silentLogin();
     }
 
+  },
+
+  onShow() {
+    this.refreshNotificationBadge();
   },
 
   // 静默登录：获取微信 code，调接口自动登录/注册
@@ -123,8 +133,13 @@ App({
   clearAuth() {
     this.globalData.token = null;
     this.globalData.user = null;
+    this.globalData.unreadNotificationCount = 0;
     wx.removeStorageSync("miao_token");
     wx.removeStorageSync("miao_user");
+    wx.removeTabBarBadge({
+      index: MESSAGE_TAB_INDEX,
+      fail: () => {}
+    });
   },
 
   setWorksMode(mode) {
@@ -135,4 +150,43 @@ App({
   getWorksMode() {
     return this.globalData.worksMode || 'public';
   },
+
+  async refreshNotificationBadge() {
+    if (!this.isLoggedIn()) {
+      this.globalData.unreadNotificationCount = 0;
+      wx.removeTabBarBadge({
+        index: MESSAGE_TAB_INDEX,
+        fail: () => {}
+      });
+      return 0;
+    }
+
+    try {
+      const res = await Api.getUnreadNotificationCount();
+      const count = Number(res && res.data && res.data.count) || 0;
+      this.globalData.unreadNotificationCount = count;
+      if (count > 0) {
+        wx.setTabBarBadge({
+          index: MESSAGE_TAB_INDEX,
+          text: count > 99 ? '99+' : String(count),
+          fail: () => {}
+        });
+      } else {
+        wx.removeTabBarBadge({
+          index: MESSAGE_TAB_INDEX,
+          fail: () => {}
+        });
+      }
+      return count;
+    } catch (err) {
+      if (err && err.message === '登录已过期') {
+        this.clearAuth();
+      }
+      return this.globalData.unreadNotificationCount || 0;
+    }
+  },
+
+  isTabPage(path) {
+    return path === '/pages/home/index' || path === MESSAGE_TAB_PATH || path === '/pages/mine/index';
+  }
 });
