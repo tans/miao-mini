@@ -131,13 +131,11 @@ Page({
   updateDisplayText() {
     const uploadTime = buildInfo.uploadTime;
     if (uploadTime) {
-      const date = new Date(uploadTime);
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      this.setData({ displayText: `${month}-${day} ${hours}:${minutes}` });
+      this.setData({ displayText: String(uploadTime).trim() });
+      return;
     }
+
+    this.setData({ displayText: '' });
   },
 
   onAvatarError() {

@@ -201,6 +201,14 @@
   margin-left: 16rpx;
 }
 
+.avatar-debug {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 20rpx;
+  color: #ff3b30;
+  word-break: break-all;
+}
+
 .user-level-row {
   display: flex;
   align-items: baseline;

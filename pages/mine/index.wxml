@@ -33,6 +33,7 @@
           </view>
         </view>
       </view>
+      <text class="avatar-debug">{{avatarSrc}}</text>
       
     </view>
 
@@ -151,6 +152,5 @@
     </view>
   </view>
 
-  <!-- 更新时间（commit hook自动更新） -->
-  <!-- <view class="update-time">最后更新：{{displayText}}</view> -->
+  <view class="update-time" wx:if="{{displayText}}">更新时间：{{displayText}}</view>
 </view>
