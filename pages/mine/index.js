@@ -8,6 +8,7 @@ Page({
     balance: '0.00',
     isLoggedIn: false,
     displayText: '',
+    avatarSrc: '/assets/icons/avatar-default.jpg',
     creatorStats: {
       level: 0,
       level_name: '试用创作者',
@@ -33,7 +34,7 @@ Page({
       this.loadCreatorStats();
       this.loadBusinessStats();
     } else {
-      this.setData({ user: null, balance: '0.00' });
+      this.setData({ user: null, balance: '0.00', avatarSrc: '/assets/icons/avatar-default.jpg' });
       // 触发静默登录
       app.silentLogin().then(() => {
         this.setData({ isLoggedIn: app.isLoggedIn() });
@@ -58,6 +59,7 @@ Page({
       app.setAuth(app.getToken(), user);
       this.setData({
         user,
+        avatarSrc: user.avatar || '/assets/icons/avatar-default.jpg',
         balance: (wallet.balance || 0).toFixed(2)
       });
     } catch (err) {
@@ -135,6 +137,12 @@ Page({
       const hours = String(date.getHours()).padStart(2, '0');
       const minutes = String(date.getMinutes()).padStart(2, '0');
       this.setData({ displayText: `${month}-${day} ${hours}:${minutes}` });
+    }
+  },
+
+  onAvatarError() {
+    if (this.data.avatarSrc !== '/assets/icons/avatar-default.jpg') {
+      this.setData({ avatarSrc: '/assets/icons/avatar-default.jpg' });
     }
   },
 

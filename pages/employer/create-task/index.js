@@ -52,6 +52,7 @@ Page({
     awardTotal: '200.00',
     platformFee: '10.00',
     totalBudget: '230.00',
+    walletBalanceDisplay: '0.00',
     minDeadline: '',
     maxDeadline: '',
     showDialog: false,
@@ -65,11 +66,34 @@ Page({
         wx.hideLoading();
         if (!app.isLoggedIn()) {
           wx.showToast({ title: '登录失败，请稍后重试', icon: 'none' });
+          return;
         }
+        this.loadWalletBalance();
       });
+    } else {
+      this.loadWalletBalance();
     }
     this.initDeadlineRange();
     this.updateBudgetPreview();
+  },
+
+  onShow() {
+    if (app.isLoggedIn()) {
+      this.loadWalletBalance();
+    }
+  },
+
+  async loadWalletBalance() {
+    try {
+      const res = await Api.getWallet();
+      const wallet = res.data || {};
+      const balance = Number(wallet.balance || 0);
+      this.setData({
+        walletBalanceDisplay: balance.toLocaleString('zh-CN', { minimumFractionDigits: 2 })
+      });
+    } catch (err) {
+      this.setData({ walletBalanceDisplay: '0.00' });
+    }
   },
   // 打开对话框
   openDialog() {
@@ -181,11 +205,13 @@ Page({
   },
 
   togglePrivacy() {
-    this.setData({ privacyProtected: !this.data.privacyProtected });
+    const checked = arguments[0] && arguments[0].detail ? !!arguments[0].detail.value : !this.data.privacyProtected;
+    this.setData({ privacyProtected: checked });
   },
 
   toggleJimeng() {
-    this.setData({ jimengEnabled: !this.data.jimengEnabled });
+    const checked = arguments[0] && arguments[0].detail ? !!arguments[0].detail.value : !this.data.jimengEnabled;
+    this.setData({ jimengEnabled: checked });
   },
 
   addRefImage() {
@@ -225,6 +251,7 @@ Page({
         const selectedIndex = res.tapIndex;
         that.setData({
           selectedDuration: durationOptions[selectedIndex],
+          video_duration: durationOptions[selectedIndex],
           durationIndex: selectedIndex
         });
       },
@@ -392,8 +419,29 @@ Page({
       return industry ? industry.name : '';
     }).filter(name => name);
 
-    wx.showLoading({ title: '发布中...' });
+    const hasMaterials = this.data.refImages.length > 0;
+    wx.showLoading({ title: hasMaterials ? '上传素材中...' : '发布中...' });
     try {
+      const materials = [];
+      if (hasMaterials) {
+        const jobBase = `task-${Date.now()}`;
+        for (let i = 0; i < this.data.refImages.length; i += 1) {
+          const uploadRes = await Api.uploadImage(this.data.refImages[i], {
+            returnMeta: true,
+            bizType: 'task_material',
+            jobId: `${jobBase}-${i + 1}`,
+          });
+          materials.push({
+            file_name: uploadRes.filename || `material-${i + 1}.jpg`,
+            file_path: uploadRes.url,
+            file_size: uploadRes.size || 0,
+            file_type: 'image',
+            sort_order: i + 1,
+          });
+        }
+      }
+
+      wx.showLoading({ title: '发布中...' });
       await Api.createTask({
         title,
         description,
@@ -401,11 +449,14 @@ Page({
         total_count: Number(total_count),
         award_price: Number(this.data.award_price) || 0,
         deadline: this.data.deadline,
-        video_duration: this.data.video_duration,
+        video_duration: this.data.selectedDuration,
+        video_aspect: this.data.selectedRatio,
+        video_resolution: this.data.selectedQuality,
         public: !privacyProtected,
         industries: industryNames,
         styles: selectedStyles,
-        jimeng_text: jimengEnabled ? jimeng_link : '',
+        jimeng_link: jimengEnabled ? jimeng_link : '',
+        materials,
       });
       wx.showToast({ title: '发布成功！', icon: 'success' });
       setTimeout(() => {
@@ -419,8 +470,6 @@ Page({
     }
   }
 });
-
-
 
 
 

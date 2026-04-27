@@ -86,7 +86,10 @@ Page({
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        const images = res.tempFiles.map(f => f.tempFilePath);
+        const images = res.tempFiles.map(f => ({
+          tempFilePath: f.tempFilePath,
+          previewUrl: f.tempFilePath,
+        }));
         this.setData({
           uploadImages: [...this.data.uploadImages, ...images]
         });
@@ -124,8 +127,14 @@ Page({
         const uploadedUrls = [];
         for (const img of this.data.uploadImages) {
           try {
-            const url = await Api.uploadImage(img);
-            uploadedUrls.push(url);
+            const currentUser = getApp().globalData.user || {};
+            const uploadRes = await Api.uploadImage(img.tempFilePath || img, {
+              bizType: 'appeal_evidence',
+              bizId: currentUser.id ? String(currentUser.id) : '',
+              jobId: `appeal-${Date.now()}-${uploadedUrls.length + 1}`,
+              returnMeta: true,
+            });
+            uploadedUrls.push(uploadRes.url);
           } catch (e) {
             wx.showToast({ title: '图片上传失败，请重试', icon: 'none' });
           }
@@ -135,7 +144,7 @@ Page({
 
       return Api.createAppeal({
         type: 1, // 任务申诉
-        target_id: this.data.selectedTask.taskId, // task ID
+        task_id: this.data.selectedTask.taskId,
         reason: this.data.selectedType.name + ': ' + this.data.reason,
         evidence: evidence
       });

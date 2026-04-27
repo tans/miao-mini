@@ -20,6 +20,8 @@
   justify-content: center;
   font-size: 28rpx;
   color: #1d2129;
+  box-sizing: border-box;
+  border-bottom: 4rpx solid transparent;
 }
 
 .tab-item.active {

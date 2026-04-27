@@ -29,6 +29,7 @@
 .msg-icon {
   width: 24px;
   height: 24px;
+  opacity: 0.92;
 }
 
 .msg-badge {
@@ -66,15 +67,15 @@
 
 .title-text {
   width: 68rpx;
-height: 48rpx;
-font-family: PingFang SC, PingFang SC;
-font-weight: bold;
-font-size: 34rpx;
-color: #333333;
-line-height: 48rpx;
-text-align: center;
-font-style: normal;
-text-transform: none;
+  height: 48rpx;
+  font-family: PingFang SC, PingFang SC;
+  font-weight: bold;
+  font-size: 34rpx;
+  color: #333333;
+  line-height: 48rpx;
+  text-align: center;
+  font-style: normal;
+  text-transform: none;
 }
 
 .subtitle-text {

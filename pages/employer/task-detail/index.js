@@ -198,7 +198,11 @@ Page({
     this.loadTaskDetail(this.data.taskId).finally(() => wx.stopPullDownRefresh());
   },
 
-  async loadTaskDetail(taskId) {
+  async loadTaskDetail(taskId, options = {}) {
+    const nextFilter = typeof options.filter === 'string' && options.filter
+      ? options.filter
+      : this.data.activeFilter;
+
     this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
 
@@ -234,6 +238,7 @@ Page({
         task,
         materials: task.materials || [],
         claims,
+        activeFilter: nextFilter,
         proposalCount: task.pendingReviewCount || pendingClaims.length,
         totalSubmitted,
         totalAdopted,
@@ -247,7 +252,7 @@ Page({
         loading: false,
       });
 
-      this.applyFilter(this.data.activeFilter);
+      this.applyFilter(nextFilter);
     } catch (err) {
       wx.showToast({ title: err.message || '加载失败', icon: 'none' });
       this.setData({ loading: false });
@@ -377,7 +382,7 @@ Page({
     try {
       await Api.reviewClaim(claimId, result, reason);
       wx.showToast({ title: result === 3 ? '已采纳' : result === 6 ? '已举报' : '已处理', icon: 'success' });
-      this.loadTaskDetail(this.data.taskId);
+      this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
     }
@@ -403,7 +408,7 @@ Page({
     try {
       await Api.batchReviewClaim(selectedClaims.map((item) => item.id), action, reason);
       wx.showToast({ title: action === 3 ? '批量采纳成功' : action === 6 ? '批量举报成功' : '批量处理成功', icon: 'success' });
-      this.loadTaskDetail(this.data.taskId);
+      this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
     } finally {

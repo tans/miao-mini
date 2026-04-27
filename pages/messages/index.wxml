@@ -1,0 +1,64 @@
+<view class="messages-page">
+  <view class="messages-header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="header-top">
+      <view>
+        <text class="header-title">系统消息</text>
+        <text class="header-subtitle">任务流程、审核结果和申诉进度都会汇总到这里</text>
+      </view>
+      <view class="header-action {{unreadCount > 0 ? 'active' : ''}}" bindtap="markAllRead">
+        <text>{{unreadCount > 0 ? '全部已读' : '已读完成'}}</text>
+      </view>
+    </view>
+
+    <view class="filter-row">
+      <view class="filter-pill {{currentFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="switchFilter">
+        全部
+      </view>
+      <view class="filter-pill {{currentFilter === 'unread' ? 'active' : ''}}" data-filter="unread" bindtap="switchFilter">
+        未读
+        <text class="pill-badge" wx:if="{{unreadCount > 0}}">{{unreadCount > 99 ? '99+' : unreadCount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="messages-scroll" scroll-y enable-flex>
+    <view class="messages-list" wx:if="{{notifications.length > 0}}">
+      <view
+        class="message-card {{!item.is_read ? 'unread' : ''}}"
+        wx:for="{{notifications}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        data-target="{{item.target_path}}"
+        data-index="{{index}}"
+        bindtap="openNotification"
+      >
+        <view class="message-icon {{item.iconClass}}">
+          <text>{{item.iconText}}</text>
+        </view>
+        <view class="message-body">
+          <view class="message-top">
+            <view class="title-group">
+              <text class="message-title">{{item.title}}</text>
+              <view class="type-tag">{{item.typeLabel}}</view>
+            </view>
+            <view class="time-group">
+              <view class="unread-dot" wx:if="{{!item.is_read}}"></view>
+              <text class="message-time">{{item.timeText}}</text>
+            </view>
+          </view>
+          <text class="message-content">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:elif="{{loaded}}">
+      <view class="empty-illustration">消息</view>
+      <text class="empty-title">{{currentFilter === 'unread' ? '没有未读消息' : '暂时还没有消息'}}</text>
+      <text class="empty-desc">{{currentFilter === 'unread' ? '新的任务进度会第一时间出现在这里' : '任务发布、认领、投稿和申诉动态会自动汇总'}}</text>
+    </view>
+
+    <view class="loading-state" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </scroll-view>
+</view>

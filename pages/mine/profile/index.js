@@ -5,7 +5,8 @@ Page({
   data: {
     user: null,
     nickname: '',
-    phone: ''
+    phone: '',
+    avatarSrc: '/assets/icons/avatar-default.jpg'
   },
 
   onLoad() {
@@ -17,7 +18,8 @@ Page({
     this.setData({
       user: user,
       nickname: user && (user.nickname || user.username) || '',
-      phone: user && user.phone || ''
+      phone: user && user.phone || '',
+      avatarSrc: user && user.avatar || '/assets/icons/avatar-default.jpg'
     });
   },
 
@@ -41,14 +43,18 @@ Page({
       success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath;
         wx.showLoading({ title: '上传中...' });
-        Api.uploadImage(tempFilePath).then((url) => {
+        const currentUser = this.data.user || app.globalData.user || {};
+        Api.uploadImage(tempFilePath, {
+          bizType: 'avatar',
+          bizId: currentUser.id ? String(currentUser.id) : '',
+        }).then((url) => {
           const user = this.data.user || {};
           user.avatar = url;
-          this.setData({ user });
+          this.setData({ user, avatarSrc: url || '/assets/icons/avatar-default.jpg' });
           wx.hideLoading();
-        }).catch(() => {
+        }).catch((err) => {
           wx.hideLoading();
-          wx.showToast({ title: '上传失败', icon: 'none' });
+          wx.showToast({ title: err.message || '上传失败', icon: 'none' });
         });
       },
       fail: (res) => {
@@ -63,6 +69,7 @@ Page({
   saveProfile() {
     const nickname = this.data.nickname.trim();
     const phone = this.data.phone.trim();
+    const avatar = this.data.user && this.data.user.avatar || '';
     if (!nickname) {
       wx.showToast({ title: '请输入昵称', icon: 'none' });
       return;
@@ -73,11 +80,13 @@ Page({
     }
 
     wx.showLoading({ title: '保存中...' });
-    Api.updateProfile({ nickname, phone }).then(() => {
+    Api.updateProfile({ nickname, phone, avatar }).then(() => {
       const user = this.data.user || {};
       user.nickname = nickname;
       user.phone = phone;
+      user.avatar = avatar;
       app.setAuth(app.getToken(), user);
+      this.setData({ user, avatarSrc: avatar || '/assets/icons/avatar-default.jpg' });
       wx.hideLoading();
       wx.showToast({ title: '保存成功', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1500);
@@ -85,5 +94,11 @@ Page({
       wx.hideLoading();
       wx.showToast({ title: err.message || '保存失败', icon: 'none' });
     });
+  },
+
+  onAvatarError() {
+    if (this.data.avatarSrc !== '/assets/icons/avatar-default.jpg') {
+      this.setData({ avatarSrc: '/assets/icons/avatar-default.jpg' });
+    }
   }
 });

@@ -8,6 +8,7 @@ Page({
     contactName: '',
     contactPhone: '',
     licenseUrl: '',
+    licensePreviewUrl: '',
     statusIcon: 'icon-uncertified',
     statusIconText: '未认证',
     statusTitle: '您尚未完成商家认证',
@@ -29,7 +30,8 @@ Page({
         companyName: data.company_name || '',
         contactName: data.contact_name || '',
         contactPhone: data.contact_phone || '',
-        licenseUrl: data.license_url || ''
+        licenseUrl: data.license_url || '',
+        licensePreviewUrl: data.license_preview_url || data.license_url || ''
       });
       this._updateStatusUI(normalizedStatus);
     }).catch(err => {
@@ -71,12 +73,20 @@ Page({
       success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath;
         wx.showLoading({ title: '上传中...' });
-        Api.uploadImage(tempFilePath).then((url) => {
-          this.setData({ licenseUrl: url });
+        const currentUser = app.globalData.user || {};
+        Api.uploadImage(tempFilePath, {
+          bizType: 'merchant_license',
+          bizId: currentUser.id ? String(currentUser.id) : '',
+          returnMeta: true,
+        }).then((uploadRes) => {
+          this.setData({
+            licenseUrl: uploadRes.url,
+            licensePreviewUrl: uploadRes.previewUrl || uploadRes.url,
+          });
           wx.hideLoading();
-        }).catch(() => {
+        }).catch((err) => {
           wx.hideLoading();
-          wx.showToast({ title: '上传失败', icon: 'none' });
+          wx.showToast({ title: err.message || '上传失败', icon: 'none' });
         });
       }
     });

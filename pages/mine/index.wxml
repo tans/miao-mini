@@ -9,7 +9,7 @@
     <!-- 用户信息卡片 -->
     <view class="user-card">
       <view class="user-info-row">
-        <image class="user-avatar" src="{{user.avatar || '/assets/icons/avatar-default.jpg'}}" />
+        <image class="user-avatar" src="{{avatarSrc}}" mode="aspectFill" binderror="onAvatarError" />
         <view class="user-detail">
           <view class="user-name-row">
             <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>

@@ -2,8 +2,8 @@
   <view class="nav-content">
     <!-- 左侧消息图标 -->
     <view class="nav-left" bindtap="onMessageTap">
-      <!-- <image src="../../images/home/msg-icon.png" class="msg-icon" /> -->
-      <view class="msg-badge" wx:if="{{msgCount > 0}}">{{msgCount > 99 ? '99+' : msgCount}}</view>
+      <image src="/assets/icons/message.png" class="msg-icon" />
+      <view class="msg-badge" wx:if="{{innerMsgCount > 0}}">{{innerMsgCount > 99 ? '99+' : innerMsgCount}}</view>
     </view>
 
     <!-- 中间标题区域 -->

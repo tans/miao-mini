@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/home/index",
+    "pages/messages/index",
     "pages/works/index",
     "pages/creator/adopted-works/index",
     "pages/mine/index",
@@ -48,10 +49,10 @@
         "selectedIconPath": "assets/icons/home-active.png"
       },
       {
-        "pagePath": "pages/works/index",
-        "text": "灵感",
-        "iconPath": "assets/icons/works.png",
-        "selectedIconPath": "assets/icons/works-active.png"
+        "pagePath": "pages/messages/index",
+        "text": "消息",
+        "iconPath": "assets/icons/message.png",
+        "selectedIconPath": "assets/icons/message-active.png"
       },
       {
         "pagePath": "pages/mine/index",
