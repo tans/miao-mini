@@ -20,6 +20,13 @@ function pick(...values) {
   return '';
 }
 
+function hasVisibleSubmission(claim = {}) {
+  const status = Number(claim.status);
+  const submitAt = pick(claim.submit_at, claim.submitAt, '');
+  const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  return status >= 2 || !!submitAt || reviewResult > 0;
+}
+
 function getCurrentUserId() {
   const user = (app && typeof app.getUser === 'function' && app.getUser()) || Api.getUser();
   return user && user.id != null ? String(user.id) : '';
@@ -78,7 +85,7 @@ function extractVideoLink(content) {
 }
 
 function getClaimStatusText(claim = {}) {
-  const status = Number(claim.status);
+  const status = Number(claim.normalizedStatus != null ? claim.normalizedStatus : claim.status);
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
   if (status === 1 && reviewResult === 2) return '已退回';
   if (status === 1 && reviewResult === 3) return '已举报';
@@ -87,7 +94,7 @@ function getClaimStatusText(claim = {}) {
 }
 
 function getClaimStatusClass(claim = {}) {
-  const status = Number(claim.status);
+  const status = Number(claim.normalizedStatus != null ? claim.normalizedStatus : claim.status);
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
   if (status === 1 && reviewResult === 2) return 'rejected';
   if (status === 1 && reviewResult === 3) return 'reported';
@@ -105,7 +112,11 @@ function getFilterKey(status) {
 
 function normalizeClaim(claim = {}, task = {}) {
   const status = Number(claim.status);
+  const submitAt = pick(claim.submit_at, claim.submitAt, '');
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  const normalizedStatus = status === 1 && reviewResult === 0 && hasVisibleSubmission(claim)
+    ? 2
+    : status;
   const materials = Array.isArray(claim.materials) ? claim.materials : [];
   const imageMaterials = materials.filter((item) => item.file_type === 'image' && item.file_path);
   const videoMaterials = materials.filter((item) => item.file_type === 'video' && item.file_path);
@@ -121,15 +132,16 @@ function normalizeClaim(claim = {}, task = {}) {
   return {
     ...claim,
     id: claim.id,
-    status,
+    normalizedStatus,
+    status: normalizedStatus,
     reviewResult,
-    statusText: getClaimStatusText(claim),
-    statusClass: getClaimStatusClass(claim),
-    filterKey: status === 1 && reviewResult === 0 ? 'draft' : getFilterKey(status),
+    statusText: getClaimStatusText({ ...claim, normalizedStatus }),
+    statusClass: getClaimStatusClass({ ...claim, normalizedStatus }),
+    filterKey: normalizedStatus === 1 && reviewResult === 0 ? 'draft' : getFilterKey(normalizedStatus),
     creatorName: claim.creator_name || '匿名创作者',
     creatorAvatar: claim.creator_avatar || '',
     creatorInitial: (claim.creator_name || '匿').slice(0, 1),
-    displayDate: (claim.submitted_at || claim.updated_at || '').substring(0, 16).replace('T', ' '),
+    displayDate: (submitAt || claim.updated_at || '').substring(0, 16).replace('T', ' '),
     contentText,
     videoLink,
     hasContent: !!contentText,
@@ -241,7 +253,7 @@ Page({
       const task = normalizeTask(rawTask);
       const currentUserId = getCurrentUserId();
       const claims = (Array.isArray(claimsRes.data) ? claimsRes.data : [])
-        .filter((item) => Number(item.status) !== 1 || Number(pick(item.review_result, item.reviewResult, 0)) > 0)
+        .filter((item) => hasVisibleSubmission(item))
         .map((item) => normalizeClaim(item, task));
       claims.sort((a, b) => {
         const aOwn = currentUserId && String(a.creator_id || a.creatorId || '') === currentUserId ? 1 : 0;
