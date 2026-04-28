@@ -7,9 +7,9 @@
   padding: 24rpx;
 }
 
-.header-top {
+.header-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 24rpx;
 }
@@ -32,13 +32,12 @@
 
 .header-action {
   flex-shrink: 0;
-  margin-top: 6rpx;
-  padding: 16rpx 24rpx;
+  padding: 14rpx 24rpx;
   border-radius: 999rpx;
   background: rgba(255, 255, 255, 0.72);
   color: #9b9ba3;
   font-size: 24rpx;
-  line-height: 24rpx;
+  line-height: 26rpx;
   box-shadow: 0 8rpx 24rpx rgba(43, 31, 14, 0.06);
 }
 
@@ -49,6 +48,7 @@
 
 .filter-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 16rpx;
 }
 

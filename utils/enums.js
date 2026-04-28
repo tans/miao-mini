@@ -2,7 +2,7 @@
 // 所有状态值与后端 Go 枚举完全一致（1-indexed）
 
 const TaskStatus = {
-  PENDING: 1,    // 待审核
+  PENDING: 1,    // 兼容旧数据，按已上架处理
   ONLINE: 2,     // 已上架
   ONGOING: 3,    // 进行中
   ENDED: 4,      // 已结束
@@ -10,7 +10,7 @@ const TaskStatus = {
 };
 
 const TaskStatusText = {
-  [TaskStatus.PENDING]: '待审核',
+  [TaskStatus.PENDING]: '已上架',
   [TaskStatus.ONLINE]: '已上架',
   [TaskStatus.ONGOING]: '进行中',
   [TaskStatus.ENDED]: '已结束',
@@ -18,7 +18,7 @@ const TaskStatusText = {
 };
 
 const TaskStatusColor = {
-  [TaskStatus.PENDING]: 'warning',
+  [TaskStatus.PENDING]: 'success',
   [TaskStatus.ONLINE]: 'success',
   [TaskStatus.ONGOING]: 'primary',
   [TaskStatus.ENDED]: 'secondary',

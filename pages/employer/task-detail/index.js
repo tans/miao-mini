@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
 function toList(value) {
@@ -20,6 +21,13 @@ function pick(...values) {
   return '';
 }
 
+function hasVisibleSubmission(claim = {}) {
+  const status = Number(claim.status);
+  const submitAt = pick(claim.submit_at, claim.submitAt, '');
+  const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  return status >= 2 || !!submitAt || reviewResult > 0;
+}
+
 function getCurrentUserId() {
   const user = (app && typeof app.getUser === 'function' && app.getUser()) || Api.getUser();
   return user && user.id != null ? String(user.id) : '';
@@ -30,6 +38,7 @@ function normalizeTask(task = {}) {
   const industryTags = toList(pick(task.industries, task.industry));
   const styleTags = toList(pick(task.styles, task.style));
   const materials = Array.isArray(task.materials) ? task.materials : [];
+  const isPublic = task.public == null ? true : !!task.public;
 
   return {
     ...task,
@@ -37,8 +46,8 @@ function normalizeTask(task = {}) {
     businessName: pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '商家'),
     businessAvatar: pick(task.business_avatar, task.businessAvatar, task.merchantAvatar, ''),
     title: pick(task.title, task.name, '高端楼盘春日氛围视频'),
-    unitPrice: Number(pick(task.unit_price, task.unitPrice, 100)) || 100,
-    awardPrice: Number(pick(task.award_price, task.awardPrice, 10)) || 10,
+    unitPrice: Number(pick(task.unit_price, task.unitPrice, task.participation_reward, task.participationReward, task.base_reward, task.baseReward, 0)) || 0,
+    awardPrice: Number(pick(task.award_price, task.awardPrice, task.reward, task.adoption_reward, task.adoptionReward, task.bonus_price, task.bonusPrice, 0)) || 0,
     industryTags: industryTags.length ? industryTags : [pick(task.industry, '房产家居')],
     styleTags: styleTags.length ? styleTags : [pick(task.style, '房产家居')],
     description: pick(
@@ -51,9 +60,12 @@ function normalizeTask(task = {}) {
     videoDuration: pick(task.video_duration, task.videoDuration, '30s'),
     endAt,
     totalCount: Number(pick(task.total_count, task.totalCount, 0)) || 0,
+    submissionCount: Number(pick(task.submission_count, task.submissionCount, 0)) || 0,
     jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
     jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
     jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
+    isPublic,
+    visibilityText: isPublic ? '公开投稿' : '隐私保护',
     materials,
     pendingReviewCount: Number(pick(task.pending_review_count, task.pendingReviewCount, 0)) || 0,
     adoptionRate: Number(pick(task.adoption_rate, task.adoptionRate, 0)) || 0,
@@ -78,7 +90,7 @@ function extractVideoLink(content) {
 }
 
 function getClaimStatusText(claim = {}) {
-  const status = Number(claim.status);
+  const status = Number(claim.normalizedStatus != null ? claim.normalizedStatus : claim.status);
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
   if (status === 1 && reviewResult === 2) return '已退回';
   if (status === 1 && reviewResult === 3) return '已举报';
@@ -87,7 +99,7 @@ function getClaimStatusText(claim = {}) {
 }
 
 function getClaimStatusClass(claim = {}) {
-  const status = Number(claim.status);
+  const status = Number(claim.normalizedStatus != null ? claim.normalizedStatus : claim.status);
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
   if (status === 1 && reviewResult === 2) return 'rejected';
   if (status === 1 && reviewResult === 3) return 'reported';
@@ -105,7 +117,11 @@ function getFilterKey(status) {
 
 function normalizeClaim(claim = {}, task = {}) {
   const status = Number(claim.status);
+  const submitAt = pick(claim.submit_at, claim.submitAt, '');
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  const normalizedStatus = status === 1 && reviewResult === 0 && hasVisibleSubmission(claim)
+    ? 2
+    : status;
   const materials = Array.isArray(claim.materials) ? claim.materials : [];
   const imageMaterials = materials.filter((item) => item.file_type === 'image' && item.file_path);
   const videoMaterials = materials.filter((item) => item.file_type === 'video' && item.file_path);
@@ -121,15 +137,16 @@ function normalizeClaim(claim = {}, task = {}) {
   return {
     ...claim,
     id: claim.id,
-    status,
+    normalizedStatus,
+    status: normalizedStatus,
     reviewResult,
-    statusText: getClaimStatusText(claim),
-    statusClass: getClaimStatusClass(claim),
-    filterKey: status === 1 && reviewResult === 0 ? 'draft' : getFilterKey(status),
+    statusText: getClaimStatusText({ ...claim, normalizedStatus }),
+    statusClass: getClaimStatusClass({ ...claim, normalizedStatus }),
+    filterKey: normalizedStatus === 1 && reviewResult === 0 ? 'draft' : getFilterKey(normalizedStatus),
     creatorName: claim.creator_name || '匿名创作者',
     creatorAvatar: claim.creator_avatar || '',
     creatorInitial: (claim.creator_name || '匿').slice(0, 1),
-    displayDate: (claim.submitted_at || claim.updated_at || '').substring(0, 16).replace('T', ' '),
+    displayDate: formatDateTime(submitAt || claim.updated_at || ''),
     contentText,
     videoLink,
     hasContent: !!contentText,
@@ -241,7 +258,7 @@ Page({
       const task = normalizeTask(rawTask);
       const currentUserId = getCurrentUserId();
       const claims = (Array.isArray(claimsRes.data) ? claimsRes.data : [])
-        .filter((item) => Number(item.status) !== 1 || Number(pick(item.review_result, item.reviewResult, 0)) > 0)
+        .filter((item) => hasVisibleSubmission(item))
         .map((item) => normalizeClaim(item, task));
       claims.sort((a, b) => {
         const aOwn = currentUserId && String(a.creator_id || a.creatorId || '') === currentUserId ? 1 : 0;
@@ -254,7 +271,7 @@ Page({
         return bTime - aTime;
       });
       const pendingClaims = claims.filter((item) => item.filterKey === 'pending');
-      const totalSubmitted = claims.length;
+      const totalSubmitted = Number(task.submissionCount || task.submission_count || claims.length || 0) || 0;
       const totalAdopted = claims.filter((item) => item.status === 3).length;
       const adoptionRate = totalSubmitted > 0
         ? Math.round((totalAdopted / totalSubmitted) * 100)
@@ -395,20 +412,20 @@ Page({
   async reviewClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     const result = Number(e.currentTarget.dataset.result);
-    if (!claimId || ![3, 4, 5, 6].includes(result)) {
+    if (!claimId || ![1, 2, 3].includes(result)) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
 
     let reason = null;
-    if (result === 6) {
+    if (result === 3) {
       reason = await this.showReportModal();
       if (!reason) return;
     }
 
     try {
       await Api.reviewClaim(claimId, result, reason);
-      wx.showToast({ title: result === 3 ? '已采纳' : result === 6 ? '已举报' : '已处理', icon: 'success' });
+      wx.showToast({ title: result === 1 ? '已采纳' : result === 3 ? '已举报' : '已处理', icon: 'success' });
       this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
@@ -417,7 +434,7 @@ Page({
 
   async batchReview(e) {
     const action = Number(e.currentTarget.dataset.action);
-    if (![3, 4, 5, 6].includes(action)) return;
+    if (![1, 2, 3].includes(action)) return;
 
     const selectedClaims = this.data.filteredClaims.filter((item) => this.data.selectedClaims[item.id]);
     if (!selectedClaims.length) {
@@ -426,7 +443,7 @@ Page({
     }
 
     let reason = null;
-    if (action === 6) {
+    if (action === 3) {
       reason = await this.showReportModal();
       if (!reason) return;
     }
@@ -434,7 +451,7 @@ Page({
     wx.showLoading({ title: '处理中...' });
     try {
       await Api.batchReviewClaim(selectedClaims.map((item) => item.id), action, reason);
-      wx.showToast({ title: action === 3 ? '批量采纳成功' : action === 6 ? '批量举报成功' : '批量处理成功', icon: 'success' });
+      wx.showToast({ title: action === 1 ? '批量采纳成功' : action === 3 ? '批量举报成功' : '批量处理成功', icon: 'success' });
       this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });

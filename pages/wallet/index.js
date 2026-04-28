@@ -1,4 +1,5 @@
 const Api = require('../../utils/api.js');
+const { formatAmount, formatDateTime } = require('../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -56,9 +57,12 @@ Page({
       const transData = transRes.data || {};
       const transactions = (transData.data || []).map(t => ({
         ...t,
+        amount: Number(t.amount || 0),
         type_text: t.type_str || '其他',
-        amountDisplay: Math.abs(t.amount).toFixed(2),
-        fee: t.fee || 0
+        amountDisplay: formatAmount(Math.abs(Number(t.amount || 0)), { useGrouping: false }),
+        fee: Number(t.fee || 0),
+        feeDisplay: formatAmount(Number(t.fee || 0), { useGrouping: false }),
+        createdAtText: formatDateTime(t.created_at || t.createdAt || '')
       }));
 
       const balance = wallet.balance || 0;
@@ -68,11 +72,11 @@ Page({
 
       this.setData({
         balance: wallet.balance || 0,
-        balanceDisplay: Number(wallet.balance || 0).toLocaleString('zh-CN', { minimumFractionDigits: 2 }),
-        frozenAmount: frozenAmount.toFixed(2),
-        withdrawableAmount: withdrawableAmount.toFixed(2),
+        balanceDisplay: formatAmount(wallet.balance || 0),
+        frozenAmount: formatAmount(frozenAmount),
+        withdrawableAmount: formatAmount(withdrawableAmount),
         totalIncome: wallet.total_income || 0,
-        totalIncomeDisplay: Number(wallet.total_income || 0).toLocaleString('zh-CN', { minimumFractionDigits: 2 }),
+        totalIncomeDisplay: formatAmount(wallet.total_income || 0),
         transactions,
         filteredTransactions,
         loading: false,

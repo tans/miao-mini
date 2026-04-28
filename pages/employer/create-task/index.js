@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const { formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -89,7 +90,7 @@ Page({
       const wallet = res.data || {};
       const balance = Number(wallet.balance || 0);
       this.setData({
-        walletBalanceDisplay: balance.toLocaleString('zh-CN', { minimumFractionDigits: 2 })
+        walletBalanceDisplay: formatAmount(balance)
       });
     } catch (err) {
       this.setData({ walletBalanceDisplay: '0.00' });
@@ -441,7 +442,7 @@ Page({
         }
       }
 
-      wx.showLoading({ title: '提交审核中...' });
+      wx.showLoading({ title: '发布中...' });
       const res = await Api.createTask({
         title,
         description,
@@ -458,7 +459,7 @@ Page({
         jimeng_link: jimengEnabled ? jimeng_link : '',
         materials,
       });
-      wx.showToast({ title: (res && res.message) || '提交成功，等待审核', icon: 'success' });
+      wx.showToast({ title: (res && res.message) || '发布成功', icon: 'success' });
       setTimeout(() => {
         wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
       }, 1500);
@@ -470,7 +471,5 @@ Page({
     }
   }
 });
-
-
 
 

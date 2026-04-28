@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const { formatDateTime: formatDateTimeText } = require('../../../utils/util.js');
 const app = getApp();
 
 function toList(value) {
@@ -18,16 +19,15 @@ function isImageType(value) {
   return String(value || '').toLowerCase().indexOf('image') !== -1;
 }
 
-function formatDateTime(value) {
-  if (!value) return '';
-  const text = String(value)
-    .replace('T', ' ')
-    .replace(/Z$/, '')
-    .replace(/\.\d+/, '');
-  if (text.indexOf('+') !== -1) {
-    return text.split('+')[0].slice(0, 16);
+function pick(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && value !== '') return value;
   }
-  return text.slice(0, 16);
+  return '';
+}
+
+function formatDateTime(value) {
+  return formatDateTimeText(value);
 }
 
 function getClaimStatusClass(status) {
@@ -53,6 +53,7 @@ function normalizeTask(task = {}) {
   const industries = toList(task.industries);
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
+  const isPublic = task.public == null ? true : !!task.public;
 
   return {
     ...task,
@@ -63,15 +64,16 @@ function normalizeTask(task = {}) {
     industries,
     style: task.style || styles[0] || '',
     styles,
-    unitPrice: task.unitPrice ?? task.unit_price ?? 0,
-    awardPrice: task.awardPrice ?? task.award_price ?? 0,
+    unitPrice: Number(pick(task.unitPrice, task.unit_price, task.participationReward, task.participation_reward, task.baseReward, task.base_reward, 0)) || 0,
+    awardPrice: Number(pick(task.awardPrice, task.award_price, task.reward, task.adoptionReward, task.adoption_reward, task.bonusPrice, task.bonus_price, 0)) || 0,
     videoAspect: task.videoAspect || task.video_aspect || '',
     videoResolution: task.videoResolution || task.video_resolution || '',
     videoDuration: task.videoDuration || task.video_duration || '',
     adoptionRate: task.adoptionRate ?? task.adoption_rate ?? 0,
     totalPublished: task.totalPublished ?? task.total_published ?? task.totalTasks ?? 0,
     totalSpent: task.totalSpent ?? task.total_spent ?? task.totalSpend ?? 0,
-    isPublic: task.public != null ? !!task.public : (task.open_submission != null ? !!task.open_submission : true),
+    isPublic,
+    visibilityText: isPublic ? '公开投稿' : '隐私保护',
     submissionCount: Number(task.submission_count ?? task.submissionCount ?? submissions.length ?? 0) || 0,
     endAt,
     end_at: endAt,

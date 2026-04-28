@@ -58,8 +58,8 @@
         <text class="batch-info">已选 {{selectedCount}} 个作品</text>
         <view class="batch-actions">
           <text class="batch-btn batch-download" bindtap="downloadSelected">下载</text>
-          <text class="batch-btn batch-reject" data-action="5" bindtap="batchReview">淘汰</text>
-          <text class="batch-btn batch-accept" data-action="3" bindtap="batchReview">采纳</text>
+          <text class="batch-btn batch-reject" data-action="2" bindtap="batchReview">淘汰</text>
+          <text class="batch-btn batch-accept" data-action="1" bindtap="batchReview">采纳</text>
         </view>
       </view> -->
 
@@ -128,9 +128,9 @@
           <view class="claim-footer">
             <!-- <text class="claim-title">{{claim.taskTitle}}</text> -->
             <view class="action-btns" wx:if="{{claim.canReview}}">
-              <text class="action-btn accept" data-claim-id="{{claim.id}}" data-result="3" bindtap="reviewClaim">采纳</text>
-              <text class="action-btn reject" data-claim-id="{{claim.id}}" data-result="5" bindtap="reviewClaim">淘汰</text>
-              <text class="action-btn report" data-claim-id="{{claim.id}}" data-result="6" bindtap="reviewClaim">举报</text>
+              <text class="action-btn accept" data-claim-id="{{claim.id}}" data-result="1" bindtap="reviewClaim">采纳</text>
+              <text class="action-btn reject" data-claim-id="{{claim.id}}" data-result="2" bindtap="reviewClaim">淘汰</text>
+              <text class="action-btn report" data-claim-id="{{claim.id}}" data-result="3" bindtap="reviewClaim">举报</text>
             </view>
           </view>
         </view>
@@ -198,7 +198,7 @@
           <view class="reward-item">
             <text class="reward-label">参与奖励</text>
             <view class="reward-value-row">
-              <text class="reward-value">{{task.unitPrice || 0}}</text>
+              <text class="reward-value">{{task.unitPrice}}</text>
               <text class="reward-unit">元/条</text>
             </view>
           </view>
@@ -206,7 +206,7 @@
           <view class="reward-item">
             <text class="reward-label">采纳奖励</text>
             <view class="reward-value-row">
-              <text class="reward-value reward-value-dark">{{task.awardPrice || 0}}</text>
+              <text class="reward-value reward-value-dark">{{task.awardPrice}}</text>
               <text class="reward-unit">元/条</text>
             </view>
           </view>
@@ -243,6 +243,10 @@
           <view class="spec-item">
             <text class="spec-label">截稿时间</text>
             <text class="spec-value">{{task.endAt || '未设置'}}</text>
+          </view>
+          <view class="spec-item">
+            <text class="spec-label">作品权限</text>
+            <text class="spec-value">{{task.visibilityText || '公开投稿'}}</text>
           </view>
         </view>
 

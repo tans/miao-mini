@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const { formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -33,7 +34,7 @@ Page({
       const balance = wallet.balance || 0;
       this.setData({
         balance: balance,
-        balanceDisplay: Number(balance).toLocaleString('zh-CN', { minimumFractionDigits: 2 }),
+        balanceDisplay: formatAmount(balance),
       });
     } catch (err) {
       wx.showToast({ title: '加载钱包数据失败', icon: 'none' });
@@ -81,7 +82,7 @@ Page({
         const newBalance = res.data && res.data.balance ? res.data.balance : this.data.balance + amount;
         this.setData({
           balance: newBalance,
-          balanceDisplay: Number(newBalance).toLocaleString('zh-CN', { minimumFractionDigits: 2 }),
+          balanceDisplay: formatAmount(newBalance),
         });
         // Navigate back after success
         setTimeout(() => {
