@@ -337,7 +337,7 @@
           </view>
         </view>
       </view>
-
+      <!-- 开启隐私保护 -->
       <view class="submission-card" wx:elif="{{!task.isPublic && task.submissionCount > 0}}">
         <view class="safety-card">
           <view class="safety-header">
@@ -347,33 +347,10 @@
           </view>
           <text class="safety-text">商家已开启了稿件隐私保护，您无权查看。</text>
         </view>
-        <!-- <view class="submission-mock-grid">
+        <view class="submission-mock-grid">
           <view class="submission-mock-item" wx:for="{{submissions}}" wx:key="id">
             <view class="submission-mock-cover-wrap">
-              <video
-                wx:if="{{item.materials.length > 0 && item.materials[0].isVideo && item.materials[0].previewUrl}}"
-                class="submission-mock-cover"
-                src="{{item.materials[0].previewUrl}}"
-                poster="{{item.materials[0].thumbnailPath}}"
-                controls
-              />
-
-              <image
-                wx:elif="{{item.materials.length > 0 && item.materials[0].isImage && item.materials[0].previewUrl}}"
-                class="submission-mock-cover"
-                src="{{item.materials[0].previewUrl}}"
-                mode="aspectFill"
-                bindtap="previewMaterial"
-                data-url="{{item.materials[0].previewUrl}}"
-              />
-
-              <view wx:else class="submission-placeholder">
-                <text>素材暂不可预览</text>
-              </view>
-
-              <view class="submission-mock-status submission-mock-status-{{item.statusClass}}">
-                <text>{{item.statusText}}</text>
-              </view>
+              <image class="submission-mock-cover" src="https://public.jisuhudong.com/minapp/privacy.png" mode="aspectFill" />
             </view>
             <view class="submission-mock-footer">
               <view class="submission-mock-user-row">
@@ -386,7 +363,7 @@
               <text class="submission-mock-time">{{item.submitAtText}} 投稿</text>
             </view>
           </view>
-        </view> -->
+        </view>
       </view>
 
       <view class="submissions-empty" wx:else>
