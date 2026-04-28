@@ -58,6 +58,7 @@ function normalizeTask(task = {}) {
     videoDuration: pick(task.video_duration, task.videoDuration, '30s'),
     endAt,
     totalCount: Number(pick(task.total_count, task.totalCount, 0)) || 0,
+    submissionCount: Number(pick(task.submission_count, task.submissionCount, 0)) || 0,
     jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
     jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
     jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
@@ -266,7 +267,7 @@ Page({
         return bTime - aTime;
       });
       const pendingClaims = claims.filter((item) => item.filterKey === 'pending');
-      const totalSubmitted = claims.length;
+      const totalSubmitted = Number(task.submissionCount || task.submission_count || claims.length || 0) || 0;
       const totalAdopted = claims.filter((item) => item.status === 3).length;
       const adoptionRate = totalSubmitted > 0
         ? Math.round((totalAdopted / totalSubmitted) * 100)
