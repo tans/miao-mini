@@ -1,6 +1,6 @@
 <view class="messages-page">
   <view class="messages-header" style="padding-top: {{statusBarHeight}}px;">
-    <view class="header-top">
+    <!-- <view class="header-top">
       <view>
         <text class="header-title">系统消息</text>
         <text class="header-subtitle">任务流程、审核结果和申诉进度都会汇总到这里</text>
@@ -8,7 +8,7 @@
       <view class="header-action {{unreadCount > 0 ? 'active' : ''}}" bindtap="markAllRead">
         <text>{{unreadCount > 0 ? '全部已读' : '已读完成'}}</text>
       </view>
-    </view>
+    </view> -->
 
     <view class="filter-row">
       <view class="filter-pill {{currentFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="switchFilter">
@@ -32,14 +32,14 @@
         data-index="{{index}}"
         bindtap="openNotification"
       >
-        <view class="message-icon {{item.iconClass}}">
-          <text>{{item.iconText}}</text>
+        <view class="message-icon">
+          <image src="../../images/message/type{{index + 1}}.png" mode="aspectFill" />
         </view>
         <view class="message-body">
           <view class="message-top">
             <view class="title-group">
               <text class="message-title">{{item.title}}</text>
-              <view class="type-tag">{{item.typeLabel}}</view>
+              <!-- <view class="type-tag">{{item.typeLabel}}</view> -->
             </view>
             <view class="time-group">
               <view class="unread-dot" wx:if="{{!item.is_read}}"></view>
