@@ -1,6 +1,22 @@
 const Api = require('../../../utils/api.js');
 const { formatAmount } = require('../../../utils/util.js');
 const app = getApp();
+const DEFAULT_DEADLINE_DAYS = 7;
+const PLATFORM_FEE_RATE = 0.10;
+const PRIVACY_DISCOUNT_RATE = 0.05;
+
+function formatLocalDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getDateAfterDays(days) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return formatLocalDate(date);
+}
 
 Page({
   data: {
@@ -51,11 +67,14 @@ Page({
     styleOptions: ['口语化', '高级感', '接地气', '幽默风趣', '温馨治愈', '时尚潮流'],
     baseTotal: '20.00',
     awardTotal: '200.00',
-    platformFee: '10.00',
-    totalBudget: '230.00',
+    originalPlatformFee: '22.00',
+    privacyDiscount: '11.00',
+    platformFee: '11.00',
+    totalBudget: '231.00',
+    walletBalance: 0,
     walletBalanceDisplay: '0.00',
-    minDeadline: '',
-    maxDeadline: '',
+    isBalanceInsufficient: true,
+    balanceShortfall: '231.00',
     showDialog: false,
     showStyleDialog: false,
   },
@@ -74,7 +93,7 @@ Page({
     } else {
       this.loadWalletBalance();
     }
-    this.initDeadlineRange();
+    this.initDefaultDeadline();
     this.updateBudgetPreview();
   },
 
@@ -90,10 +109,16 @@ Page({
       const wallet = res.data || {};
       const balance = Number(wallet.balance || 0);
       this.setData({
+        walletBalance: balance,
         walletBalanceDisplay: formatAmount(balance)
       });
+      this.updateBalanceStatus();
     } catch (err) {
-      this.setData({ walletBalanceDisplay: '0.00' });
+      this.setData({
+        walletBalance: 0,
+        walletBalanceDisplay: '0.00'
+      });
+      this.updateBalanceStatus();
     }
   },
   // 打开对话框
@@ -153,15 +178,9 @@ Page({
       });
     },
 
-  initDeadlineRange() {
-    const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 3);
-    const maxDate = new Date(today);
-    maxDate.setDate(today.getDate() + 30);
+  initDefaultDeadline() {
     this.setData({
-      minDeadline: minDate.toISOString().split('T')[0],
-      maxDeadline: maxDate.toISOString().split('T')[0]
+      deadline: getDateAfterDays(DEFAULT_DEADLINE_DAYS)
     });
   },
 
@@ -208,6 +227,7 @@ Page({
   togglePrivacy() {
     const checked = arguments[0] && arguments[0].detail ? !!arguments[0].detail.value : !this.data.privacyProtected;
     this.setData({ privacyProtected: checked });
+    this.updateBudgetPreview();
   },
 
   toggleJimeng() {
@@ -314,10 +334,6 @@ Page({
     this.setData({ jimeng_link: e.detail.value });
   },
 
-  onDeadlineChange(e) {
-    this.setData({ deadline: e.detail.value });
-  },
-
   onUnitPriceInput(e) {
     const val = e.detail.value ? parseFloat(e.detail.value) : 0;
     this.setData({ unit_price: val || 0 });
@@ -340,17 +356,37 @@ Page({
     const unitPrice = parseFloat(this.data.unit_price) || 0;
     const totalCount = parseInt(this.data.total_count) || 0;
     const awardPrice = parseFloat(this.data.award_price) || 0;
+    const privacyDiscountEnabled = !this.data.privacyProtected;
 
     const baseTotal = unitPrice * totalCount;
     const awardTotal = awardPrice * totalCount;
-    const platformFee = Math.round((baseTotal + awardTotal) * 0.05 * 100) / 100;
+    const subtotal = baseTotal + awardTotal;
+    const originalPlatformFee = Math.round(subtotal * PLATFORM_FEE_RATE * 100) / 100;
+    const privacyDiscount = privacyDiscountEnabled
+      ? Math.round(subtotal * PRIVACY_DISCOUNT_RATE * 100) / 100
+      : 0;
+    const platformFee = Math.max(0, originalPlatformFee - privacyDiscount);
     const total = baseTotal + awardTotal + platformFee;
 
     this.setData({
       baseTotal: baseTotal.toFixed(2),
       awardTotal: awardTotal.toFixed(2),
+      originalPlatformFee: originalPlatformFee.toFixed(2),
+      privacyDiscount: privacyDiscount.toFixed(2),
       platformFee: platformFee.toFixed(2),
       totalBudget: total.toFixed(2)
+    });
+    this.updateBalanceStatus();
+  },
+
+  updateBalanceStatus() {
+    const walletBalance = Number(this.data.walletBalance || 0);
+    const totalBudget = Number(this.data.totalBudget || 0);
+    const shortfall = Math.max(0, totalBudget - walletBalance);
+
+    this.setData({
+      isBalanceInsufficient: walletBalance < totalBudget,
+      balanceShortfall: shortfall.toFixed(2)
     });
   },
 
@@ -399,6 +435,10 @@ Page({
     wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
   },
 
+  goRecharge() {
+    wx.navigateTo({ url: '/pages/employer/recharge/index' });
+  },
+
   async handleSubmit() {
     const { title, description, unit_price, total_count, selectedIndustries, selectedStyles, privacyProtected, jimeng_link, jimengEnabled } = this.data;
 
@@ -412,6 +452,19 @@ Page({
     }
     if (selectedIndustries.length === 0) {
       wx.showToast({ title: '请至少选择一个行业', icon: 'none' });
+      return;
+    }
+    if (this.data.isBalanceInsufficient) {
+      wx.showModal({
+        title: '余额不足',
+        content: `当前余额不足，还差 ¥${this.data.balanceShortfall}，请先充值后再创建任务。`,
+        confirmText: '去充值',
+        success: (res) => {
+          if (res.confirm) {
+            this.goRecharge();
+          }
+        }
+      });
       return;
     }
 
@@ -471,5 +524,3 @@ Page({
     }
   }
 });
-
-

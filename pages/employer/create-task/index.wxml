@@ -216,16 +216,15 @@ module.exports = {
     <view class="form-card card-with-shadow">
       <view class="card-title">时间与奖金</view>
 
-      <!-- 投稿截止时间 -->
-      <picker class="picker-box" mode="date" value="{{deadline}}" start="{{minDeadline}}" end="{{maxDeadline}}" bindchange="onDeadlineChange">
+      <view class="picker-box picker-box-disabled">
         <view class="picker-row-box">
           <text class="picker-label">投稿截止时间</text>
-          <view class="picker-row">
-            <text class="picker-value">{{deadline || '请选择'}}</text>
-            <image class="picker-arrow" src="./images/arrow-down.png" />
+          <view class="picker-row picker-row-disabled">
+            <text class="picker-value">{{deadline}}</text>
+            <text class="picker-hint">系统默认 7 天，不可修改</text>
           </view>
         </view>
-      </picker>
+      </view>
 
       <!-- 参与奖 -->
       <view class="input-box">
@@ -269,16 +268,16 @@ module.exports = {
           <text class="budget-value">¥{{awardTotal}}</text>
         </view>
         <view class="budget-row">
-          <text class="budget-label">平台服务费</text>
-          <text class="budget-value">¥{{platformFee}}</text>
+          <text class="budget-label">平台服务费(10%)</text>
+          <text class="budget-value {{!privacyProtected ? 'budget-value-strikethrough' : ''}}">¥{{originalPlatformFee}}</text>
         </view>
-        <view class="budget-row">
+        <view class="budget-row" wx:if="{{!privacyProtected}}">
           <view class="flex" style="">
             <image src="../../../images/home/youhui.png" style="width: 125rpx;
 height: 32rpx;"/>
           <text class="budget-label" style="font-size:24rpx;">服务费减免(5%)</text>
           </view>
-          <text class="budget-total-value">¥{{platformFee}}</text>
+          <text class="budget-discount-value">-¥{{privacyDiscount}}</text>
         </view>
         <view class="budget-divider"></view>
         <view class="budget-total-row">
@@ -288,6 +287,10 @@ height: 32rpx;"/>
         <view class="budget-total-row" >
           <text class="budget-total-label" style="color:#878FA1;font-weight:400;">当前钱包可用余额</text>
           <text class="budget-total-value" style="color:#878FA1;font-weight:400;">¥{{walletBalanceDisplay}}</text>
+        </view>
+        <view class="budget-warning" wx:if="{{isBalanceInsufficient}}">
+          <text class="budget-warning-text">余额不足，还差 ¥{{balanceShortfall}}</text>
+          <view class="budget-warning-action" bindtap="goRecharge">去充值</view>
         </view>
         <view class="budget-tips">tips：活动金额按报名人数上限全额冻结，审核完全部稿件48小时后，剩余活动金即可解冻。</view>
       </view>

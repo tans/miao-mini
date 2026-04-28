@@ -1167,6 +1167,77 @@
   border: none;
 }
 
+.action-state-pending {
+  padding: 24rpx 64rpx;
+  background: #FFF3E8;
+  border-radius: 48rpx;
+  border: 1rpx solid #F8D1A3;
+}
+
+.action-state-pending text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #EF8802;
+}
+
+.action-state-pending::after {
+  border: none;
+}
+
+.action-state-approved {
+  padding: 24rpx 64rpx;
+  background: #15B255;
+  border-radius: 48rpx;
+  border: none;
+}
+
+.action-state-approved text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #fff;
+}
+
+.action-state-approved::after {
+  border: none;
+}
+
+.action-state-rejected,
+.action-state-timeout {
+  padding: 24rpx 64rpx;
+  background: #ECEEF4;
+  border-radius: 48rpx;
+  border: none;
+}
+
+.action-state-rejected text,
+.action-state-timeout text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #878FA1;
+}
+
+.action-state-rejected::after,
+.action-state-timeout::after {
+  border: none;
+}
+
+.action-state-reported {
+  padding: 24rpx 64rpx;
+  background: #FDECEC;
+  border-radius: 48rpx;
+  border: 1rpx solid #F5C4C4;
+}
+
+.action-state-reported text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #D63A3A;
+}
+
+.action-state-reported::after {
+  border: none;
+}
+
 /* 提交模态框 */
 .submit-modal-mask {
   position: fixed;

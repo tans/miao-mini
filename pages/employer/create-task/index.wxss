@@ -650,6 +650,21 @@ picker.spec-item {
   height: 28rpx;
 }
 
+.picker-box-disabled {
+  opacity: 1;
+}
+
+.picker-row-disabled {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.picker-hint {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #878ba1;
+}
+
 /* 输入框 */
 .input-box {
   background: #f5f5f7;
@@ -721,6 +736,11 @@ picker.spec-item {
   color: #333;
 }
 
+.budget-value-strikethrough {
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
 .budget-divider {
   height: 1rpx;
   border: 1px solid #ececef;
@@ -744,6 +764,38 @@ picker.spec-item {
   font-size: 28rpx;
   font-weight: 900;
   color: #ef4444;
+}
+
+.budget-discount-value {
+  font-size: 28rpx;
+  font-weight: 900;
+  color: #10b981;
+}
+
+.budget-warning {
+  margin-top: 16rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  background: #fff4f4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.budget-warning-text {
+  font-size: 24rpx;
+  color: #dc2626;
+}
+
+.budget-warning-action {
+  flex-shrink: 0;
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  background: #ef4444;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: 700;
 }
 
 .budget-tips {

@@ -27,12 +27,30 @@ function getClaimStatusClass(status) {
   const value = Number(status);
   const map = {
     1: 'pending',
-    2: 'submitted',
+    2: 'reviewing',
     3: 'approved',
     4: 'cancelled',
-    5: 'expired',
+    5: 'rejected',
+    6: 'reported',
   };
   return map[value] || 'unknown';
+}
+
+function getClaimReviewResult(claim = {}) {
+  return Number(claim.review_result || claim.reviewResult || 0) || 0;
+}
+
+function getClaimActionState(claim = {}) {
+  const status = Number(claim.status || 0);
+  const reviewResult = getClaimReviewResult(claim);
+
+  if (status === 3) return { text: '已采纳', className: 'action-state-approved' };
+  if (status === 4) return { text: '审核超时，已发参与奖', className: 'action-state-timeout' };
+  if (status === 5 || (status === 1 && reviewResult === 2)) return { text: '已淘汰', className: 'action-state-rejected' };
+  if (status === 6 || (status === 1 && reviewResult === 3)) return { text: '已举报', className: 'action-state-reported' };
+  if (status === 2) return { text: '已报名，等待审核', className: 'action-state-pending' };
+
+  return null;
 }
 
 function normalizeTask(task = {}) {
@@ -47,6 +65,13 @@ function normalizeTask(task = {}) {
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
   const isPublic = task.public == null ? true : !!task.public;
+  const hasSignedUp = task.hasSignedUp != null ? task.hasSignedUp : (task.has_signed_up != null ? task.has_signed_up : !!claim);
+  const canSubmit = task.canSubmit != null
+    ? task.canSubmit
+    : (task.can_submit != null
+      ? task.can_submit
+      : !!(claim && Number(claim.status) === 1 && !claim.submitAt && !getClaimReviewResult(claim)));
+  const claimAction = claim && !canSubmit ? getClaimActionState(claim) : null;
 
   return {
     ...task,
@@ -70,39 +95,48 @@ function normalizeTask(task = {}) {
     submissionCount: Number(task.submission_count ?? task.submissionCount ?? submissions.length ?? 0) || 0,
     endAt,
     end_at: endAt,
-    hasSignedUp: task.hasSignedUp != null ? task.hasSignedUp : (task.has_signed_up != null ? task.has_signed_up : !!claim),
-    canSubmit: task.canSubmit != null ? task.canSubmit : (task.can_submit != null ? task.can_submit : (claim ? Number(claim.status) === 1 : false)),
+    hasSignedUp,
+    canSubmit,
     claim,
     claimMaterials,
     submissions,
     claimStatusText: claim ? claim.statusText : '',
     claimSubmissionSummary: summarizeClaimMaterials(claimMaterials),
+    claimActionText: claimAction ? claimAction.text : '',
+    claimActionClass: claimAction ? claimAction.className : '',
   };
 }
 
-function getClaimStatusText(status) {
+function getClaimStatusText(status, reviewResult = 0) {
   const value = Number(status);
+  const review = Number(reviewResult || 0);
+  if (value === 1 && review === 2) return '已淘汰';
+  if (value === 1 && review === 3) return '已举报';
   const map = {
-    1: '已认领，待提交',
-    2: '已提交，待验收',
-    3: '已验收',
-    4: '已取消',
-    5: '已超时',
+    1: '已报名，待提交',
+    2: '已提交，待审核',
+    3: '已采纳',
+    4: '商家审核超时',
+    5: '已淘汰',
+    6: '已举报',
   };
   return map[value] || '未知状态';
 }
 
 function normalizeClaim(claim = {}) {
   const status = Number(claim.status);
+  const reviewResult = getClaimReviewResult(claim);
   const submitAt = claim.submitAt || claim.submit_at || '';
   const createdAt = claim.createdAt || claim.created_at || '';
   const reviewAt = claim.reviewAt || claim.review_at || '';
+  const normalizedStatus = status === 1 && reviewResult === 2 ? 5 : (status === 1 && reviewResult === 3 ? 6 : status);
 
   return {
     ...claim,
     status,
-    statusText: getClaimStatusText(status),
-    statusClass: getClaimStatusClass(status),
+    reviewResult,
+    statusText: getClaimStatusText(status, reviewResult),
+    statusClass: getClaimStatusClass(normalizedStatus),
     submitAt,
     submit_at: submitAt,
     submitAtText: formatDateTime(submitAt),
@@ -414,6 +448,9 @@ Page({
       this.goSubmitWork();
       return;
     }
+    if (this.data.task && this.data.task.claimActionText) {
+      return;
+    }
     wx.showToast({ title: '当前状态不可提交', icon: 'none' });
   },
 
@@ -481,7 +518,7 @@ Page({
       await this.loadClaimId();
     }
     if (!this.data.submitClaimId) {
-      wx.showToast({ title: '认领不存在，请先报名', icon: 'none' });
+      wx.showToast({ title: '报名记录不存在，请先报名', icon: 'none' });
       return;
     }
     this.setData({ showCreatorNoticeModal: true});
@@ -561,7 +598,7 @@ Page({
     }
     const claimId = this.data.submitClaimId;
     if (!claimId) {
-      wx.showToast({ title: '认领不存在，请重新报名', icon: 'none' });
+      wx.showToast({ title: '报名记录不存在，请重新报名', icon: 'none' });
       return;
     }
 
