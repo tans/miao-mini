@@ -13,7 +13,7 @@
         <picker mode="selector" range="{{taskList}}" range-key="title" bindchange="onTaskChange">
           <view class="picker-value">
             {{selectedTask ? selectedTask.title : '请选择任务'}}
-            <image class="picker-arrow" src="/assets/icons/arrow-right.png" />
+            <image class="picker-arrow" src="../../images/mine/arrow-right.png" />
           </view>
         </picker>
       </view>
@@ -22,7 +22,7 @@
         <picker mode="selector" range="{{appealTypes}}" range-key="name" bindchange="onAppealTypeChange">
           <view class="picker-value">
             {{selectedType ? selectedType.name : '请选择申诉类型'}}
-            <image class="picker-arrow" src="/assets/icons/arrow-right.png" />
+            <image class="picker-arrow" src="../../images/mine/arrow-right.png" />
           </view>
         </picker>
       </view>

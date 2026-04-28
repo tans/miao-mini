@@ -14,10 +14,13 @@
           <text class="sub-label">待解冻金额(元)</text>
           <text class="sub-value">{{frozenAmount}}</text>
         </view>
-        <view class="balance-divider"></view>
         <view class="balance-sub-item">
           <text class="sub-label">可提现金额(元)</text>
           <text class="sub-value">{{withdrawableAmount}}</text>
+        </view>
+        <view class="balance-sub-item balance-sub-item-highlight">
+          <text class="sub-label">总收入(元)</text>
+          <text class="sub-value">{{totalIncomeDisplay}}</text>
         </view>
       </view>
     </view>

@@ -520,6 +520,10 @@ const Api = {
     return this.request('GET', '/creator/stats');
   },
 
+  getMineStats() {
+    return this.request('GET', '/mine/stats');
+  },
+
   getBusinessStats() {
     return this.request('GET', '/business/stats');
   },

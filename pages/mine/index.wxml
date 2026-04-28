@@ -63,8 +63,8 @@
             </view>
           </view>
           <view class="zone-item-right">
-            <view class="zone-item-badge" wx:if="{{bizStats.pending_count > 0}}">
-              <text class="badge-num">{{bizStats.pending_count}}</text>
+            <view class="zone-item-badge" wx:if="{{creatorStats.pending_count > 0}}">
+              <text class="badge-num">{{creatorStats.pending_count}}</text>
               <text class="badge-text">个任务待交稿</text>
             </view>
             <image class="zone-arrow" src="../../images/mine/right.png" />
