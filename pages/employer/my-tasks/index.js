@@ -3,6 +3,11 @@ const Api = require('../../../utils/api.js');
 const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
+function toNumber(value, fallback = 0) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : fallback;
+}
+
 function normalizeTaskStatus(rawStatus) {
   const statusTextMap = {
     pending: '待审核',
@@ -45,9 +50,25 @@ function normalizeTaskStatus(rawStatus) {
 
 function normalizeTask(task = {}) {
   const meta = normalizeTaskStatus(task.status);
+  const totalCount = toNumber(task.total_count ?? task.totalCount ?? task.max_submissions, 0);
+  const remainingCount = toNumber(task.remaining_count ?? task.remainingCount, 0);
+  const submissionCount = Math.max(
+    0,
+    toNumber(task.submission_count ?? task.submissionCount, totalCount - remainingCount)
+  );
+  const progressTotal = totalCount > 0 ? totalCount : 10;
+  const progressPercent = progressTotal > 0
+    ? Math.max(0, Math.min(100, (submissionCount / progressTotal) * 100))
+    : 0;
+
   return {
     ...task,
     ...meta,
+    total_count: totalCount,
+    remaining_count: remainingCount,
+    submission_count: submissionCount,
+    max_submissions: progressTotal,
+    progress_percent: progressPercent,
   };
 }
 
