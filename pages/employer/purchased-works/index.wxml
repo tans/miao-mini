@@ -38,9 +38,14 @@
             <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
             <text class="author-name">{{item.creator_name || '创作者'}}</text>
           </view>
-          <view class="work-like-count">
-            <text class="like-icon">❤</text>
-            <text class="like-count-value">{{item.likesCount}}</text>
+        </view>
+        <view class="work-actions">
+          <view class="action-icon-wrap">
+            <!-- <text class="action-icon">↓</text> -->
+            <image class="action-icon-img" src="./images/icon1.png" />
+          </view>
+          <view class="action-icon-wrap">
+            <image class="action-icon-img" src="./images/icon2.png" />
           </view>
         </view>
       </view>

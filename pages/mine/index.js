@@ -161,6 +161,11 @@ Page({
       wx.navigateTo({ url: '/pages/mine/profile/index' });
     });
   },
+  goLevel() {
+    this._ensureLogin(() => {
+      wx.navigateTo({ url: '/pages/creator/level/index' });
+    });
+  },
 
   goWallet() {
     this._ensureLogin(() => {

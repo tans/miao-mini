@@ -9,16 +9,19 @@
     <!-- 用户信息卡片 -->
     <view class="user-card">
       <view class="user-info-row">
-        <image class="user-avatar" src="{{avatarSrc}}" mode="aspectFill" binderror="onAvatarError" />
+        <image class="user-avatar" src="{{avatarSrc}}" mode="aspectFill" binderror="onAvatarError" bindtap="goProfile"/>
         <view class="user-detail">
-          <view class="user-name-row">
-            <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
+          <view class="user-name-row" bindtap="goProfile">
+            <view style="display: flex; align-items: center; gap: 10rpx;">
+              <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
+              <image class="wallet-arrow" src="../../images/mine/right.png" />
+            </view>
             <view class="user-right">
               <text class="user-id">ID：{{user.id || '--'}}</text>
               <image class="user-arrow" src="../../images/mine/arrow-right.png" bindtap="copyUserId" />
             </view>
           </view>
-          <view class="user-level-row">
+          <view class="user-level-row"  bindtap="goLevel">
             <view class="level-info">
               <view class="level-badge">
                 <text class="level-num">Lv.{{creatorStats.level || 0}}</text>
@@ -27,7 +30,7 @@
               <text class="level-sep">·</text>
               <text class="level-task-count">完成 {{creatorStats.adopted_count || 0}} 个任务</text>
             </view>
-            <view class="go-profile-btn" bindtap="goProfile">
+            <view class="go-profile-btn">
               <image class="wallet-arrow" src="../../images/mine/right.png" />
             </view>
           </view>
