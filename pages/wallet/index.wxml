@@ -9,6 +9,9 @@
           <text class="balance-value">{{balanceDisplay}}</text>
         </view>
       </view>
+      <!-- <view class="balance-deco"></view> -->
+    </view>
+    <view class="balance-panel">
       <view class="balance-sub">
         <view class="balance-sub-item">
           <text class="sub-label">待解冻金额(元)</text>
@@ -18,15 +21,11 @@
           <text class="sub-label">可提现金额(元)</text>
           <text class="sub-value">{{withdrawableAmount}}</text>
         </view>
-        <view class="balance-sub-item balance-sub-item-highlight">
-          <text class="sub-label">总收入(元)</text>
-          <text class="sub-value">{{totalIncomeDisplay}}</text>
-        </view>
       </view>
-    </view>
-    <view class="balance-actions">
-      <button class="action-btn action-btn-primary" bindtap="goRecharge" hover-class="none">充值</button>
-      <button class="action-btn action-btn-outline" bindtap="goWithdraw" hover-class="none">提现</button>
+      <view class="balance-actions">
+        <button class="action-btn action-btn-primary" bindtap="goRecharge" hover-class="none">充值</button>
+        <button class="action-btn action-btn-outline" bindtap="goWithdraw" hover-class="none">提现</button>
+      </view>
     </view>
   </view>
 
