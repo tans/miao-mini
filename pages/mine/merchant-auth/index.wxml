@@ -1,42 +1,50 @@
 <view class="auth-container">
-  <!-- 认证状态 -->
+  <!-- 认证横幅 -->
   <view class="status-section">
     <view class="status-card">
-      <view class="status-icon {{statusIcon}}">
-        <text class="status-icon-text">{{statusIconText}}</text>
+      <view class="status-text-wrap">
+        <text class="status-title">商家认证</text>
+        <text class="status-desc">认证后可提升任务发布额度，享受更多平台权益与更高赏金托管上限。</text>
       </view>
-      <text class="status-title">{{statusTitle}}</text>
-      <text class="status-desc">{{statusDesc}}</text>
+      <view class="status-icon {{statusIcon}}">
+        <text class="status-icon-text">✓</text>
+      </view>
     </view>
   </view>
 
   <!-- 认证表单 -->
   <view class="form-section" wx:if="{{status !== 'certified'}}">
     <view class="form-card">
+      <view class="upload-area" bindtap="uploadLicense">
+        <image class="upload-icon" src="/pages/employer/create-task/images/icon-upload-plus.png" wx:if="{{!licenseUrl}}" />
+        <image class="upload-preview" src="{{licensePreviewUrl || licenseUrl}}" wx:else />
+        <text class="upload-title" wx:if="{{!licenseUrl}}">上传营业执照</text>
+        <text class="upload-text" wx:if="{{!licenseUrl}}">请上传清晰的企业营业执照或个体工商户执照照片</text>
+      </view>
+
       <view class="form-item">
         <text class="form-label">企业名称</text>
         <input class="form-input" value="{{companyName}}" bindinput="onCompanyNameInput" placeholder="请输入企业名称" />
       </view>
+
+      <view class="form-item">
+        <text class="form-label" style="width: 240rpx;">统一社会信用代码</text>
+        <input class="form-input" value="" placeholder="请输入统一社会信用代码" />
+      </view>
+      
       <view class="form-item">
         <text class="form-label">联系人</text>
         <input class="form-input" value="{{contactName}}" bindinput="onContactNameInput" placeholder="请输入联系人姓名" />
       </view>
+      
       <view class="form-item">
         <text class="form-label">联系电话</text>
         <input class="form-input" type="number" value="{{contactPhone}}" bindinput="onContactPhoneInput" placeholder="请输入联系电话" />
       </view>
-      <view class="form-item">
-        <text class="form-label">营业执照</text>
-        <view class="upload-area" bindtap="uploadLicense">
-          <image class="upload-icon" src="/pages/employer/create-task/images/icon-upload-plus.png" wx:if="{{!licenseUrl}}" />
-          <image class="upload-preview" src="{{licensePreviewUrl || licenseUrl}}" wx:else />
-          <text class="upload-text" wx:if="{{!licenseUrl}}">点击上传营业执照</text>
-        </view>
-      </view>
     </view>
 
     <view class="submit-section">
-      <button class="submit-btn" bindtap="submitAuth">提交认证</button>
+      <view class="submit-btn" bindtap="submitAuth">提交</view>
     </view>
   </view>
 </view>
