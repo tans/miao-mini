@@ -138,8 +138,8 @@
 
       <view class="empty-state" wx:if="{{!loading && filteredClaims.length === 0}}">
         <view class="empty-icon">稿</view>
-        <text class="empty-text">暂无投稿</text>
-        <text class="empty-hint">该任务还没有可审核的作品</text>
+        <text class="empty-text">{{claimsLoadFailed ? '投稿加载失败' : '暂无投稿'}}</text>
+        <text class="empty-hint">{{claimsLoadFailed ? (claimsLoadErrorMessage || '请下拉重试') : '该任务还没有可审核的作品'}}</text>
       </view>
     </view>
 

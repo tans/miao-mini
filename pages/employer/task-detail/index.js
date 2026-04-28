@@ -33,6 +33,13 @@ function getCurrentUserId() {
   return user && user.id != null ? String(user.id) : '';
 }
 
+function shouldRetryClaimsLoad(err) {
+  if (!err) return false;
+  const code = Number(err.code || 0);
+  const message = String(err.message || '');
+  return code === 40101 || message.indexOf('登录已过期') !== -1;
+}
+
 function normalizeTask(task = {}) {
   const endAt = pick(task.end_at, task.endAt, '');
   const industryTags = toList(pick(task.industries, task.industry));
@@ -166,6 +173,8 @@ Page({
     taskId: '',
     currentTab: 'proposals',
     loading: false,
+    claimsLoadFailed: false,
+    claimsLoadErrorMessage: '',
     task: {
       industryTags: ['房产家居'],
       styleTags: ['房产家居'],
@@ -210,7 +219,12 @@ Page({
     }
 
     if (!app.isLoggedIn()) {
-      app.silentLogin().catch(() => {}).finally(() => this.loadTaskDetail(taskId));
+      app.silentLogin()
+        .then(() => this.loadTaskDetail(taskId))
+        .catch(() => {
+          wx.showToast({ title: '登录失效，请重试', icon: 'none' });
+          setTimeout(() => wx.navigateBack(), 1200);
+        });
       return;
     }
 
@@ -220,6 +234,18 @@ Page({
   onShow() {
     if (app.isLoggedIn() && this.data.taskId && !this.data.loading) {
       this.loadTaskDetail(this.data.taskId);
+    }
+  },
+
+  async loadClaimsWithRetry(taskId) {
+    try {
+      return await Api.getTaskClaims(taskId);
+    } catch (err) {
+      if (!shouldRetryClaimsLoad(err)) {
+        throw err;
+      }
+      await app.silentLogin();
+      return Api.getTaskClaims(taskId);
     }
   },
 
@@ -240,12 +266,19 @@ Page({
     wx.showLoading({ title: '加载中...' });
 
     try {
-      const [taskRes, claimsRes] = await Promise.all([
-        Api.getTask(taskId).catch(() => ({ data: null })),
-        app.isLoggedIn()
-          ? Api.getTaskClaims(taskId).catch(() => ({ data: [] }))
-          : Promise.resolve({ data: [] }),
-      ]);
+      const taskRes = await Api.getTask(taskId).catch(() => ({ data: null }));
+      let claimsRes = { data: [] };
+      let claimsLoadFailed = false;
+      let claimsLoadErrorMessage = '';
+
+      if (app.isLoggedIn()) {
+        try {
+          claimsRes = await this.loadClaimsWithRetry(taskId);
+        } catch (err) {
+          claimsLoadFailed = true;
+          claimsLoadErrorMessage = (err && err.message) || '投稿加载失败';
+        }
+      }
 
       const rawTask = taskRes.data;
       if (!rawTask) {
@@ -271,7 +304,7 @@ Page({
         return bTime - aTime;
       });
       const pendingClaims = claims.filter((item) => item.filterKey === 'pending');
-      const totalSubmitted = Number(task.submissionCount || task.submission_count || claims.length || 0) || 0;
+      const totalSubmitted = claims.length;
       const totalAdopted = claims.filter((item) => item.status === 3).length;
       const adoptionRate = totalSubmitted > 0
         ? Math.round((totalAdopted / totalSubmitted) * 100)
@@ -282,8 +315,10 @@ Page({
         task,
         materials: task.materials || [],
         claims,
+        claimsLoadFailed,
+        claimsLoadErrorMessage,
         activeFilter: nextFilter,
-        proposalCount: task.pendingReviewCount || pendingClaims.length,
+        proposalCount: claimsLoadFailed ? 0 : pendingClaims.length,
         totalSubmitted,
         totalAdopted,
         adoptionRate,
@@ -297,6 +332,9 @@ Page({
       });
 
       this.applyFilter(nextFilter);
+      if (claimsLoadFailed) {
+        wx.showToast({ title: claimsLoadErrorMessage, icon: 'none' });
+      }
     } catch (err) {
       wx.showToast({ title: err.message || '加载失败', icon: 'none' });
       this.setData({ loading: false });

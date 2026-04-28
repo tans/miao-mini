@@ -215,7 +215,7 @@ Page({
           wx.showLoading({ title: '取消中...' });
           try {
             await Api.cancelClaim(claimId);
-            wx.showToast({ title: '已取消认领', icon: 'success' });
+            wx.showToast({ title: '已取消报名', icon: 'success' });
             this.loadClaims();
           } catch (err) {
             wx.showToast({ title: err.message || '取消失败', icon: 'none' });

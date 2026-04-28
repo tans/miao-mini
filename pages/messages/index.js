@@ -42,7 +42,7 @@ function getVisualMeta(item = {}) {
     return { iconText: '关闭', iconClass: 'danger', typeLabel: '任务变更' };
   }
   if (type === 'claim_created' || type === 'task_claimed' || bizType === 'claim') {
-    return { iconText: '认领', iconClass: 'orange', typeLabel: '任务动态' };
+    return { iconText: '报名', iconClass: 'orange', typeLabel: '任务动态' };
   }
   if (type === 'submission_received' || type === 'submission_submitted') {
     return { iconText: '投稿', iconClass: 'blue', typeLabel: '投稿动态' };
