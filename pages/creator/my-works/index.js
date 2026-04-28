@@ -10,6 +10,20 @@ const FILTERS = [
   { key: 'reported', label: '被举报' }
 ];
 
+function pick(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && value !== '') return value;
+  }
+  return '';
+}
+
+function pick(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && value !== '') return value;
+  }
+  return '';
+}
+
 Page({
   data: {
     works: [],
@@ -104,7 +118,7 @@ Page({
     } else if (status === 3) {
       // 已采纳
       incomeLabel = '收入(采纳金+参与金)';
-      incomeText = `¥${claim.unit_price || 100} + ¥${claim.award_price || 30}`;
+      incomeText = `¥${pick(claim.unit_price, claim.unitPrice, claim.participation_reward, claim.participationReward, 0)} + ¥${pick(claim.award_price, claim.awardPrice, claim.reward, claim.adoption_reward, claim.adoptionReward, 0)}`;
     } else if (status === 5) {
       // 已拒绝/未采纳
       incomeLabel = '收入(参与金)';
@@ -132,7 +146,7 @@ Page({
         poster: m.thumbnail_path || ''
       })),
       submittedAt: formatDateTime(claim.submitted_at || claim.updated_at || ''),
-      unitPrice: claim.unit_price || 0,
+      unitPrice: Number(pick(claim.unit_price, claim.unitPrice, claim.participation_reward, claim.participationReward, 0)) || 0,
       displayCover,
       isVideo: coverType === 'video',
       previewVideoSrc,

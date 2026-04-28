@@ -47,6 +47,13 @@ function createFallbackCover(seedText, description) {
   };
 }
 
+function pick(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && value !== '') return value;
+  }
+  return '';
+}
+
 function isPlaceholderCover(path) {
   if (!path || typeof path !== 'string') return false;
   const normalized = path.toLowerCase();
@@ -179,6 +186,8 @@ Page({
         );
         return {
           ...t,
+          award_price: Number(pick(t.award_price, t.awardPrice, t.reward, t.adoption_reward, t.adoptionReward, 0)) || 0,
+          unit_price: Number(pick(t.unit_price, t.unitPrice, t.participation_reward, t.participationReward, 0)) || 0,
           cover,
           styleArray,
           industryArray,

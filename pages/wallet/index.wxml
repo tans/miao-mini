@@ -25,12 +25,8 @@
       </view>
     </view>
     <view class="balance-actions">
-      <view class="action-btn" bindtap="goRecharge">
-        <text>充值</text>
-      </view>
-      <view class="action-btn action-btn-outline" bindtap="goWithdraw">
-        <text>提现</text>
-      </view>
+      <button class="action-btn action-btn-primary" bindtap="goRecharge" hover-class="none">充值</button>
+      <button class="action-btn action-btn-outline" bindtap="goWithdraw" hover-class="none">提现</button>
     </view>
   </view>
 
@@ -56,7 +52,7 @@
       <view class="transaction-item" wx:for="{{filteredTransactions}}" wx:key="id">
         <view class="trans-info">
           <text class="trans-type">{{item.type_text || '其他'}}</text>
-          <text class="trans-time">{{item.created_at}}</text>
+          <text class="trans-time">{{item.createdAtText}}</text>
         </view>
         <view class="trans-amount-group">
           <view class="trans-amount-row">
@@ -64,7 +60,7 @@
             <text class="trans-value {{item.amount >= 0 ? 'income' : 'expense'}}">{{item.amountDisplay}}</text>
             <text class="trans-unit {{item.amount >= 0 ? 'income' : 'expense'}}">元</text>
           </view>
-          <text class="trans-fee" wx:if="{{item.fee > 0}}">{{item.type_text}}手续费：{{item.fee}}元</text>
+          <text class="trans-fee" wx:if="{{item.fee > 0}}">{{item.type_text}}手续费：{{item.feeDisplay}}元</text>
         </view>
       </view>
     </view>

@@ -198,7 +198,7 @@
           <view class="reward-item">
             <text class="reward-label">参与奖励</text>
             <view class="reward-value-row">
-              <text class="reward-value">{{task.unitPrice || 0}}</text>
+              <text class="reward-value">{{task.unitPrice}}</text>
               <text class="reward-unit">元/条</text>
             </view>
           </view>
@@ -206,7 +206,7 @@
           <view class="reward-item">
             <text class="reward-label">采纳奖励</text>
             <view class="reward-value-row">
-              <text class="reward-value reward-value-dark">{{task.awardPrice || 0}}</text>
+              <text class="reward-value reward-value-dark">{{task.awardPrice}}</text>
               <text class="reward-unit">元/条</text>
             </view>
           </view>

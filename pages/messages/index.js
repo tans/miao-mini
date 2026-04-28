@@ -77,6 +77,7 @@ Page({
     limit: 20,
     hasMore: true,
     loading: false,
+    markingAllRead: false,
     unreadCount: 0,
     loaded: false
   },
@@ -170,7 +171,8 @@ Page({
   },
 
   async markAllRead() {
-    if (!this.data.unreadCount) return;
+    if (!this.data.unreadCount || this.data.markingAllRead) return;
+    this.setData({ markingAllRead: true });
     try {
       await Api.markAllNotificationsRead();
       this.setData({
@@ -190,6 +192,8 @@ Page({
         title: err.message || '操作失败',
         icon: 'none'
       });
+    } finally {
+      this.setData({ markingAllRead: false });
     }
   },
 

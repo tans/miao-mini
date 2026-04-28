@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
 function toList(value) {
@@ -45,8 +46,8 @@ function normalizeTask(task = {}) {
     businessName: pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '商家'),
     businessAvatar: pick(task.business_avatar, task.businessAvatar, task.merchantAvatar, ''),
     title: pick(task.title, task.name, '高端楼盘春日氛围视频'),
-    unitPrice: Number(pick(task.unit_price, task.unitPrice, 100)) || 100,
-    awardPrice: Number(pick(task.award_price, task.awardPrice, 10)) || 10,
+    unitPrice: Number(pick(task.unit_price, task.unitPrice, task.participation_reward, task.participationReward, task.base_reward, task.baseReward, 0)) || 0,
+    awardPrice: Number(pick(task.award_price, task.awardPrice, task.reward, task.adoption_reward, task.adoptionReward, task.bonus_price, task.bonusPrice, 0)) || 0,
     industryTags: industryTags.length ? industryTags : [pick(task.industry, '房产家居')],
     styleTags: styleTags.length ? styleTags : [pick(task.style, '房产家居')],
     description: pick(
@@ -145,7 +146,7 @@ function normalizeClaim(claim = {}, task = {}) {
     creatorName: claim.creator_name || '匿名创作者',
     creatorAvatar: claim.creator_avatar || '',
     creatorInitial: (claim.creator_name || '匿').slice(0, 1),
-    displayDate: (submitAt || claim.updated_at || '').substring(0, 16).replace('T', ' '),
+    displayDate: formatDateTime(submitAt || claim.updated_at || ''),
     contentText,
     videoLink,
     hasContent: !!contentText,
