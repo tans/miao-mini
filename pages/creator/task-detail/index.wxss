@@ -795,6 +795,22 @@
   color: #878FA1;
 }
 
+.submission-mock-status-pending {
+  background: #FFF3E8;
+}
+
+.submission-mock-status-pending text {
+  color: #EF8802;
+}
+
+.submission-mock-status-reported {
+  background: #FDECEC;
+}
+
+.submission-mock-status-reported text {
+  color: #D63A3A;
+}
+
 .submission-mock-play {
   position: absolute;
   right: 16rpx;

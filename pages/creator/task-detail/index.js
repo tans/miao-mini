@@ -47,6 +47,9 @@ function normalizeTask(task = {}) {
   const claimMaterials = Array.isArray(task.claim_materials)
     ? task.claim_materials.map(item => normalizeClaimMaterial(item))
     : [];
+  const submissions = Array.isArray(task.submissions)
+    ? task.submissions.map(item => normalizeSubmission(item))
+    : [];
   const industries = toList(task.industries);
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
@@ -69,12 +72,14 @@ function normalizeTask(task = {}) {
     totalPublished: task.totalPublished ?? task.total_published ?? task.totalTasks ?? 0,
     totalSpent: task.totalSpent ?? task.total_spent ?? task.totalSpend ?? 0,
     isPublic: task.public != null ? !!task.public : (task.open_submission != null ? !!task.open_submission : true),
+    submissionCount: Number(task.submission_count ?? task.submissionCount ?? submissions.length ?? 0) || 0,
     endAt,
     end_at: endAt,
     hasSignedUp: task.hasSignedUp != null ? task.hasSignedUp : (task.has_signed_up != null ? task.has_signed_up : !!claim),
     canSubmit: task.canSubmit != null ? task.canSubmit : (task.can_submit != null ? task.can_submit : (claim ? Number(claim.status) === 1 : false)),
     claim,
     claimMaterials,
+    submissions,
     claimStatusText: claim ? claim.statusText : '',
     claimSubmissionSummary: summarizeClaimMaterials(claimMaterials),
   };
@@ -158,6 +163,49 @@ function normalizeClaimMaterial(material = {}) {
   };
 }
 
+function getSubmissionStatusText(status, reviewResult) {
+  const value = Number(status);
+  const review = Number(reviewResult || 0);
+  if (value === 3) return '已采纳';
+  if (review === 3) return '已举报';
+  if (review === 2) return '已淘汰';
+  if (value === 2) return '待审核';
+  return '已投稿';
+}
+
+function getSubmissionStatusClass(status, reviewResult) {
+  const value = Number(status);
+  const review = Number(reviewResult || 0);
+  if (value === 3) return 'approved';
+  if (review === 3) return 'reported';
+  if (review === 2) return 'rejected';
+  if (value === 2) return 'pending';
+  return 'pending';
+}
+
+function normalizeSubmission(submission = {}) {
+  const materials = Array.isArray(submission.materials)
+    ? submission.materials.map(item => normalizeClaimMaterial(item))
+    : [];
+  const status = Number(submission.status);
+  const reviewResult = Number(submission.review_result || submission.reviewResult || 0);
+  const submitAt = submission.submit_at || submission.submitAt || '';
+
+  return {
+    ...submission,
+    status,
+    reviewResult,
+    materials,
+    creatorName: submission.creator_name || '匿名创作者',
+    creatorAvatar: submission.creator_avatar || '/assets/icons/avatar-default.jpg',
+    creatorLevel: Number(submission.creator_level || submission.creatorLevel || 0) || 0,
+    submitAt,
+    submitAtText: formatDateTime(submitAt),
+    statusText: getSubmissionStatusText(status, reviewResult),
+    statusClass: getSubmissionStatusClass(status, reviewResult),
+  };
+}
+
 function getMaterialProcessStatusText(status, isVideo, hasPreview) {
   if (!isVideo) return '';
   if (status === 'failed') {
@@ -222,6 +270,7 @@ Page({
     task: {},
     materials: [],
     claimMaterials: [],
+    submissions: [],
     recommendations: [],
     currentTab: 'detail',
     hasSignedUp: false,
@@ -283,6 +332,7 @@ Page({
         task,
         materials: task.materials || [],
         claimMaterials: task.claimMaterials || [],
+        submissions: task.submissions || [],
         hasSignedUp: !!task.hasSignedUp,
         canSubmit: !!task.canSubmit,
         submitClaimId: task.claim && task.claim.id ? String(task.claim.id) : '',
