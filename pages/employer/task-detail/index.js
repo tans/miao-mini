@@ -46,8 +46,8 @@ function normalizeTask(task = {}) {
     businessName: pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '商家'),
     businessAvatar: pick(task.business_avatar, task.businessAvatar, task.merchantAvatar, ''),
     title: pick(task.title, task.name, '高端楼盘春日氛围视频'),
-    unitPrice: Number(pick(task.unit_price, task.unitPrice, task.participation_reward, task.participationReward, task.base_reward, task.baseReward, 0)) || 0,
-    awardPrice: Number(pick(task.award_price, task.awardPrice, task.reward, task.adoption_reward, task.adoptionReward, task.bonus_price, task.bonusPrice, 0)) || 0,
+    unit_price: Number(pick(task.unit_price, 0)) || 0,
+    award_price: Number(pick(task.award_price, 0)) || 0,
     industryTags: industryTags.length ? industryTags : [pick(task.industry, '房产家居')],
     styleTags: styleTags.length ? styleTags : [pick(task.style, '房产家居')],
     description: pick(
@@ -276,7 +276,7 @@ Page({
       const adoptionRate = totalSubmitted > 0
         ? Math.round((totalAdopted / totalSubmitted) * 100)
         : task.adoptionRate;
-      const totalSpent = task.totalSpent || totalAdopted * (task.unitPrice + task.awardPrice);
+      const totalSpent = task.totalSpent || totalAdopted * (task.unit_price + task.award_price);
 
       this.setData({
         task,
