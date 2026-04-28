@@ -20,6 +20,11 @@ function pick(...values) {
   return '';
 }
 
+function getCurrentUserId() {
+  const user = (app && typeof app.getUser === 'function' && app.getUser()) || Api.getUser();
+  return user && user.id != null ? String(user.id) : '';
+}
+
 function normalizeTask(task = {}) {
   const endAt = pick(task.end_at, task.endAt, '');
   const industryTags = toList(pick(task.industries, task.industry));
@@ -45,6 +50,7 @@ function normalizeTask(task = {}) {
     videoResolution: pick(task.video_resolution, task.videoResolution, '1080P'),
     videoDuration: pick(task.video_duration, task.videoDuration, '30s'),
     endAt,
+    totalCount: Number(pick(task.total_count, task.totalCount, 0)) || 0,
     jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
     jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
     jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
@@ -233,9 +239,20 @@ Page({
       }
 
       const task = normalizeTask(rawTask);
+      const currentUserId = getCurrentUserId();
       const claims = (Array.isArray(claimsRes.data) ? claimsRes.data : [])
         .filter((item) => Number(item.status) !== 1 || Number(pick(item.review_result, item.reviewResult, 0)) > 0)
         .map((item) => normalizeClaim(item, task));
+      claims.sort((a, b) => {
+        const aOwn = currentUserId && String(a.creator_id || a.creatorId || '') === currentUserId ? 1 : 0;
+        const bOwn = currentUserId && String(b.creator_id || b.creatorId || '') === currentUserId ? 1 : 0;
+        if (aOwn !== bOwn) {
+          return bOwn - aOwn;
+        }
+        const aTime = new Date(a.created_at || a.createdAt || 0).getTime() || 0;
+        const bTime = new Date(b.created_at || b.createdAt || 0).getTime() || 0;
+        return bTime - aTime;
+      });
       const pendingClaims = claims.filter((item) => item.filterKey === 'pending');
       const totalSubmitted = claims.length;
       const totalAdopted = claims.filter((item) => item.status === 3).length;

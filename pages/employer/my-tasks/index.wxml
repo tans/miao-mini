@@ -29,14 +29,14 @@
           <view class="submission-info">
             <text class="info-label">已投稿</text>
             <text class="info-count">{{item.submission_count || 0}}</text>
-            <text class="info-total">/{{item.max_submissions || 10}}条</text>
+            <text class="info-total">/{{item.max_submissions}}条</text>
           </view>
         </view>
       </view>
 
       <!-- 进度条 -->
       <view class="progress-bar">
-        <view class="progress-fill" style="width: {{(item.submission_count || 0) / (item.max_submissions || 10) * 100}}%"></view>
+        <view class="progress-fill" style="width: {{item.progress_percent}}%"></view>
       </view>
 
       <!-- 底部操作 -->

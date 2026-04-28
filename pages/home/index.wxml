@@ -50,7 +50,7 @@
       <!-- <text class="category-label">推荐</text> -->
       <view
         wx:for="{{industryTags}}" wx:key="index"
-        class="category-tag {{(activeIndustry === item || (activeIndustry === '' && index === 0)) ? 'active' : ''}}"
+        class="category-tag {{activeIndustry === item ? 'active' : ''}}"
         bindtap="setIndustry" data-industry="{{item}}"
       >{{item}}</view>
     </view>
@@ -59,21 +59,17 @@
   <!-- 排序栏 -->
   <view class="sort-bar">
     <view
-      class="sort-item {{sort === 'default' ? 'active' : ''}}"
-      bindtap="setSort" data-sort="default"
-    >默认</view>
-    <view
       class="sort-item {{sort === 'created_at' ? 'active' : ''}}"
       bindtap="setSort" data-sort="created_at"
-    >最新</view>
-    <view
-      class="sort-item {{sort === 'hot' ? 'active' : ''}}"
-      bindtap="setSort" data-sort="hot"
-    >最热</view>
+    >按时间</view>
     <view
       class="sort-item {{sort === 'price_desc' ? 'active' : ''}}"
       bindtap="setSort" data-sort="price_desc"
-    >价格最高</view>
+    >从高到低</view>
+    <view
+      class="sort-item {{sort === 'price_asc' ? 'active' : ''}}"
+      bindtap="setSort" data-sort="price_asc"
+    >从低到高</view>
   </view>
 
   <!-- 任务列表 -->

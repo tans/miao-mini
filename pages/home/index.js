@@ -78,9 +78,9 @@ Page({
   data: {
     tasks: [],          // 从服务端拉取的所有任务（当前排序+分页的全量缓存）
     displayTasks: [],   // 当前展示的任务（行业过滤后）
-    industryTags: [],   // 从任务数据中提取的行业标签列表
+    industryTags: ['全部'],   // 从任务数据中提取的行业标签列表，首项固定为“全部”
     styleTags: [],      // 从任务数据中提取的风格标签列表
-    activeIndustry: '', // 当前选中的行业（空字符串=全部）
+    activeIndustry: '全部', // 当前选中的行业（全部=不过滤）
     sort: 'created_at', // 当前排序：created_at / price_desc / price_asc
     page: 1,
     hasMore: true,
@@ -197,7 +197,7 @@ Page({
         (t.industryArray || []).forEach(tag => tag && industryTagSet.add(tag));
         (t.styleArray || []).forEach(tag => tag && styleTagSet.add(tag));
       });
-      const industryTags = Array.from(industryTagSet);
+      const industryTags = ['全部', ...Array.from(industryTagSet).filter((tag) => tag !== '全部')];
       const styleTags = Array.from(styleTagSet);
 
       // 应用当前行业过滤
@@ -219,7 +219,7 @@ Page({
   },
 
   _filterByIndustry(tasks, industry) {
-    if (!industry) return tasks;
+    if (!industry || industry === '全部') return tasks;
     return tasks.filter(t => (t.industryArray || []).includes(industry));
   },
 
@@ -227,7 +227,7 @@ Page({
   setSort(e) {
     const sort = e.currentTarget.dataset.sort;
     if (sort === this.data.sort) return;
-    this.setData({ sort, page: 1, tasks: [], displayTasks: [], activeIndustry: '' });
+    this.setData({ sort, page: 1, tasks: [], displayTasks: [], activeIndustry: '全部' });
     this.loadTasks();
   },
 
@@ -235,8 +235,9 @@ Page({
   setIndustry(e) {
     const industry = e.currentTarget.dataset.industry;
     if (industry === this.data.activeIndustry) return;
-    const displayTasks = this._filterByIndustry(this.data.tasks, industry);
-    this.setData({ activeIndustry: industry, displayTasks });
+    const normalizedIndustry = industry || '全部';
+    const displayTasks = this._filterByIndustry(this.data.tasks, normalizedIndustry);
+    this.setData({ activeIndustry: normalizedIndustry, displayTasks });
   },
 
   loadMore() {

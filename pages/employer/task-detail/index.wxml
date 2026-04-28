@@ -12,14 +12,14 @@
     <view class="tab-content" wx:if="{{currentTab === 'proposals'}}">
 
       <view class="stats-cards">
-        <view class="stat-card">
-          <text class="stat-card-label">总投稿数</text>
-          <view class="stat-card-number-row">
-            <text class="stat-card-value">{{totalSubmitted}}</text>
-            <text class="stat-card-unit">/10</text>
+          <view class="stat-card">
+            <text class="stat-card-label">总投稿数</text>
+            <view class="stat-card-number-row">
+              <text class="stat-card-value">{{totalSubmitted}}</text>
+              <text class="stat-card-unit">/{{task.totalCount || 0}}</text>
+            </view>
+            <text class="stat-card-hint">{{proposalCount}} 个待审核</text>
           </view>
-          <text class="stat-card-hint">{{proposalCount}} 个待审核</text>
-        </view>
         <view class="stat-card">
           <text class="stat-card-label">总采纳数</text>
           <text class="stat-card-value">{{totalAdopted}}</text>

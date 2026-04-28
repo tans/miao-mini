@@ -16,7 +16,8 @@ Page({
       daily_limit: 3,
       commission_rate: '10%',
       next_level_name: '新手创作者',
-      need_count: 1
+      need_count: 1,
+      pending_count: 0
     },
     bizStats: {
       accepted_count: 0,
@@ -31,8 +32,7 @@ Page({
     this.updateDisplayText();
     if (isLoggedIn) {
       this.loadUserAndWallet();
-      this.loadCreatorStats();
-      this.loadBusinessStats();
+      this.loadMineStats();
     } else {
       this.setData({ user: null, balance: '0.00', avatarSrc: '/assets/icons/avatar-default.jpg' });
       // 触发静默登录
@@ -40,8 +40,7 @@ Page({
         this.setData({ isLoggedIn: app.isLoggedIn() });
         if (app.isLoggedIn()) {
           this.loadUserAndWallet();
-          this.loadCreatorStats();
-          this.loadBusinessStats();
+          this.loadMineStats();
         }
       });
     }
@@ -70,10 +69,13 @@ Page({
     }
   },
 
-  async loadCreatorStats() {
+  async loadMineStats() {
     try {
-      const res = await Api.getCreatorStats();
+      const res = await Api.getMineStats();
       const stats = res.data || {};
+      const creatorStats = stats.creator_stats || {};
+      const businessStats = stats.business_stats || {};
+      const creatorLevel = Number(creatorStats.level || 0);
       // 计算升级所需
       const levelConfig = [
         { level: 0, need: 1, next: '新手创作者' },
@@ -83,11 +85,11 @@ Page({
         { level: 4, need: 100, next: '特约创作者' },
         { level: 5, need: null, next: null }
       ];
-      const adopted = stats.adopted_count || 0;
+      const adopted = creatorStats.adopted_count || 0;
       let nextLevel = null;
       let needCount = 0;
       for (const cfg of levelConfig) {
-        if (cfg.level === stats.level) {
+        if (cfg.level === creatorLevel) {
           nextLevel = cfg.next;
           needCount = cfg.need ? cfg.need - adopted : 0;
           break;
@@ -97,35 +99,28 @@ Page({
       const dailyLimits = [3, 8, 15, 30, 50, 999];
       const commissionRates = ['10%', '10%', '10%', '5%', '5%', '3%'];
       const levelNameMap = ['试用创作者', '新手创作者', '活跃创作者', '优质创作者', '金牌创作者', '特约创作者'];
+      const safeLevel = Math.min(Math.max(creatorLevel, 0), levelNameMap.length - 1);
       this.setData({
         creatorStats: {
-          level: stats.level || 0,
-          level_name: levelNameMap[stats.level] || '试用创作者',
+          level: creatorLevel,
+          level_name: levelNameMap[safeLevel] || '试用创作者',
           adopted_count: adopted,
-          daily_limit: dailyLimits[stats.level] || 3,
-          commission_rate: commissionRates[stats.level] || '10%',
+          daily_limit: dailyLimits[safeLevel] || 3,
+          commission_rate: commissionRates[safeLevel] || '10%',
           next_level_name: nextLevel,
-          need_count: Math.max(0, needCount)
+          need_count: Math.max(0, needCount),
+          pending_count: stats.pending_claims || 0
         }
       });
-    } catch (err) {
-      wx.showToast({ title: '加载创作者数据失败', icon: 'none' });
-    }
-  },
-
-  async loadBusinessStats() {
-    try {
-      const res = await Api.getBusinessStats();
-      const stats = res.data || {};
       this.setData({
         bizStats: {
-          accepted_count: stats.accepted_count || 0,
-          pending_count: stats.pending_count || 0,
-          adopted_count: stats.adopted_count || 0
+          accepted_count: businessStats.accepted_count || 0,
+          pending_count: stats.pending_reviews || 0,
+          adopted_count: businessStats.adopted_count || 0
         }
       });
     } catch (err) {
-      wx.showToast({ title: '加载业务数据失败', icon: 'none' });
+      wx.showToast({ title: '加载我的统计失败', icon: 'none' });
     }
   },
 
