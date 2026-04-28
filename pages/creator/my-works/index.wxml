@@ -21,7 +21,7 @@
   <!-- 安全提醒 -->
   <view class="safety-card">
     <view class="safety-header">
-      <image src="/assets/icons/safety-icon.png" class="safety-logo" />
+      <image src="../../../images/home/msg-icon.png" class="safety-logo" />
       <text class="safety-brand">创意喵</text>
       <text class="safety-title">安全提醒</text>
     </view>
@@ -44,6 +44,9 @@
         <view wx:else class="cover-placeholder" bindtap="goWorkDetail" data-id="{{item.id}}">
           <text class="placeholder-title">{{item.task_title}}</text>
         </view>
+        <view class="cover-play-badge">
+          <text>▶</text>
+        </view>
       </view>
 
       <!-- 作品信息 -->
@@ -65,15 +68,22 @@
         </view>
 
         <!-- 淘汰原因 -->
-        <view class="reject-reason" wx:if="{{item.statusClass === 'rejected' && item.rejectReason}}">
-          <text class="reason-text">淘汰原因：{{item.rejectReason}}</text>
+        <view wx:if="{{item.statusClass === 'rejected' && item.rejectReason}}">
+          <view class="reject-reason">
+            <text class="reason-text">淘汰原因：{{item.rejectReason}}</text>
+          </view>
+          <view class="income-row" style="margin-top: 32rpx;">
+            <text class="income-label">收入(参与金)</text>
+            <text class="income-value">{{item.incomeText}}</text>
+          </view>
         </view>
 
         <!-- 举报原因 -->
         <view class="report-section" wx:if="{{item.statusClass === 'reported'}}">
-          <text class="report-text">举报原因：{{item.reportReason}}</text>
-          <view class="appeal-btn">
-            <text>我要申诉</text>
+          <view class="report-text">举报原因：{{item.reportReason}}123</view>
+          <view class="appeal-btn-container">
+            <text>被举报作品无奖金</text>
+            <view class="appeal-btn">我要申诉</view>
           </view>
         </view>
       </view>
@@ -82,7 +92,7 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!loading && filteredWorks.length === 0}}">
-    <view class="empty-icon">🎬</view>
+    <image src="../../../images/home/empty.png" style="width: 300rpx; height: 300rpx;" />
     <text class="empty-text">暂无作品记录</text>
     <text class="empty-hint">快去报名任务并提交作品吧</text>
   </view>

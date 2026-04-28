@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
 const FILTERS = [
@@ -130,7 +131,7 @@ Page({
         url: m.file_path,
         poster: m.thumbnail_path || ''
       })),
-      submittedAt: claim.submitted_at || claim.updated_at || '',
+      submittedAt: formatDateTime(claim.submitted_at || claim.updated_at || ''),
       unitPrice: claim.unit_price || 0,
       displayCover,
       isVideo: coverType === 'video',
