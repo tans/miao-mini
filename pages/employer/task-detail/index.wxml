@@ -244,6 +244,10 @@
             <text class="spec-label">截稿时间</text>
             <text class="spec-value">{{task.endAt || '未设置'}}</text>
           </view>
+          <view class="spec-item">
+            <text class="spec-label">作品权限</text>
+            <text class="spec-value">{{task.visibilityText || '公开投稿'}}</text>
+          </view>
         </view>
 
         <view class="restriction-section">

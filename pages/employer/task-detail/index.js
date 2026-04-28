@@ -37,6 +37,7 @@ function normalizeTask(task = {}) {
   const industryTags = toList(pick(task.industries, task.industry));
   const styleTags = toList(pick(task.styles, task.style));
   const materials = Array.isArray(task.materials) ? task.materials : [];
+  const isPublic = task.public == null ? true : !!task.public;
 
   return {
     ...task,
@@ -62,6 +63,8 @@ function normalizeTask(task = {}) {
     jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
     jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
     jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
+    isPublic,
+    visibilityText: isPublic ? '公开投稿' : '隐私保护',
     materials,
     pendingReviewCount: Number(pick(task.pending_review_count, task.pendingReviewCount, 0)) || 0,
     adoptionRate: Number(pick(task.adoption_rate, task.adoptionRate, 0)) || 0,

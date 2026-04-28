@@ -10,7 +10,6 @@ function toNumber(value, fallback = 0) {
 
 function normalizeTaskStatus(rawStatus) {
   const statusTextMap = {
-    pending: '待审核',
     active: '征稿中',
     ended: '已结束',
   };
@@ -18,12 +17,12 @@ function normalizeTaskStatus(rawStatus) {
   const statusCode = typeof rawStatus === 'string' ? Number(rawStatus) : rawStatus;
   if (rawStatus === 'pending' || statusCode === 1) {
     return {
-      statusKey: 'pending',
-      statusText: statusTextMap.pending,
-      cardClass: 'card-pending',
-      statusClass: 'status-pending',
-      actionText: '待审核',
-      actionTap: 'goTaskDetail',
+      statusKey: 'active',
+      statusText: statusTextMap.active,
+      cardClass: 'card-active',
+      statusClass: 'status-active',
+      actionText: '去审核',
+      actionTap: 'goReviewTask',
     };
   }
 
@@ -52,6 +51,10 @@ function normalizeTask(task = {}) {
   const meta = normalizeTaskStatus(task.status);
   const totalCount = toNumber(task.total_count ?? task.totalCount ?? task.max_submissions, 0);
   const remainingCount = toNumber(task.remaining_count ?? task.remainingCount, 0);
+  const pendingReviewCount = Math.max(
+    0,
+    toNumber(task.pending_review_count ?? task.pendingReviewCount, 0)
+  );
   const submissionCount = Math.max(
     0,
     toNumber(task.submission_count ?? task.submissionCount, totalCount - remainingCount)
@@ -60,12 +63,29 @@ function normalizeTask(task = {}) {
   const progressPercent = progressTotal > 0
     ? Math.max(0, Math.min(100, (submissionCount / progressTotal) * 100))
     : 0;
+  const taskAction = meta.statusKey === 'ended'
+    ? {
+      actionText: '查看结果',
+      actionTap: 'goTaskResult',
+    }
+    : pendingReviewCount > 0
+      ? {
+        actionText: '去审核',
+        actionTap: 'goReviewTask',
+      }
+      : {
+        actionText: '查看',
+        actionTap: 'goTaskDetail',
+      };
 
   return {
     ...task,
     ...meta,
+    ...taskAction,
     total_count: totalCount,
     remaining_count: remainingCount,
+    pending_review_count: pendingReviewCount,
+    pendingReviewCount,
     submission_count: submissionCount,
     max_submissions: progressTotal,
     progress_percent: progressPercent,

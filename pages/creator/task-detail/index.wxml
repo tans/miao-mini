@@ -195,6 +195,10 @@
             <text class="spec-label">截稿时间</text>
             <text class="spec-value deadline">{{task.endAt || '2026-04-24 18:00'}}</text>
           </view>
+          <view class="spec-item">
+            <text class="spec-label">作品权限</text>
+            <text class="spec-value">{{task.visibilityText || '公开投稿'}}</text>
+          </view>
         </view>
 
         <!-- 平台禁忌 -->

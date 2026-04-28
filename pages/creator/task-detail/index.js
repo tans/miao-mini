@@ -53,6 +53,7 @@ function normalizeTask(task = {}) {
   const industries = toList(task.industries);
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
+  const isPublic = task.public == null ? true : !!task.public;
 
   return {
     ...task,
@@ -71,7 +72,8 @@ function normalizeTask(task = {}) {
     adoptionRate: task.adoptionRate ?? task.adoption_rate ?? 0,
     totalPublished: task.totalPublished ?? task.total_published ?? task.totalTasks ?? 0,
     totalSpent: task.totalSpent ?? task.total_spent ?? task.totalSpend ?? 0,
-    isPublic: task.public != null ? !!task.public : (task.open_submission != null ? !!task.open_submission : true),
+    isPublic,
+    visibilityText: isPublic ? '公开投稿' : '隐私保护',
     submissionCount: Number(task.submission_count ?? task.submissionCount ?? submissions.length ?? 0) || 0,
     endAt,
     end_at: endAt,
