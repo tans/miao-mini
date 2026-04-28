@@ -411,20 +411,20 @@ Page({
   async reviewClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     const result = Number(e.currentTarget.dataset.result);
-    if (!claimId || ![3, 4, 5, 6].includes(result)) {
+    if (!claimId || ![1, 2, 3].includes(result)) {
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
 
     let reason = null;
-    if (result === 6) {
+    if (result === 3) {
       reason = await this.showReportModal();
       if (!reason) return;
     }
 
     try {
       await Api.reviewClaim(claimId, result, reason);
-      wx.showToast({ title: result === 3 ? '已采纳' : result === 6 ? '已举报' : '已处理', icon: 'success' });
+      wx.showToast({ title: result === 1 ? '已采纳' : result === 3 ? '已举报' : '已处理', icon: 'success' });
       this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
@@ -433,7 +433,7 @@ Page({
 
   async batchReview(e) {
     const action = Number(e.currentTarget.dataset.action);
-    if (![3, 4, 5, 6].includes(action)) return;
+    if (![1, 2, 3].includes(action)) return;
 
     const selectedClaims = this.data.filteredClaims.filter((item) => this.data.selectedClaims[item.id]);
     if (!selectedClaims.length) {
@@ -442,7 +442,7 @@ Page({
     }
 
     let reason = null;
-    if (action === 6) {
+    if (action === 3) {
       reason = await this.showReportModal();
       if (!reason) return;
     }
@@ -450,7 +450,7 @@ Page({
     wx.showLoading({ title: '处理中...' });
     try {
       await Api.batchReviewClaim(selectedClaims.map((item) => item.id), action, reason);
-      wx.showToast({ title: action === 3 ? '批量采纳成功' : action === 6 ? '批量举报成功' : '批量处理成功', icon: 'success' });
+      wx.showToast({ title: action === 1 ? '批量采纳成功' : action === 3 ? '批量举报成功' : '批量处理成功', icon: 'success' });
       this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
       wx.showToast({ title: err.message || '操作失败', icon: 'none' });
