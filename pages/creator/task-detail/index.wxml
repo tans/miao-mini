@@ -339,15 +339,58 @@
       </view>
 
       <view class="submission-card" wx:elif="{{!task.isPublic && task.submissionCount > 0}}">
-        <image
-          class="submission-image submission-private-cover"
-          src="../../../images/home/banner-default.png"
-          mode="aspectFill"
-        />
+        <view class="safety-card">
+          <view class="safety-header">
+            <image style="width:30rpx;height:30rpx;" src="../../../images/home/msg-icon.png" />
+            <text style="color:#F58A1F" class="safety-title">创意喵</text>
+            <text class="safety-title">隐私保护</text>
+          </view>
+          <text class="safety-text">商家已开启了稿件隐私保护，您无权查看。</text>
+        </view>
+        <!-- <view class="submission-mock-grid">
+          <view class="submission-mock-item" wx:for="{{submissions}}" wx:key="id">
+            <view class="submission-mock-cover-wrap">
+              <video
+                wx:if="{{item.materials.length > 0 && item.materials[0].isVideo && item.materials[0].previewUrl}}"
+                class="submission-mock-cover"
+                src="{{item.materials[0].previewUrl}}"
+                poster="{{item.materials[0].thumbnailPath}}"
+                controls
+              />
+
+              <image
+                wx:elif="{{item.materials.length > 0 && item.materials[0].isImage && item.materials[0].previewUrl}}"
+                class="submission-mock-cover"
+                src="{{item.materials[0].previewUrl}}"
+                mode="aspectFill"
+                bindtap="previewMaterial"
+                data-url="{{item.materials[0].previewUrl}}"
+              />
+
+              <view wx:else class="submission-placeholder">
+                <text>素材暂不可预览</text>
+              </view>
+
+              <view class="submission-mock-status submission-mock-status-{{item.statusClass}}">
+                <text>{{item.statusText}}</text>
+              </view>
+            </view>
+            <view class="submission-mock-footer">
+              <view class="submission-mock-user-row">
+                <view class="submission-mock-user-left">
+                  <image class="submission-mock-avatar" src="{{item.creatorAvatar}}" mode="aspectFill" />
+                  <text class="submission-mock-name">{{item.creatorName}}</text>
+                </view>
+                <text class="submission-mock-level">Lv.{{item.creatorLevel}}</text>
+              </view>
+              <text class="submission-mock-time">{{item.submitAtText}} 投稿</text>
+            </view>
+          </view>
+        </view> -->
       </view>
 
       <view class="submissions-empty" wx:else>
-        <image src="../../../images/home/empty.png" class="clock-icon" />
+        <image src="../../../images/home/empty.png" class="clock-icon"/>
         <text>暂无投稿记录，先报名再上传稿件</text>
       </view>
     </view>
