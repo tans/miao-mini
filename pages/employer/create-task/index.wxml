@@ -113,9 +113,9 @@ module.exports = {
         <text class="desc-label" >任务描述</text>
         <view class="desc-area">
           <textarea class="desc-textarea" placeholder="请输入不少于10个字的描述" value="{{description}}" bindinput="onDescInput" maxlength="500"/>
-          <view class="ai-write-btn" bindtap="aiWriteDesc">
+          <view class="ai-write-btn {{isAiWriting ? 'ai-write-btn-disabled' : ''}}" bindtap="aiWriteDesc">
             <image class="ai-icon" src="./images/icon-ai.png" />
-            <text>AI帮写</text>
+            <text>{{isAiWriting ? '生成中...' : 'AI帮写'}}</text>
           </view>
         </view>
       

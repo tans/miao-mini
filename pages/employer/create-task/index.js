@@ -22,6 +22,7 @@ Page({
   data: {
     title: '',
     description: '',
+    isAiWriting: false,
     unit_price: 2,
     award_price: 20,
     total_count: 10,
@@ -387,9 +388,14 @@ Page({
   },
 
   aiWriteDesc() {
-    const { title, selectedIndustries, selectedStyles } = this.data;
+    const { title, selectedIndustries, selectedStyles, isAiWriting } = this.data;
 
-    if (!title) {
+    if (isAiWriting) {
+      return;
+    }
+
+    const cleanTitle = (title || '').trim();
+    if (!cleanTitle) {
       wx.showToast({ title: '请先填写任务标题', icon: 'none' });
       return;
     }
@@ -400,16 +406,17 @@ Page({
       return industry ? industry.name : '';
     }).filter(name => name);
 
+    this.setData({ isAiWriting: true });
     wx.showLoading({ title: 'AI帮写中...' });
 
     Api.aiWriteTaskDescription({
-      title: title,
+      title: cleanTitle,
       industries: industryNames,
       styles: selectedStyles
     }).then(res => {
       wx.hideLoading();
       if (res.data && res.data.success && res.data.description) {
-        this.setData({ description: res.data.description });
+        this.setData({ description: String(res.data.description).trim() });
         wx.showToast({ title: 'AI帮写成功', icon: 'success' });
       } else if (res.data && res.data.error) {
         wx.showToast({ title: res.data.error, icon: 'none', duration: 3000 });
@@ -420,6 +427,8 @@ Page({
       wx.hideLoading();
       const msg = err && err.message || 'AI帮写失败';
       wx.showToast({ title: msg, icon: 'none', duration: 3000 });
+    }).finally(() => {
+      this.setData({ isAiWriting: false });
     });
   },
 

@@ -337,6 +337,10 @@
   margin-top: 24rpx;
 }
 
+.ai-write-btn-disabled {
+  opacity: 0.65;
+}
+
 .ai-icon {
   width: 24rpx;
   height: 24rpx;
