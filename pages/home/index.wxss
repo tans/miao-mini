@@ -240,7 +240,7 @@
   border-radius: 16rpx;
   overflow: hidden;
   /* border: 1px solid #ECEEF4; */
-  box-shadow: 0 2rpx 12rpx rgba(101, 55, 1, 0.1);
+  box-shadow: 0 2rpx 24rpx rgba(101, 55, 1, 0.1);
 }
 
 /* 卡片内容区 */
@@ -260,7 +260,7 @@
 }
 
 .task-title {
-  font-size: 40rpx;
+  font-size: 32rpx;
   font-weight: 700;
   color: #0f172a;
   line-height: 2;
