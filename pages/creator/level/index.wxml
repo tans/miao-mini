@@ -2,7 +2,7 @@
   <view class="page-header">
     <view class="header-left">
       <text class="page-title">创作者等级</text>
-      <text class="page-score">{{currentAdoptedCount}}</text>
+      <text class="page-score">Lv{{currentLevel}}</text>
     </view>
     <view class="header-deco"></view>
   </view>
@@ -24,17 +24,20 @@
 
   <view class="current-card" wx:if="{{currentLevel < 6}}">
     <view class="current-half">
-      <text class="current-title">Lv{{currentLevel}} {{levels[currentLevel].name}}</text>
+      <view class="current-title">Lv{{currentLevel}} 
+        <text style="font-size: 28rpx; font-weight: 600; color: #333333;">{{levels[currentLevel].name}}</text>
+      </view>
       <text class="current-sub">当前等级</text>
     </view>
     <view class="current-half">
-      <text class="current-title">{{levels[currentLevel].commission}}</text>
+      <text class="current-title" style="font-weight: 800;font-size: 28rpx;color: #333333;">{{levels[currentLevel].commission}}</text>
       <text class="current-sub">当前佣金</text>
     </view>
   </view>
 
   <view class="rule-card">
     <view class="rule-title-row">
+      <image src="../../../images/home/msg-icon.png" style="width: 30rpx; height: 30rpx;" />
       <text class="rule-brand">创意喵</text>
       <text class="rule-title">升级规则</text>
     </view>
@@ -43,8 +46,10 @@
     <view class="level-table">
       <view class="table-header">
         <text class="col-level">等级</text>
-        <text class="col-condition">升级条件（累计采纳数）</text>
-        <text class="col-daily">核心权限（每日投稿上限）</text>
+        <text class="col-condition">升级条件
+（累计采纳数）</text>
+        <text class="col-daily">核心权限
+（每日投稿上限）</text>
         <text class="col-commission">平台佣金</text>
       </view>
       <view class="level-row {{item.level === currentLevel ? 'current' : ''}}" wx:for="{{levels}}" wx:key="level">
