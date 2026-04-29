@@ -1,7 +1,7 @@
 <view class="level-page">
   <view class="page-header">
     <view class="header-left">
-      <text class="page-title">创作者等级</text>
+      <text class="page-title">创作者信用等级</text>
       <text class="page-score">Lv{{currentLevel}}</text>
     </view>
     <view class="header-deco"></view>
@@ -9,15 +9,15 @@
 
   <view class="summary-grid">
     <view class="summary-item">
-      <text class="summary-label">累计报名</text>
+      <text class="summary-label">累计报名(次)</text>
       <text class="summary-value">{{currentAdoptedCount}}</text>
     </view>
     <view class="summary-item">
-      <text class="summary-label">累计提交</text>
+      <text class="summary-label">累计提交(条)</text>
       <text class="summary-value">{{currentAdoptedCount}}</text>
     </view>
     <view class="summary-item">
-      <text class="summary-label">累计采纳</text>
+      <text class="summary-label">累计收益(元)</text>
       <text class="summary-value">{{currentAdoptedCount}}</text>
     </view>
   </view>
@@ -25,12 +25,12 @@
   <view class="current-card" wx:if="{{currentLevel < 6}}">
     <view class="current-half">
       <view class="current-title">Lv{{currentLevel}} 
-        <text style="font-size: 28rpx; font-weight: 600; color: #333333;">{{levels[currentLevel].name}}</text>
+        <!-- <text style="font-size: 28rpx; font-weight: 600; color: #333333;">{{levels[currentLevel].name}}</text> -->
       </view>
-      <text class="current-sub">当前等级</text>
+      <text class="current-sub">累计被采纳投稿(条)</text>
     </view>
     <view class="current-half">
-      <text class="current-title" style="font-weight: 800;font-size: 28rpx;color: #333333;">{{levels[currentLevel].commission}}</text>
+      <text class="current-title">{{levels[currentLevel].commission}}</text>
       <text class="current-sub">当前佣金</text>
     </view>
   </view>
