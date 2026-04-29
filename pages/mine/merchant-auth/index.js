@@ -118,6 +118,8 @@ Page({
         wx.showLoading({ title: '上传并识别中...' });
         const currentUser = app.globalData.user || {};
         (async () => {
+          let toastTitle = '';
+          let toastIcon = 'none';
           try {
             const uploadRes = await Api.uploadImage(tempFilePath, {
               bizType: 'merchant_license',
@@ -155,11 +157,16 @@ Page({
             }
 
             this.setData(nextData);
-            wx.showToast({ title: ocrFilled ? '已自动识别' : '已上传，请手动填写', icon: ocrFilled ? 'success' : 'none' });
+            toastTitle = ocrFilled ? '已自动识别' : '已上传，请手动填写';
+            toastIcon = ocrFilled ? 'success' : 'none';
           } catch (err) {
-            wx.showToast({ title: err.message || '上传失败', icon: 'none' });
+            toastTitle = err.message || '上传失败';
+            toastIcon = 'none';
           } finally {
             wx.hideLoading();
+            if (toastTitle) {
+              wx.showToast({ title: toastTitle, icon: toastIcon });
+            }
           }
         })();
       }
