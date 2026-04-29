@@ -3,19 +3,29 @@
 <view class="home-container">
 <view class="shared-bg-container">
   <!-- 顶部背景图 -->
-  <view class="shared-bg">
+  <!-- <view class="shared-bg">
     <image src="../../images/home/nav-bg.png"/>
-  </view>
+  </view> -->
   <custom-nav title="首页"/>
   <!-- 顶部内容 -->
   <view class="block_1">
-    <image src="../../images/home/msg-icon.png" class="banner-img" />
+    <!-- <image src="../../images/home/msg-icon.png" class="banner-img" /> -->
     <view class="title-container">
       <text lines="1" class="text_1">创意喵｜AI视频众包撮合平台</text>
-      <text lines="1" decode="true" class="text_2">双向信用管控&nbsp;100%资金托管</text>
+      <view class="header-desc-container">
+        <view class="header-desc-item">
+          <image src="../../images/home/header-icon1.png"/>
+          <text lines="1" decode="true" class="text_2">双向信用管控</text>
+        </view>
+        <view class="header-desc-item">
+          <image src="../../images/home/header-icon2.png"/>
+          <text lines="1" decode="true" class="text_2">100%资金托管</text>
+        </view>
+      </view>
+      
     </view>
     <view class="notice-container">
-      <image src="../../images/home/notice-icon.png" class="banner-img" />
+      <image src="../../images/home/IP.png" class="banner-img" />
     </view>
   </view>
   <view class="header-gradient">
@@ -23,19 +33,15 @@
     <scroll-view class="banner-scroll" scroll-x>
       <view class="banner-list">
         <view class="banner-item">
-          <image src="../../images/home/banner-default.png" class="banner-img" />
+          <image src="../../images/home/1.png" class="banner-img" />
           <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
         <view class="banner-item">
-          <image src="../../images/home/banner-default.png" class="banner-img" />
+          <image src="../../images/home/2.png" class="banner-img" />
           <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
         <view class="banner-item">
-          <image src="../../images/home/banner-default.png" class="banner-img" />
-          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
-        </view>
-        <view class="banner-item">
-          <image src="../../images/home/banner-default.png" class="banner-img" />
+          <image src="../../images/home/3.png" class="banner-img" />
           <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
       </view>
