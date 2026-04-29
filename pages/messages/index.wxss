@@ -1,9 +1,13 @@
 .messages-page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: #f5f5f5;
+  overflow: hidden;
 }
 
 .messages-header {
+  flex-shrink: 0;
   padding: 24rpx;
 }
 
@@ -85,7 +89,11 @@
 }
 
 .messages-scroll {
-  height: calc(100vh - 232rpx);
+  flex: 1;
+  min-height: 0;
+  height: 0;
+  box-sizing: border-box;
+  padding-bottom: 24rpx;
 }
 
 .messages-list {

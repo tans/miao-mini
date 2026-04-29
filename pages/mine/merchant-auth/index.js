@@ -133,23 +133,26 @@ Page({
               licenseKey: uploadRes.key || ''
             };
 
-            let ocrFilled = false;
+            let ocrCoreFilled = false;
+            let ocrAnyFilled = false;
             if (uploadRes.key) {
               try {
                 const ocrRes = await Api.recognizeMerchantAuthLicense({ key: uploadRes.key });
                 const ocrData = ocrRes.data || {};
                 if (ocrData.company_name) {
                   nextData.companyName = ocrData.company_name;
-                  ocrFilled = true;
+                  ocrCoreFilled = true;
+                  ocrAnyFilled = true;
                 }
                 if (ocrData.credit_code) {
                   nextData.creditCode = String(ocrData.credit_code).trim().toUpperCase();
-                  ocrFilled = true;
+                  ocrCoreFilled = true;
+                  ocrAnyFilled = true;
                 }
                 const legalPerson = ocrData.legal_person || ocrData.legalPerson || '';
                 if (!this.data.contactName && legalPerson) {
                   nextData.contactName = legalPerson;
-                  ocrFilled = true;
+                  ocrAnyFilled = true;
                 }
               } catch (ocrErr) {
                 // OCR failure should not block manual submission.
@@ -157,8 +160,16 @@ Page({
             }
 
             this.setData(nextData);
-            toastTitle = ocrFilled ? '已自动识别' : '已上传，请手动填写';
-            toastIcon = ocrFilled ? 'success' : 'none';
+            if (ocrCoreFilled) {
+              toastTitle = '已自动识别';
+              toastIcon = 'success';
+            } else if (ocrAnyFilled) {
+              toastTitle = '已识别部分信息';
+              toastIcon = 'none';
+            } else {
+              toastTitle = '已上传，请手动填写';
+              toastIcon = 'none';
+            }
           } catch (err) {
             toastTitle = err.message || '上传失败';
             toastIcon = 'none';
