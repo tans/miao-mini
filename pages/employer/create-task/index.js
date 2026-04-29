@@ -388,7 +388,7 @@ Page({
   },
 
   aiWriteDesc() {
-    const { title, selectedIndustries, selectedStyles, isAiWriting } = this.data;
+    const { title, description, selectedIndustries, selectedStyles, isAiWriting } = this.data;
 
     if (isAiWriting) {
       return;
@@ -411,6 +411,7 @@ Page({
 
     Api.aiWriteTaskDescription({
       title: cleanTitle,
+      description: (description || '').trim(),
       industries: industryNames,
       styles: selectedStyles
     }).then(res => {
