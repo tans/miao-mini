@@ -55,16 +55,15 @@ App({
     if (this._homeFontLoaded) return;
     this._homeFontLoaded = true;
 
-    try {
-      const fs = wx.getFileSystemManager();
-      const fontBase64 = fs.readFileSync(HOME_FONT_PATH, 'base64');
-      if (!fontBase64) return;
-
+    try { 
       wx.loadFontFace({
+        global:true,
         family: HOME_FONT_FAMILY,
-        source: `url("data:font/otf;base64,${fontBase64}")`,
+        source: `https://public.jisuhudong.com/minapp/D-DIN-PRO-700-Bold.otf`,
+        fail:console.error
       });
     } catch (err) {
+      console.log(err);
       this._homeFontLoaded = false;
     }
   },
