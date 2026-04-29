@@ -8,13 +8,25 @@ function toNumber(value, fallback = 0) {
   return Number.isFinite(num) ? num : fallback;
 }
 
-function normalizeTaskStatus(rawStatus) {
+function normalizeTaskStatus(rawStatus, options = {}) {
   const statusTextMap = {
     active: '征稿中',
     ended: '已结束',
   };
+  const { isFilledAndReviewed = false } = options;
 
   const statusCode = typeof rawStatus === 'string' ? Number(rawStatus) : rawStatus;
+  if (isFilledAndReviewed) {
+    return {
+      statusKey: 'ended',
+      statusText: statusTextMap.ended,
+      cardClass: 'card-ended',
+      statusClass: 'status-ended',
+      actionText: '查看结果',
+      actionTap: 'goTaskResult',
+    };
+  }
+
   if (rawStatus === 'pending' || statusCode === 1) {
     return {
       statusKey: 'active',
@@ -48,7 +60,6 @@ function normalizeTaskStatus(rawStatus) {
 }
 
 function normalizeTask(task = {}) {
-  const meta = normalizeTaskStatus(task.status);
   const totalCount = toNumber(task.total_count ?? task.totalCount ?? task.max_submissions, 0);
   const remainingCount = toNumber(task.remaining_count ?? task.remainingCount, 0);
   const pendingReviewCount = Math.max(
@@ -63,6 +74,8 @@ function normalizeTask(task = {}) {
   const progressPercent = progressTotal > 0
     ? Math.max(0, Math.min(100, (submissionCount / progressTotal) * 100))
     : 0;
+  const isFilledAndReviewed = remainingCount <= 0 && pendingReviewCount <= 0;
+  const meta = normalizeTaskStatus(task.status, { isFilledAndReviewed });
   const taskAction = meta.statusKey === 'ended'
     ? {
       actionText: '查看结果',
@@ -89,6 +102,7 @@ function normalizeTask(task = {}) {
     submission_count: submissionCount,
     max_submissions: progressTotal,
     progress_percent: progressPercent,
+    is_filled_and_reviewed: isFilledAndReviewed,
   };
 }
 
