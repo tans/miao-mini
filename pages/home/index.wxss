@@ -314,8 +314,8 @@
   border: 2rpx solid #FFD8D2;
 }
 
-.badge-reward .home-price-num,
-.task-price .home-price-num {
+.badge-reward,
+.task-price {
   font-family: 'home-din-pro-700-bold';
   font-weight: 700;
 }
