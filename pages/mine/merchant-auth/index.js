@@ -10,6 +10,7 @@ Page({
     contactPhone: '',
     licenseUrl: '',
     licensePreviewUrl: '',
+    licenseKey: '',
     statusIcon: 'icon-uncertified',
     statusIconText: '未认证',
     statusTitle: '您尚未完成商家认证',
@@ -34,7 +35,8 @@ Page({
         contactName: data.contact_name || '',
         contactPhone: data.contact_phone || '',
         licenseUrl: data.license_url || '',
-        licensePreviewUrl: data.license_preview_url || data.license_url || ''
+        licensePreviewUrl: data.license_preview_url || data.license_url || '',
+        licenseKey: ''
       });
       this._updateStatusUI(normalizedStatus);
     }).catch(err => {
@@ -84,7 +86,20 @@ Page({
 
   onTapLicenseArea() {
     if (this.data.licenseUrl) {
-      this.previewLicense();
+      if (this.data.status !== 'uncertified') {
+        this.previewLicense();
+        return;
+      }
+      wx.showActionSheet({
+        itemList: ['查看营业执照', '重新上传'],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            this.previewLicense();
+          } else if (res.tapIndex === 1) {
+            this.uploadLicense();
+          }
+        },
+      });
       return;
     }
     this.uploadLicense();
@@ -100,22 +115,60 @@ Page({
       sourceType: ['album', 'camera'],
       success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath;
-        wx.showLoading({ title: '上传中...' });
+        wx.showLoading({ title: '上传并识别中...' });
         const currentUser = app.globalData.user || {};
-        Api.uploadImage(tempFilePath, {
-          bizType: 'merchant_license',
-          bizId: currentUser.id ? String(currentUser.id) : '',
-          returnMeta: true,
-        }).then((uploadRes) => {
-          this.setData({
-            licenseUrl: uploadRes.url,
-            licensePreviewUrl: uploadRes.previewUrl || uploadRes.url,
-          });
-          wx.hideLoading();
-        }).catch((err) => {
-          wx.hideLoading();
-          wx.showToast({ title: err.message || '上传失败', icon: 'none' });
-        });
+        (async () => {
+          let toastTitle = '';
+          let toastIcon = 'none';
+          try {
+            const uploadRes = await Api.uploadImage(tempFilePath, {
+              bizType: 'merchant_license',
+              bizId: currentUser.id ? String(currentUser.id) : '',
+              returnMeta: true,
+            });
+
+            const nextData = {
+              licenseUrl: uploadRes.url,
+              licensePreviewUrl: uploadRes.previewUrl || uploadRes.url,
+              licenseKey: uploadRes.key || ''
+            };
+
+            let ocrFilled = false;
+            if (uploadRes.key) {
+              try {
+                const ocrRes = await Api.recognizeMerchantAuthLicense({ key: uploadRes.key });
+                const ocrData = ocrRes.data || {};
+                if (ocrData.company_name) {
+                  nextData.companyName = ocrData.company_name;
+                  ocrFilled = true;
+                }
+                if (ocrData.credit_code) {
+                  nextData.creditCode = String(ocrData.credit_code).trim().toUpperCase();
+                  ocrFilled = true;
+                }
+                const legalPerson = ocrData.legal_person || ocrData.legalPerson || '';
+                if (!this.data.contactName && legalPerson) {
+                  nextData.contactName = legalPerson;
+                  ocrFilled = true;
+                }
+              } catch (ocrErr) {
+                // OCR failure should not block manual submission.
+              }
+            }
+
+            this.setData(nextData);
+            toastTitle = ocrFilled ? '已自动识别' : '已上传，请手动填写';
+            toastIcon = ocrFilled ? 'success' : 'none';
+          } catch (err) {
+            toastTitle = err.message || '上传失败';
+            toastIcon = 'none';
+          } finally {
+            wx.hideLoading();
+            if (toastTitle) {
+              wx.showToast({ title: toastTitle, icon: toastIcon });
+            }
+          }
+        })();
       }
     });
   },
