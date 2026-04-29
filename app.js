@@ -3,6 +3,8 @@ const Api = require('./utils/api.js');
 
 const MESSAGE_TAB_PATH = '/pages/messages/index';
 const MESSAGE_TAB_INDEX = 1;
+const HOME_FONT_FAMILY = 'home-din-pro-700-bold';
+const HOME_FONT_PATH = '/assets/fonts/D-DIN-PRO-700-Bold.otf';
 
 App({
   globalData: {
@@ -17,8 +19,11 @@ App({
   // 登录锁，防止 onLaunch 和 onShow 并发登录
   _loginLock: false,
   _loginPromise: null,
+  _homeFontLoaded: false,
 
   onLaunch() {
+    this.loadHomeFontFace();
+
     // 获取状态栏高度和设备信息
     const info = wx.getSystemInfoSync();
     this.globalData.statusBarHeight = info.statusBarHeight || 20;
@@ -44,6 +49,24 @@ App({
 
   onShow() {
     this.refreshNotificationBadge();
+  },
+
+  loadHomeFontFace() {
+    if (this._homeFontLoaded) return;
+    this._homeFontLoaded = true;
+
+    try {
+      const fs = wx.getFileSystemManager();
+      const fontBase64 = fs.readFileSync(HOME_FONT_PATH, 'base64');
+      if (!fontBase64) return;
+
+      wx.loadFontFace({
+        family: HOME_FONT_FAMILY,
+        source: `url("data:font/otf;base64,${fontBase64}")`,
+      });
+    } catch (err) {
+      this._homeFontLoaded = false;
+    }
   },
 
   // 静默登录：获取微信 code，调接口自动登录/注册

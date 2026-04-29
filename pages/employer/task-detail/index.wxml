@@ -35,7 +35,7 @@
       <view class="review-tip-card">
         <view class="safety-header">
           <image class="safety-badge" src="../../../images/home/msg-icon.png" />
-          <text class="safety-title"><text class="safety-title-brand">创意喵</text>安全提醒</text>
+          <view class="safety-title"><text class="safety-title-brand">创意喵</text>安全提醒</view>
         </view>
         <view class="safety-text">
           请在<text class="safety-highlight">收到投稿后48小时内审核稿件</text>，超时未审核将自动为创作者发放参与奖，后续继续采纳可自动补发采纳奖。

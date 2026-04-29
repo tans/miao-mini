@@ -271,11 +271,6 @@
   display: block;
 }
 
-@font-face {
-  font-family: 'home-din-pro-700-bold';
-  src: url('../../assets/fonts/D-DIN-PRO-700-Bold.otf');
-}
-
 /* 价格行 */
 .task-price-row {
   display: flex;

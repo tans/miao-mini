@@ -388,7 +388,7 @@
         <text class="creator-notice-text">上传之前请检查以下内容：</text>
         <text class="creator-notice-text">视频是否已去水印、是否含有违禁词、是否符合商家的视频投稿要求。</text>
         <text class="creator-notice-text">请不要恶意上传与活动无关的注水稿件，此类稿件被商家举报后拿不到任何奖励。创作者被成功举报5次，将永久封号。</text>
-        <text class="creator-notice-text">您的稿件上传后，<text class="creator-notice-highlight">如被选中采用所属版权将属于商家</text>，您不可将视频发布到任意平台。</text>
+        <view class="creator-notice-text">您的稿件上传后，<text class="creator-notice-highlight">如被选中采用所属版权将属于商家</text>，您不可将视频发布到任意平台。</view>
       </view>
       <view class="creator-notice-footer">
         <view class="creator-notice-btn creator-notice-btn-cancel" bindtap="onCloseCreatorNotice">
@@ -403,17 +403,17 @@
 
   <!-- 上传进度弹框 -->
   <view class="upload-progress-mask" wx:if="{{showUploadProgressModal}}" bindtap="onCloseUploadProgressModal">
-    <view class="upload-progress-modal" catchtap="stopPropagation">
-      <view class="upload-progress-close" bindtap="onCloseUploadProgressModal">
-        <text>×</text>
-      </view>
+      <view class="upload-progress-modal" catchtap="stopPropagation">
+        <view class="upload-progress-close" bindtap="onCloseUploadProgressModal">
+          <text>×</text>
+        </view>
       <view class="upload-progress-percent">
         <circle-progress progress="{{uploadProgress}}" size="108" lineWidth="10" trackColor="#FFDDCA" progressColor="#EF8802">
           <text class="upload-progress-percent-text">{{uploadProgress}}%</text>
         </circle-progress>
       </view>
       <text class="upload-progress-title">视频正在上传...</text>
-      <text class="upload-progress-text">商家会在<text class="upload-progress-highlight">收到投稿后48小时内审核稿件</text>，超时未审核将自动为您发放参与奖，后续商家如果采纳了您的视频也会为自动补发采纳奖给您的钱包。</text>
+      <view class="upload-progress-text">商家会在<text class="upload-progress-highlight">收到投稿后48小时内审核稿件</text>，超时未审核将自动为您发放参与奖，后续商家如果采纳了您的视频也会为自动补发采纳奖给您的钱包。</view>
     </view>
   </view>
 
