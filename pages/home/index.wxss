@@ -271,6 +271,11 @@
   display: block;
 }
 
+@font-face {
+  font-family: 'home-din-pro-700-bold';
+  src: url('../../assets/fonts/D-DIN-PRO-700-Bold.otf');
+}
+
 /* 价格行 */
 .task-price-row {
   display: flex;
@@ -281,7 +286,6 @@
   font-size: 44rpx;
   font-weight: 700;
   color: #ef4444;
-  font-family: D-DIN-PRO-Bold;
 }
 
 .task-price-unit {
@@ -313,6 +317,12 @@
   background: #FFF0EA;
   color: #ef4444;
   border: 2rpx solid #FFD8D2;
+}
+
+.badge-reward .home-price-num,
+.task-price .home-price-num {
+  font-family: 'home-din-pro-700-bold';
+  font-weight: 700;
 }
 
 .badge-brand {
