@@ -74,6 +74,15 @@ function getTaskCover(materials = []) {
   return '';
 }
 
+function sortTasksForDisplay(tasks = []) {
+  return [...tasks].sort((a, b) => {
+    const aFull = !!a.isFull;
+    const bFull = !!b.isFull;
+    if (aFull !== bFull) return aFull ? 1 : -1;
+    return 0;
+  });
+}
+
 Page({
   data: {
     tasks: [],          // 从服务端拉取的所有任务（当前排序+分页的全量缓存）
@@ -133,7 +142,7 @@ Page({
   },
 
   _refreshCountdowns() {
-    const tasks = refreshCountdowns(this.data.tasks);
+    const tasks = sortTasksForDisplay(refreshCountdowns(this.data.tasks));
     const displayTasks = this._filterByIndustry(tasks, this.data.activeIndustry);
     this.setData({ tasks, displayTasks });
   },
@@ -156,7 +165,7 @@ Page({
 
       // 提取封面（第一个 image 素材的 file_path）
       // 解析 creative_style 和 industries 从逗号分隔字符串为数组
-      const allTasks = rawTasks.map(t => {
+      const allTasks = sortTasksForDisplay(rawTasks.map(t => {
         const mats = t.materials || [];
         const cover = getTaskCover(mats);
         // Parse creative_style from comma-separated string to array
@@ -173,6 +182,9 @@ Page({
         } else if (Array.isArray(t.industries)) {
           industryArray = t.industries;
         }
+        const remainingCount = Number(t.remaining_count || 0) || 0;
+        const totalCount = Number(t.total_count || 0) || 0;
+        const isFull = totalCount > 0 && remainingCount <= 0;
         const fallbackCover = createFallbackCover(
           `${t.id || ''}-${t.title || ''}`,
           t.description || t.creative_style || t.title || ''
@@ -181,15 +193,18 @@ Page({
           ...t,
           award_price: Number(t.award_price || 0) || 0,
           unit_price: Number(t.unit_price || 0) || 0,
+          remaining_count: remainingCount,
+          total_count: totalCount,
+          isFull,
           cover,
           styleArray,
           industryArray,
-          enrolled_count: (t.total_count || 0) - (t.remaining_count || 0),
+          enrolled_count: totalCount - remainingCount,
           countdown: formatCountdown(t.end_at),
           fallbackThemeClass: fallbackCover.themeClass,
           fallbackSummary: fallbackCover.summary,
         };
-      });
+      }));
 
       // 提取所有行业标签（去重）
       const industryTagSet = new Set();
@@ -250,6 +265,17 @@ Page({
 
   goTaskDetail(e) {
     const taskId = e.currentTarget.dataset.id;
+    wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${taskId}` });
+  },
+
+  applyTask(e) {
+    const taskId = e.currentTarget.dataset.id;
+    const task = this.data.tasks.find(item => String(item.id) === String(taskId));
+    if (!task) return;
+    if (task.isFull) {
+      wx.showToast({ title: '已经满人', icon: 'none' });
+      return;
+    }
     wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${taskId}` });
   },
 

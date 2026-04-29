@@ -375,8 +375,8 @@
 
   <!-- 底部操作栏 -->
   <view class="action-bar">
-    <button style="width:100%" class="action-btn {{isMerchantTask ? 'submit-work-btn' : (!hasSignedUp || canSubmit ? 'submit-work-btn' : (task.claimActionClass || 'action-state-pending'))}}" bindtap="handleMainAction">
-      <text>{{isMerchantTask ? '编辑审核' : (!hasSignedUp ? '截稿倒计时：'+countdownText+'，立即报名' : canSubmit ? '上传稿件' : (task.claimActionText || '已报名，等待审核'))}}</text>
+    <button style="width:100%" class="action-btn {{isMerchantTask ? 'submit-work-btn' : (!hasSignedUp ? (task.isFull ? 'submit-work-btn-disabled' : 'submit-work-btn') : (canSubmit ? 'submit-work-btn' : (task.claimActionClass || 'action-state-pending')))}}" bindtap="handleMainAction">
+      <text>{{isMerchantTask ? '编辑审核' : (!hasSignedUp ? (task.isFull ? '已经满人' : '截稿倒计时：'+countdownText+'，立即报名') : canSubmit ? '上传稿件' : (task.claimActionText || '已报名，等待审核'))}}</text>
     </button>
   </view>
 

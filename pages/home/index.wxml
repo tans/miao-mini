@@ -138,7 +138,7 @@
             <text class="deadline-text" wx:if="{{item.countdown}}">{{item.countdown}}后截止投稿</text>
             <text class="deadline-text" wx:else>截止时间未知</text>
           </view>
-          <view class="btn-primary" bindtap="applyTask" data-id="{{item.id}}">立即报名</view>
+          <view class="btn-primary {{item.isFull ? 'btn-primary-disabled' : ''}}" bindtap="applyTask" data-id="{{item.id}}">{{item.isFull ? '已经满人' : '立即报名'}}</view>
         </view>
       </view>
     </view>

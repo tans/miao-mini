@@ -23,6 +23,19 @@ function formatDateTime(value) {
   return formatDateTimeText(value);
 }
 
+function normalizeBooleanFlag(value, defaultValue = false) {
+  if (value === undefined || value === null || value === '') return defaultValue;
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value !== 0;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return defaultValue;
+    if (['0', 'false', 'off', 'no'].includes(normalized)) return false;
+    if (['1', 'true', 'on', 'yes'].includes(normalized)) return true;
+  }
+  return !!value;
+}
+
 function getClaimStatusClass(status) {
   const value = Number(status);
   const map = {
@@ -40,6 +53,13 @@ function getClaimReviewResult(claim = {}) {
   return Number(claim.review_result || claim.reviewResult || 0) || 0;
 }
 
+function isClaimSubmittable(claim = {}) {
+  const status = Number(claim.status || 0);
+  const submitAt = claim.submitAt || claim.submit_at || '';
+  const reviewResult = getClaimReviewResult(claim);
+  return status === 1 && !submitAt && reviewResult === 0;
+}
+
 function getClaimActionState(claim = {}) {
   const status = Number(claim.status || 0);
   const reviewResult = getClaimReviewResult(claim);
@@ -48,7 +68,7 @@ function getClaimActionState(claim = {}) {
   if (status === 4) return { text: '审核超时，已发参与奖', className: 'action-state-timeout' };
   if (status === 5 || (status === 1 && reviewResult === 2)) return { text: '已淘汰', className: 'action-state-rejected' };
   if (status === 6 || (status === 1 && reviewResult === 3)) return { text: '已举报', className: 'action-state-reported' };
-  if (status === 2) return { text: '已报名，等待审核', className: 'action-state-pending' };
+  if (status === 2) return { text: '已提交，待审核', className: 'action-state-pending' };
 
   return null;
 }
@@ -64,13 +84,19 @@ function normalizeTask(task = {}) {
   const industries = toList(task.industries);
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
+  const jimengLink = task.jimeng_link || task.jimengLink || '';
   const isPublic = task.public == null ? true : !!task.public;
+  const remainingCount = Number(task.remaining_count ?? task.remainingCount ?? 0) || 0;
+  const totalCount = Number(task.total_count ?? task.totalCount ?? 0) || 0;
+  const isFull = totalCount > 0 && remainingCount <= 0;
   const hasSignedUp = task.hasSignedUp != null ? task.hasSignedUp : (task.has_signed_up != null ? task.has_signed_up : !!claim);
-  const canSubmit = task.canSubmit != null
+  const canSubmit = claim
+    ? isClaimSubmittable(claim)
+    : (task.canSubmit != null
     ? task.canSubmit
     : (task.can_submit != null
       ? task.can_submit
-      : !!(claim && Number(claim.status) === 1 && !claim.submitAt && !getClaimReviewResult(claim)));
+      : false));
   const claimAction = claim && !canSubmit ? getClaimActionState(claim) : null;
 
   return {
@@ -84,6 +110,9 @@ function normalizeTask(task = {}) {
     styles,
     unit_price: Number(task.unit_price || 0) || 0,
     award_price: Number(task.award_price || 0) || 0,
+    remainingCount,
+    totalCount,
+    isFull,
     videoAspect: task.videoAspect || task.video_aspect || '',
     videoResolution: task.videoResolution || task.video_resolution || '',
     videoDuration: task.videoDuration || task.video_duration || '',
@@ -95,8 +124,8 @@ function normalizeTask(task = {}) {
     submissionCount: Number(task.submission_count ?? task.submissionCount ?? submissions.length ?? 0) || 0,
     endAt,
     end_at: endAt,
-    jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
-    jimengLink: task.jimeng_link || task.jimengLink || '',
+    jimengEnabled: normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, !!jimengLink),
+    jimengLink,
     hasSignedUp,
     canSubmit,
     claim,
@@ -366,6 +395,7 @@ Page({
         submissions: task.submissions || [],
         hasSignedUp: !!task.hasSignedUp,
         canSubmit: !!task.canSubmit,
+        isFull: !!task.isFull,
         submitClaimId: task.claim && task.claim.id ? String(task.claim.id) : '',
         isMerchantTask: !!(currentUserId && String(task.businessId || task.business_id || '') === currentUserId),
       });
@@ -442,6 +472,10 @@ Page({
       wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${this.data.taskId}` });
       return;
     }
+    if (this.data.task && this.data.task.isFull && !this.data.hasSignedUp) {
+      wx.showToast({ title: '已经满人', icon: 'none' });
+      return;
+    }
     if (!this.data.hasSignedUp) {
       this.handleSignUp();
       return;
@@ -457,6 +491,10 @@ Page({
   },
 
   async handleSignUp() {
+    if (this.data.task && this.data.task.isFull) {
+      wx.showToast({ title: '已经满人', icon: 'none' });
+      return;
+    }
     if (this.data.hasSignedUp) {
       wx.showToast({ title: '已报名', icon: 'none' });
       return;

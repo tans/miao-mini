@@ -435,6 +435,11 @@
   font-weight: 400;
 }
 
+.btn-primary-disabled {
+  background: #D9DEE7;
+  color: #7B8794;
+}
+
 /* 空状态 */
 .empty-state {
   text-align: center;

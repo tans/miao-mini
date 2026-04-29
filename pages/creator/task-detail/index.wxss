@@ -1170,13 +1170,30 @@
   border: none;
 }
 
+.submit-work-btn-disabled {
+  padding: 24rpx 64rpx;
+  background: #d9dee7;
+  border-radius: 48rpx;
+  border: none;
+}
+
 .submit-work-btn text {
   font-size: 30rpx;
   font-weight: 700;
   color: #fff;
 }
 
+.submit-work-btn-disabled text {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #7b8794;
+}
+
 .submit-work-btn::after {
+  border: none;
+}
+
+.submit-work-btn-disabled::after {
   border: none;
 }
 
