@@ -409,6 +409,11 @@ const Api = {
     return this.request('GET', '/business/merchant/auth/status');
   },
 
+  recognizeMerchantAuthLicense(data) {
+    // data: { key }
+    return this.request('POST', '/business/merchant/auth/ocr', data);
+  },
+
   submitMerchantAuth(data) {
     // data: { company_name, contact_name, contact_phone, license_url }
     return this.request('POST', '/business/merchant/auth', data);
