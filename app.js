@@ -1,17 +1,17 @@
-const config = require('./utils/config.js');
-const Api = require('./utils/api.js');
+const config = require("./utils/config.js");
+const Api = require("./utils/api.js");
 
-const MESSAGE_TAB_PATH = '/pages/messages/index';
+const MESSAGE_TAB_PATH = "/pages/messages/index";
 const MESSAGE_TAB_INDEX = 1;
-const HOME_FONT_FAMILY = 'home-din-pro-700-bold';
-const HOME_FONT_PATH = '/assets/fonts/D-DIN-PRO-700-Bold.otf';
+const HOME_FONT_FAMILY = "home-din-pro-700-bold";
+const HOME_FONT_PATH = "/assets/fonts/D-DIN-PRO-700-Bold.otf";
 
 App({
   globalData: {
     user: null,
     token: null,
     apiBase: config.apiBase,
-    worksMode: 'public',
+    worksMode: "public",
     statusBarHeight: 20,
     unreadNotificationCount: 0,
   },
@@ -36,7 +36,9 @@ App({
       try {
         const parsedUser =
           typeof userStr === "string" ? JSON.parse(userStr) : userStr;
-        this.globalData.user = Api.normalizeUserAvatar ? Api.normalizeUserAvatar(parsedUser) : parsedUser;
+        this.globalData.user = Api.normalizeUserAvatar
+          ? Api.normalizeUserAvatar(parsedUser)
+          : parsedUser;
       } catch (e) {
         this.globalData.user = null;
       }
@@ -44,7 +46,6 @@ App({
       // 无缓存，静默登录
       this.silentLogin();
     }
-
   },
 
   onShow() {
@@ -55,12 +56,12 @@ App({
     if (this._homeFontLoaded) return;
     this._homeFontLoaded = true;
 
-    try { 
+    try {
       wx.loadFontFace({
-        global:true,
+        global: true,
         family: HOME_FONT_FAMILY,
-        source: `https://public.jisuhudong.com/minapp/D-DIN-PRO-700-Bold.otf`,
-        fail:console.error
+        source: `url(https://public.jisuhudong.com/minapp/D-DIN-PRO-700-Bold.ttf)`,
+        fail: console.error,
       });
     } catch (err) {
       console.log(err);
@@ -76,11 +77,10 @@ App({
     if (this._loginLock) return this._loginPromise;
 
     this._loginLock = true;
-    this._loginPromise = this._doSilentLogin()
-      .finally(() => {
-        this._loginLock = false;
-        this._loginPromise = null;
-      });
+    this._loginPromise = this._doSilentLogin().finally(() => {
+      this._loginLock = false;
+      this._loginPromise = null;
+    });
 
     return this._loginPromise;
   },
@@ -91,19 +91,19 @@ App({
         success: (res) => {
           if (!res.code) {
             wx.showModal({
-              title: '登录失败',
-              content: '微信登录code无效，请检查网络后重试',
+              title: "登录失败",
+              content: "微信登录code无效，请检查网络后重试",
               showCancel: false,
             });
-            return reject(new Error('invalid code'));
+            return reject(new Error("invalid code"));
           }
-          const Api = require('./utils/api.js');
+          const Api = require("./utils/api.js");
           Api.loginByWechat(res.code)
             .then(() => resolve())
             .catch((err) => {
               wx.showModal({
-                title: '登录失败',
-                content: '服务器错误，请稍后重试',
+                title: "登录失败",
+                content: "服务器错误，请稍后重试",
                 showCancel: false,
               });
               reject(err);
@@ -111,11 +111,11 @@ App({
         },
         fail: () => {
           wx.showModal({
-            title: '登录失败',
-            content: '无法连接微信，请检查网络后重试',
+            title: "登录失败",
+            content: "无法连接微信，请检查网络后重试",
             showCancel: false,
           });
-          reject(new Error('wx.login failed'));
+          reject(new Error("wx.login failed"));
         },
       });
     });
@@ -147,7 +147,9 @@ App({
   },
 
   setAuth(token, user) {
-    const normalizedUser = Api.normalizeUserAvatar ? Api.normalizeUserAvatar(user) : user;
+    const normalizedUser = Api.normalizeUserAvatar
+      ? Api.normalizeUserAvatar(user)
+      : user;
     this.globalData.token = token;
     this.globalData.user = normalizedUser;
     wx.setStorageSync("miao_token", token);
@@ -162,17 +164,17 @@ App({
     wx.removeStorageSync("miao_user");
     wx.removeTabBarBadge({
       index: MESSAGE_TAB_INDEX,
-      fail: () => {}
+      fail: () => {},
     });
   },
 
   setWorksMode(mode) {
-    const nextMode = mode === 'adopted' ? 'adopted' : 'public';
+    const nextMode = mode === "adopted" ? "adopted" : "public";
     this.globalData.worksMode = nextMode;
   },
 
   getWorksMode() {
-    return this.globalData.worksMode || 'public';
+    return this.globalData.worksMode || "public";
   },
 
   async refreshNotificationBadge() {
@@ -180,7 +182,7 @@ App({
       this.globalData.unreadNotificationCount = 0;
       wx.removeTabBarBadge({
         index: MESSAGE_TAB_INDEX,
-        fail: () => {}
+        fail: () => {},
       });
       return 0;
     }
@@ -192,18 +194,18 @@ App({
       if (count > 0) {
         wx.setTabBarBadge({
           index: MESSAGE_TAB_INDEX,
-          text: count > 99 ? '99+' : String(count),
-          fail: () => {}
+          text: count > 99 ? "99+" : String(count),
+          fail: () => {},
         });
       } else {
         wx.removeTabBarBadge({
           index: MESSAGE_TAB_INDEX,
-          fail: () => {}
+          fail: () => {},
         });
       }
       return count;
     } catch (err) {
-      if (err && err.message === '登录已过期') {
+      if (err && err.message === "登录已过期") {
         this.clearAuth();
       }
       return this.globalData.unreadNotificationCount || 0;
@@ -211,6 +213,10 @@ App({
   },
 
   isTabPage(path) {
-    return path === '/pages/home/index' || path === MESSAGE_TAB_PATH || path === '/pages/mine/index';
-  }
+    return (
+      path === "/pages/home/index" ||
+      path === MESSAGE_TAB_PATH ||
+      path === "/pages/mine/index"
+    );
+  },
 });
