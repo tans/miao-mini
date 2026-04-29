@@ -93,8 +93,8 @@
             <text class="zone-item-title">商家认证</text>
           </view>
           <view class="zone-item-right">
-           <view class="action-tag">
-              <text class="action-tag-text">去认证</text>
+            <view class="action-tag {{merchantAuthActionClass}}">
+              <text class="action-tag-text">{{merchantAuthActionText}}</text>
             </view>
           </view>
         </view>

@@ -23,7 +23,10 @@ Page({
       accepted_count: 0,
       pending_count: 0,
       adopted_count: 0
-    }
+    },
+    merchantAuthStatus: 'uncertified',
+    merchantAuthActionText: '去认证',
+    merchantAuthActionClass: 'is-uncertified'
   },
 
   onShow() {
@@ -31,16 +34,25 @@ Page({
     this.setData({ isLoggedIn });
     this.updateDisplayText();
     if (isLoggedIn) {
-      this.loadUserAndWallet();
+      const userTask = this.loadUserAndWallet();
       this.loadMineStats();
+      Promise.resolve(userTask).then(() => this.loadMerchantAuthStatus());
     } else {
-      this.setData({ user: null, balance: '0.00', avatarSrc: '/assets/icons/avatar-default.jpg' });
+      this.setData({
+        user: null,
+        balance: '0.00',
+        avatarSrc: '/assets/icons/avatar-default.jpg',
+        merchantAuthStatus: 'uncertified',
+        merchantAuthActionText: '去认证',
+        merchantAuthActionClass: 'is-uncertified'
+      });
       // 触发静默登录
       app.silentLogin().then(() => {
         this.setData({ isLoggedIn: app.isLoggedIn() });
         if (app.isLoggedIn()) {
-          this.loadUserAndWallet();
+          const userTask = this.loadUserAndWallet();
           this.loadMineStats();
+          Promise.resolve(userTask).then(() => this.loadMerchantAuthStatus());
         }
       });
     }
@@ -66,6 +78,42 @@ Page({
       if (err.message !== '登录已过期') {
         wx.showToast({ title: '加载失败', icon: 'none' });
       }
+    }
+  },
+
+  normalizeMerchantAuthStatus(rawStatus, businessVerified) {
+    const statusMap = {
+      certified: { status: 'certified', text: '已认证', className: 'is-certified' },
+      pending: { status: 'pending', text: '审核中', className: 'is-pending' },
+      uncertified: { status: 'uncertified', text: '去认证', className: 'is-uncertified' },
+      0: { status: 'uncertified', text: '去认证', className: 'is-uncertified' },
+      1: { status: 'pending', text: '审核中', className: 'is-pending' },
+      2: { status: 'certified', text: '已认证', className: 'is-certified' }
+    };
+    const normalized = statusMap[rawStatus] || (businessVerified ? statusMap.certified : statusMap.uncertified);
+    return normalized;
+  },
+
+  async loadMerchantAuthStatus() {
+    try {
+      const res = await Api.getMerchantAuthStatus();
+      const data = res.data || {};
+      const normalized = this.normalizeMerchantAuthStatus(data.status || data.status_code, data.business_verified);
+      this.setData({
+        merchantAuthStatus: normalized.status,
+        merchantAuthActionText: normalized.text,
+        merchantAuthActionClass: normalized.className
+      });
+    } catch (err) {
+      const fallback = this.normalizeMerchantAuthStatus(
+        this.data.user && this.data.user.business_verified ? 'certified' : 'uncertified',
+        this.data.user && this.data.user.business_verified
+      );
+      this.setData({
+        merchantAuthStatus: fallback.status,
+        merchantAuthActionText: fallback.text,
+        merchantAuthActionClass: fallback.className
+      });
     }
   },
 

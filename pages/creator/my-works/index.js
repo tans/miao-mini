@@ -234,5 +234,11 @@ Page({
     const images = work && work.previewImages || [];
     if (images.length === 0) return;
     wx.previewImage({ current: images[0], urls: images });
-  }
+  },
+
+  goAppeal(e) {
+    const claimId = e.currentTarget.dataset.claimId;
+    if (!claimId) return;
+    wx.navigateTo({ url: `/pages/mine/appeal/index?claimId=${encodeURIComponent(claimId)}` });
+  },
 });

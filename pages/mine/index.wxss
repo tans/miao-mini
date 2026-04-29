@@ -400,10 +400,34 @@
   align-items: center;
 }
 
+.action-tag.is-uncertified {
+  background: rgba(239, 136, 2, 0.10);
+}
+
+.action-tag.is-pending {
+  background: rgba(239, 136, 2, 0.14);
+}
+
+.action-tag.is-certified {
+  background: rgba(29, 155, 72, 0.12);
+}
+
 .action-tag-text {
   font-size: 22rpx;
   color: #FF6A5C;
   font-weight: 600;
+}
+
+.action-tag.is-uncertified .action-tag-text {
+  color: #FF6A5C;
+}
+
+.action-tag.is-pending .action-tag-text {
+  color: #EF8802;
+}
+
+.action-tag.is-certified .action-tag-text {
+  color: #1D9B48;
 }
 
 .zone-right {

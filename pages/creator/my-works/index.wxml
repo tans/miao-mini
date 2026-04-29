@@ -76,14 +76,18 @@
             <text class="income-label">收入(参与金)</text>
             <text class="income-value">{{item.incomeText}}</text>
           </view>
+          <view class="appeal-btn-container">
+            <text>对淘汰结果有异议，可立即申诉</text>
+            <view class="appeal-btn" data-claim-id="{{item.id}}" bindtap="goAppeal">我要申诉</view>
+          </view>
         </view>
 
         <!-- 举报原因 -->
         <view class="report-section" wx:if="{{item.statusClass === 'reported'}}">
-          <view class="report-text">举报原因：{{item.reportReason}}123</view>
+          <view class="report-text">举报原因：{{item.reportReason}}</view>
           <view class="appeal-btn-container">
             <text>被举报作品无奖金</text>
-            <view class="appeal-btn">我要申诉</view>
+            <view class="appeal-btn" data-claim-id="{{item.id}}" bindtap="goAppeal">我要申诉</view>
           </view>
         </view>
       </view>

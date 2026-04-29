@@ -1,5 +1,6 @@
 const Api = require('../../../utils/api.js');
 const { formatDateTime } = require('../../../utils/util.js');
+const { saveDisputeRecord, patchDisputeRecord } = require('../../../utils/dispute-records.js');
 const app = getApp();
 
 function toList(value) {
@@ -19,6 +20,19 @@ function pick(...values) {
     if (value !== undefined && value !== null && value !== '') return value;
   }
   return '';
+}
+
+function normalizeBooleanFlag(value, defaultValue = false) {
+  if (value === undefined || value === null || value === '') return defaultValue;
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value !== 0;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return defaultValue;
+    if (['0', 'false', 'off', 'no'].includes(normalized)) return false;
+    if (['1', 'true', 'on', 'yes'].includes(normalized)) return true;
+  }
+  return !!value;
 }
 
 function hasVisibleSubmission(claim = {}) {
@@ -70,7 +84,7 @@ function normalizeTask(task = {}) {
     submissionCount: Number(pick(task.submission_count, task.submissionCount, 0)) || 0,
     jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
     jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
-    jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
+    jimengEnabled: normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, true),
     isPublic,
     visibilityText: isPublic ? '公开投稿' : '隐私保护',
     materials,
@@ -469,6 +483,10 @@ Page({
 
     try {
       await Api.reviewClaim(claimId, result, reason);
+      if (result === 3) {
+        const claim = this.data.filteredClaims.find((item) => String(item.id) === String(claimId));
+        if (claim) this.createReportDisputeRecords([claim], reason);
+      }
       wx.showToast({ title: result === 1 ? '已采纳' : result === 3 ? '已举报' : '已处理', icon: 'success' });
       this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
@@ -495,6 +513,9 @@ Page({
     wx.showLoading({ title: '处理中...' });
     try {
       await Api.batchReviewClaim(selectedClaims.map((item) => item.id), action, reason);
+      if (action === 3) {
+        this.createReportDisputeRecords(selectedClaims, reason);
+      }
       wx.showToast({ title: action === 1 ? '批量采纳成功' : action === 3 ? '批量举报成功' : '批量处理成功', icon: 'success' });
       this.loadTaskDetail(this.data.taskId, { filter: 'all' });
     } catch (err) {
@@ -512,6 +533,42 @@ Page({
         success: (res) => resolve(reasons[res.tapIndex]),
         fail: () => resolve(null),
       });
+    });
+  },
+
+  createReportDisputeRecords(claims = [], reason) {
+    const taskId = pick(this.data.task.id, this.data.taskId, '');
+    const taskTitle = pick(this.data.task.title, `任务 #${taskId}`);
+    const reportReason = reason || '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大';
+
+    claims.forEach((claim) => {
+      const localId = `merchant_report:${claim.id}`;
+      const workTitle = pick(claim.title, claim.taskTitle, taskTitle, `作品 #${claim.id}`);
+      saveDisputeRecord({
+        localId,
+        sourceType: 'merchant_report',
+        claimId: String(claim.id),
+        taskId: String(taskId || ''),
+        taskTitle,
+        workTitle,
+        reportReason,
+        createdAt: new Date().toISOString(),
+      });
+
+      Api.createAppeal({
+        type: 1,
+        task_id: taskId,
+        target_id: taskId,
+        reason: `举报作品：${reportReason}`,
+      }).then((res) => {
+        const remoteAppeal = (res && res.data) || {};
+        patchDisputeRecord(localId, {
+          remoteAppealId: pick(remoteAppeal.id, ''),
+          remoteStatus: pick(remoteAppeal.status, 1),
+          remoteStatusText: pick(remoteAppeal.status_str, '平台处理中'),
+          updatedAt: pick(remoteAppeal.created_at, new Date().toISOString()),
+        });
+      }).catch(() => {});
     });
   },
 

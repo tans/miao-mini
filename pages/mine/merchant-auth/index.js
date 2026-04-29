@@ -5,6 +5,7 @@ Page({
   data: {
     status: 'uncertified', // uncertified, pending, certified
     companyName: '',
+    creditCode: '',
     contactName: '',
     contactPhone: '',
     licenseUrl: '',
@@ -12,7 +13,8 @@ Page({
     statusIcon: 'icon-uncertified',
     statusIconText: '未认证',
     statusTitle: '您尚未完成商家认证',
-    statusDesc: '完成认证后可发布任务、享受更多权益'
+    statusDesc: '完成认证后可发布任务、享受更多权益',
+    submitText: '提交'
   },
 
   onLoad() {
@@ -24,10 +26,11 @@ Page({
       const data = res.data || {};
       // Normalize status: API may return numeric (0=uncertified, 1=pending, 2=certified) or string
       const statusMap = { 0: 'uncertified', 1: 'pending', 2: 'certified' };
-      const normalizedStatus = statusMap[data.status] || data.status || 'uncertified';
+      const normalizedStatus = statusMap[data.status || data.status_code] || data.status || data.status_code || 'uncertified';
       this.setData({
         status: normalizedStatus,
         companyName: data.company_name || '',
+        creditCode: data.credit_code || data.social_credit_code || data.unified_social_credit_code || '',
         contactName: data.contact_name || '',
         contactPhone: data.contact_phone || '',
         licenseUrl: data.license_url || '',
@@ -40,21 +43,26 @@ Page({
 
   _updateStatusUI(status) {
     const statusMap = {
-      certified: { icon: 'icon-certified', text: '已认证', title: '已通过商家认证', desc: '您已是认证商家，可发布任务' },
-      pending: { icon: 'icon-pending', text: '审核中', title: '认证申请已提交', desc: '预计1-3个工作日内完成审核' },
-      uncertified: { icon: 'icon-uncertified', text: '未认证', title: '您尚未完成商家认证', desc: '完成认证后可发布任务、享受更多权益' }
+      certified: { icon: 'icon-certified', text: '已认证', title: '已通过商家认证', desc: '您已是认证商家，可发布任务', submitText: '已认证' },
+      pending: { icon: 'icon-pending', text: '审核中', title: '认证申请已提交', desc: '平台将在1-3个工作日内完成审核，请保持联系电话畅通。', submitText: '审核中' },
+      uncertified: { icon: 'icon-uncertified', text: '未认证', title: '您尚未完成商家认证', desc: '完成认证后可发布任务、享受更多权益', submitText: '提交' }
     };
     const info = statusMap[status] || statusMap.uncertified;
     this.setData({
       statusIcon: info.icon,
       statusIconText: info.text,
       statusTitle: info.title,
-      statusDesc: info.desc
+      statusDesc: info.desc,
+      submitText: info.submitText
     });
   },
 
   onCompanyNameInput(e) {
     this.setData({ companyName: e.detail.value });
+  },
+
+  onCreditCodeInput(e) {
+    this.setData({ creditCode: e.detail.value.trim().toUpperCase() });
   },
 
   onContactNameInput(e) {
@@ -65,7 +73,27 @@ Page({
     this.setData({ contactPhone: e.detail.value });
   },
 
+  previewLicense() {
+    const previewUrl = this.data.licensePreviewUrl || this.data.licenseUrl;
+    if (!previewUrl) return;
+    wx.previewImage({
+      urls: [previewUrl],
+      current: previewUrl,
+    });
+  },
+
+  onTapLicenseArea() {
+    if (this.data.licenseUrl) {
+      this.previewLicense();
+      return;
+    }
+    this.uploadLicense();
+  },
+
   uploadLicense() {
+    if (this.data.status !== 'uncertified') {
+      return;
+    }
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
@@ -93,9 +121,21 @@ Page({
   },
 
   submitAuth() {
-    const { companyName, contactName, contactPhone, licenseUrl } = this.data;
+    const { status, companyName, creditCode, contactName, contactPhone, licenseUrl } = this.data;
+    if (status !== 'uncertified') {
+      return;
+    }
     if (!companyName.trim()) {
       wx.showToast({ title: '请输入企业名称', icon: 'none' });
+      return;
+    }
+    if (!creditCode.trim()) {
+      wx.showToast({ title: '请输入统一社会信用代码', icon: 'none' });
+      return;
+    }
+    const creditCodeRegex = /^[0-9A-Z]{18}$/;
+    if (!creditCodeRegex.test(creditCode.trim().toUpperCase())) {
+      wx.showToast({ title: '请输入正确的统一社会信用代码', icon: 'none' });
       return;
     }
     if (!contactName.trim()) {
@@ -119,9 +159,12 @@ Page({
 
     wx.showLoading({ title: '提交中...' });
     Api.submitMerchantAuth({
-      company_name: companyName,
-      contact_name: contactName,
-      contact_phone: contactPhone,
+      company_name: companyName.trim(),
+      credit_code: creditCode.trim().toUpperCase(),
+      social_credit_code: creditCode.trim().toUpperCase(),
+      unified_social_credit_code: creditCode.trim().toUpperCase(),
+      contact_name: contactName.trim(),
+      contact_phone: contactPhone.trim(),
       license_url: licenseUrl
     }).then(res => {
       wx.hideLoading();
