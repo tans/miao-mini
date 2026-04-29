@@ -84,10 +84,11 @@ module.exports = {
       <view class="form-field">
         <view class="field-label-row">
           <text class="field-label">行业</text>
-          <text class="field-hint">（可多选）</text>
+          <text class="field-hint">（单选）</text>
         </view>
         <view class="tag-group" bindtap="openDialog">
           <text wx:for="{{industryOptions}}" wx:key="id" wx:if="{{utils.includes(selectedIndustries, item.id)}}" class="show-tag" data-id="{{item.id}}">{{item.name}}</text>
+          <text wx:if="{{!selectedIndustries.length}}" class="field-hint">请选择行业</text>
         </view>
       </view>
 

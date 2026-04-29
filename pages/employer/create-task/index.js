@@ -140,7 +140,7 @@ Page({
   // 确认选择
   confirmIndustrySelection() {
     this.setData({
-      selectedIndustries: [...this.data.tempSelectedIndustries],
+      selectedIndustries: this.data.tempSelectedIndustries.slice(0, 1),
       showDialog: false
     });
   },
@@ -202,14 +202,10 @@ Page({
 
   toggleIndustry(e) {
     const id = e.currentTarget.dataset.id;
-    const { tempSelectedIndustries } = this.data;
-    const index = tempSelectedIndustries.indexOf(id);
-    if (index > -1) {
-      tempSelectedIndustries.splice(index, 1);
-    } else {
-      tempSelectedIndustries.push(id);
-    }
-    this.setData({ tempSelectedIndustries });
+    const isSelected = this.data.tempSelectedIndustries.indexOf(id) > -1;
+    this.setData({
+      tempSelectedIndustries: isSelected ? [] : [id]
+    });
   },
 
   toggleStyle(e) {
