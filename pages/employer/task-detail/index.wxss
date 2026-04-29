@@ -986,6 +986,12 @@
   color: #fff;
 }
 
+.action-btn.download-original {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1rpx solid #bfdbfe;
+}
+
 .empty-state {
   display: flex;
   flex-direction: column;

@@ -95,6 +95,8 @@ function normalizeTask(task = {}) {
     submissionCount: Number(task.submission_count ?? task.submissionCount ?? submissions.length ?? 0) || 0,
     endAt,
     end_at: endAt,
+    jimengEnabled: task.jimeng_enabled ?? task.jimengEnabled ?? true,
+    jimengLink: task.jimeng_link || task.jimengLink || '',
     hasSignedUp,
     canSubmit,
     claim,

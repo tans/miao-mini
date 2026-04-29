@@ -4,10 +4,14 @@ const app = getApp();
 
 function normalizeClaim(claim = {}) {
   const claimStatus = Number(claim.claim_status != null ? claim.claim_status : claim.status || 0);
+  const reviewResult = Number(claim.review_result || claim.reviewResult || 0) || 0;
   const taskStatus = Number(claim.task_status || 0);
   const endAt = claim.endAt || claim.end_at || '';
   const now = Date.now();
   const endAtMs = endAt ? new Date(endAt).getTime() : 0;
+  const normalizedStatus = claimStatus === 1 && reviewResult === 2
+    ? 5
+    : (claimStatus === 1 && reviewResult === 3 ? 6 : claimStatus);
 
   let isActive = claimStatus === 1 || claimStatus === 2;
   if (taskStatus) {
@@ -17,15 +21,41 @@ function normalizeClaim(claim = {}) {
     isActive = isActive && endAtMs > now;
   }
 
+  let claimActionText = '查看详情';
+  let claimActionClass = 'btn-ended';
+  if (normalizedStatus === 1) {
+    claimActionText = isActive ? '立即交稿' : '已截止';
+    claimActionClass = isActive ? 'btn-submit' : 'btn-ended';
+  } else if (normalizedStatus === 2) {
+    claimActionText = '已提交，待审核';
+    claimActionClass = 'btn-pending';
+  } else if (normalizedStatus === 3) {
+    claimActionText = '已采纳';
+    claimActionClass = 'btn-approved';
+  } else if (normalizedStatus === 4) {
+    claimActionText = '已取消';
+    claimActionClass = 'btn-cancelled';
+  } else if (normalizedStatus === 5) {
+    claimActionText = reviewResult === 0 ? '审核超时' : '已淘汰';
+    claimActionClass = reviewResult === 0 ? 'btn-timeout' : 'btn-rejected';
+  } else if (normalizedStatus === 6) {
+    claimActionText = '已举报';
+    claimActionClass = 'btn-reported';
+  }
+
   return {
     ...claim,
     claimStatus,
+    reviewResult,
     taskStatus,
     endAt,
     end_at: endAt,
     deadlineText: formatDateTime(endAt) || '待更新',
     statusLabel: isActive ? '征稿中' : '已截止',
     isActive,
+    normalizedStatus,
+    claimActionText,
+    claimActionClass,
   };
 }
 

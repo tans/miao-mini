@@ -224,7 +224,7 @@
           </view>
         </view>
         <!-- 即梦合拍 -->
-        <view class="jimeng-card" wx:if="{{task.jimengLink}}">
+        <view class="jimeng-card" wx:if="{{task.jimengEnabled && task.jimengLink}}">
           <view class="card-header">
             <text class="header-title">即梦合拍邀拍链接</text>
           </view>
@@ -232,7 +232,7 @@
             <text class="jimeng-link">{{task.jimengLink}}</text>
           </view>
         </view>
-        <view class="jimeng-card" wx:if="{{!task.jimengLink && !hasSignedUp}}">
+        <view class="jimeng-card" wx:if="{{task.jimengEnabled && !task.jimengLink && !hasSignedUp}}">
           <view class="card-header">
             <text class="header-title">即梦合拍邀拍链接</text>
           </view>

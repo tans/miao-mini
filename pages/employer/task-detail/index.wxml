@@ -132,6 +132,9 @@
               <text class="action-btn reject" data-claim-id="{{claim.id}}" data-result="2" bindtap="reviewClaim">淘汰</text>
               <text class="action-btn report" data-claim-id="{{claim.id}}" data-result="3" bindtap="reviewClaim">举报</text>
             </view>
+            <view class="action-btns" wx:if="{{claim.canDownloadOriginalVideo}}">
+              <text class="action-btn download-original" data-claim-id="{{claim.id}}" bindtap="downloadClaimOriginalVideo">下载原视频</text>
+            </view>
           </view>
         </view>
       </view>

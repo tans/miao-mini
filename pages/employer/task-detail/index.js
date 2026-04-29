@@ -133,6 +133,10 @@ function normalizeClaim(claim = {}, task = {}) {
   const imageMaterials = materials.filter((item) => item.file_type === 'image' && item.file_path);
   const videoMaterials = materials.filter((item) => item.file_type === 'video' && item.file_path);
   const pendingVideoMaterials = materials.filter((item) => item.file_type === 'video' && !item.file_path);
+  const originalVideoUrls = materials
+    .filter((item) => item.file_type === 'video')
+    .map((item) => pick(item.source_file_path, item.sourceFilePath, ''))
+    .filter(Boolean);
   const previewImages = imageMaterials.map((item) => item.file_path);
   const contentText = extractContentText(claim.content);
   const videoLink = extractVideoLink(claim.content);
@@ -162,6 +166,8 @@ function normalizeClaim(claim = {}, task = {}) {
       : '',
     previewImages,
     previewVideos,
+    originalVideoUrls,
+    canDownloadOriginalVideo: normalizedStatus === 3 && originalVideoUrls.length > 0,
     hasMaterials: previewImages.length > 0 || previewVideos.length > 0,
     canReview: status === 2,
     taskTitle: task.title || '',
@@ -543,6 +549,18 @@ Page({
       return;
     }
 
+    await this.downloadFiles(files);
+  },
+
+  async downloadClaimOriginalVideo(e) {
+    const { claimId } = e.currentTarget.dataset;
+    const claim = this.data.filteredClaims.find((item) => String(item.id) === String(claimId));
+    if (!claim || !Array.isArray(claim.originalVideoUrls) || !claim.originalVideoUrls.length) {
+      wx.showToast({ title: '暂无原视频可下载', icon: 'none' });
+      return;
+    }
+
+    const files = claim.originalVideoUrls.map((url) => ({ type: 'video', url }));
     await this.downloadFiles(files);
   },
 
