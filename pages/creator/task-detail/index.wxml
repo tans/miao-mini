@@ -174,7 +174,7 @@
 
         <!-- 描述 -->
         <view class="desc-section">
-          <text class="desc-text">{{task.description || '创作者自由发挥即可'}}</text>
+          <text class="desc-text">{{task.description || '突出空间通透感与生活方式场景，口语化表达，避免过度摆拍。适合地产、家居类创作者参与。'}}</text>
         </view>
 
         <!-- 视频规格 -->
