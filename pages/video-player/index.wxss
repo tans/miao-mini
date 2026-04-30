@@ -6,13 +6,15 @@
 
 .content-wrap {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
 .player-shell {
+  position: relative;
   width: 100vw;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
 }
 
 .loading-wrap,
@@ -27,20 +29,23 @@
 }
 
 .video-player {
-  width: 100vw;
-  height: 133.33vw;
-  max-height: calc(100vh - 140rpx);
-  min-height: 1000rpx;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   background: #000;
   display: block;
 }
 
 .control-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
   gap: 20rpx;
   padding: 20rpx 24rpx 28rpx;
-  background: #000;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.84), rgba(0, 0, 0, 0));
 }
 
 .control-btn {
