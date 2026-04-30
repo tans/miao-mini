@@ -108,6 +108,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    wx.stopPullDownRefresh();
+  },
+
   goBack() {
     wx.navigateBack({ delta: 1 });
   }

@@ -11,6 +11,11 @@ Page({
     this.setData({ version: buildInfo.version || '1.0.0' });
   },
 
+  onPullDownRefresh() {
+    this.setData({ version: buildInfo.version || '1.0.0' });
+    wx.stopPullDownRefresh();
+  },
+
   goBack() {
     wx.navigateBack({ delta: 1 });
   }

@@ -15,6 +15,7 @@ Page({
 
   onLoad(options) {
     if (options.id) {
+      this.workId = options.id;
       const storedWork = wx.getStorageSync(`work_preview_${options.id}`);
       if (storedWork && storedWork.id) {
         this.setWorkData(storedWork);
@@ -33,6 +34,15 @@ Page({
       wx.showToast({ title: 'Param error', icon: 'none' });
       setTimeout(() => wx.navigateBack(), 1500);
     }
+  },
+
+  onPullDownRefresh() {
+    const workId = this.workId || (this.data.work && this.data.work.id);
+    if (!workId) {
+      wx.stopPullDownRefresh();
+      return;
+    }
+    this.loadWork(workId).finally(() => wx.stopPullDownRefresh());
   },
 
   async loadWork(id) {
@@ -55,6 +65,7 @@ Page({
   },
 
   setWorkData(work) {
+    this.workId = work && work.id ? work.id : this.workId;
     const materials = Array.isArray(work.materials) ? work.materials : [];
     const coverType = work.cover_type ||
       (materials[0] && materials[0].file_type) ||

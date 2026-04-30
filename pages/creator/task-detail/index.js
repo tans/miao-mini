@@ -376,6 +376,15 @@ Page({
     this.syncClaimMaterialPolling();
   },
 
+  onPullDownRefresh() {
+    if (!this.data.taskId) {
+      wx.stopPullDownRefresh();
+      return;
+    }
+    this.loadTaskDetail(this.data.taskId, { silent: true, suppressError: true })
+      .finally(() => wx.stopPullDownRefresh());
+  },
+
   onHide() {
     this.stopClaimMaterialPolling();
   },

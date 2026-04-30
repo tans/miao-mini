@@ -58,7 +58,7 @@ Page({
   },
 
   loadAuthStatus() {
-    Api.getMerchantAuthStatus().then(res => {
+    return Api.getMerchantAuthStatus().then(res => {
       const data = res.data || {};
       // Normalize status: API may return numeric (0=uncertified, 1=pending, 2=certified) or string
       const statusMap = { 0: 'uncertified', 1: 'pending', 2: 'certified' };
@@ -69,8 +69,8 @@ Page({
         creditCode: data.credit_code || data.social_credit_code || data.unified_social_credit_code || '',
         contactName: data.contact_name || this._defaultContactName(),
         contactPhone: data.contact_phone || this._defaultContactPhone(),
-        licenseUrl: Api.getDisplayUrl(data.license_url || ''),
-        licensePreviewUrl: Api.getDisplayUrl(data.license_preview_url || data.license_url || ''),
+        licenseUrl: data.license_url || '',
+        licensePreviewUrl: data.license_preview_url || data.license_url || '',
         licenseKey: '',
         isEditing: false,
         canEditAuth: normalizedStatus !== 'certified'
@@ -78,6 +78,12 @@ Page({
       this._updateStatusUI(normalizedStatus);
     }).catch(err => {
     });
+  },
+
+  onPullDownRefresh() {
+    this.loadCurrentUser()
+      .finally(() => this.loadAuthStatus())
+      .finally(() => wx.stopPullDownRefresh());
   },
 
   _updateStatusUI(status) {
@@ -181,8 +187,8 @@ Page({
             });
 
             const nextData = {
-              licenseUrl: Api.getDisplayUrl(uploadRes.url),
-              licensePreviewUrl: Api.getDisplayUrl(uploadRes.previewUrl || uploadRes.url),
+              licenseUrl: uploadRes.url,
+              licensePreviewUrl: uploadRes.previewUrl || uploadRes.url,
               licenseKey: uploadRes.key || ''
             };
 

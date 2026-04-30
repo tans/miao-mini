@@ -15,7 +15,16 @@ Page({
   },
 
   onLoad(options) {
+    this.inspirationId = options.id || '';
     this.loadInspirationDetail(options.id);
+  },
+
+  onPullDownRefresh() {
+    if (!this.inspirationId) {
+      wx.stopPullDownRefresh();
+      return;
+    }
+    this.loadInspirationDetail(this.inspirationId).finally(() => wx.stopPullDownRefresh());
   },
 
   async loadInspirationDetail(id) {

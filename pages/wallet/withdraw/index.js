@@ -21,6 +21,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    this.loadWalletInfo().finally(() => wx.stopPullDownRefresh());
+  },
+
   async loadWalletInfo() {
     try {
       const [walletRes, userRes] = await Promise.all([

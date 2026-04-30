@@ -105,6 +105,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    this.loadWalletBalance().finally(() => wx.stopPullDownRefresh());
+  },
+
   async loadWalletBalance() {
     try {
       const res = await Api.getWallet();

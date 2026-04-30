@@ -11,6 +11,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    wx.stopPullDownRefresh();
+  },
+
   goBack() {
     wx.navigateBack({
       fail: () => wx.switchTab({ url: '/pages/home/index' })
