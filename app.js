@@ -60,8 +60,13 @@ App({
       wx.loadFontFace({
         global: true,
         family: HOME_FONT_FAMILY,
-        source: `url(https://public.jisuhudong.com/minapp/D-DIN-PRO-700-Bold.ttf)`,
-        fail: console.error,
+        source: `url("https://public.jisuhudong.com/minapp/D-DIN-PRO-700-Bold.ttf")`,
+        success: () => {
+          console.log('字体加载成功');
+        },
+        fail: (err) => {
+          console.error('字体加载失败', err);
+        }
       });
     } catch (err) {
       console.log(err);
