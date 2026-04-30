@@ -64,6 +64,7 @@ Page({
 
   onLoad(options) {
     this.videoContext = wx.createVideoContext('videoPlayer', this);
+    this.autoPlayRequested = false;
     this.initialPoster = normalizePreviewUrl(options.poster || '');
     if (options.id) {
       this.workId = options.id;
@@ -168,6 +169,14 @@ Page({
     wx.showToast({ title: 'Video error', icon: 'none' });
   },
 
+  onVideoCanPlay() {
+    if (this.autoPlayRequested) return;
+    this.autoPlayRequested = true;
+    if (this.videoContext) {
+      this.videoContext.play();
+    }
+  },
+
   onLoadedMetadata(e) {
     const duration = Number(e.detail.duration) || 0;
     this.progressBaseTime = 0;
@@ -194,6 +203,7 @@ Page({
 
   onVideoPlay() {
     this.setData({ playing: true });
+    this.autoPlayRequested = true;
     this.progressBaseTime = this.data.currentTime || 0;
     this.progressBaseAt = Date.now();
     this.startProgressTicker();

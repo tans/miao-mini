@@ -116,7 +116,8 @@
               data-url="{{vid.url}}"
               data-poster="{{vid.poster}}"
             >
-              <image class="preview-thumb-image" src="{{vid.poster || vid.url}}" mode="aspectFill" />
+              <image wx:if="{{vid.poster}}" class="preview-thumb-image" src="{{vid.poster}}" mode="aspectFill" />
+              <view wx:else class="preview-thumb-fallback"></view>
               <view class="preview-play-badge"></view>
             </view>
           </view>
@@ -277,13 +278,15 @@
             bindtap="previewMaterial"
             data-url="{{item.file_path}}"
             data-type="{{item.file_type}}"
-            data-poster="{{item.file_type === 'video' ? (item.thumbnail_path || item.file_path) : ''}}"
+            data-poster="{{item.file_type === 'video' ? item.thumbnail_path : ''}}"
           >
             <image
+              wx:if="{{item.file_type !== 'video' || item.thumbnail_path}}"
               class="material-thumb"
-              src="{{item.file_type === 'video' ? (item.thumbnail_path || item.file_path) : item.file_path}}"
+              src="{{item.file_type === 'video' ? item.thumbnail_path : item.file_path}}"
               mode="aspectFill"
             />
+            <view wx:else class="material-thumb material-thumb-fallback"></view>
             <view class="material-video-badge" wx:if="{{item.file_type === 'video'}}"></view>
           </view>
         </view>

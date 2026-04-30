@@ -13,7 +13,7 @@
             src="{{videoUrl}}"
             poster="{{poster}}"
             autoplay
-            objectFit="cover"
+            objectFit="contain"
             controls="{{false}}"
             show-loading="{{true}}"
             show-center-play-btn="{{false}}"
@@ -23,12 +23,13 @@
             enable-play-gesture="{{false}}"
             enable-progress-gesture="{{false}}"
             bindtap="onVideoTap"
+            bindcanplay="onVideoCanPlay"
             bindplay="onVideoPlay"
             bindpause="onVideoPause"
             bindended="onVideoEnded"
             bindtimeupdate="onTimeUpdate"
             bindloadedmetadata="onLoadedMetadata"
-            bind:error="onVideoError"
+            binderror="onVideoError"
           />
         </view>
         <view class="control-bar">
