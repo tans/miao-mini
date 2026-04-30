@@ -85,10 +85,12 @@ Page({
     const statusMap = {
       certified: { status: 'certified', text: '已认证', className: 'is-certified' },
       pending: { status: 'pending', text: '审核中', className: 'is-pending' },
+      rejected: { status: 'rejected', text: '审核未通过', className: 'is-rejected' },
       uncertified: { status: 'uncertified', text: '去认证', className: 'is-uncertified' },
       0: { status: 'uncertified', text: '去认证', className: 'is-uncertified' },
       1: { status: 'pending', text: '审核中', className: 'is-pending' },
-      2: { status: 'certified', text: '已认证', className: 'is-certified' }
+      2: { status: 'certified', text: '已认证', className: 'is-certified' },
+      3: { status: 'rejected', text: '审核未通过', className: 'is-rejected' }
     };
     const normalized = statusMap[rawStatus] || (businessVerified ? statusMap.certified : statusMap.uncertified);
     return normalized;
