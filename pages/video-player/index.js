@@ -4,46 +4,14 @@ function getVideoMaterial(materials = []) {
   return materials.find((item) => item.file_type === 'video') || null;
 }
 
-function safeDecodeURIComponent(value = '') {
-  if (!value) return '';
-  try {
-    return decodeURIComponent(value);
-  } catch (e) {
-    return value;
-  }
-}
-
 function normalizePreviewUrl(value = '') {
-  return Api.getDisplayUrl(safeDecodeURIComponent(value));
-}
-
-function resolveVideoPoster(work = {}, firstVideoMaterial = null, fallbackPoster = '') {
-  const poster = fallbackPoster ||
-    work.poster ||
-    work.displayCover ||
-    work.cover ||
-    work.cover_url ||
-    work.coverUrl ||
-    work.thumbnail ||
-    work.thumbnail_path ||
-    work.poster_url ||
-    work.previewCover ||
-    (firstVideoMaterial && (
-      firstVideoMaterial.poster_url ||
-      firstVideoMaterial.thumbnail_path ||
-      firstVideoMaterial.thumbnail ||
-      firstVideoMaterial.cover_url ||
-      firstVideoMaterial.cover
-    )) ||
-    '';
-  return Api.getDisplayUrl(poster);
-}
-
-function formatTime(seconds = 0) {
-  const total = Math.max(0, Math.floor(Number(seconds) || 0));
-  const minutes = Math.floor(total / 60);
-  const remainSeconds = total % 60;
-  return `${minutes}:${String(remainSeconds).padStart(2, '0')}`;
+  const raw = (value || '').trim();
+  if (!raw) return '';
+  try {
+    return Api.getDisplayUrl(decodeURIComponent(raw));
+  } catch (e) {
+    return Api.getDisplayUrl(raw);
+  }
 }
 
 Page({
@@ -51,20 +19,11 @@ Page({
     work: null,
     loading: true,
     videoUrl: '',
-    poster: '',
     processStatus: '',
     processStatusText: '',
-    playing: false,
-    duration: 0,
-    currentTime: 0,
-    durationText: '0:00',
-    currentTimeText: '0:00',
-    isSeeking: false,
   },
 
   onLoad(options) {
-    this.videoContext = wx.createVideoContext('videoPlayer', this);
-    this.initialPoster = normalizePreviewUrl(options.poster || '');
     if (options.id) {
       this.workId = options.id;
       const storedWork = wx.getStorageSync(`work_preview_${options.id}`);
@@ -91,9 +50,6 @@ Page({
       this.setData({
         loading: false,
         videoUrl: normalizePreviewUrl(options.url),
-        poster: this.initialPoster,
-        isSeeking: false,
-        playing: false,
       });
     }
   },
@@ -157,10 +113,8 @@ Page({
       work,
       loading: false,
       videoUrl,
-      poster: resolveVideoPoster(work, firstVideoMaterial, this.initialPoster),
       processStatus,
       processStatusText,
-      playing: false,
     });
   },
 
@@ -168,88 +122,7 @@ Page({
     wx.showToast({ title: 'Video error', icon: 'none' });
   },
 
-  onLoadedMetadata(e) {
-    const duration = Number(e.detail.duration) || 0;
-    this.setData({
-      duration,
-      durationText: formatTime(duration),
-    });
-  },
-
-  onTimeUpdate(e) {
-    const currentTime = Number(e.detail.currentTime) || 0;
-    const duration = Number(e.detail.duration) || this.data.duration || 0;
-    if (this.data.isSeeking) return;
-    this.setData({
-      currentTime,
-      duration,
-      currentTimeText: formatTime(currentTime),
-      durationText: formatTime(duration),
-    });
-  },
-
-  onVideoPlay() {
-    this.setData({ playing: true });
-  },
-
-  onVideoPause() {
-    this.setData({ playing: false });
-  },
-
-  onVideoEnded() {
-    this.setData({
-      playing: false,
-      currentTime: 0,
-      currentTimeText: '0:00',
-    });
-  },
-
-  onVideoTap() {
-    const now = Date.now();
-    if (this.lastVideoTapAt && now - this.lastVideoTapAt < 280) {
-      this.lastVideoTapAt = 0;
-      this.togglePlay();
-      return;
-    }
-    this.lastVideoTapAt = now;
-    clearTimeout(this.lastVideoTapTimer);
-    this.lastVideoTapTimer = setTimeout(() => {
-      this.lastVideoTapAt = 0;
-    }, 320);
-  },
-
-  togglePlay() {
-    if (!this.videoContext) return;
-    if (this.data.playing) {
-      this.videoContext.pause();
-      return;
-    }
-    this.videoContext.play();
-  },
-
-  onSeekChanging(e) {
-    const currentTime = Number(e.detail.value) || 0;
-    this.setData({
-      isSeeking: true,
-      currentTime,
-      currentTimeText: formatTime(currentTime),
-    });
-  },
-
-  onSeekChange(e) {
-    const currentTime = Number(e.detail.value) || 0;
-    if (this.videoContext) {
-      this.videoContext.seek(currentTime);
-    }
-    this.setData({
-      isSeeking: false,
-      currentTime,
-      currentTimeText: formatTime(currentTime),
-    });
-  },
-
   onUnload() {
-    clearTimeout(this.lastVideoTapTimer);
     if (this.data.work && this.data.work.id) {
       wx.removeStorageSync(`work_preview_${this.data.work.id}`);
     }

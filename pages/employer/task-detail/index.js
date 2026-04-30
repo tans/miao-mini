@@ -403,20 +403,16 @@ Page({
     });
   },
 
-  openVideoPlayer(url, poster = '') {
+  openVideoPlayer(url) {
     if (!url) return;
-    const query = [`url=${encodeURIComponent(url)}`];
-    if (poster) {
-      query.push(`poster=${encodeURIComponent(poster)}`);
-    }
-    wx.navigateTo({ url: `/pages/video-player/index?${query.join('&')}` });
+    wx.navigateTo({ url: `/pages/video-player/index?url=${encodeURIComponent(url)}` });
   },
 
   previewMaterial(e) {
-    const { url, type, poster } = e.currentTarget.dataset;
+    const { url, type } = e.currentTarget.dataset;
     if (!url) return;
     if (type === 'video') {
-      this.openVideoPlayer(url, poster);
+      this.openVideoPlayer(url);
       return;
     }
     wx.previewImage({ current: url, urls: [url] });
@@ -433,9 +429,9 @@ Page({
   },
 
   previewClaimVideo(e) {
-    const { url, poster } = e.currentTarget.dataset;
+    const { url } = e.currentTarget.dataset;
     if (!url) return;
-    this.openVideoPlayer(url, poster);
+    this.openVideoPlayer(url);
   },
 
   copyVideoLink(e) {

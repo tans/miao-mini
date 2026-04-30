@@ -6,54 +6,22 @@
 
     <block wx:elif="{{videoUrl}}">
       <view class="player-shell">
-        <view class="video-stage">
-          <video
-            id="videoPlayer"
-            class="video-player"
-            src="{{videoUrl}}"
-            poster="{{poster}}"
-            autoplay
-            objectFit="cover"
-            controls="{{false}}"
-            show-loading="{{false}}"
-            show-center-play-btn="{{false}}"
-            show-play-btn="{{false}}"
-            show-fullscreen-btn="{{false}}"
-            show-mute-btn="{{false}}"
-            enable-play-gesture="{{false}}"
-            enable-progress-gesture="{{false}}"
-            bindtap="onVideoTap"
-            bindplay="onVideoPlay"
-            bindpause="onVideoPause"
-            bindended="onVideoEnded"
-            bindtimeupdate="onTimeUpdate"
-            bindloadedmetadata="onLoadedMetadata"
-            binderror="onVideoError"
-          />
-        </view>
-        <view class="control-bar">
-          <view class="control-btn" bindtap="togglePlay" aria-label="{{playing ? '暂停' : '播放'}}">
-            <view wx:if="{{playing}}" class="control-icon control-icon-pause">
-              <view class="pause-bar"></view>
-              <view class="pause-bar"></view>
-            </view>
-            <view wx:else class="control-icon control-icon-play"></view>
-          </view>
-          <slider
-            class="progress-slider"
-            min="0"
-            max="{{duration || 0}}"
-            value="{{currentTime}}"
-            step="0.1"
-            activeColor="#ffffff"
-            backgroundColor="rgba(255,255,255,0.25)"
-            block-color="#ffffff"
-            block-size="14"
-            bindchanging="onSeekChanging"
-            bindchange="onSeekChange"
-          />
-          <text class="time-text">{{currentTimeText}} / {{durationText}}</text>
-        </view>
+        <video
+          id="videoPlayer"
+          class="video-player"
+          src="{{videoUrl}}"
+          autoplay
+          objectFit="contain"
+          controls
+          show-center-play-btn="{{false}}"
+          show-fullscreen-btn="{{false}}"
+          show-mute-btn="{{false}}"
+          picture-in-picture-mode="{{[]}}"
+          enable-progress-gesture="{{false}}"
+          vslide-gesture="{{false}}"
+          page-gesture="{{false}}"
+          binderror="onVideoError"
+        />
       </view>
     </block>
 

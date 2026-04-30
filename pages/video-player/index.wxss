@@ -15,19 +15,7 @@
   width: 100%;
   height: 100vh;
   background: #000;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
-}
-
-.video-stage {
-  flex: 1;
-  min-height: 0;
-  background: #000;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .loading-wrap,
@@ -49,76 +37,5 @@
   max-height: 100%;
   background: #000;
   display: block;
-}
-
-.control-bar {
-  display: flex;
-  align-items: center;
-  gap: 18rpx;
-  padding: 18rpx 24rpx 24rpx;
-  background: #000;
-}
-
-.control-btn {
-  width: 60rpx;
-  height: 60rpx;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.control-icon {
-  display: block;
-}
-
-.control-icon-play {
-  width: 0;
-  height: 0;
-  border-top: 13rpx solid transparent;
-  border-bottom: 13rpx solid transparent;
-  border-left: 20rpx solid #fff;
-  margin-left: 4rpx;
-}
-
-.control-icon-pause {
-  display: flex;
-  align-items: center;
-  gap: 6rpx;
-}
-
-.pause-bar {
-  width: 6rpx;
-  height: 24rpx;
-  border-radius: 3rpx;
-  background: #fff;
-}
-
-.progress-slider {
-  flex: 1;
-  margin: 0;
-}
-
-.time-text {
-  color: rgba(255,255,255,0.8);
-  font-size: 22rpx;
-  white-space: nowrap;
-}
-
-.image-list {
-  padding: 20rpx;
-}
-
-.image-item {
-  margin-bottom: 20rpx;
-  background: #fff;
-  border-radius: 12rpx;
-  overflow: hidden;
-}
-
-.preview-image {
-  width: 100%;
-  display: block;
+  object-fit: contain;
 }
