@@ -276,8 +276,7 @@ module.exports = {
         </view>
         <view class="budget-row" wx:if="{{!privacyProtected}}">
           <view class="flex" style="">
-            <image src="../../../images/home/youhui.png" style="width: 125rpx;
-height: 32rpx;"/>
+            <image src="../../../images/home/youhui.png" style="width: 125rpx; height: 32rpx;"/>
           <text class="budget-label" style="font-size:24rpx;">服务费减免(5%)</text>
           </view>
           <text class="budget-discount-value">-¥{{privacyDiscount}}</text>
