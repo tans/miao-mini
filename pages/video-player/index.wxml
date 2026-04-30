@@ -17,6 +17,7 @@
         show-center-play-btn="{{false}}"
         show-fullscreen-btn="{{false}}"
         show-mute-btn="{{true}}"
+        picture-in-picture-mode="{{[]}}"
         enable-progress-gesture="{{true}}"
         vslide-gesture="{{false}}"
         page-gesture="{{false}}"

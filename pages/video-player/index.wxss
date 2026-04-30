@@ -23,10 +23,12 @@
 }
 
 .video-player {
-  width: 100%;
-  height: calc(100vh - 180rpx);
-  min-height: 900rpx;
+  width: 100vw;
+  height: 133.33vw;
+  max-height: calc(100vh - 140rpx);
+  min-height: 1000rpx;
   background: #000;
+  display: block;
 }
 
 .image-list {
