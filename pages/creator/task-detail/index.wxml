@@ -379,16 +379,15 @@
       <text>{{isMerchantTask ? '编辑审核' : (!hasSignedUp ? (task.isFull ? '已经满人' : '截稿倒计时：'+countdownText+'，立即报名') : canSubmit ? '上传稿件' : (task.claimActionText || '已报名，等待审核'))}}</text>
     </button>
   </view>
-
   <!-- 创作者须知弹框 -->
   <view class="creator-notice-mask" wx:if="{{showCreatorNoticeModal}}" bindtap="onCloseCreatorNotice">
     <view class="creator-notice-modal" catchtap="stopPropagation">
       <view class="creator-notice-body">
         <text class="creator-notice-title">创作者须知</text>
-        <text class="creator-notice-text">上传之前请检查以下内容：</text>
-        <text class="creator-notice-text">视频是否已去水印、是否含有违禁词、是否符合商家的视频投稿要求。</text>
-        <text class="creator-notice-text">请不要恶意上传与活动无关的注水稿件，此类稿件被商家举报后拿不到任何奖励。创作者被成功举报5次，将永久封号。</text>
-        <view class="creator-notice-text">您的稿件上传后，<text class="creator-notice-highlight">如被选中采用所属版权将属于商家</text>，您不可将视频发布到任意平台。</view>
+        <text class="creator-notice-text">● 上传之前请检查作品:是否含有违禁词、是否符合商家的视频规格要求。</text>
+        <text class="creator-notice-text">● 请勿恶意上传与活动无关的注水稿件，若被商家累计举报 <text style="color:#F58A1F;font-weight: bold;">5次</text>，将永久封号。</text>
+        <text class="creator-notice-text">● 稿件上传后，如被选中采用所属版权将属于商家，您不可将视频发布到任意平台。</text>
+        <view class="creator-notice-text">详情点击：<text style="color:#1979F7;">《创作者协议》</text></view>
       </view>
       <view class="creator-notice-footer">
         <view class="creator-notice-btn creator-notice-btn-cancel" bindtap="onCloseCreatorNotice">

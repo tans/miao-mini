@@ -105,7 +105,7 @@ Page({
 
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab;
-    const tabPositions = { all: '32rpx', income: '160rpx', expense: '288rpx' };
+    const tabPositions = { all: '32rpx', income: '136rpx', expense: '240rpx' };
     const filteredTransactions = this.getFilteredTransactions(tab, this.data.transactions);
     this.setData({
       currentTab: tab,
