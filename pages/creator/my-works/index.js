@@ -10,6 +10,14 @@ const FILTERS = [
   { key: 'reported', label: '被举报' }
 ];
 
+function getVideoMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'video') || null;
+}
+
+function getImageMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'image') || null;
+}
+
 function pick(...values) {
   for (const value of values) {
     if (value !== undefined && value !== null && value !== '') return value;
@@ -77,12 +85,27 @@ Page({
     const videoMaterials = materials.filter(m => m.file_type === 'video');
 
     const firstMaterial = materials[0] || {};
-    const coverType = firstMaterial.file_type || 'image';
+    const firstVideoMaterial = getVideoMaterial(materials);
+    const firstImageMaterial = getImageMaterial(materials);
+    const coverType = firstVideoMaterial ? 'video' : (firstImageMaterial ? 'image' : (firstMaterial.file_type || 'image'));
     const displayCover = coverType === 'video'
-      ? (firstMaterial.thumbnail_path || firstMaterial.file_path || '')
-      : (firstMaterial.thumbnail_path || firstMaterial.file_path || '');
-    const previewVideoSrc = firstMaterial.file_path || '';
-    const processStatus = firstMaterial.process_status || (coverType === 'video' && !previewVideoSrc ? 'processing' : '');
+      ? Api.getDisplayUrl(
+        (firstVideoMaterial && (firstVideoMaterial.thumbnail_path || firstVideoMaterial.poster_url || firstVideoMaterial.file_path)) || ''
+      )
+      : Api.getDisplayUrl(
+        (firstImageMaterial && (firstImageMaterial.thumbnail_path || firstImageMaterial.file_path)) ||
+        firstMaterial.thumbnail_path ||
+        firstMaterial.file_path ||
+        ''
+      );
+    const previewVideoSrc = Api.getDisplayUrl(
+      (firstVideoMaterial && (
+        firstVideoMaterial.previewUrl ||
+        firstVideoMaterial.file_path ||
+        firstVideoMaterial.processed_file_path
+      )) || ''
+    );
+    const processStatus = (firstVideoMaterial && firstVideoMaterial.process_status) || (coverType === 'video' && !previewVideoSrc ? 'processing' : '');
     const processStatusText = coverType !== 'video'
       ? ''
       : processStatus === 'failed'
@@ -133,18 +156,18 @@ Page({
       statusText: this.getStatusText(status, reviewResult),
       statusClass: this.getStatusClass(status, reviewResult),
       filterKey: this.getFilterKey(status, reviewResult),
-      previewImages: imageMaterials.map(m => m.file_path),
+      previewImages: imageMaterials.map(m => Api.getDisplayUrl(m.file_path)).filter(Boolean),
       previewVideos: videoMaterials.map(m => ({
-        url: m.file_path,
-        poster: m.thumbnail_path || ''
-      })),
+        url: Api.getDisplayUrl(m.previewUrl || m.file_path || m.processed_file_path || ''),
+        poster: Api.getDisplayUrl(m.thumbnail_path || '')
+      })).filter(item => item.url),
       submittedAt: formatDateTime(claim.submitted_at || claim.updated_at || ''),
       unit_price: Number(claim.unit_price || 0) || 0,
       award_price: Number(claim.award_price || 0) || 0,
       displayCover,
       isVideo: coverType === 'video',
       previewVideoSrc,
-      thumbnail: firstMaterial.thumbnail_path || '',
+      thumbnail: Api.getDisplayUrl((firstVideoMaterial && firstVideoMaterial.thumbnail_path) || firstMaterial.thumbnail_path || ''),
       processStatus,
       processStatusText,
       incomeLabel,

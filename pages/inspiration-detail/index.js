@@ -1,5 +1,9 @@
 const Api = require('../../utils/api.js');
 
+function getVideoMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'video') || null;
+}
+
 Page({
   data: {
     inspiration: null,
@@ -41,8 +45,6 @@ Page({
       clearTimeout(timeoutId);
 
       const inspiration = res.data;
-      const materials = Array.isArray(inspiration && inspiration.materials) ? inspiration.materials : [];
-      const pendingVideo = materials.find(item => item.file_type === 'video' && !item.file_path);
 
       if (!inspiration) {
         wx.showToast({ title: '灵感不存在', icon: 'none' });
@@ -52,8 +54,31 @@ Page({
         return;
       }
 
+      const materials = Array.isArray(inspiration.materials) ? inspiration.materials : [];
+      const videoMaterial = getVideoMaterial(materials);
+      const pendingVideo = videoMaterial && !videoMaterial.file_path ? videoMaterial : null;
+      const normalizedInspiration = {
+        ...inspiration,
+        previewVideoSrc: Api.getDisplayUrl(
+          inspiration.previewVideoSrc ||
+          inspiration.video_url ||
+          (videoMaterial && (videoMaterial.previewUrl || videoMaterial.file_path || videoMaterial.processed_file_path)) ||
+          ''
+        ),
+        displayCover: Api.getDisplayUrl(
+          inspiration.displayCover ||
+          inspiration.thumbnail_path ||
+          inspiration.poster_url ||
+          (videoMaterial && (videoMaterial.thumbnail_path || videoMaterial.poster_url || videoMaterial.file_path)) ||
+          inspiration.cover ||
+          ''
+        ),
+        cover: Api.getDisplayUrl(inspiration.cover || ''),
+        authorAvatar: Api.getDisplayUrl(inspiration.authorAvatar || inspiration.creator_avatar || '') || '/assets/icons/avatar-default.jpg'
+      };
+
       this.setData({
-        inspiration,
+        inspiration: normalizedInspiration,
         processStatusText: pendingVideo ? (pendingVideo.process_status === 'failed' ? '视频处理失败' : '视频压缩加水印处理中') : '',
         editVideoAspect: inspiration.videoAspect || '9:16 竖屏',
         editVideoResolution: inspiration.videoResolution || '1080P',

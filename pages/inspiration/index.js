@@ -1,6 +1,14 @@
 const Api = require('../../utils/api.js');
 const app = getApp();
 
+function getVideoMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'video') || null;
+}
+
+function getImageMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'image') || null;
+}
+
 Page({
   data: {
     currentCategory: 'all',
@@ -31,7 +39,7 @@ Page({
         category: this.data.currentCategory,
         sort: this.data.currentSort
       });
-      const list = res.data || [];
+      const list = (res.data || []).map((item) => this.normalizeItem(item));
       this.processColumns(list);
     } catch (err) {
       // 使用模拟数据
@@ -134,6 +142,40 @@ Page({
 
   goBack() {
     wx.navigateBack({ delta: 1 });
+  },
+
+  normalizeItem(item = {}) {
+    const materials = Array.isArray(item.materials) ? item.materials : [];
+    const videoMaterial = getVideoMaterial(materials);
+    const imageMaterial = getImageMaterial(materials);
+    const isVideo = !!(item.isVideo || item.cover_type === 'video' || videoMaterial);
+
+    return {
+      ...item,
+      isVideo,
+      previewVideoSrc: isVideo
+        ? Api.getDisplayUrl(
+          item.previewVideoSrc ||
+          item.video_url ||
+          (videoMaterial && (videoMaterial.previewUrl || videoMaterial.file_path || videoMaterial.processed_file_path)) ||
+          ''
+        )
+        : '',
+      displayCover: Api.getDisplayUrl(
+        item.displayCover ||
+        item.thumbnail_path ||
+        item.poster_url ||
+        item.cover_url ||
+        item.image ||
+        (isVideo
+          ? (videoMaterial && (videoMaterial.thumbnail_path || videoMaterial.poster_url || videoMaterial.file_path))
+          : (imageMaterial && (imageMaterial.thumbnail_path || imageMaterial.file_path))) ||
+        item.cover ||
+        ''
+      ),
+      cover: Api.getDisplayUrl(item.cover || ''),
+      authorAvatar: Api.getDisplayUrl(item.authorAvatar || item.creator_avatar || '') || '/assets/icons/avatar-default.jpg'
+    };
   },
 
   getMockData() {

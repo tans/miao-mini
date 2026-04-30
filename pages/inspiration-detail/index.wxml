@@ -1,11 +1,11 @@
 <view class="page">
   <!-- 视频播放区域 -->
   <view class="video-section">
-    <view class="video-container" wx:if="{{inspiration.video_url || inspiration.previewVideoSrc}}" bindtap="playVideo">
+    <view class="video-container" wx:if="{{inspiration.previewVideoSrc}}" bindtap="playVideo">
       <video
         id="inspirationVideo"
         class="video-player"
-        src="{{inspiration.video_url || inspiration.previewVideoSrc}}"
+        src="{{inspiration.previewVideoSrc}}"
         poster="{{inspiration.displayCover || inspiration.cover}}"
         controls
         show-center-play-btn

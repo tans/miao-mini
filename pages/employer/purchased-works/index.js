@@ -4,6 +4,14 @@ const app = getApp();
 
 const COVER_THEME_COUNT = 6;
 
+function getVideoMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'video') || null;
+}
+
+function getImageMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'image') || null;
+}
+
 function createFallbackCover(seedText, description) {
   const text = (description || seedText || '').replace(/\s+/g, ' ').trim();
   let hash = 0;
@@ -193,27 +201,42 @@ Page({
   normalizeWork(item = {}) {
     const materials = Array.isArray(item.materials) ? item.materials : [];
     const firstMaterial = materials[0] || null;
-    const coverType = item.cover_type || (firstMaterial && firstMaterial.file_type) || 'image';
+    const videoMaterial = getVideoMaterial(materials);
+    const imageMaterial = getImageMaterial(materials);
+    const coverType = item.cover_type || (videoMaterial ? 'video' : '') || (imageMaterial ? 'image' : 'image');
     const previewVideoSrc =
-      item.cover_url ||
-      item.image ||
-      (firstMaterial && firstMaterial.file_path) ||
-      '';
+      coverType === 'video'
+        ? Api.getDisplayUrl(
+          item.video_url ||
+          item.previewVideoSrc ||
+          (videoMaterial && (videoMaterial.previewUrl || videoMaterial.file_path || videoMaterial.processed_file_path)) ||
+          ''
+        )
+        : Api.getDisplayUrl(
+          item.cover_url ||
+          item.image ||
+          (imageMaterial && imageMaterial.file_path) ||
+          (firstMaterial && firstMaterial.file_path) ||
+          ''
+        );
 
     let displayCover = '';
     if (coverType === 'video') {
-      displayCover =
+      displayCover = Api.getDisplayUrl(
         item.thumbnail_path ||
         item.poster_url ||
-        (firstMaterial && firstMaterial.thumbnail_path) ||
-        '';
+        (videoMaterial && (videoMaterial.thumbnail_path || videoMaterial.poster_url)) ||
+        ''
+      );
     } else {
-      displayCover =
+      displayCover = Api.getDisplayUrl(
         item.cover_url ||
         item.image ||
         item.thumbnail_path ||
+        (imageMaterial && (imageMaterial.thumbnail_path || imageMaterial.file_path)) ||
         (firstMaterial && (firstMaterial.thumbnail_path || firstMaterial.file_path)) ||
-        '';
+        ''
+      );
     }
 
     const fallbackCover = createFallbackCover(

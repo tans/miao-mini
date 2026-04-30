@@ -1,5 +1,13 @@
 const Api = require('../../utils/api.js');
 
+function getVideoMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'video') || null;
+}
+
+function getImageMaterial(materials = []) {
+  return materials.find((item) => item.file_type === 'image') || null;
+}
+
 Page({
   data: {
     work: null,
@@ -77,10 +85,12 @@ Page({
   setWorkData(work) {
     this.workId = work && work.id ? work.id : this.workId;
     const materials = Array.isArray(work.materials) ? work.materials : [];
+    const firstVideoMaterial = getVideoMaterial(materials);
+    const firstImageMaterial = getImageMaterial(materials);
     const coverType = work.cover_type ||
-      (materials[0] && materials[0].file_type) ||
+      (firstVideoMaterial ? 'video' : '') ||
+      (firstImageMaterial ? 'image' : '') ||
       (work.isVideo ? 'video' : 'image');
-    const firstVideoMaterial = materials.find((m) => m.file_type === 'video') || null;
     const processStatus = (firstVideoMaterial && firstVideoMaterial.process_status) || '';
 
     let images = [];
@@ -89,11 +99,16 @@ Page({
     let processStatusText = '';
 
     if (coverType === 'video') {
-      videoUrl = work.previewVideoSrc ||
+      videoUrl = Api.getDisplayUrl(
+        work.previewVideoSrc ||
         work.video_url ||
-        (materials.find((m) => m.file_type === 'video') && materials.find((m) => m.file_type === 'video').file_path) ||
-        work.cover_url ||
-        '';
+        (firstVideoMaterial && (
+          firstVideoMaterial.previewUrl ||
+          firstVideoMaterial.file_path ||
+          firstVideoMaterial.processed_file_path
+        )) ||
+        ''
+      );
       showVideo = !!videoUrl;
       if (!videoUrl) {
         processStatusText = processStatus === 'failed'
@@ -103,12 +118,12 @@ Page({
     } else {
       materials.forEach((m) => {
         if (m.file_type === 'image' && m.file_path) {
-          images.push(m.file_path);
+          images.push(Api.getDisplayUrl(m.file_path));
         }
       });
       if (images.length === 0) {
-        if (work.cover_url) images.push(work.cover_url);
-        if (work.image) images.push(work.image);
+        if (work.cover_url) images.push(Api.getDisplayUrl(work.cover_url));
+        if (work.image) images.push(Api.getDisplayUrl(work.image));
       }
     }
 
