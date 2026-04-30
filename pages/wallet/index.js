@@ -15,6 +15,16 @@ Page({
     currentTab: 'all',
     tabIndicatorLeft: '32rpx',
     loading: false,
+    
+    // 弹窗状态
+    showRechargeModal: false,
+    showRechargeSuccessModal: false,
+    showWithdrawModal: false,
+    showWithdrawSuccessModal: false,
+    
+    // 输入金额
+    rechargeAmount: '',
+    withdrawAmount: '',
   },
 
   getFilteredTransactions(tab, transactions) {
@@ -105,10 +115,58 @@ Page({
   },
 
   goRecharge() {
-    wx.navigateTo({ url: '/pages/employer/recharge/index' });
+    this.setData({ showRechargeModal: true, rechargeAmount: '' });
+  },
+
+  closeRechargeModal() {
+    this.setData({ showRechargeModal: false, rechargeAmount: '' });
+  },
+
+  onRechargeInput(e) {
+    this.setData({ rechargeAmount: e.detail.value });
+  },
+
+  submitRecharge() {
+    const amount = this.data.rechargeAmount;
+    if (!amount || parseFloat(amount) <= 0) {
+      wx.showToast({ title: '请输入有效金额', icon: 'none' });
+      return;
+    }
+    this.setData({ 
+      showRechargeModal: false, 
+      showRechargeSuccessModal: true 
+    });
+  },
+
+  closeRechargeSuccessModal() {
+    this.setData({ showRechargeSuccessModal: false, rechargeAmount: '' });
   },
 
   goWithdraw() {
-    wx.navigateTo({ url: '/pages/wallet/withdraw/index' });
+    this.setData({ showWithdrawModal: true, withdrawAmount: '' });
+  },
+
+  closeWithdrawModal() {
+    this.setData({ showWithdrawModal: false, withdrawAmount: '' });
+  },
+
+  onWithdrawInput(e) {
+    this.setData({ withdrawAmount: e.detail.value });
+  },
+
+  submitWithdraw() {
+    const amount = this.data.withdrawAmount;
+    if (!amount || parseFloat(amount) <= 0) {
+      wx.showToast({ title: '请输入有效金额', icon: 'none' });
+      return;
+    }
+    this.setData({ 
+      showWithdrawModal: false, 
+      showWithdrawSuccessModal: true 
+    });
+  },
+
+  closeWithdrawSuccessModal() {
+    this.setData({ showWithdrawSuccessModal: false, withdrawAmount: '' });
   }
 });

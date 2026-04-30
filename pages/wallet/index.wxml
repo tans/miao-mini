@@ -64,4 +64,60 @@
       </view>
     </view>
   </view>
+
+  <!-- 充值弹窗 -->
+  <view wx:if="{{showRechargeModal}}" class="modal-mask" bindtap="closeRechargeModal"></view>
+  <view wx:if="{{showRechargeModal}}" class="modal-container">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">充值</text>
+        <view class="modal-close" bindtap="closeRechargeModal">×</view>
+      </view>
+      <view class="modal-body">
+        <input class="modal-input" type="number" placeholder="请输入金额" value="{{rechargeAmount}}" bindinput="onRechargeInput" />
+        <text class="modal-tip">充值手续费为充值金额的<text style="color:#EF8802">10%</text>，实际到账金额将自动扣除手续费。</text>
+      </view>
+      <view class="modal-submit" bindtap="submitRecharge">确认充值</view>
+    </view>
+  </view>
+
+  <!-- 充值成功弹窗 -->
+  <view wx:if="{{showRechargeSuccessModal}}" class="modal-mask" bindtap="closeRechargeSuccessModal"></view>
+  <view wx:if="{{showRechargeSuccessModal}}" class="modal-container">
+    <view class="modal-content success-content">
+      <text class="success-title">充值成功</text>
+      <image class="success-icon" src="./images/success.png" />
+      <!-- <image class="success-icon" src="/images/images/error.png" /> -->
+      <text class="success-desc">充值已到账，您的当前余额是：<text class="success-amount">{{balanceDisplay}}</text></text>
+      <view class="success-btn" bindtap="closeRechargeSuccessModal">我知道了</view>
+    </view>
+  </view>
+
+  <!-- 提现弹窗 -->
+  <view wx:if="{{showWithdrawModal}}" class="modal-mask" bindtap="closeWithdrawModal"></view>
+  <view wx:if="{{showWithdrawModal}}" class="modal-container">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">提现</text>
+        <view class="modal-close" bindtap="closeWithdrawModal">×</view>
+      </view>
+      <view class="modal-body">
+        <input class="modal-input" type="number" placeholder="请输入金额" value="{{withdrawAmount}}" bindinput="onWithdrawInput" />
+        <text class="modal-tip">提现手续费为提现金额的<text style="color:#EF8802">10%</text>，实际到账金额将自动扣除手续费。</text>
+      </view>
+      <view class="modal-submit" bindtap="submitWithdraw">确认提现</view>
+    </view>
+  </view>
+
+  <!-- 提现成功弹窗 -->
+  <view wx:if="{{showWithdrawSuccessModal}}" class="modal-mask" bindtap="closeWithdrawSuccessModal"></view>
+  <view wx:if="{{showWithdrawSuccessModal}}" class="modal-container">
+    <view class="modal-content success-content">
+      <text class="success-title">提现成功</text>
+      <image class="success-icon" src="./images/success.png" />
+      <!-- <image class="success-icon" src="/images/images/error.png" /> -->
+      <text class="success-desc">提现后，平台会在48小时内进行审核，自动发放至您的<text style="color:#EF8802">微信钱包</text>。</text>
+      <view class="success-btn" bindtap="closeWithdrawSuccessModal">我知道了</view>
+    </view>
+  </view>
 </view>
