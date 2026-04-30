@@ -62,7 +62,7 @@
         <text class="submit-time" wx:if="{{item.processStatusText}}">{{item.processStatusText}}</text>
 
         <!-- 收入信息 -->
-        <view class="income-row" wx:if="{{item.statusClass !== 'reported'}}">
+        <view class="income-row" wx:if="{{item.statusClass !== 'reported' && item.statusClass !== 'rejected' }}">
           <text class="income-label">{{item.incomeLabel}}</text>
           <text class="income-value">{{item.incomeText}}</text>
         </view>
