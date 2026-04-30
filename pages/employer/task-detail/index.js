@@ -74,7 +74,7 @@ function normalizeTask(task = {}) {
     description: pick(
       task.description,
       task.desc,
-      '突出空间通透感与生活方式场景，口语化表达，避免过度摆拍。适合地产、家居类创作者参与。'
+      '创作者自由发挥即可'
     ),
     videoAspect: pick(task.video_aspect, task.videoAspect, '9:16 竖屏'),
     videoResolution: pick(task.video_resolution, task.videoResolution, '1080P'),
