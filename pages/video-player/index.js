@@ -23,6 +23,7 @@ Page({
     currentTime: 0,
     durationText: '0:00',
     currentTimeText: '0:00',
+    isSeeking: false,
   },
 
   onLoad(options) {
@@ -127,6 +128,8 @@ Page({
 
   onLoadedMetadata(e) {
     const duration = Number(e.detail.duration) || 0;
+    this.progressBaseTime = 0;
+    this.progressBaseAt = Date.now();
     this.setData({
       duration,
       durationText: formatTime(duration),
@@ -136,6 +139,9 @@ Page({
   onTimeUpdate(e) {
     const currentTime = Number(e.detail.currentTime) || 0;
     const duration = Number(e.detail.duration) || this.data.duration || 0;
+    this.progressBaseTime = currentTime;
+    this.progressBaseAt = Date.now();
+    if (this.data.isSeeking) return;
     this.setData({
       currentTime,
       duration,
@@ -146,18 +152,37 @@ Page({
 
   onVideoPlay() {
     this.setData({ playing: true });
+    this.progressBaseTime = this.data.currentTime || 0;
+    this.progressBaseAt = Date.now();
+    this.startProgressTicker();
   },
 
   onVideoPause() {
     this.setData({ playing: false });
+    this.stopProgressTicker();
   },
 
   onVideoEnded() {
+    this.stopProgressTicker();
     this.setData({
       playing: false,
       currentTime: 0,
       currentTimeText: '0:00',
     });
+  },
+
+  onVideoTap() {
+    const now = Date.now();
+    if (this.lastVideoTapAt && now - this.lastVideoTapAt < 280) {
+      this.lastVideoTapAt = 0;
+      this.togglePlay();
+      return;
+    }
+    this.lastVideoTapAt = now;
+    clearTimeout(this.lastVideoTapTimer);
+    this.lastVideoTapTimer = setTimeout(() => {
+      this.lastVideoTapAt = 0;
+    }, 320);
   },
 
   togglePlay() {
@@ -172,6 +197,7 @@ Page({
   onSeekChanging(e) {
     const currentTime = Number(e.detail.value) || 0;
     this.setData({
+      isSeeking: true,
       currentTime,
       currentTimeText: formatTime(currentTime),
     });
@@ -182,13 +208,40 @@ Page({
     if (this.videoContext) {
       this.videoContext.seek(currentTime);
     }
+    this.progressBaseTime = currentTime;
+    this.progressBaseAt = Date.now();
     this.setData({
+      isSeeking: false,
       currentTime,
       currentTimeText: formatTime(currentTime),
     });
   },
 
+  startProgressTicker() {
+    if (this.progressTimer) return;
+    this.progressTimer = setInterval(() => {
+      if (!this.data.playing || this.data.isSeeking) return;
+      const duration = this.data.duration || 0;
+      const baseTime = Number(this.progressBaseTime || 0);
+      const baseAt = Number(this.progressBaseAt || Date.now());
+      const nextTime = Math.max(0, Math.min(duration || Infinity, baseTime + (Date.now() - baseAt) / 1000));
+      this.setData({
+        currentTime: nextTime,
+        currentTimeText: formatTime(nextTime),
+      });
+    }, 100);
+  },
+
+  stopProgressTicker() {
+    if (this.progressTimer) {
+      clearInterval(this.progressTimer);
+      this.progressTimer = null;
+    }
+  },
+
   onUnload() {
+    this.stopProgressTicker();
+    clearTimeout(this.lastVideoTapTimer);
     if (this.data.work && this.data.work.id) {
       wx.removeStorageSync(`work_preview_${this.data.work.id}`);
     }
