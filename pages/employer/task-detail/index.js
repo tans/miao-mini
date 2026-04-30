@@ -35,6 +35,41 @@ function normalizeBooleanFlag(value, defaultValue = false) {
   return !!value;
 }
 
+function normalizeMediaMaterial(material = {}) {
+  const fileType = String(pick(material.file_type, material.fileType, '')).toLowerCase();
+  const filePath = pick(material.file_path, material.filePath, '');
+  const processedFilePath = pick(material.processed_file_path, material.processedFilePath, '');
+  const sourceFilePath = pick(material.source_file_path, material.sourceFilePath, '');
+  const thumbnailPath = pick(material.thumbnail_path, material.thumbnailPath, '');
+  const previewUrl = Api.getDisplayUrl(
+    pick(
+      material.previewUrl,
+      filePath,
+      processedFilePath,
+      sourceFilePath,
+      fileType === 'image' ? thumbnailPath : '',
+      ''
+    )
+  );
+
+  return {
+    ...material,
+    fileType,
+    file_type: fileType,
+    filePath,
+    file_path: filePath,
+    processedFilePath,
+    processed_file_path: processedFilePath,
+    sourceFilePath,
+    source_file_path: sourceFilePath,
+    thumbnailPath,
+    thumbnail_path: thumbnailPath,
+    previewUrl,
+    isVideo: fileType === 'video',
+    isImage: fileType === 'image',
+  };
+}
+
 function hasVisibleSubmission(claim = {}) {
   const status = Number(claim.status);
   const submitAt = pick(claim.submit_at, claim.submitAt, '');
@@ -58,7 +93,7 @@ function normalizeTask(task = {}) {
   const endAt = pick(task.end_at, task.endAt, '');
   const industryTags = toList(pick(task.industries, task.industry));
   const styleTags = toList(pick(task.styles, task.style));
-  const materials = Array.isArray(task.materials) ? task.materials : [];
+  const materials = Array.isArray(task.materials) ? task.materials.map(normalizeMediaMaterial) : [];
   const isPublic = task.public == null ? true : !!task.public;
 
   return {
@@ -142,20 +177,21 @@ function normalizeClaim(claim = {}, task = {}) {
   const normalizedStatus = status === 1 && reviewResult === 0 && hasVisibleSubmission(claim)
     ? 2
     : status;
-  const materials = Array.isArray(claim.materials) ? claim.materials : [];
-  const imageMaterials = materials.filter((item) => item.file_type === 'image' && item.file_path);
-  const videoMaterials = materials.filter((item) => item.file_type === 'video' && item.file_path);
-  const pendingVideoMaterials = materials.filter((item) => item.file_type === 'video' && !item.file_path);
-  const originalVideoUrls = materials
+  const rawMaterials = Array.isArray(claim.materials) ? claim.materials : [];
+  const materials = rawMaterials.map(normalizeMediaMaterial);
+  const imageMaterials = materials.filter((item) => item.isImage && item.previewUrl);
+  const videoMaterials = materials.filter((item) => item.isVideo && item.previewUrl);
+  const pendingVideoMaterials = rawMaterials.filter((item) => item.file_type === 'video' && !item.file_path);
+  const originalVideoUrls = rawMaterials
     .filter((item) => item.file_type === 'video')
-    .map((item) => pick(item.source_file_path, item.sourceFilePath, ''))
+    .map((item) => Api.getDisplayUrl(pick(item.source_file_path, item.sourceFilePath, item.file_path, '')))
     .filter(Boolean);
-  const previewImages = imageMaterials.map((item) => item.file_path);
+  const previewImages = imageMaterials.map((item) => item.previewUrl);
   const contentText = extractContentText(claim.content);
   const videoLink = extractVideoLink(claim.content);
   const previewVideos = videoMaterials.map((item) => ({
-    url: item.file_path,
-    poster: item.thumbnail_path || previewImages[0] || '',
+    url: item.previewUrl,
+    poster: item.thumbnailPath || previewImages[0] || '',
   }));
 
   return {
@@ -179,6 +215,7 @@ function normalizeClaim(claim = {}, task = {}) {
       : '',
     previewImages,
     previewVideos,
+    previewCount: previewImages.length + previewVideos.length,
     originalVideoUrls,
     canDownloadOriginalVideo: normalizedStatus === 3 && originalVideoUrls.length > 0,
     hasMaterials: previewImages.length > 0 || previewVideos.length > 0,
@@ -403,18 +440,10 @@ Page({
     });
   },
 
-  openVideoPlayer(url) {
-    if (!url) return;
-    wx.navigateTo({ url: `/pages/video-player/index?url=${encodeURIComponent(url)}` });
-  },
-
   previewMaterial(e) {
     const { url, type } = e.currentTarget.dataset;
     if (!url) return;
-    if (type === 'video') {
-      this.openVideoPlayer(url);
-      return;
-    }
+    if (type === 'video') return;
     wx.previewImage({ current: url, urls: [url] });
   },
 
@@ -426,12 +455,6 @@ Page({
       current: current || claim.previewImages[0],
       urls: claim.previewImages,
     });
-  },
-
-  previewClaimVideo(e) {
-    const { url } = e.currentTarget.dataset;
-    if (!url) return;
-    this.openVideoPlayer(url);
   },
 
   copyVideoLink(e) {
@@ -583,10 +606,10 @@ Page({
     }
 
     const files = this.data.materials
-      .filter((item) => item.file_path)
+      .filter((item) => item.previewUrl || item.file_path)
       .map((item) => ({
         type: item.file_type,
-        url: item.file_path,
+        url: item.previewUrl || item.file_path,
       }));
 
     await this.downloadFiles(files);

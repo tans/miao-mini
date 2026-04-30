@@ -95,7 +95,7 @@
             <text class="content-text">{{claim.processStatusText}}</text>
           </view>
 
-          <view class="media-preview" wx:if="{{claim.hasMaterials}}">
+          <view class="media-preview {{claim.previewCount === 1 ? 'media-preview-single' : ''}}" wx:if="{{claim.hasMaterials}}">
             <image
               wx:for="{{claim.previewImages}}"
               wx:for-item="img"
@@ -112,11 +112,21 @@
               wx:for-item="vid"
               wx:key="url"
               class="preview-thumb preview-thumb-video"
-              bindtap="previewClaimVideo"
-              data-url="{{vid.url}}"
             >
-              <image class="preview-thumb-image" src="{{vid.poster || vid.url}}" mode="aspectFill" />
-              <view class="preview-play-badge"></view>
+              <video
+                class="preview-thumb-video-player"
+                src="{{vid.url}}"
+                poster="{{vid.poster}}"
+                controls
+                objectFit="contain"
+                show-center-play-btn="{{false}}"
+                show-fullscreen-btn="{{false}}"
+                show-mute-btn="{{false}}"
+                picture-in-picture-mode="{{[]}}"
+                enable-progress-gesture="{{false}}"
+                vslide-gesture="{{false}}"
+                page-gesture="{{false}}"
+              />
             </view>
           </view>
           <view class="claim-content claim-content-reported" wx:if="{{claim.statusClass == 'reported'}}">
@@ -273,16 +283,31 @@
             class="material-item"
             wx:for="{{materials}}"
             wx:key="file_path"
-            bindtap="previewMaterial"
-            data-url="{{item.file_path}}"
-            data-type="{{item.file_type}}"
           >
-            <image
-              class="material-thumb"
-              src="{{item.file_type === 'video' ? (item.thumbnail_path || item.file_path) : item.file_path}}"
-              mode="aspectFill"
+            <video
+              wx:if="{{item.isVideo && item.previewUrl}}"
+              class="material-thumb material-video-player"
+              src="{{item.previewUrl}}"
+              poster="{{item.thumbnailPath || item.previewUrl}}"
+              controls
+              objectFit="contain"
+              show-center-play-btn="{{false}}"
+              show-fullscreen-btn="{{false}}"
+              show-mute-btn="{{false}}"
+              picture-in-picture-mode="{{[]}}"
+              enable-progress-gesture="{{false}}"
+              vslide-gesture="{{false}}"
+              page-gesture="{{false}}"
             />
-            <view class="material-video-badge" wx:if="{{item.file_type === 'video'}}"></view>
+            <image
+              wx:elif="{{item.previewUrl}}"
+              class="material-thumb"
+              src="{{item.previewUrl}}"
+              mode="aspectFill"
+              bindtap="previewMaterial"
+              data-url="{{item.previewUrl}}"
+              data-type="{{item.fileType}}"
+            />
           </view>
         </view>
         <view class="empty-tip" wx:else>暂无商家素材</view>
