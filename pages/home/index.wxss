@@ -284,7 +284,7 @@
 }
 
 .task-price-unit {
-  font-size: 32rpx;
+  font-size: 24rpx;
   font-weight: 500;
   color: #ef4444;
   margin-left: 4rpx;
