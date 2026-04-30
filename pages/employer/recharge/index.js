@@ -27,6 +27,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    this.loadWallet().finally(() => wx.stopPullDownRefresh());
+  },
+
   async loadWallet() {
     try {
       const res = await Api.getWallet();

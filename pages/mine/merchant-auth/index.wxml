@@ -3,7 +3,7 @@
     <view class="status-card">
       <view class="status-text-wrap">
         <text class="status-title">商家认证</text>
-        <text class="status-desc">认证后可提升任务发布额度，享受更多平台权益与更高赏金托管上限。</text>
+        <text class="status-desc">认证后可展示企业认证标志与认证状态，提升账号可信度。</text>
       </view>
       <view class="status-visual">
         <view class="status-shield">
@@ -18,41 +18,45 @@
     <view class="result-badge result-badge-{{status}}">{{statusIconText}}</view>
     <text class="result-title">{{statusTitle}}</text>
     <text class="result-desc">{{statusDesc}}</text>
+    <view class="submit-section" wx:if="{{status !== 'certified'}}">
+      <view class="submit-btn" wx:if="{{!isEditing}}" bindtap="enterEditMode">修改认证资料</view>
+      <view class="submit-btn is-secondary" wx:if="{{isEditing}}" bindtap="cancelEditMode">取消修改</view>
+    </view>
   </view>
 
   <view class="form-section">
     <view class="form-card">
-      <view class="upload-area {{licenseUrl ? 'is-preview' : ''}} {{status !== 'uncertified' ? 'is-readonly' : ''}}" bindtap="onTapLicenseArea">
+      <view class="upload-area {{licenseUrl ? 'is-preview' : ''}} {{status !== 'uncertified' && !isEditing ? 'is-readonly' : ''}}" bindtap="onTapLicenseArea">
         <image class="upload-icon" src="/pages/employer/create-task/images/icon-upload-plus.png" wx:if="{{!licenseUrl}}" />
         <image class="upload-preview" src="{{licensePreviewUrl || licenseUrl}}" wx:else />
         <text class="upload-title" wx:if="{{!licenseUrl}}">上传营业执照</text>
         <text class="upload-text" wx:if="{{!licenseUrl}}">请上传清晰的企业营业执照或个体工商户执照照片，系统会自动识别企业名称和统一社会信用代码</text>
-        <text class="upload-preview-tip" wx:if="{{licenseUrl}}">{{status === 'uncertified' ? '点击查看营业执照' : '营业执照已上传'}}</text>
+        <text class="upload-preview-tip" wx:if="{{licenseUrl}}">{{status === 'uncertified' || isEditing ? '点击查看或重新上传营业执照' : '营业执照已上传，点击查看'}}</text>
       </view>
 
       <view class="form-item">
         <text class="form-label">企业名称</text>
-        <input class="form-input" value="{{companyName}}" bindinput="onCompanyNameInput" placeholder="请输入企业名称" disabled="{{status !== 'uncertified'}}" />
+        <input class="form-input" value="{{companyName}}" bindinput="onCompanyNameInput" placeholder="请输入企业名称" disabled="{{status !== 'uncertified' && !isEditing}}" />
       </view>
 
       <view class="form-item">
         <text class="form-label label-wide">统一社会信用代码</text>
-        <input class="form-input" value="{{creditCode}}" bindinput="onCreditCodeInput" maxlength="18" placeholder="请输入统一社会信用代码" disabled="{{status !== 'uncertified'}}" />
+        <input class="form-input" value="{{creditCode}}" bindinput="onCreditCodeInput" maxlength="18" placeholder="请输入统一社会信用代码" disabled="{{status !== 'uncertified' && !isEditing}}" />
       </view>
       
       <view class="form-item">
         <text class="form-label">联系人</text>
-        <input class="form-input" value="{{contactName}}" bindinput="onContactNameInput" placeholder="请输入联系人姓名" disabled="{{status !== 'uncertified'}}" />
+        <input class="form-input" value="{{contactName}}" bindinput="onContactNameInput" placeholder="请输入联系人姓名" disabled="{{status !== 'uncertified' && !isEditing}}" />
       </view>
       
       <view class="form-item">
         <text class="form-label">联系电话</text>
-        <input class="form-input" type="number" value="{{contactPhone}}" bindinput="onContactPhoneInput" placeholder="请输入联系电话" disabled="{{status !== 'uncertified'}}" />
+        <input class="form-input" type="number" value="{{contactPhone}}" bindinput="onContactPhoneInput" placeholder="请输入联系电话" disabled="{{status !== 'uncertified' && !isEditing}}" />
       </view>
     </view>
 
-    <view class="submit-section">
-      <view class="submit-btn {{status !== 'uncertified' ? 'is-disabled' : ''}}" bindtap="submitAuth">{{submitText}}</view>
+    <view class="submit-section" wx:if="{{status === 'uncertified' || isEditing}}">
+      <view class="submit-btn" bindtap="submitAuth">{{submitText}}</view>
     </view>
   </view>
 </view>

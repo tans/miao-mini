@@ -25,6 +25,42 @@ function formatTimeLabel(value) {
   return `${pad(date.getMonth() + 1)}/${pad(date.getDate())}`;
 }
 
+const MESSAGE_ICON_MAP = {
+  review_passed: '/images/message/work-approved.png',
+  review_rejected: '/images/message/alert.png',
+  task_review_passed: '/images/message/work-approved.png',
+  task_review_rejected: '/images/message/alert.png',
+  appeal_created: '/images/message/alert.png',
+  appeal_handled: '/images/message/alert.png',
+  task_cancelled: '/images/message/alert.png',
+  claim_created: '/images/message/claim-success.png',
+  task_claimed: '/images/message/claim-success.png',
+  submission_received: '/images/message/upload_success.png',
+  submission_submitted: '/images/message/upload_success.png',
+  task_created: '/images/message/new-work.png',
+  wallet: '/images/message/alert.png',
+  merchant_auth_submitted: '/images/message/merchant-auth-submit.png',
+  merchant_auth_passed: '/images/message/merchant-authed.png',
+  merchant_auth_rejected: '/images/message/merchant-auth-submit.png',
+  jimeng_alert: '/images/message/jimeng-alert.png'
+};
+
+const BIZ_TYPE_ICON_MAP = {
+  appeal: '/images/message/alert.png',
+  claim: '/images/message/claim-success.png',
+  submission: '/images/message/upload_success.png',
+  task: '/images/message/new-work.png',
+  wallet: '/images/message/alert.png',
+  merchant_auth: '/images/message/merchant-auth-submit.png',
+  jimeng: '/images/message/jimeng-alert.png'
+};
+
+function getMessageIcon(item = {}) {
+  const type = item.type || '';
+  const bizType = item.biz_type || '';
+  return MESSAGE_ICON_MAP[type] || BIZ_TYPE_ICON_MAP[bizType] || '/images/message/new-work.png';
+}
+
 function getVisualMeta(item = {}) {
   const bizType = item.biz_type || '';
   const type = item.type || '';
@@ -62,6 +98,7 @@ function normalizeNotification(item = {}) {
     ...item,
     is_read: !!item.is_read,
     timeText: formatTimeLabel(item.created_at),
+    iconSrc: getMessageIcon(item),
     iconText: visual.iconText,
     iconClass: visual.iconClass,
     typeLabel: visual.typeLabel

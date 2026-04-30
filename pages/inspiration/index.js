@@ -42,6 +42,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    this.loadInspirationList().finally(() => wx.stopPullDownRefresh());
+  },
+
   processColumns(list) {
     // 瀑布流分配：根据实际图片尺寸分配到较短的列
     const leftColumn = [];

@@ -13,7 +13,7 @@ Page({
     this.loadUser();
   },
 
-  loadUser() {
+  async loadUser() {
     const user = app.globalData.user;
     const rawAvatar = Api.getRawDisplayUrl(user && user.avatar);
     this.setData({
@@ -22,6 +22,30 @@ Page({
       phone: user && user.phone || '',
       avatarSrc: Api.getDisplayUrl(rawAvatar) || '/assets/icons/avatar-default.jpg'
     });
+
+    if (!app.isLoggedIn()) {
+      return;
+    }
+
+    try {
+      const res = await Api.getMe();
+      const latestUser = res.data || {};
+      const latestAvatar = Api.getRawDisplayUrl(latestUser.avatar);
+      const normalizedUser = { ...latestUser, avatar: latestAvatar };
+      app.setAuth(app.getToken(), normalizedUser);
+      this.setData({
+        user: normalizedUser,
+        nickname: normalizedUser.nickname || normalizedUser.username || '',
+        phone: normalizedUser.phone || '',
+        avatarSrc: Api.getDisplayUrl(latestAvatar) || '/assets/icons/avatar-default.jpg'
+      });
+    } catch (err) {
+      // 保留本地缓存内容
+    }
+  },
+
+  onPullDownRefresh() {
+    this.loadUser().finally(() => wx.stopPullDownRefresh());
   },
 
   onNicknameInput(e) {

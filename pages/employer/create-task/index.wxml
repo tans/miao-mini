@@ -112,9 +112,7 @@ module.exports = {
       <view class="desc-field">
         <text class="desc-label" >任务描述</text>
         <view class="desc-area">
-          <textarea class="desc-textarea" placeholder="请输入不少于10个字的描述" value="{{description}}" 
-          auto-height="true"
-          bindinput="onDescInput" maxlength="500"/>
+          <textarea class="desc-textarea" placeholder="请输入不少于10个字的描述" value="{{description}}" bindinput="onDescInput" maxlength="500" auto-height/>
           <view class="ai-write-btn {{isAiWriting ? 'ai-write-btn-disabled' : ''}}" bindtap="aiWriteDesc">
             <image class="ai-icon" src="./images/icon-ai.png" />
             <text>{{isAiWriting ? '生成中...' : 'AI帮写'}}</text>
@@ -300,7 +298,7 @@ module.exports = {
 
     <!-- 提交按钮 -->
     <view class="submit-section">
-      <view class="submit-btn" bindtap="handleSubmit">托管奖金并提交审核</view>
+      <view class="submit-btn {{isSubmitting ? 'submit-btn-disabled' : ''}}" bindtap="handleSubmit">{{isSubmitting ? '发布中...' : '托管奖金并提交审核'}}</view>
       <!-- <view class="submit-indicator"></view> -->
     </view>
   </scroll-view>

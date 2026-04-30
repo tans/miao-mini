@@ -408,6 +408,10 @@
   background: rgba(239, 136, 2, 0.14);
 }
 
+.action-tag.is-rejected {
+  background: rgba(229, 72, 72, 0.12);
+}
+
 .action-tag.is-certified {
   background: rgba(29, 155, 72, 0.12);
 }
@@ -424,6 +428,10 @@
 
 .action-tag.is-pending .action-tag-text {
   color: #EF8802;
+}
+
+.action-tag.is-rejected .action-tag-text {
+  color: #E54848;
 }
 
 .action-tag.is-certified .action-tag-text {

@@ -131,6 +131,11 @@
   color: #1d9b48;
 }
 
+.result-badge-rejected {
+  background: rgba(255, 80, 80, 0.12);
+  color: #e54848;
+}
+
 .result-title {
   display: block;
   margin-top: 20rpx;
@@ -268,5 +273,12 @@
 
 .submit-btn.is-disabled {
   background: linear-gradient(90deg, #ffd18d 0%, #ffc76f 100%);
+  box-shadow: none;
+}
+
+.submit-btn.is-secondary {
+  margin-top: 18rpx;
+  background: #f1f2f5;
+  color: #4c5563;
   box-shadow: none;
 }

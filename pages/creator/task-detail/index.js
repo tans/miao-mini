@@ -2,6 +2,9 @@ const Api = require('../../../utils/api.js');
 const { formatDateTime: formatDateTimeText } = require('../../../utils/util.js');
 const app = getApp();
 
+const MATERIAL_POLL_INTERVAL = 4000;
+const MATERIAL_POLL_MAX_DURATION = 2 * 60 * 1000;
+
 function toList(value) {
   if (Array.isArray(value)) return value;
   if (!value) return [];
@@ -324,6 +327,10 @@ function getCurrentUserId() {
   return user && user.id != null ? String(user.id) : '';
 }
 
+function hasPendingClaimMaterials(materials = []) {
+  return materials.some((item) => item.isVideo && ['pending', 'processing'].includes(item.processStatus || ''));
+}
+
 Page({
   data: {
     taskId: '',
@@ -366,6 +373,20 @@ Page({
     if (isMerchantTask !== this.data.isMerchantTask) {
       this.setData({ isMerchantTask });
     }
+    this.syncClaimMaterialPolling();
+  },
+
+  onPullDownRefresh() {
+    if (!this.data.taskId) {
+      wx.stopPullDownRefresh();
+      return;
+    }
+    this.loadTaskDetail(this.data.taskId, { silent: true, suppressError: true })
+      .finally(() => wx.stopPullDownRefresh());
+  },
+
+  onHide() {
+    this.stopClaimMaterialPolling();
   },
 
   onUnload() {
@@ -377,10 +398,11 @@ Page({
       clearInterval(this.uploadProgressTimer);
       this.uploadProgressTimer = null;
     }
+    this.stopClaimMaterialPolling();
   },
 
   async loadTaskDetail(taskId, options = {}) {
-    const { silent = false } = options;
+    const { silent = false, suppressError = false } = options;
     if (!silent) {
       wx.showLoading({ title: '加载中...' });
     }
@@ -400,8 +422,11 @@ Page({
         isMerchantTask: !!(currentUserId && String(task.businessId || task.business_id || '') === currentUserId),
       });
       this.startCountdownTimer(task.endAt);
+      this.syncClaimMaterialPolling(task.claimMaterials || []);
     } catch (err) {
-      wx.showToast({ title: '加载失败', icon: 'none' });
+      if (!suppressError) {
+        wx.showToast({ title: '加载失败', icon: 'none' });
+      }
     } finally {
       if (!silent) {
         wx.hideLoading();
@@ -600,6 +625,50 @@ Page({
     if (this.uploadProgressTimer) {
       clearInterval(this.uploadProgressTimer);
       this.uploadProgressTimer = null;
+    }
+  },
+
+  syncClaimMaterialPolling(materials = this.data.claimMaterials || []) {
+    const needsPolling = hasPendingClaimMaterials(materials);
+    if (!needsPolling) {
+      this.stopClaimMaterialPolling();
+      return;
+    }
+    this.startClaimMaterialPolling();
+  },
+
+  startClaimMaterialPolling() {
+    if (this.claimMaterialPollTimer) return;
+    this.claimMaterialPollStartedAt = Date.now();
+    this.claimMaterialPollTimer = setInterval(() => {
+      this.pollClaimMaterialStatus();
+    }, MATERIAL_POLL_INTERVAL);
+  },
+
+  stopClaimMaterialPolling() {
+    if (this.claimMaterialPollTimer) {
+      clearInterval(this.claimMaterialPollTimer);
+      this.claimMaterialPollTimer = null;
+    }
+    this.claimMaterialPollStartedAt = 0;
+    this.claimMaterialPolling = false;
+  },
+
+  async pollClaimMaterialStatus() {
+    if (this.claimMaterialPolling || !this.data.taskId) return;
+    if (!this.claimMaterialPollStartedAt) {
+      this.claimMaterialPollStartedAt = Date.now();
+    }
+    if (Date.now() - this.claimMaterialPollStartedAt >= MATERIAL_POLL_MAX_DURATION) {
+      this.stopClaimMaterialPolling();
+      return;
+    }
+
+    this.claimMaterialPolling = true;
+    try {
+      await this.loadTaskDetail(this.data.taskId, { silent: true, suppressError: true });
+    } finally {
+      this.claimMaterialPolling = false;
     }
   },
 

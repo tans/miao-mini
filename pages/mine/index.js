@@ -30,13 +30,17 @@ Page({
   },
 
   onShow() {
+    this.refreshPageData();
+  },
+
+  async refreshPageData() {
     const isLoggedIn = app.isLoggedIn();
     this.setData({ isLoggedIn });
     this.updateDisplayText();
     if (isLoggedIn) {
-      const userTask = this.loadUserAndWallet();
-      this.loadMineStats();
-      Promise.resolve(userTask).then(() => this.loadMerchantAuthStatus());
+      await this.loadUserAndWallet();
+      await this.loadMineStats();
+      await this.loadMerchantAuthStatus();
     } else {
       this.setData({
         user: null,
@@ -47,15 +51,18 @@ Page({
         merchantAuthActionClass: 'is-uncertified'
       });
       // 触发静默登录
-      app.silentLogin().then(() => {
-        this.setData({ isLoggedIn: app.isLoggedIn() });
-        if (app.isLoggedIn()) {
-          const userTask = this.loadUserAndWallet();
-          this.loadMineStats();
-          Promise.resolve(userTask).then(() => this.loadMerchantAuthStatus());
-        }
-      });
+      await app.silentLogin();
+      this.setData({ isLoggedIn: app.isLoggedIn() });
+      if (app.isLoggedIn()) {
+        await this.loadUserAndWallet();
+        await this.loadMineStats();
+        await this.loadMerchantAuthStatus();
+      }
     }
+  },
+
+  onPullDownRefresh() {
+    this.refreshPageData().finally(() => wx.stopPullDownRefresh());
   },
 
   async loadUserAndWallet() {
@@ -85,10 +92,12 @@ Page({
     const statusMap = {
       certified: { status: 'certified', text: '已认证', className: 'is-certified' },
       pending: { status: 'pending', text: '审核中', className: 'is-pending' },
+      rejected: { status: 'rejected', text: '审核未通过', className: 'is-rejected' },
       uncertified: { status: 'uncertified', text: '去认证', className: 'is-uncertified' },
       0: { status: 'uncertified', text: '去认证', className: 'is-uncertified' },
       1: { status: 'pending', text: '审核中', className: 'is-pending' },
-      2: { status: 'certified', text: '已认证', className: 'is-certified' }
+      2: { status: 'certified', text: '已认证', className: 'is-certified' },
+      3: { status: 'rejected', text: '审核未通过', className: 'is-rejected' }
     };
     const normalized = statusMap[rawStatus] || (businessVerified ? statusMap.certified : statusMap.uncertified);
     return normalized;

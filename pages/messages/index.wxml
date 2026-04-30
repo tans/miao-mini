@@ -28,7 +28,7 @@
         bindtap="openNotification"
       >
         <view class="message-icon">
-          <image src="../../images/message/type{{index + 1}}.png" mode="aspectFill" />
+          <image src="{{item.iconSrc}}" mode="aspectFill" />
         </view>
         <view class="message-body">
           <view class="message-top">

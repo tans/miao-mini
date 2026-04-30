@@ -76,6 +76,7 @@ Page({
     walletBalanceDisplay: '0.00',
     isBalanceInsufficient: true,
     balanceShortfall: '231.00',
+    isSubmitting: false,
     showDialog: false,
     showStyleDialog: false,
   },
@@ -104,6 +105,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    this.loadWalletBalance().finally(() => wx.stopPullDownRefresh());
+  },
+
   async loadWalletBalance() {
     try {
       const res = await Api.getWallet();
@@ -122,6 +127,7 @@ Page({
       this.updateBalanceStatus();
     }
   },
+
   // 打开对话框
   openDialog() {
     this.setData({
@@ -141,7 +147,7 @@ Page({
   // 确认选择
   confirmIndustrySelection() {
     this.setData({
-      selectedIndustries: this.data.tempSelectedIndustries.slice(0, 1),
+      selectedIndustries: this.data.tempSelectedIndustries.map((id) => Number(id)).slice(0, 1),
       showDialog: false
     });
   },
@@ -227,7 +233,7 @@ Page({
   },
 
   toggleIndustry(e) {
-    const id = e.currentTarget.dataset.id;
+    const id = Number(e.currentTarget.dataset.id);
     const isSelected = this.data.tempSelectedIndustries.indexOf(id) > -1;
     this.setData({
       tempSelectedIndustries: isSelected ? [] : [id]
@@ -474,6 +480,10 @@ Page({
   async handleSubmit() {
     const { title, description, unit_price, total_count, selectedIndustries, selectedStyles, privacyProtected, jimeng_link, jimengEnabled } = this.data;
 
+    if (this.data.isSubmitting) {
+      return;
+    }
+
     if (!title) {
       wx.showToast({ title: '请填写任务标题', icon: 'none' });
       return;
@@ -506,6 +516,7 @@ Page({
     }).filter(name => name);
 
     const hasMaterials = this.data.refImages.length > 0;
+    this.setData({ isSubmitting: true });
     wx.showLoading({ title: hasMaterials ? '上传素材中...' : '提交中...' });
     try {
       const materials = [];
@@ -551,6 +562,7 @@ Page({
     } catch (err) {
       const msg = err && err.message || '发布失败';
       wx.showToast({ title: msg, icon: 'none' });
+      this.setData({ isSubmitting: false });
     } finally {
       wx.hideLoading();
     }

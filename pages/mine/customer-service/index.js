@@ -27,6 +27,10 @@ Page({
     wx.navigateTo({ url: '/pages/mine/help/index' });
   },
 
+  onPullDownRefresh() {
+    wx.stopPullDownRefresh();
+  },
+
   callHotline() {
     wx.makePhoneCall({
       phoneNumber: config.customerServicePhone

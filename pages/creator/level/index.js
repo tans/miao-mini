@@ -71,6 +71,10 @@ Page({
     this.loadCreatorStats();
   },
 
+  onPullDownRefresh() {
+    this.loadCreatorStats().finally(() => wx.stopPullDownRefresh());
+  },
+
   async loadCreatorStats() {
     const Api = require('../../../utils/api.js');
     const app = getApp();

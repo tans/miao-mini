@@ -61,7 +61,7 @@
           <view class="zone-item-left">
             <image class="zone-icon" src="../../images/mine/icon-task.png" />
             <view class="zone-item-content">
-              <text class="zone-item-title">我的任务</text>
+              <text class="zone-item-title">我的报名</text>
               
             </view>
           </view>
@@ -151,7 +151,10 @@
         </view>
       </view>
     </view>
-  </view>
+
 
   <view class="update-time" wx:if="{{displayText}}">更新时间：{{displayText}}</view>
+
+
+</view>
 </view>

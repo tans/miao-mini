@@ -42,10 +42,12 @@ Page({
     licenseUrl: '',
     licensePreviewUrl: '',
     licenseKey: '',
+    isEditing: false,
+    canEditAuth: true,
     statusIcon: 'icon-uncertified',
     statusIconText: '未认证',
     statusTitle: '您尚未完成商家认证',
-    statusDesc: '完成认证后可发布任务、享受更多权益',
+    statusDesc: '完成认证后可展示企业认证标志，提升账号可信度',
     submitText: '提交'
   },
 
@@ -56,7 +58,7 @@ Page({
   },
 
   loadAuthStatus() {
-    Api.getMerchantAuthStatus().then(res => {
+    return Api.getMerchantAuthStatus().then(res => {
       const data = res.data || {};
       // Normalize status: API may return numeric (0=uncertified, 1=pending, 2=certified) or string
       const statusMap = { 0: 'uncertified', 1: 'pending', 2: 'certified' };
@@ -69,18 +71,27 @@ Page({
         contactPhone: data.contact_phone || this._defaultContactPhone(),
         licenseUrl: data.license_url || '',
         licensePreviewUrl: data.license_preview_url || data.license_url || '',
-        licenseKey: ''
+        licenseKey: '',
+        isEditing: false,
+        canEditAuth: normalizedStatus !== 'certified'
       });
       this._updateStatusUI(normalizedStatus);
     }).catch(err => {
     });
   },
 
+  onPullDownRefresh() {
+    this.loadCurrentUser()
+      .finally(() => this.loadAuthStatus())
+      .finally(() => wx.stopPullDownRefresh());
+  },
+
   _updateStatusUI(status) {
     const statusMap = {
-      certified: { icon: 'icon-certified', text: '已认证', title: '已通过商家认证', desc: '您已是认证商家，可发布任务', submitText: '已认证' },
-      pending: { icon: 'icon-pending', text: '审核中', title: '认证申请已提交', desc: '平台将在1-3个工作日内完成审核，请保持联系电话畅通。', submitText: '审核中' },
-      uncertified: { icon: 'icon-uncertified', text: '未认证', title: '您尚未完成商家认证', desc: '完成认证后可发布任务、享受更多权益', submitText: '提交' }
+      certified: { icon: 'icon-certified', text: '已认证', title: '已通过商家认证', desc: '您已获得企业认证标志，可用于展示认证身份', submitText: '已认证' },
+      pending: { icon: 'icon-pending', text: '审核中', title: '认证申请已提交', desc: '平台将在1-3个工作日内完成审核，请保持联系电话畅通。', submitText: '修改后重新提交' },
+      rejected: { icon: 'icon-rejected', text: '已拒绝', title: '认证未通过', desc: '你可以修改资料后重新提交认证。', submitText: '修改后重新提交' },
+      uncertified: { icon: 'icon-uncertified', text: '未认证', title: '您尚未完成商家认证', desc: '完成认证后可展示企业认证标志，提升账号可信度', submitText: '提交' }
     };
     const info = statusMap[status] || statusMap.uncertified;
     this.setData({
@@ -90,6 +101,20 @@ Page({
       statusDesc: info.desc,
       submitText: info.submitText
     });
+  },
+
+  enterEditMode() {
+    if (this.data.status === 'certified') {
+      wx.showToast({ title: '已认证账号不能修改', icon: 'none' });
+      return;
+    }
+    this.setData({ isEditing: true });
+    this._updateStatusUI(this.data.status);
+  },
+
+  cancelEditMode() {
+    this.setData({ isEditing: false });
+    this._updateStatusUI(this.data.status);
   },
 
   onCompanyNameInput(e) {
@@ -118,8 +143,9 @@ Page({
   },
 
   onTapLicenseArea() {
+    const canEdit = this.data.status === 'uncertified' || this.data.isEditing;
     if (this.data.licenseUrl) {
-      if (this.data.status !== 'uncertified') {
+      if (!canEdit) {
         this.previewLicense();
         return;
       }
@@ -139,7 +165,7 @@ Page({
   },
 
   uploadLicense() {
-    if (this.data.status !== 'uncertified') {
+    if (!(this.data.status === 'uncertified' || this.data.isEditing)) {
       return;
     }
     wx.chooseMedia({
@@ -225,8 +251,8 @@ Page({
   },
 
   submitAuth() {
-    const { status, companyName, creditCode, contactName, contactPhone, licenseUrl } = this.data;
-    if (status !== 'uncertified') {
+    const { status, isEditing, companyName, creditCode, contactName, contactPhone, licenseUrl } = this.data;
+    if (!(status === 'uncertified' || isEditing)) {
       return;
     }
     const finalContactName = (contactName || this._defaultContactName()).trim();
@@ -275,7 +301,7 @@ Page({
     }).then(res => {
       wx.hideLoading();
       wx.showToast({ title: '提交成功，等待审核', icon: 'success' });
-      this.setData({ status: 'pending' });
+      this.setData({ status: 'pending', isEditing: false });
       this._updateStatusUI('pending');
     }).catch(err => {
       wx.hideLoading();

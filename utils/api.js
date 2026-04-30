@@ -203,6 +203,13 @@ const Api = {
     return url;
   },
 
+  getAssetPreviewUrl(raw) {
+    const value = (raw || '').trim();
+    if (!value) return '';
+    const base = this.getApiBase().replace(/\/api\/v1$/, '');
+    return `${base}/api/v1/assets/preview?raw=${encodeURIComponent(value)}`;
+  },
+
   getDisplayUrl(url) {
     let raw = (url || '').trim();
     if (!raw) return '';
@@ -215,6 +222,14 @@ const Api = {
       raw.startsWith('/images/')
     ) {
       return raw;
+    }
+    if (
+      raw.startsWith('private/') ||
+      raw.includes('/private/') ||
+      raw.includes('.cos.') ||
+      raw.includes('/api/v1/assets/preview?raw=')
+    ) {
+      return this.getAssetPreviewUrl(raw);
     }
     if (/^https?:\/\//i.test(raw)) {
       return raw;

@@ -53,6 +53,10 @@ Page({
     }
   },
 
+  onPullDownRefresh() {
+    this.loadWallet().finally(() => wx.stopPullDownRefresh());
+  },
+
   async loadWallet() {
     if (this.data.loading) return;
     this.setData({ loading: true });
