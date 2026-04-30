@@ -4,6 +4,13 @@ function getVideoMaterial(materials = []) {
   return materials.find((item) => item.file_type === 'video') || null;
 }
 
+function formatTime(seconds = 0) {
+  const total = Math.max(0, Math.floor(Number(seconds) || 0));
+  const minutes = Math.floor(total / 60);
+  const remainSeconds = total % 60;
+  return `${minutes}:${String(remainSeconds).padStart(2, '0')}`;
+}
+
 Page({
   data: {
     work: null,
@@ -11,9 +18,15 @@ Page({
     videoUrl: '',
     processStatus: '',
     processStatusText: '',
+    playing: true,
+    duration: 0,
+    currentTime: 0,
+    durationText: '0:00',
+    currentTimeText: '0:00',
   },
 
   onLoad(options) {
+    this.videoContext = wx.createVideoContext('videoPlayer', this);
     if (options.id) {
       this.workId = options.id;
       const storedWork = wx.getStorageSync(`work_preview_${options.id}`);
@@ -110,6 +123,69 @@ Page({
 
   onVideoError() {
     wx.showToast({ title: 'Video error', icon: 'none' });
+  },
+
+  onLoadedMetadata(e) {
+    const duration = Number(e.detail.duration) || 0;
+    this.setData({
+      duration,
+      durationText: formatTime(duration),
+    });
+  },
+
+  onTimeUpdate(e) {
+    const currentTime = Number(e.detail.currentTime) || 0;
+    const duration = Number(e.detail.duration) || this.data.duration || 0;
+    this.setData({
+      currentTime,
+      duration,
+      currentTimeText: formatTime(currentTime),
+      durationText: formatTime(duration),
+    });
+  },
+
+  onVideoPlay() {
+    this.setData({ playing: true });
+  },
+
+  onVideoPause() {
+    this.setData({ playing: false });
+  },
+
+  onVideoEnded() {
+    this.setData({
+      playing: false,
+      currentTime: 0,
+      currentTimeText: '0:00',
+    });
+  },
+
+  togglePlay() {
+    if (!this.videoContext) return;
+    if (this.data.playing) {
+      this.videoContext.pause();
+      return;
+    }
+    this.videoContext.play();
+  },
+
+  onSeekChanging(e) {
+    const currentTime = Number(e.detail.value) || 0;
+    this.setData({
+      currentTime,
+      currentTimeText: formatTime(currentTime),
+    });
+  },
+
+  onSeekChange(e) {
+    const currentTime = Number(e.detail.value) || 0;
+    if (this.videoContext) {
+      this.videoContext.seek(currentTime);
+    }
+    this.setData({
+      currentTime,
+      currentTimeText: formatTime(currentTime),
+    });
   },
 
   onUnload() {

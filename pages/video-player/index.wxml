@@ -5,24 +5,46 @@
     </view>
 
     <block wx:elif="{{videoUrl}}">
-      <video
-        id="videoPlayer"
-        class="video-player"
-        src="{{videoUrl}}"
-        autoplay
-        loop
-        object-fit="contain"
-        controls
-        show-play-btn="{{true}}"
-        show-center-play-btn="{{false}}"
-        show-fullscreen-btn="{{false}}"
-        show-mute-btn="{{true}}"
-        picture-in-picture-mode="{{[]}}"
-        enable-progress-gesture="{{true}}"
-        vslide-gesture="{{false}}"
-        page-gesture="{{false}}"
-        bind:error="onVideoError"
-      />
+      <view class="player-shell">
+        <video
+          id="videoPlayer"
+          class="video-player"
+          src="{{videoUrl}}"
+          autoplay
+          object-fit="contain"
+          controls="{{false}}"
+          show-play-btn="{{false}}"
+          show-center-play-btn="{{false}}"
+          show-fullscreen-btn="{{false}}"
+          show-mute-btn="{{false}}"
+          picture-in-picture-mode="{{[]}}"
+          enable-progress-gesture="{{false}}"
+          vslide-gesture="{{false}}"
+          page-gesture="{{false}}"
+          bindplay="onVideoPlay"
+          bindpause="onVideoPause"
+          bindended="onVideoEnded"
+          bindtimeupdate="onTimeUpdate"
+          bindloadedmetadata="onLoadedMetadata"
+          bind:error="onVideoError"
+        />
+        <view class="control-bar">
+          <text class="control-btn" bindtap="togglePlay">{{playing ? '暂停' : '播放'}}</text>
+          <slider
+            class="progress-slider"
+            min="0"
+            max="{{duration || 0}}"
+            value="{{currentTime}}"
+            activeColor="#ffffff"
+            backgroundColor="rgba(255,255,255,0.25)"
+            block-color="#ffffff"
+            block-size="14"
+            bindchanging="onSeekChanging"
+            bindchange="onSeekChange"
+          />
+          <text class="time-text">{{currentTimeText}} / {{durationText}}</text>
+        </view>
+      </view>
     </block>
 
     <block wx:elif="{{processStatusText}}">

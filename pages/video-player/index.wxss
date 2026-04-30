@@ -11,6 +11,10 @@
   justify-content: center;
 }
 
+.player-shell {
+  width: 100vw;
+}
+
 .loading-wrap,
 .empty-wrap {
   display: flex;
@@ -29,6 +33,31 @@
   min-height: 1000rpx;
   background: #000;
   display: block;
+}
+
+.control-bar {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx 24rpx 28rpx;
+  background: #000;
+}
+
+.control-btn {
+  color: #fff;
+  font-size: 26rpx;
+  min-width: 56rpx;
+}
+
+.progress-slider {
+  flex: 1;
+  margin: 0;
+}
+
+.time-text {
+  color: rgba(255,255,255,0.8);
+  font-size: 22rpx;
+  white-space: nowrap;
 }
 
 .image-list {
