@@ -91,8 +91,9 @@
             <view class="task-title-row">
               <text class="task-title">{{item.title}}</text>
             </view>
-            <view class="task-price-row">
-              <view class="task-price">{{item.award_price + item.unit_price}}元</view>
+            <view class="task-price-row"  >
+              <view class="task-price">{{item.award_price + item.unit_price}}</view>
+              <view class="task-price-unit" style="font-size: 38rpx;">元</view>
               <text class="task-price-unit">/条</text>
             </view>
          </view>

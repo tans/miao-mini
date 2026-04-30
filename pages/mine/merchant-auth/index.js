@@ -2,12 +2,43 @@ const Api = require('../../../utils/api.js');
 const app = getApp();
 
 Page({
+  _defaultContactPhone() {
+    const user = app.globalData.user || {};
+    return (this.data.userPhone || user.phone || '').trim();
+  },
+
+  _defaultContactName() {
+    const user = app.globalData.user || {};
+    return (this.data.userName || user.nickname || user.username || '').trim();
+  },
+
+  async loadCurrentUser() {
+    try {
+      const res = await Api.getMe();
+      const user = res.data || {};
+      this.setData({
+        userName: user.nickname || user.username || '',
+        userPhone: user.phone || ''
+      });
+      return user;
+    } catch (e) {
+      const user = app.globalData.user || {};
+      this.setData({
+        userName: user.nickname || user.username || '',
+        userPhone: user.phone || ''
+      });
+      return user;
+    }
+  },
+
   data: {
     status: 'uncertified', // uncertified, pending, certified
     companyName: '',
     creditCode: '',
     contactName: '',
     contactPhone: '',
+    userName: '',
+    userPhone: '',
     licenseUrl: '',
     licensePreviewUrl: '',
     licenseKey: '',
@@ -19,7 +50,9 @@ Page({
   },
 
   onLoad() {
-    this.loadAuthStatus();
+    this.loadCurrentUser().finally(() => {
+      this.loadAuthStatus();
+    });
   },
 
   loadAuthStatus() {
@@ -32,8 +65,8 @@ Page({
         status: normalizedStatus,
         companyName: data.company_name || '',
         creditCode: data.credit_code || data.social_credit_code || data.unified_social_credit_code || '',
-        contactName: data.contact_name || '',
-        contactPhone: data.contact_phone || '',
+        contactName: data.contact_name || this._defaultContactName(),
+        contactPhone: data.contact_phone || this._defaultContactPhone(),
         licenseUrl: data.license_url || '',
         licensePreviewUrl: data.license_preview_url || data.license_url || '',
         licenseKey: ''
@@ -153,6 +186,13 @@ Page({
                 if (!this.data.contactName && legalPerson) {
                   nextData.contactName = legalPerson;
                   ocrAnyFilled = true;
+                } else if (!this.data.contactName && this._defaultContactName()) {
+                  nextData.contactName = this._defaultContactName();
+                  ocrAnyFilled = true;
+                }
+                if (!this.data.contactPhone && this._defaultContactPhone()) {
+                  nextData.contactPhone = this._defaultContactPhone();
+                  ocrAnyFilled = true;
                 }
               } catch (ocrErr) {
                 // OCR failure should not block manual submission.
@@ -189,6 +229,8 @@ Page({
     if (status !== 'uncertified') {
       return;
     }
+    const finalContactName = (contactName || this._defaultContactName()).trim();
+    const finalContactPhone = (contactPhone || this._defaultContactPhone()).trim();
     if (!companyName.trim()) {
       wx.showToast({ title: '请输入企业名称', icon: 'none' });
       return;
@@ -202,17 +244,17 @@ Page({
       wx.showToast({ title: '请输入正确的统一社会信用代码', icon: 'none' });
       return;
     }
-    if (!contactName.trim()) {
+    if (!finalContactName) {
       wx.showToast({ title: '请输入联系人', icon: 'none' });
       return;
     }
-    if (!contactPhone.trim()) {
+    if (!finalContactPhone) {
       wx.showToast({ title: '请输入联系电话', icon: 'none' });
       return;
     }
     // 手机号格式校验（11位手机号或带区号的固话）
     const phoneRegex = /^1[3-9]\d{9}$|^0\d{2,3}-?\d{7,8}$/;
-    if (!phoneRegex.test(contactPhone.trim())) {
+    if (!phoneRegex.test(finalContactPhone)) {
       wx.showToast({ title: '请输入正确的联系电话', icon: 'none' });
       return;
     }
@@ -227,8 +269,8 @@ Page({
       credit_code: creditCode.trim().toUpperCase(),
       social_credit_code: creditCode.trim().toUpperCase(),
       unified_social_credit_code: creditCode.trim().toUpperCase(),
-      contact_name: contactName.trim(),
-      contact_phone: contactPhone.trim(),
+      contact_name: finalContactName,
+      contact_phone: finalContactPhone,
       license_url: licenseUrl
     }).then(res => {
       wx.hideLoading();
