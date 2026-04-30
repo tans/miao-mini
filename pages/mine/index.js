@@ -177,7 +177,22 @@ Page({
         }
       });
     } catch (err) {
-      wx.showToast({ title: '加载我的统计失败', icon: 'none' });
+      const code = err && err.code !== undefined && err.code !== null ? String(err.code) : 'NO_CODE';
+      const message = (err && err.message) ? String(err.message) : '未知错误';
+      console.error('[mine/stats] load failed', {
+        code,
+        message,
+        err
+      });
+      wx.showToast({
+        title: `统计失败 ${code}: ${message}`.slice(0, 30),
+        icon: 'none'
+      });
+      wx.showModal({
+        title: '我的统计加载失败',
+        content: `code: ${code}\nmessage: ${message}`.slice(0, 500),
+        showCancel: false
+      });
     }
   },
 
