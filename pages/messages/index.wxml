@@ -16,7 +16,7 @@
     </view>
   </view>
 
-  <scroll-view class="messages-scroll" scroll-y enable-flex>
+  <view class="messages-scroll">
     <view class="messages-list" wx:if="{{notifications.length > 0}}">
       <view
         class="message-card {{!item.is_read ? 'unread' : ''}}"
@@ -55,5 +55,5 @@
     <view class="loading-state" wx:if="{{loading}}">
       <text>加载中...</text>
     </view>
-  </scroll-view>
+  </view>
 </view>
