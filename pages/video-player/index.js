@@ -64,7 +64,6 @@ Page({
 
   onLoad(options) {
     this.videoContext = wx.createVideoContext('videoPlayer', this);
-    this.autoPlayRequested = false;
     this.initialPoster = normalizePreviewUrl(options.poster || '');
     if (options.id) {
       this.workId = options.id;
@@ -169,18 +168,8 @@ Page({
     wx.showToast({ title: 'Video error', icon: 'none' });
   },
 
-  onVideoCanPlay() {
-    if (this.autoPlayRequested) return;
-    this.autoPlayRequested = true;
-    if (this.videoContext) {
-      this.videoContext.play();
-    }
-  },
-
   onLoadedMetadata(e) {
     const duration = Number(e.detail.duration) || 0;
-    this.progressBaseTime = 0;
-    this.progressBaseAt = Date.now();
     this.setData({
       duration,
       durationText: formatTime(duration),
@@ -190,8 +179,6 @@ Page({
   onTimeUpdate(e) {
     const currentTime = Number(e.detail.currentTime) || 0;
     const duration = Number(e.detail.duration) || this.data.duration || 0;
-    this.progressBaseTime = currentTime;
-    this.progressBaseAt = Date.now();
     if (this.data.isSeeking) return;
     this.setData({
       currentTime,
@@ -203,19 +190,13 @@ Page({
 
   onVideoPlay() {
     this.setData({ playing: true });
-    this.autoPlayRequested = true;
-    this.progressBaseTime = this.data.currentTime || 0;
-    this.progressBaseAt = Date.now();
-    this.startProgressTicker();
   },
 
   onVideoPause() {
     this.setData({ playing: false });
-    this.stopProgressTicker();
   },
 
   onVideoEnded() {
-    this.stopProgressTicker();
     this.setData({
       playing: false,
       currentTime: 0,
@@ -260,8 +241,6 @@ Page({
     if (this.videoContext) {
       this.videoContext.seek(currentTime);
     }
-    this.progressBaseTime = currentTime;
-    this.progressBaseAt = Date.now();
     this.setData({
       isSeeking: false,
       currentTime,
@@ -269,30 +248,7 @@ Page({
     });
   },
 
-  startProgressTicker() {
-    if (this.progressTimer) return;
-    this.progressTimer = setInterval(() => {
-      if (!this.data.playing || this.data.isSeeking) return;
-      const duration = this.data.duration || 0;
-      const baseTime = Number(this.progressBaseTime || 0);
-      const baseAt = Number(this.progressBaseAt || Date.now());
-      const nextTime = Math.max(0, Math.min(duration || Infinity, baseTime + (Date.now() - baseAt) / 1000));
-      this.setData({
-        currentTime: nextTime,
-        currentTimeText: formatTime(nextTime),
-      });
-    }, 100);
-  },
-
-  stopProgressTicker() {
-    if (this.progressTimer) {
-      clearInterval(this.progressTimer);
-      this.progressTimer = null;
-    }
-  },
-
   onUnload() {
-    this.stopProgressTicker();
     clearTimeout(this.lastVideoTapTimer);
     if (this.data.work && this.data.work.id) {
       wx.removeStorageSync(`work_preview_${this.data.work.id}`);
