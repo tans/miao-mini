@@ -193,6 +193,31 @@ Page({
     this.setData({ description: e.detail.value });
   },
 
+  applyAiSelections(aiIndustries, aiStyles) {
+    const nextData = {};
+
+    if (Array.isArray(aiIndustries) && aiIndustries.length && this.data.selectedIndustries.length === 0) {
+      const matchedIndustryIds = aiIndustries.map((name) => {
+        const item = this.data.industryOptions.find((option) => option.name === String(name).trim());
+        return item ? item.id : null;
+      }).filter((id) => id != null);
+      if (matchedIndustryIds.length) {
+        nextData.selectedIndustries = matchedIndustryIds.slice(0, 1);
+      }
+    }
+
+    if (Array.isArray(aiStyles) && aiStyles.length && this.data.selectedStyles.length === 0) {
+      const matchedStyles = aiStyles.map((name) => String(name).trim()).filter(Boolean);
+      if (matchedStyles.length) {
+        nextData.selectedStyles = matchedStyles.slice(0, 3);
+      }
+    }
+
+    if (Object.keys(nextData).length) {
+      this.setData(nextData);
+    }
+  },
+
   isIndustrySelected(id) {
     return this.data.selectedIndustries.indexOf(id) > -1;
   },
@@ -417,6 +442,7 @@ Page({
     }).then(res => {
       wx.hideLoading();
       if (res.data && res.data.success && res.data.description) {
+        this.applyAiSelections(res.data.industries, res.data.styles);
         this.setData({ description: String(res.data.description).trim() });
         wx.showToast({ title: 'AI帮写成功', icon: 'success' });
       } else if (res.data && res.data.error) {
