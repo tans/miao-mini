@@ -9,12 +9,17 @@
         id="videoPlayer"
         class="video-player"
         src="{{videoUrl}}"
-        controls
         autoplay
-        show-play-btn="{{true}}"
+        loop
+        object-fit="cover"
+        controls="{{false}}"
+        show-play-btn="{{false}}"
         show-center-play-btn="{{false}}"
         show-fullscreen-btn="{{false}}"
+        show-mute-btn="{{false}}"
         enable-progress-gesture="{{false}}"
+        vslide-gesture="{{false}}"
+        page-gesture="{{false}}"
         bind:error="onVideoError"
       />
     </block>
