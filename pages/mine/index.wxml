@@ -151,7 +151,10 @@
         </view>
       </view>
     </view>
-  </view>
+
 
   <view class="update-time" wx:if="{{displayText}}">更新时间：{{displayText}}</view>
+
+
+</view>
 </view>
