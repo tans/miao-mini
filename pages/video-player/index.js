@@ -4,6 +4,41 @@ function getVideoMaterial(materials = []) {
   return materials.find((item) => item.file_type === 'video') || null;
 }
 
+function safeDecodeURIComponent(value = '') {
+  if (!value) return '';
+  try {
+    return decodeURIComponent(value);
+  } catch (e) {
+    return value;
+  }
+}
+
+function normalizePreviewUrl(value = '') {
+  return Api.getDisplayUrl(safeDecodeURIComponent(value));
+}
+
+function resolveVideoPoster(work = {}, firstVideoMaterial = null, fallbackPoster = '') {
+  const poster = fallbackPoster ||
+    work.poster ||
+    work.displayCover ||
+    work.cover ||
+    work.cover_url ||
+    work.coverUrl ||
+    work.thumbnail ||
+    work.thumbnail_path ||
+    work.poster_url ||
+    work.previewCover ||
+    (firstVideoMaterial && (
+      firstVideoMaterial.poster_url ||
+      firstVideoMaterial.thumbnail_path ||
+      firstVideoMaterial.thumbnail ||
+      firstVideoMaterial.cover_url ||
+      firstVideoMaterial.cover
+    )) ||
+    '';
+  return Api.getDisplayUrl(poster);
+}
+
 function formatTime(seconds = 0) {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   const minutes = Math.floor(total / 60);
@@ -16,9 +51,10 @@ Page({
     work: null,
     loading: true,
     videoUrl: '',
+    poster: '',
     processStatus: '',
     processStatusText: '',
-    playing: true,
+    playing: false,
     duration: 0,
     currentTime: 0,
     durationText: '0:00',
@@ -28,6 +64,7 @@ Page({
 
   onLoad(options) {
     this.videoContext = wx.createVideoContext('videoPlayer', this);
+    this.initialPoster = normalizePreviewUrl(options.poster || '');
     if (options.id) {
       this.workId = options.id;
       const storedWork = wx.getStorageSync(`work_preview_${options.id}`);
@@ -53,7 +90,10 @@ Page({
     if (options.url) {
       this.setData({
         loading: false,
-        videoUrl: Api.getDisplayUrl(decodeURIComponent(options.url)),
+        videoUrl: normalizePreviewUrl(options.url),
+        poster: this.initialPoster,
+        isSeeking: false,
+        playing: false,
       });
     }
   },
@@ -96,7 +136,7 @@ Page({
     let processStatusText = '';
 
     if (firstVideoMaterial || work.isVideo || work.cover_type === 'video' || work.video_url || work.previewVideoSrc) {
-      videoUrl = Api.getDisplayUrl(
+      videoUrl = normalizePreviewUrl(
         work.previewVideoSrc ||
         work.video_url ||
         (firstVideoMaterial && (
@@ -117,8 +157,10 @@ Page({
       work,
       loading: false,
       videoUrl,
+      poster: resolveVideoPoster(work, firstVideoMaterial, this.initialPoster),
       processStatus,
       processStatusText,
+      playing: false,
     });
   },
 

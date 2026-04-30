@@ -114,6 +114,7 @@
               class="preview-thumb preview-thumb-video"
               bindtap="previewClaimVideo"
               data-url="{{vid.url}}"
+              data-poster="{{vid.poster}}"
             >
               <image class="preview-thumb-image" src="{{vid.poster || vid.url}}" mode="aspectFill" />
               <view class="preview-play-badge"></view>
@@ -276,6 +277,7 @@
             bindtap="previewMaterial"
             data-url="{{item.file_path}}"
             data-type="{{item.file_type}}"
+            data-poster="{{item.file_type === 'video' ? (item.thumbnail_path || item.file_path) : ''}}"
           >
             <image
               class="material-thumb"
