@@ -69,7 +69,7 @@ function getVisualMeta(item = {}) {
     return { iconText: '过审', iconClass: 'success', typeLabel: '审核结果' };
   }
   if (type === 'review_rejected' || type === 'task_review_rejected') {
-    return { iconText: '退回', iconClass: 'danger', typeLabel: '审核结果' };
+    return { iconText: '淘汰', iconClass: 'danger', typeLabel: '审核结果' };
   }
   if (type === 'appeal_created' || type === 'appeal_handled' || bizType === 'appeal') {
     return { iconText: '申诉', iconClass: 'purple', typeLabel: '申诉通知' };

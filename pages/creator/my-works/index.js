@@ -6,7 +6,7 @@ const FILTERS = [
   { key: 'all', label: '全部' },
   { key: 'pending', label: '审核中' },
   { key: 'adopted', label: '已采纳' },
-  { key: 'rejected', label: '未采纳' },
+  { key: 'rejected', label: '已淘汰' },
   { key: 'reported', label: '被举报' }
 ];
 
@@ -63,7 +63,7 @@ Page({
     try {
       const res = await Api.getMyClaims({ page: 1 });
       const claims = res.data || [];
-      // 筛选已提交的作品，保留退回/举报这类已处理记录
+      // 筛选已提交的作品，保留淘汰/举报这类已处理记录
       const submittedWorks = claims
         .filter(c => Number(c.status) >= 2 || Number(c.review_result || c.reviewResult || 0) > 0)
         .map(c => this.formatWork(c));
@@ -120,7 +120,7 @@ Page({
     let reportReason = '';
 
     if (status === 1 && reviewResult === 2) {
-      incomeLabel = '收入(已退回，可重提)';
+      incomeLabel = '收入(已淘汰)';
       incomeText = '¥0';
       rejectReason = claim.review_comment || claim.reviewComment || '';
     } else if (status === 1 && reviewResult === 3) {
@@ -136,10 +136,9 @@ Page({
       incomeLabel = '收入(采纳金+参与金)';
       incomeText = `¥${claim.unit_price || 0} + ¥${claim.award_price || 0}`;
     } else if (status === 5) {
-      // 已拒绝/未采纳
-      incomeLabel = '收入(参与金)';
-      incomeText = '¥5';
-      rejectReason = claim.reject_reason || '品牌露出不足，镜头切换节奏不符合要求。';
+      // 已超时
+      incomeLabel = '收入(已超时)';
+      incomeText = '¥0';
     } else if (status === 6) {
       // 被举报
       reportReason = claim.report_reason || '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。';
@@ -178,13 +177,13 @@ Page({
   },
 
   getStatusText(status, reviewResult = 0) {
-    if (status === 1 && reviewResult === 2) return '已退回';
+    if (status === 1 && reviewResult === 2) return '已淘汰';
     if (status === 1 && reviewResult === 3) return '已举报';
     const map = {
       2: '商家审核中',
       3: '已采纳',
       4: '商家审核超时',
-      5: '已淘汰',
+      5: '已超时',
       6: '被举报'
     };
     return map[status] || '未知';
@@ -197,7 +196,7 @@ Page({
       2: 'pending',
       3: 'adopted',
       4: 'timeout',
-      5: 'rejected',
+      5: 'timeout',
       6: 'reported'
     };
     return map[status] || 'draft';
@@ -208,7 +207,7 @@ Page({
     if (status === 1 && reviewResult === 3) return 'reported';
     if (status === 2) return 'pending';
     if (status === 3) return 'adopted';
-    if (status === 5) return 'rejected';
+    if (status === 5) return 'all';
     if (status === 6) return 'reported';
     return 'all';
   },

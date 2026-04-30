@@ -36,7 +36,6 @@ function getClaimDisputeKind(claim = {}) {
   if (status === 1 && reviewResult === 3) return 'reported';
   if (status === 1 && reviewResult === 2) return 'rejected';
   if (status === 6) return 'reported';
-  if (status === 5) return 'rejected';
   return '';
 }
 

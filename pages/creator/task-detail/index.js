@@ -39,14 +39,17 @@ function normalizeBooleanFlag(value, defaultValue = false) {
   return !!value;
 }
 
-function getClaimStatusClass(status) {
+function getClaimStatusClass(status, reviewResult = 0) {
   const value = Number(status);
+  const review = Number(reviewResult || 0);
+  if (value === 1 && review === 2) return 'rejected';
+  if (value === 1 && review === 3) return 'reported';
   const map = {
     1: 'pending',
     2: 'reviewing',
     3: 'approved',
     4: 'cancelled',
-    5: 'rejected',
+    5: 'timeout',
     6: 'reported',
   };
   return map[value] || 'unknown';
@@ -69,7 +72,8 @@ function getClaimActionState(claim = {}) {
 
   if (status === 3) return { text: '已采纳', className: 'action-state-approved' };
   if (status === 4) return { text: '审核超时，已发参与奖', className: 'action-state-timeout' };
-  if (status === 5 || (status === 1 && reviewResult === 2)) return { text: '已淘汰', className: 'action-state-rejected' };
+  if (status === 5) return { text: '已超时', className: 'action-state-timeout' };
+  if (status === 1 && reviewResult === 2) return { text: '已淘汰', className: 'action-state-rejected' };
   if (status === 6 || (status === 1 && reviewResult === 3)) return { text: '已举报', className: 'action-state-reported' };
   if (status === 2) return { text: '已提交，待审核', className: 'action-state-pending' };
 
@@ -151,7 +155,7 @@ function getClaimStatusText(status, reviewResult = 0) {
     2: '已提交，待审核',
     3: '已采纳',
     4: '商家审核超时',
-    5: '已淘汰',
+    5: '已超时',
     6: '已举报',
   };
   return map[value] || '未知状态';
@@ -163,14 +167,14 @@ function normalizeClaim(claim = {}) {
   const submitAt = claim.submitAt || claim.submit_at || '';
   const createdAt = claim.createdAt || claim.created_at || '';
   const reviewAt = claim.reviewAt || claim.review_at || '';
-  const normalizedStatus = status === 1 && reviewResult === 2 ? 5 : (status === 1 && reviewResult === 3 ? 6 : status);
+  const normalizedStatus = status === 1 && reviewResult === 3 ? 6 : status;
 
   return {
     ...claim,
     status,
     reviewResult,
     statusText: getClaimStatusText(status, reviewResult),
-    statusClass: getClaimStatusClass(normalizedStatus),
+    statusClass: getClaimStatusClass(normalizedStatus, reviewResult),
     submitAt,
     submit_at: submitAt,
     submitAtText: formatDateTime(submitAt),

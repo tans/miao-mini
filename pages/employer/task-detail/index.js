@@ -113,9 +113,9 @@ function extractVideoLink(content) {
 function getClaimStatusText(claim = {}) {
   const status = Number(claim.normalizedStatus != null ? claim.normalizedStatus : claim.status);
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
-  if (status === 1 && reviewResult === 2) return '已退回';
+  if (status === 1 && reviewResult === 2) return '已淘汰';
   if (status === 1 && reviewResult === 3) return '已举报';
-  const map = { 1: '待提交', 2: '待审核', 3: '已采纳', 4: '已取消', 5: '已淘汰', 6: '已举报' };
+  const map = { 1: '待提交', 2: '待审核', 3: '已采纳', 4: '已取消', 5: '已超时', 6: '已举报' };
   return map[status] || `未知(${status})`;
 }
 
@@ -124,14 +124,13 @@ function getClaimStatusClass(claim = {}) {
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
   if (status === 1 && reviewResult === 2) return 'rejected';
   if (status === 1 && reviewResult === 3) return 'reported';
-  const map = { 1: 'draft', 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'rejected', 6: 'reported' };
+  const map = { 1: 'draft', 2: 'pending', 3: 'passed', 4: 'cancelled', 5: 'timeout', 6: 'reported' };
   return map[status] || 'draft';
 }
 
 function getFilterKey(status) {
   if (status === 2) return 'pending';
   if (status === 3) return 'passed';
-  if (status === 5) return 'rejected';
   if (status === 6) return 'reported';
   return 'all';
 }
