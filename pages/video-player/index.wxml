@@ -1,14 +1,46 @@
-<view class="page">
-  <!-- 视频播放区域 -->
-  <view class="video-section">
-    <video
-      id="videoPlayer"
-      class="video-player"
-      src="{{videoUrl}}"
-      controls
-      show-center-play-btn
-      enable-progress-gesture
-      autoplay
-    ></video>
+<view class="preview-container">
+  <view class="content-wrap">
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <text>加载中...</text>
+    </view>
+
+    <block wx:elif="{{isVideo && videoUrl}}">
+      <video
+        id="videoPlayer"
+        class="video-player"
+        src="{{videoUrl}}"
+        controls
+        autoplay
+        show-play-btn="{{true}}"
+        show-center-play-btn="{{false}}"
+        show-fullscreen-btn="{{false}}"
+        enable-progress-gesture="{{false}}"
+        bind:error="onVideoError"
+      />
+    </block>
+
+    <block wx:elif="{{isVideo && processStatusText}}">
+      <view class="empty-wrap">
+        <text>{{processStatusText}}</text>
+      </view>
+    </block>
+
+    <block wx:elif="{{images.length > 0}}">
+      <view class="image-list">
+        <view
+          wx:for="{{images}}"
+          wx:key="index"
+          class="image-item"
+          bindtap="onImageTap"
+          data-index="{{index}}"
+        >
+          <image mode="widthFix" src="{{item}}" class="preview-image" />
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="empty-wrap">
+      <text>暂无预览内容</text>
+    </view>
   </view>
 </view>

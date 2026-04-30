@@ -34,8 +34,8 @@
 - 文件：
   - `pages/employer/purchased-works/index.js:122-186`
   - `pages/employer/purchased-works/index.wxml:1-62`
-  - `pages/work-preview/index.wxml:1-43`
-  - `pages/work-preview/index.js:1-129`
+  - `pages/video-player/index.wxml:1-44`
+  - `pages/video-player/index.js:1-147`
 - 问题说明：
   - 已购作品页脚本存在 `downloadWorkMaterial()`，但列表页没有下载按钮。
   - 进入作品预览页后，页面也只有预览能力，没有“下载素材”操作。

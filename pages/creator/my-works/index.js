@@ -224,7 +224,7 @@ Page({
       }
       // 使用 storage 传递，避免 URL 长度超限
       wx.setStorageSync(`work_preview_${id}`, work);
-      wx.navigateTo({ url: `/pages/work-preview/index?id=${id}` });
+      wx.navigateTo({ url: `/pages/video-player/index?id=${id}` });
     }
   },
 

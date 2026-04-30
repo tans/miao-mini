@@ -109,7 +109,7 @@ Page({
     this.navigating = true;
     const workData = this.data.works.find(w => w.id === id) || {};
     wx.setStorageSync(`work_preview_${id}`, workData);
-    wx.navigateTo({ url: `/pages/work-preview/index?id=${id}` });
+    wx.navigateTo({ url: `/pages/video-player/index?id=${id}` });
     setTimeout(() => {
       this.navigating = false;
     }, 400);

@@ -108,7 +108,7 @@ Page({
     if (!id) return;
     this.navigating = true;
     const workData = encodeURIComponent(JSON.stringify(this.data.works.find(w => w.id === id) || {}));
-    wx.navigateTo({ url: `/pages/work-preview/index?data=${workData}` });
+    wx.navigateTo({ url: `/pages/video-player/index?data=${workData}` });
     setTimeout(() => {
       this.navigating = false;
     }, 400);

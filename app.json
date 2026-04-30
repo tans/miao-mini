@@ -26,7 +26,6 @@
     "pages/mine/merchant-auth/index",
     "pages/mine/appeal/index",
     "pages/mine/customer-service/index",
-    "pages/work-preview/index",
     "pages/video-player/index"
   ],
   "window": {
