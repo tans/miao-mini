@@ -55,13 +55,14 @@
 }
 
 .balance-bg {
-  background: url('https://public.jisuhudong.com/minapp/钱包背景图.png') no-repeat center center;
+  background: url('https://public.jisuhudong.com/minapp/wallet_banner.png') no-repeat center center;
   background-size: 100% 100%;
   border-radius: 16rpx;
   position: relative;
   width: 702rpx;
   height: 240rpx;
   overflow: hidden;
+  margin-top: 38rpx;
 }
 
 .balance-main {
