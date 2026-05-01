@@ -357,6 +357,9 @@ Page({
     submitClaimId: '',
     submitVideoUrl: '',
     submitting: false,
+    total_count: 0,
+    remaining_count: 0,
+    enrolled_count: 0
   },
 
   onLoad(options) {
@@ -414,6 +417,8 @@ Page({
       const res = await Api.getTask(taskId);
       const task = normalizeTask(res.data || {});
       const currentUserId = getCurrentUserId();
+      const totalCount = Number(task.total_count || 0) || 0;
+      const remainingCount = Number(task.remaining_count || 0) || 0;
       this.setData({
         task,
         materials: task.materials || [],
@@ -424,6 +429,9 @@ Page({
         isFull: !!task.isFull,
         submitClaimId: task.claim && task.claim.id ? String(task.claim.id) : '',
         isMerchantTask: !!(currentUserId && String(task.businessId || task.business_id || '') === currentUserId),
+        total_count: totalCount,
+        remaining_count: remainingCount,
+        enrolled_count: totalCount - remainingCount
       });
       this.startCountdownTimer(task.endAt);
       this.syncClaimMaterialPolling(task.claimMaterials || []);
@@ -482,6 +490,20 @@ Page({
       data: taskId,
       success: () => {
         wx.showToast({ title: '已复制', icon: 'success' });
+      }
+    });
+  },
+
+  copyJimengLink() {
+    const jimengLink = (this.data.task && this.data.task.jimengLink) || '';
+    if (!jimengLink) {
+      wx.showToast({ title: '暂无可复制链接', icon: 'none' });
+      return;
+    }
+    wx.setClipboardData({
+      data: jimengLink,
+      success: () => {
+        wx.showToast({ title: '复制成功', icon: 'success' });
       }
     });
   },

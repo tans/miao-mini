@@ -144,29 +144,33 @@
   background: #fff;
   padding: 20rpx 32rpx 0 32rpx;
   border-bottom: 1rpx solid #f0f0f0;
+  border-radius: 24rpx 24rpx 0rpx 0rpx;
 }
 
 .tab-item {
+  position: relative;
   padding: 16rpx 20rpx;
   text-align: center;
-  font-size: 28rpx;
-  color: #999;
+  font-size: 32rpx;
+  color: #1D2129;
   font-weight: 500;
 }
 
 .tab-item.active {
-  color: #333;
+  color: #EF8802;
   font-weight: 700;
 }
 
-.tab-indicator {
+.tab-item.active::after {
+  content: "";
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 0;
   width: 64rpx;
   height: 4rpx;
   background: #ef8802;
-  border-radius: 2rpx;
-  transition: left 0.3s ease;
+  border-radius: 4rpx;
 }
 
 /* 内容滚动区 */
@@ -176,20 +180,20 @@
 
 /* 商家信息卡片 */
 .detail-content{
-  padding: 40rpx 24rpx;
+  padding: 32rpx 24rpx;
 }
 .merchant-card {
   background: #fff;
   padding: 32rpx;
   margin-bottom: 24rpx;
-  box-shadow: 0rpx 20rpx 52rpx 0rpx rgba(20,42,31,0.08);
+  box-shadow: 0rpx 4rpx 16rpx 0rpx rgba(17,17,17,0.04);
+  border-radius: 16rpx 16rpx 16rpx 16rpx;
 }
 
 .merchant-info {
   display: flex;
   align-items: center;
-  gap: 20rpx;
-  margin-bottom: 24rpx;
+  gap: 24rpx;
 }
 
 .merchant-avatar {
@@ -200,14 +204,21 @@
 
 .merchant-detail {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.merchant-info-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .merchant-name {
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: 700;
   color: #333;
-  margin-bottom: 8rpx;
   display: block;
+  width: 338rpx;
 }
 
 .merchant-badges {
@@ -219,9 +230,10 @@
   display: flex;
   align-items: center;
   gap: 6rpx;
-  padding: 4rpx 12rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
+  padding: 6rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  line-height: 1.4;
 }
 
 .badge-icon {
@@ -235,23 +247,32 @@
 .badge-brand {
   background: #F0F7FF;
   color: #616878;
+  border: 2rpx solid #A9D2FF;
+}
+.badge-brand .badge-text{
+  color: #616878;
 }
 
 .badge-trusted {
-  background: #E9FFEE;
-  color: #616878;
+  background: #15B255;
+  color: #fff;
+}
+.badge-trusted .badge-text{
+  color: #fff;
 }
 .badge-icon {
   width: 24rpx;
   height: 24rpx;
 }
-
+.merchant-card-content{
+  display: flex;
+  flex-direction: column;
+}
 .merchant-stats {
   display: flex;
   align-items: center;
-  border-radius: 12rpx;
-  padding: 8rpx 0 40rpx 0;
-  justify-content: space-between;
+  margin-top: 16rpx;
+  gap: 32rpx;
 }
 
 .stat-item {
@@ -287,14 +308,17 @@
   justify-content: space-between;
   align-items: center;
   background: #fff;
-  border-top: 2rpx solid #ECEEF4;
-  padding-top: 20rpx;
+}
+.title-text{
+  font-family: PingFang SC, PingFang SC;
+  font-weight: 800;
+  font-size: 32rpx;
+  color: #333333;
+  line-height: 48rpx;
 }
 
 .id-info {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 8rpx;
   
 }
@@ -326,6 +350,13 @@
 }
 
 /* 详情卡片 */
+.detail-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24rpx;
+  border-bottom: 2rpx solid #ECECEF;
+}
 .detail-card-title{
   font-family: PingFang SC, PingFang SC;
   font-weight: bold;
@@ -334,71 +365,108 @@
   line-height: 48rpx;
 }
 .detail-card {
-  background: #fff;
+  /* background: #fff;
   padding: 32rpx;
-  margin-bottom: 24rpx;
+  margin-bottom: 24rpx; */
 }
 
 .detail-title {
   font-size: 36rpx;
   font-weight: 700;
   color: #333;
-  margin-bottom: 24rpx;
+  /* margin-bottom: 24rpx ; */
   display: block;
-  margin-top: 24rpx;
+  /* margin-top: 24rpx ; */
+  width: 456rpx;
+  font-family: PingFang SC, PingFang SC;
 }
 
 .reward-row {
   display: flex;
   align-items: center;
-  /* justify-content: center ; */
   gap: 32rpx;
   margin-bottom: 32rpx;
-  /* padding: 24rpx ; */
-  /* background: #fff4e8 ; */
   border-radius: 12rpx;
   justify-content: space-between;
+  margin: 24rpx 0;
 }
 
 .reward-item {
   display: flex;
   /* flex-direction: column; */
   align-items: center;
-  gap: 8rpx;
+  gap: 16rpx;
 }
 
 .reward-label {
   font-size: 24rpx;
-  color: #8C8C98;
+  color: #333;
 }
 
 .reward-value-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 4rpx;
 }
 
 .reward-value {
-  font-size: 40rpx;
+  font-size: 48rpx;
   font-weight: 700;
   color: #EF4444;
+  font-family: D-DIN-PRO, D-DIN-PRO;
 }
 
 .reward-unit {
-  font-size: 24rpx;
-  color: #8C8C98;
+  font-size: 28rpx;
+  color: #EF4444;
 }
 
 .reward-plus {
   font-size: 32rpx;
   color: #ccc;
 }
+.task-progress{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.progress-info {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+.progress-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.progress-num {
+  font-size: 24rpx;
+  color: #F99935;
+  font-weight: 600;
+}
+.progress-bar-body {
+  width: 100%;
+  margin-top: 16rpx;
+}
+.progress-bar {
+  width: 100%;
+  border-radius: 4px;
+  flex: 1;
+  height: 16rpx;
+  background: #F2EEEB;
+  border-radius: 4rpx;
+}
+.progress-bar /deep/ .progress__bar {
+  background-color: #1677ff;
+  border-radius: 4px;
+}
 
 /* 标签 */
 .tags-row {
   display: flex;
-  gap: 24rpx;
-  margin-bottom: 24rpx;
+  gap: 8rpx;
+  margin-bottom: 50rpx;
 }
 
 .tag-group {
@@ -416,17 +484,15 @@
   font-size: 24rpx;
   color: #333;
   font-weight: 500;
-  padding: 8rpx 16rpx;
+  padding: 2rpx 16rpx;
   background: #f5f5f5;
   border-radius: 8rpx;
 }
 
 /* 描述 */
 .desc-section {
-  padding: 24rpx 32rpx;
-  background: #EEF5FF;
   border-radius: 16rpx;
-  margin-bottom: 24rpx;
+  margin: 24rpx 0 40rpx 0;
 }
 
 .desc-text {
@@ -439,17 +505,14 @@
 .specs-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16rpx;
-  margin-bottom: 24rpx;
+  gap: 26rpx;
+  margin: 24rpx 0;
 }
 
 .spec-item {
   display: flex;
   justify-content: space-between;
   gap: 4rpx;
-  border-bottom: 1px solid #ECECEF;
-  padding-bottom: 16rpx;
-  padding-top: 16rpx;
 }
 
 .spec-label {
@@ -482,45 +545,43 @@
 
 /* 素材卡片 */
 .material-card {
-  background: #fff;
+  /* background: #fff;
   padding: 32rpx;
-  margin-bottom: 24rpx;
+  margin-bottom: 24rpx; */
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24rpx;
 }
 
 .header-title {
-  font-size: 30rpx;
-  font-weight: 700;
-  color: #333;
+  font-family: PingFang SC, PingFang SC;
+  font-weight: 800;
+  font-size: 32rpx;
+  color: #333333;
 }
 
 .download-btn {
-  padding: 8rpx 20rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-}
-
-.download-btn text {
-  font-size: 22rpx;
-  color: #666;
+  font-family: PingFang SC, PingFang SC;
+  font-weight: 800;
+  font-size: 24rpx;
+  color: #F58A1F;
 }
 
 .material-grid {
   display: flex;
-  gap: 16rpx;
+  gap: 24rpx;
   overflow-x: auto;
 }
 
 .material-item {
   flex-shrink: 0;
-  width: 200rpx;
-  height: 200rpx;
-  border-radius: 12rpx;
+  width: 192rpx;
+  height: 192rpx;
+  border-radius: 16rpx;
   overflow: hidden;
 }
 
@@ -538,17 +599,66 @@
   align-items: center;
   justify-content: space-between;
 }
+.header-content{
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+.header-desc{
+  font-size: 24rpx;
+  color: #555562;
+  line-height: 36rpx;
+}
 
 .jimeng-content {
-  margin-top: 16rpx;
-  padding: 20rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
+  margin-top: 24rpx;
+  padding: 20rpx 24rpx;
+  background: #F6F7FE;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jimeng-link {
+  font-family: PingFang SC, PingFang SC;
+  font-weight: 800;
+  font-size: 23rpx;
+  color: #B7B7C2;
+}
+
+.jimeng-badge {
+  width: 152rpx;
+  height: 48rpx;
+  background: #ECECEF;
+  border-radius: 8rpx 8rpx 8rpx 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.jimeng-badge-text {
+  font-weight: 800;
+  font-size: 24rpx;
+  color: #8C8C98;
+  line-height: 32rpx;
+}
+
+.jimeng-copy {
+  padding: 16rpx 24rpx;
+  background: #FEF4E6;
+  width: auto;
+  height: auto;
+}
+
+.jimeng-copy-text {
+  color: #EF8802;
+  font-size: 24rpx;
 }
 
 .jimeng-link {
   font-size: 24rpx;
-  color: #2563eb;
+  color: #B7B7C2;
   word-break: break-all;
 }
 
@@ -563,6 +673,12 @@
   font-size: 24rpx;
   color: #8C8C98;
 }
+.jimeng-course{
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  color: #1979F7;
+
+}
 
 /* 安全提醒 */
 .safety-card {
@@ -573,8 +689,7 @@
 
 .safety-header {
   display: flex;
-  align-items: center;
-  gap: 12rpx;
+  gap: 2rpx;
   margin-bottom: 16rpx;
 }
 
@@ -583,7 +698,7 @@
 }
 
 .safety-title {
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-weight: 700;
   color: #333;
 }
@@ -652,11 +767,6 @@
   color: #ef8802;
 }
 
-.reward-unit {
-  font-size: 22rpx;
-  color: #999;
-}
-
 .recommend-tags {
   display: flex;
   gap: 12rpx;
@@ -684,12 +794,6 @@
   flex-shrink: 0;
 }
 
-.progress-bar {
-  flex: 1;
-  height: 8rpx;
-  background: #e0e0e0;
-  border-radius: 4rpx;
-}
 
 .progress-fill {
   height: 100%;
@@ -1116,6 +1220,12 @@
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
   background: #fff;
   border-top: 1rpx solid #f0f0f0;
+  flex-direction: column;
+}
+.action-text{
+  font-size: 24rpx;
+color: #8C8C98;
+margin-bottom: 8rpx;
 }
 
 .countdown-section {
@@ -1136,7 +1246,7 @@
 
 .signup-btn, .submit-btn {
   padding: 24rpx 64rpx;
-  background: linear-gradient(135deg, #ff9a1f, #ef6c00);
+  background: #FF9F2F;
   border-radius: 48rpx;
   border: none;
   width: 100%;
@@ -1165,7 +1275,7 @@
 
 .submit-work-btn {
   padding: 24rpx 64rpx;
-  background: linear-gradient(135deg, #ff9a1f, #ef6c00);
+  background: #FF9F2F;
   border-radius: 48rpx;
   border: none;
 }
