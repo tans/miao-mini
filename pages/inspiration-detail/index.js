@@ -59,7 +59,7 @@ Page({
       const pendingVideo = videoMaterial && !videoMaterial.file_path ? videoMaterial : null;
       const normalizedInspiration = {
         ...inspiration,
-        previewVideoSrc: Api.getDisplayUrl(
+        previewVideoSrc: Api.getPlayableUrl(
           inspiration.previewVideoSrc ||
           inspiration.video_url ||
           (videoMaterial && (videoMaterial.previewUrl || videoMaterial.file_path || videoMaterial.processed_file_path)) ||

@@ -12,6 +12,12 @@ function getImageMaterial(materials = []) {
   return materials.find((item) => item.file_type === 'image') || null;
 }
 
+function getOriginalVideoMaterial(materials = []) {
+  return materials.find(
+    (item) => item.file_type === 'video' && (item.source_file_path || item.sourceFilePath || item.file_path)
+  ) || null;
+}
+
 function createFallbackCover(seedText, description) {
   const text = (description || seedText || '').replace(/\s+/g, ' ').trim();
   let hash = 0;
@@ -203,10 +209,11 @@ Page({
     const firstMaterial = materials[0] || null;
     const videoMaterial = getVideoMaterial(materials);
     const imageMaterial = getImageMaterial(materials);
+    const originalVideoMaterial = getOriginalVideoMaterial(materials);
     const coverType = item.cover_type || (videoMaterial ? 'video' : '') || (imageMaterial ? 'image' : 'image');
     const previewVideoSrc =
       coverType === 'video'
-        ? Api.getDisplayUrl(
+        ? Api.getPlayableUrl(
           item.video_url ||
           item.previewVideoSrc ||
           (videoMaterial && (videoMaterial.previewUrl || videoMaterial.file_path || videoMaterial.processed_file_path)) ||
@@ -261,8 +268,15 @@ Page({
       previewVideoSrc,
       likesCount: Number(item.likes || 0),
       materialCount: materials.length,
-      downloadUrl: (firstMaterial && firstMaterial.file_path) || previewVideoSrc || displayCover || '',
-      downloadType: (firstMaterial && firstMaterial.file_type) || coverType,
+      originalVideoDownloadUrl: Api.getDisplayUrl(
+        (
+          originalVideoMaterial && (
+            originalVideoMaterial.source_file_path ||
+            originalVideoMaterial.sourceFilePath ||
+            originalVideoMaterial.file_path
+          )
+        ) || ''
+      ),
       adoptedAtText: this.formatDateTime(adoptedAt),
       fallbackThemeClass: fallbackCover.themeClass,
       fallbackSummary: fallbackCover.summary,

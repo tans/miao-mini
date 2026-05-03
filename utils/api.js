@@ -237,6 +237,28 @@ const Api = {
     return this.resolvePublicUrl(raw);
   },
 
+  getPlayableUrl(url) {
+    let raw = (url || '').trim();
+    if (!raw) return '';
+    raw = this.getRawDisplayUrl(raw);
+    if (
+      raw.startsWith('data:') ||
+      raw.startsWith('wxfile://') ||
+      raw.startsWith('cloud://') ||
+      raw.startsWith('/assets/') ||
+      raw.startsWith('/images/')
+    ) {
+      return raw;
+    }
+    if (raw.startsWith('/')) {
+      return this.resolvePublicUrl(raw);
+    }
+    if (/^https?:\/\//i.test(raw)) {
+      return raw;
+    }
+    return this.resolvePublicUrl(raw);
+  },
+
   getRawDisplayUrl(url) {
     const raw = (url || '').trim();
     if (!raw) return '';

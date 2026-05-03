@@ -154,7 +154,7 @@ Page({
       ...item,
       isVideo,
       previewVideoSrc: isVideo
-        ? Api.getDisplayUrl(
+        ? Api.getPlayableUrl(
           item.previewVideoSrc ||
           item.video_url ||
           (videoMaterial && (videoMaterial.previewUrl || videoMaterial.file_path || videoMaterial.processed_file_path)) ||

@@ -8,9 +8,9 @@ function normalizePreviewUrl(value = '') {
   const raw = (value || '').trim();
   if (!raw) return '';
   try {
-    return Api.getDisplayUrl(decodeURIComponent(raw));
+    return Api.getPlayableUrl(decodeURIComponent(raw));
   } catch (e) {
-    return Api.getDisplayUrl(raw);
+    return Api.getPlayableUrl(raw);
   }
 }
 

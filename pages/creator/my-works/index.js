@@ -98,7 +98,7 @@ Page({
         firstMaterial.file_path ||
         ''
       );
-    const previewVideoSrc = Api.getDisplayUrl(
+    const previewVideoSrc = Api.getPlayableUrl(
       (firstVideoMaterial && (
         firstVideoMaterial.previewUrl ||
         firstVideoMaterial.file_path ||
@@ -193,7 +193,7 @@ Page({
       filterKey: this.getFilterKey(status, reviewResult),
       previewImages: imageMaterials.map(m => Api.getDisplayUrl(m.file_path)).filter(Boolean),
       previewVideos: videoMaterials.map(m => ({
-        url: Api.getDisplayUrl(m.previewUrl || m.file_path || m.processed_file_path || ''),
+        url: Api.getPlayableUrl(m.previewUrl || m.file_path || m.processed_file_path || ''),
         poster: Api.getDisplayUrl(m.thumbnail_path || '')
       })).filter(item => item.url),
       submittedAt: formatDateTime(claim.submitted_at || claim.updated_at || ''),
