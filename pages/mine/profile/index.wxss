@@ -60,8 +60,10 @@
   align-items: center;
   min-height: 92rpx;
   border-radius: 14rpx;
-  background: #f5f5f7;
+  border: 2rpx solid #ececef;
+  background: transparent;
   padding: 0 24rpx;
+  box-sizing: border-box;
 }
 
 .info-row + .info-row {
@@ -71,7 +73,7 @@
 .info-label {
   width: 140rpx;
   font-size: 28rpx;
-  color: #4f4f4f;
+  color: #333;
   font-weight: 500;
 }
 
@@ -80,6 +82,18 @@
   flex: 1;
   font-size: 30rpx;
   color: #333;
+  min-width: 0;
+}
+
+.info-copy-btn {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+  padding: 16rpx 24rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #ff9f2f;
+  background: #FEF4E6;
 }
 
 .info-input {

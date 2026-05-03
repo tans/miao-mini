@@ -214,8 +214,9 @@
 }
 
 .action-btn.btn-pending {
-  background: #eef4ff;
-  color: #2f6fed;
+  background: #fff;
+  color: #333;
+  border: 1px solid #ececef;
   margin-left: auto;
 }
 

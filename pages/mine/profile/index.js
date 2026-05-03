@@ -4,6 +4,7 @@ const app = getApp();
 Page({
   data: {
     user: null,
+    userIdDisplay: '--',
     nickname: '',
     phone: '',
     avatarSrc: '/assets/icons/avatar-default.jpg'
@@ -16,8 +17,10 @@ Page({
   async loadUser() {
     const user = app.globalData.user;
     const rawAvatar = Api.getRawDisplayUrl(user && user.avatar);
+    const userIdDisplay = user && user.id != null && user.id !== '' ? String(user.id) : '--';
     this.setData({
       user: user ? { ...user, avatar: rawAvatar } : user,
+      userIdDisplay,
       nickname: user && (user.nickname || user.username) || '',
       phone: user && user.phone || '',
       avatarSrc: Api.getDisplayUrl(rawAvatar) || '/assets/icons/avatar-default.jpg'
@@ -33,8 +36,10 @@ Page({
       const latestAvatar = Api.getRawDisplayUrl(latestUser.avatar);
       const normalizedUser = { ...latestUser, avatar: latestAvatar };
       app.setAuth(app.getToken(), normalizedUser);
+      const userIdDisplay = normalizedUser.id != null && normalizedUser.id !== '' ? String(normalizedUser.id) : '--';
       this.setData({
         user: normalizedUser,
+        userIdDisplay,
         nickname: normalizedUser.nickname || normalizedUser.username || '',
         phone: normalizedUser.phone || '',
         avatarSrc: Api.getDisplayUrl(latestAvatar) || '/assets/icons/avatar-default.jpg'
@@ -58,6 +63,19 @@ Page({
 
   goBack() {
     wx.navigateBack({ delta: 1 });
+  },
+
+  copyUserId() {
+    const id = this.data.user && this.data.user.id;
+    if (id == null || id === '') {
+      wx.showToast({ title: '暂无用户ID', icon: 'none' });
+      return;
+    }
+    wx.setClipboardData({
+      data: String(id),
+      success: () => wx.showToast({ title: '已复制', icon: 'success' }),
+      fail: () => wx.showToast({ title: '复制失败', icon: 'none' }),
+    });
   },
 
   changeAvatar() {

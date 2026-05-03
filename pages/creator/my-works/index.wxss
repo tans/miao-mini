@@ -322,6 +322,7 @@
   font-size: 40rpx;
   font-weight: 900;
   color: #EF4444;
+  font-family: 'home-din-pro-700-bold';
 }
 
 /* 淘汰原因 */

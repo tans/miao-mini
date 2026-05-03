@@ -106,7 +106,7 @@
           </view>
           <view class="badge badge-brand">
             <image src="../../images/home/badge-brand.png" class="badge-icon" />
-            <text>品牌名企</text>
+            <text>认证企业</text>
           </view>
           <view class="badge badge-trusted">
             <image src="../../images/home/badge-trusted.png" class="badge-icon" />

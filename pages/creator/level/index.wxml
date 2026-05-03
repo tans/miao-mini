@@ -1,10 +1,6 @@
 <view class="level-page">
   <view class="page-header">
-    <view class="header-left">
-      <text class="page-title">创作者信用等级</text>
-      <text class="page-score">Lv{{currentLevel}}</text>
-    </view>
-    <view class="header-deco"></view>
+    <image src="https://public.jisuhudong.com/minapp/vip/vip{{currentLevel}}-bg.png.png" style="width: 702rpx; height: 300rpx;" />
   </view>
 
   <view class="summary-grid">

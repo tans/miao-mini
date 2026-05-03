@@ -87,7 +87,7 @@ function normalizeTask(task = {}) {
         actionTap: 'goReviewTask',
       }
       : {
-        actionText: '查看',
+        actionText: '查看结果',
         actionTap: 'goTaskDetail',
       };
 

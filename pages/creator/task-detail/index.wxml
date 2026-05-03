@@ -59,7 +59,7 @@
               <!-- wx:if="{{task.isBrandEnterprise}}" -->
               <view class="badge badge-brand" >
                 <image src="../../../images/home/badge-brand.png" class="badge-icon" />
-                <text class="badge-text">品牌名企</text>
+                <text class="badge-text">认证企业</text>
               </view>
             </view>
             <view class="merchant-stats">

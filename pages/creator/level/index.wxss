@@ -37,16 +37,12 @@
 }
 
 .page-header {
-  background: url("https://public.jisuhudong.com/minapp/创作者等级背景.png") no-repeat center center;
-  background-size: 100% 100%;
   border-radius: 12rpx;
   margin: 32rpx 0;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 702rpx;
-  height: 240rpx;
 }
 
 .header-left {
