@@ -81,7 +81,7 @@
 /* 自定义导航栏：背景由组件 elevated 控制 */
 .mine-top-anchor > custom-nav {
   position: relative;
-  z-index: 1;
+  z-index: 9999;
 }
 
 .status-bar-placeholder {

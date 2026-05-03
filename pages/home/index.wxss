@@ -525,7 +525,7 @@
 /* 导航背景由 custom-nav 的 elevated 控制，勿在此处强制透明以免盖住白底态 */
 .shared-bg-container > custom-nav {
   position: relative;
-  z-index: 1;
+  z-index: 9999;
 }
 
 .nav-slot-placeholder {

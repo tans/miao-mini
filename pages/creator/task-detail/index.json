@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "任务详情",
+  "enablePullDownRefresh": false,
   "usingComponents": {
     "circle-progress": "/components/circle-progress/circle-progress"
   }
