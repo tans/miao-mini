@@ -1,5 +1,5 @@
 <view class="messages-page">
-  <view class="messages-header" style="padding-top: {{statusBarHeight}}px;">
+  <view class="messages-header">
     <view class="header-row">
       <view class="filter-row">
         <view class="filter-pill {{currentFilter === 'all' ? 'active' : ''}}" data-filter="all" bindtap="switchFilter">

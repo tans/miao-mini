@@ -18,6 +18,16 @@ Component({
     showBack: {
       type: Boolean,
       value: false
+    },
+    /** 固定在视口顶部（首页滚动吸顶） */
+    pinned: {
+      type: Boolean,
+      value: false
+    },
+    /** 白底+阴影（与 pinned 配合，由页面根据 scrollTop 切换） */
+    elevated: {
+      type: Boolean,
+      value: false
     }
   },
 

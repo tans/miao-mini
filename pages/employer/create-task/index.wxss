@@ -616,6 +616,8 @@
   font-size: 24rpx;
   color: #1979F7;
   margin-top: 16rpx;
+  display: flex;
+  align-items: center;
 }
 
 .jimeng-tips {
@@ -1053,4 +1055,8 @@ picker.spec-item {
   color: #8C8C98;
   margin-bottom: 8rpx;
   text-align: center;
+}
+
+.agreement-link {
+  color: #ef8802;
 }

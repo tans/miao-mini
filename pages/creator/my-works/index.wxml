@@ -48,7 +48,6 @@
           <text>▶</text>
         </view>
       </view>
-
       <!-- 作品信息 -->
       <view class="work-info">
         <view class="info-header">
@@ -62,16 +61,16 @@
         <text class="submit-time" wx:if="{{item.processStatusText}}">{{item.processStatusText}}</text>
 
         <!-- 收入信息 -->
-        <view class="income-row" wx:if="{{item.statusClass !== 'reported' && item.statusClass !== 'rejected' }}">
+        <view class="income-row" wx:if="{{item.statusText !== '商家审核中'}}">
           <text class="income-label">{{item.incomeLabel}}</text>
-          <text class="income-value">{{item.incomeText}}</text>
+          <view class="appeal-btn-container" wx:if="{{item.statusText === '已举报'}}">
+            <view class="appeal-btn" data-claim-id="{{item.id}}" bindtap="goAppeal">我要申诉</view>
+          </view>
+          <text class="income-value" wx:else>{{item.incomeText}}</text>
         </view>
 
         <!-- 淘汰原因 -->
-        <view wx:if="{{item.statusClass === 'rejected' && item.rejectReason}}">
-          <view class="reject-reason">
-            <text class="reason-text">淘汰原因：{{item.rejectReason}}</text>
-          </view>
+        <!-- <view wx:if="{{item.statusClass === 'rejected' && item.rejectReason}}">
           <view class="income-row" style="margin-top: 32rpx;">
             <text class="income-label">收入(参与金)</text>
             <text class="income-value">{{item.incomeText}}</text>
@@ -80,15 +79,21 @@
             <text>对淘汰结果有异议，可立即申诉</text>
             <view class="appeal-btn" data-claim-id="{{item.id}}" bindtap="goAppeal">我要申诉</view>
           </view>
-        </view>
+        </view> -->
 
         <!-- 举报原因 -->
-        <view class="report-section" wx:if="{{item.statusClass === 'reported'}}">
-          <view class="report-text">举报原因：{{item.reportReason}}</view>
+        <!-- <view class="report-section" wx:if="{{item.statusClass === 'reported'}}">
           <view class="appeal-btn-container">
             <text>被举报作品无奖金</text>
             <view class="appeal-btn" data-claim-id="{{item.id}}" bindtap="goAppeal">我要申诉</view>
           </view>
+        </view> -->
+      </view>
+      <view class="tips-content tips-content--{{item.tipsVariant}}" wx:if="{{item.tipsVariant}}">
+        <image class="tips-content-icon" src="{{item.tipsIcon}}" mode="aspectFit" />
+        <view class="tips-content-body">
+          <text class="tips-content-title">{{item.tipsTitle}}</text>
+          <text class="tips-content-desc">{{item.tipsDesc}}</text>
         </view>
       </view>
     </view>

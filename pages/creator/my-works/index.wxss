@@ -107,6 +107,61 @@
   color: #ef8802;
 }
 
+/* 状态说明条（tips-content） */
+.tips-content {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 16rpx;
+  margin: 0 24rpx 24rpx;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+}
+
+.tips-content--pending,
+.tips-content--timeout {
+  background: #eef5ff;
+}
+
+.tips-content--rejected {
+  background: #f5f5f5;
+}
+
+.tips-content--adopted {
+  background: #eef9f1;
+}
+
+.tips-content--reported {
+  background: #fef0f0;
+}
+
+.tips-content-icon {
+  width: 40rpx;
+  height: 40rpx;
+  flex-shrink: 0;
+  margin-right: 16rpx;
+}
+
+.tips-content-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.tips-content-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #333333;
+  line-height: 40rpx;
+}
+
+.tips-content-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #555562;
+  line-height: 36rpx;
+}
+
 /* 作品列表 */
 .works-list {
   padding: 0 24rpx 24rpx;
@@ -119,6 +174,7 @@
   margin-bottom: 32rpx;
   box-shadow: 0 2rpx 8rpx rgba(17, 17, 17, 0.04);
   display: block;
+  overflow: hidden;
 }
 
 .work-cover {
@@ -306,7 +362,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 32rpx;
   font-weight: 800;
   font-size: 25rpx;
   color: #555562;

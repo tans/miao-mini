@@ -288,7 +288,16 @@
   display: flex;
   align-items: center;
 }
-
+.wallet-right-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239,136,2,0.1);
+  padding:8rpx 32rpx;
+  color: #EF8802;
+  font-size: 24rpx;
+  border-radius: 19998rpx 19998rpx 19998rpx 19998rpx;
+}
 .wallet-desc {
   font-size: 24rpx;
   color: #8C8C98;
@@ -346,8 +355,8 @@
 }
 
 .zone-icon {
-  width: 28rpx;
-  height: 28rpx;
+  width: 40rpx;
+  height: 40rpx;
   margin-right: 20rpx;
 }
 
@@ -377,13 +386,11 @@
 .badge-num {
   color: #FF6A5C;
   font-size: 28rpx;
-  font-weight: 600;
-  border-radius: 10rpx;
 }
 
 .badge-text {
-  font-size: 22rpx;
-  color: #666;
+  font-size: 28rpx;
+  color: #000000;
 }
 
 .zone-action {
@@ -400,7 +407,7 @@
   align-items: center;
 }
 
-.action-tag.is-uncertified {
+/* .action-tag.is-uncertified {
   background: rgba(239, 136, 2, 0.10);
 }
 
@@ -414,7 +421,7 @@
 
 .action-tag.is-certified {
   background: rgba(29, 155, 72, 0.12);
-}
+} */
 
 .action-tag-text {
   font-size: 22rpx;

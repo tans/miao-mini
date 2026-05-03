@@ -677,7 +677,8 @@
   margin-top: 24rpx;
   font-size: 24rpx;
   color: #1979F7;
-
+  display: flex;
+  align-items: center;
 }
 
 /* 安全提醒 */
@@ -1226,6 +1227,10 @@
   font-size: 24rpx;
 color: #8C8C98;
 margin-bottom: 8rpx;
+}
+
+.creator-agreement-link {
+  color: #ef8802;
 }
 
 .countdown-section {

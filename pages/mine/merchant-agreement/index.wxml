@@ -1,0 +1,69 @@
+<view class="agreement-page">
+  <text class="doc-main-title">平台商家服务协议</text>
+
+  <view class="party-block">
+    <text class="party-line"><text class="party-label">甲方（商家）：</text>________________________</text>
+    <text class="party-line"><text class="party-label">乙方（平台运营方）：</text>佛山市极速互动科技有限公司</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第一条 协议目的</text>
+    <text class="clause">1.1 本协议由甲方与乙方就甲方使用乙方运营的「创意喵」小程序及相关服务（下称「本平台」）发布视频类任务、托管资金、验收作品及结算等事项订立。</text>
+    <text class="clause">1.2 甲方在平台完成商家认证、发单、托管或支付等行为，即视为已阅读并同意本协议全部条款。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第二条 任务发布与资金托管</text>
+    <text class="clause">2.1 甲方应按照平台规则如实填写任务需求、预算、期限及验收标准，并依法保证需求内容真实、合法。</text>
+    <text class="clause">2.2 甲方理解并同意，为保障交易安全，相关款项可按平台规则进入托管状态，在约定条件成就前由平台依规则冻结或划转。</text>
+    <text class="clause">2.3 甲方应保证账户资金来源合法，并配合完成必要的身份核验与合规审查。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第三条 作品验收与结算</text>
+    <text class="clause">3.1 甲方应在平台规则及任务约定的期限内完成审核；逾期未审核的，平台可按公示规则处理（例如自动结算参与奖励等），具体以平台当时公示为准。</text>
+    <text class="clause">3.2 甲方对作品的验收、采纳、淘汰及举报等操作，应遵循诚实信用原则，不得恶意拖延或滥用权利。</text>
+    <text class="clause">3.3 结算金额、税费及服务费以平台订单、钱包流水及公示规则为准。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第四条 退款与争议处理</text>
+    <text class="clause">4.1 符合法律法规及平台规则的退款、解冻或争议处理流程，甲方应予以配合并提供必要材料。</text>
+    <text class="clause">4.2 甲方与创作者之间的履约争议，双方应先行协商；协商不成的，可申请平台客服协调，或通过合法途径解决。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第五条 版权与合规</text>
+    <text class="clause">5.1 甲方应保证任务素材、品牌元素及委托内容不侵犯任何第三方合法权益，并遵守广告、知识产权及互联网内容管理等相关规定。</text>
+    <text class="clause">5.2 作品被甲方依法依约采纳后，双方关于著作权、使用权等归属的约定以任务约定及平台规则为准；未约定的，依照法律规定及行业惯例处理。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第六条 平台权利与义务</text>
+    <text class="clause">6.1 乙方提供信息发布、撮合、资金托管及技术服务等，乙方可在法律法规允许范围内制定并调整运营规则，调整后将通过合理方式公示。</text>
+    <text class="clause">6.2 乙方有权对涉嫌违法、违规、侵权或违反公序良俗的内容及账号采取警示、限制、下架、终止服务等措施。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第七条 甲方承诺与保证</text>
+    <text class="clause">7.1 甲方具备从事相关经营或委托活动的合法资质（如需），所提交资料真实、准确、完整。</text>
+    <text class="clause">7.2 甲方不得利用平台从事洗钱、欺诈、传销、赌博等违法活动，不得发布虚假或误导性信息。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第八条 免责条款</text>
+    <text class="clause">8.1 因不可抗力、网络故障、系统维护、第三方原因或非乙方过错导致的服务中断或数据异常，乙方在法律法规允许范围内承担责任。</text>
+    <text class="clause">8.2 乙方对甲方与创作者之间的线下沟通、私下交易及因此产生的纠纷不承担责任。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">第九条 协议生效</text>
+    <text class="clause">9.1 本协议自甲方在平台点击同意或完成首次发单等接受服务的行为之日起生效，至甲方账户注销或双方权利义务依法终止之日止。</text>
+    <text class="clause">9.2 本协议未尽事宜，适用平台公示规则及中华人民共和国法律法规；如部分条款无效，不影响其他条款效力。</text>
+  </view>
+
+  <view class="sign-block">
+    <text class="sign-line"><text class="party-label">甲方（商家）：</text>________________________</text>
+    <text class="sign-line"><text class="party-label">乙方（平台运营方）：</text>佛山市极速互动科技有限公司</text>
+  </view>
+</view>

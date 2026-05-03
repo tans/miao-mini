@@ -494,6 +494,10 @@ Page({
     });
   },
 
+  goCreatorAgreement() {
+    wx.navigateTo({ url: '/pages/mine/creator-agreement/index' });
+  },
+
   copyJimengLink() {
     const jimengLink = (this.data.task && this.data.task.jimengLink) || '';
     if (!jimengLink) {

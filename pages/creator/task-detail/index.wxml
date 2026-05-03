@@ -83,7 +83,7 @@
           <view class="detail-header">
             <text class="detail-title">{{task.title || ''}}</text>
             <view class="badge badge-trusted">
-              <image src="../../../images/home/badge-trusted.png" class="badge-icon" />
+              <image src="../../../images/icon/zijin.png" class="badge-icon" />
               <text class="badge-text">资金已托管</text>
             </view>
           </view>
@@ -184,7 +184,7 @@
             </view>
           </view>
           <view class="jimeng-course">
-            如何使用即梦合拍？查看教程>
+            <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
           </view>
         </view>
         <view class="merchant-card" wx:if="{{task.jimengLink && !hasSignedUp}}">
@@ -321,7 +321,7 @@
   <!-- 底部操作栏 -->
   <view class="action-bar">
     <view class="action-text" wx:if="{{!isMerchantTask&&!hasSignedUp}}">报名即代表同意 
-      <text style="color:#EF8802;">《平台创作者协议》</text>
+      <text class="creator-agreement-link" bindtap="goCreatorAgreement">《平台创作者协议》</text>
     </view>
     <button style="width:100%" class="action-btn {{isMerchantTask ? 'submit-work-btn' : (!hasSignedUp || canSubmit ? 'submit-work-btn' : (task.claimActionClass || 'action-state-pending'))}}" bindtap="handleMainAction">
       <text>{{isMerchantTask ? '编辑审核' : (!hasSignedUp ? '截稿倒计时：'+countdownText+'，立即报名' : canSubmit ? '上传稿件' : (task.claimActionText || '已报名，等待审核'))}}</text>

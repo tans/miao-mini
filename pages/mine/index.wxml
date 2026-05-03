@@ -14,12 +14,12 @@
           <view class="user-name-row" bindtap="goProfile">
             <view style="display: flex; align-items: center; gap: 10rpx;">
               <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
-              <image class="wallet-arrow" src="../../images/mine/right.png" />
+              <!-- <image class="wallet-arrow" src="../../images/mine/right.png" /> -->
             </view>
-            <view class="user-right">
+            <!-- <view class="user-right">
               <text class="user-id">ID：{{user.id || '--'}}</text>
               <image class="user-arrow" src="../../images/mine/arrow-right.png" bindtap="copyUserId" />
-            </view>
+            </view> -->
           </view>
           <view class="user-level-row"  bindtap="goLevel">
             <view class="level-info">
@@ -48,6 +48,11 @@
         <text class="wallet-balance">¥{{balance || '0.00'}}</text>
         <text class="wallet-desc">可提现余额</text>
       </view>
+      <view class="wallet-right">
+        <view class="wallet-right-item">
+          <text class="wallet-right-text">立即提现</text>
+        </view>
+      </view>
     </view>
   </view>
 
@@ -59,9 +64,9 @@
       <view class="zone-items">
         <view class="zone-item" bindtap="goMyClaims">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-task.png" />
+            <image class="zone-icon" src="../../images/icon/renwu.png" />
             <view class="zone-item-content">
-              <text class="zone-item-title">我的报名</text>
+              <text class="zone-item-title">我的任务</text>
               
             </view>
           </view>
@@ -75,7 +80,7 @@
         </view>
         <view class="zone-item" bindtap="goWorks">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-works.png" />
+            <image class="zone-icon" src="../../images/icon/zuopin.png" />
             <text class="zone-item-title">我的作品</text>
           </view>
           <image class="zone-arrow" src="../../images/mine/right.png" />
@@ -89,7 +94,7 @@
       <view class="zone-items">
         <view class="zone-item" bindtap="goMerchantAuth">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-auth.png" />
+            <image class="zone-icon" src="../../images/icon/renzheng.png" />
             <text class="zone-item-title">商家认证</text>
           </view>
           <view class="zone-item-right">
@@ -100,7 +105,7 @@
         </view>
         <view class="zone-item" bindtap="goMyTasks">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-task-manage.png" />
+            <image class="zone-icon" src="../../images/icon/guanli.png" />
             <view class="zone-item-content">
               <text class="zone-item-title">任务管理</text>
               
@@ -116,7 +121,7 @@
         </view>
         <view class="zone-item" bindtap="goPurchasedWorks">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-task-manage.png" />
+            <image class="zone-icon" src="../../images/icon/pinku.png" />
             <text class="zone-item-title">已购作品库</text>
           </view>
           <image class="zone-arrow" src="../../images/mine/right.png" />
@@ -130,21 +135,21 @@
       <view class="zone-items">
         <view class="zone-item" bindtap="goHelp">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-help.png" />
+            <image class="zone-icon" src="../../images/icon/bangzhu.png" />
             <text class="zone-item-title">帮助中心</text>
           </view>
           <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
         <view class="zone-item" bindtap="goAppeal">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-appeal.png" />
+            <image class="zone-icon" src="../../images/icon/shensu.png" />
             <text class="zone-item-title">申诉与纠纷</text>
           </view>
           <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
         <view class="zone-item" bindtap="goCustomerService">
           <view class="zone-item-left">
-            <image class="zone-icon" src="../../images/mine/icon-service.png" />
+            <image class="zone-icon" src="../../images/icon/lianxi.png" />
             <text class="zone-item-title">联系客服</text>
           </view>
           <image class="zone-arrow" src="../../images/mine/right.png" />

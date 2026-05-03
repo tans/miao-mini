@@ -1,0 +1,81 @@
+<view class="agreement-page">
+  <text class="doc-main-title">平台创作者协议</text>
+
+  <view class="party-block">
+    <text class="party-line"><text class="party-label">甲方（创作者）：</text>________________________</text>
+    <text class="party-line"><text class="party-label">乙方（平台运营方）：</text>佛山市极速互动科技有限公司</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">一、协议背景</text>
+    <text class="clause">1.1 甲方为在乙方运营的「创意喵」小程序及相关服务（下称「本平台」）注册并完成必要认证的创作者。</text>
+    <text class="clause">1.2 乙方为甲方提供任务撮合、资金托管、技术展示及客服协调等服务，不直接参与甲方与商家（任务发布方）之间的具体创作沟通，但可依规则提供流程管理。</text>
+    <text class="clause">1.3 甲方在平台认领任务、上传作品或点击同意本协议等行为，即视为已阅读并同意本平台公示的《发单规则》《作品规范》及与本协议配套的有效规则。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">二、创作者资质与承诺</text>
+    <text class="clause">2.1 甲方应具备完全民事行为能力，年满 18 周岁（或符合法律法规规定的其他条件），并保证注册信息真实、准确、完整。</text>
+    <text class="clause">2.2 甲方应依法纳税并自行办理与创作收入相关的合规事项（如需）。</text>
+    <text class="clause">2.3 甲方承诺遵守以下要求：</text>
+    <text class="clause-bullet">• 不抄袭、不侵害他人知识产权及肖像、名誉等合法权益；</text>
+    <text class="clause-bullet">• 作品内容不涉及政治敏感、色情、暴力、毒品等违法违规信息；</text>
+    <text class="clause-bullet">• 不与商家绕开平台私下交易或结算，不引导站外付款；</text>
+    <text class="clause-bullet">• 不实施诋毁平台商誉、操纵评价、恶意刷单等扰乱秩序的行为。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">三、接单与作品交付</text>
+    <text class="clause">3.1 甲方应在认领前仔细阅读任务说明、截稿时间、验收标准及版权约定，确认自身能力与档期后再认领。</text>
+    <text class="clause">3.2 交付作品应符合任务及平台公示的格式、时长、清晰度、水印及素材使用等要求，并保证为原创或已获合法授权的内容。</text>
+    <text class="clause">3.3 甲方应在约定期限内提交稿件；逾期未提交或无故弃单的，平台可按规则处理（包括但不限于限制接单、扣减信用等）。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">四、佣金托管与结算</text>
+    <text class="clause">4.1 商家将应付资金按平台规则托管于平台侧，乙方不提供垫资；具体冻结、解冻及划转节点以订单状态与平台公示为准。</text>
+    <text class="clause">4.2 在商家依规则完成验收或触发自动结算等情形后，甲方应收款项进入可提现余额，甲方应遵守提现门槛、手续费及反洗钱等规则。</text>
+    <text class="clause">4.3 平台有权按公示标准收取技术服务费或通道费用，费率以届时公示为准。</text>
+    <text class="clause">4.4 甲方理解并同意，因银行、支付机构或监管要求导致的到账延迟，乙方在合理范围内予以协助但不承担超出法律规定的责任。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">五、验收、争议与违规处理</text>
+    <text class="clause">5.1 商家应在平台规则及任务约定的期限内完成审核；逾期未审核的，可能触发自动发放参与奖等处理，具体以平台当时公示为准。</text>
+    <text class="clause">5.2 甲方与商家就作品质量、是否合格等发生争议的，可申请平台客服协调；协调不成的，双方可依法通过仲裁、诉讼等途径解决。</text>
+    <text class="clause">5.3 甲方有下列情形之一的，除依法承担责任外，平台有权依规则采取警示、限制功能、冻结收益、终止服务直至封号等措施：</text>
+    <text class="clause-bullet">• 恶意逾期交付、拒不修改合理修改意见或交付严重不符合约定的「注水稿」；</text>
+    <text class="clause-bullet">• 抄袭、剽窃、伪造数据或侵犯第三方合法权益；</text>
+    <text class="clause-bullet">• 绕开平台私下交易、诱导站外付款或套取商家商业机密；</text>
+    <text class="clause-bullet">• 其他违反法律法规、公序良俗或平台规则的行为。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">六、版权与授权</text>
+    <text class="clause">6.1 作品被商家依法依约验收采纳且相应款项依规则结算后，就该成果在任务约定范围内的著作权、使用权等归属以任务约定及平台规则为准；未约定的，依照法律规定及行业惯例处理。</text>
+    <text class="clause">6.2 甲方授予乙方在全球范围内、免费的、非独占的许可，以便乙方在平台内展示该作品缩略图、片段或链接用于宣传、推广及案例展示，展示方式应符合法律法规及对甲方的合理保护。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">七、平台权利与义务</text>
+    <text class="clause">7.1 乙方应尽力维护系统稳定，提供必要的技术支持与客服渠道，并在法律法规允许范围内持续优化产品体验。</text>
+    <text class="clause">7.2 乙方有权依据法律法规及平台规则对内容、账号进行审核与管理，对违法违规或侵权内容予以下架、删除或断开链接。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">八、免责条款</text>
+    <text class="clause">8.1 乙方作为撮合与技术服务提供方，不对甲方获得的订单数量、收入水平或商家履约结果作出保证。</text>
+    <text class="clause">8.2 因不可抗力、网络故障、第三方服务异常或非乙方过错导致的损失，乙方在法律法规允许范围内承担责任；甲方应自行承担创作设备、网络环境及软件成本。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">九、协议生效与变更</text>
+    <text class="clause">9.1 本协议自甲方点击「同意」、完成注册/认证或首次成功认领任务之时起生效，至甲方账号依法注销或双方权利义务终止之日止。</text>
+    <text class="clause">9.2 乙方有权根据业务与监管要求修订本协议及配套规则，修订内容公示后甲方继续使用服务的，视为接受修订；甲方不同意的，应停止使用相关服务。</text>
+  </view>
+
+  <view class="sign-block">
+    <text class="sign-line"><text class="party-label">甲方（创作者）：</text>________________________</text>
+    <text class="sign-line"><text class="party-label">乙方（平台运营方）：</text>佛山市极速互动科技有限公司</text>
+  </view>
+</view>

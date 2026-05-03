@@ -477,6 +477,10 @@ Page({
     wx.navigateTo({ url: '/pages/employer/recharge/index' });
   },
 
+  goMerchantAgreement() {
+    wx.navigateTo({ url: '/pages/mine/merchant-agreement/index' });
+  },
+
   async handleSubmit() {
     const { title, description, unit_price, total_count, selectedIndustries, selectedStyles, privacyProtected, jimeng_link, jimengEnabled } = this.data;
 
@@ -539,6 +543,7 @@ Page({
       }
 
       wx.showLoading({ title: '发布中...' });
+      const jimengLinkTrim = String(jimeng_link || '').trim();
       const res = await Api.createTask({
         title,
         description,
@@ -552,7 +557,8 @@ Page({
         public: !privacyProtected,
         industries: industryNames,
         styles: selectedStyles,
-        jimeng_link: jimengEnabled ? jimeng_link : '',
+        jimeng_enabled: !!jimengEnabled,
+        jimeng_link: jimengEnabled ? jimengLinkTrim : '',
         materials,
       });
       wx.showToast({ title: (res && res.message) || '发布成功', icon: 'success' });

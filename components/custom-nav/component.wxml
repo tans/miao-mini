@@ -1,4 +1,7 @@
-<view class="custom-nav" style="padding-top: {{statusBarHeight}}px;">
+<view
+  class="custom-nav {{pinned ? 'custom-nav--pinned' : ''}} {{elevated ? 'custom-nav--solid' : ''}}"
+  style="padding-top: {{statusBarHeight}}px;"
+>
   <view class="nav-content">
     <!-- 左侧消息图标 -->
     <view class="nav-left" bindtap="onMessageTap">

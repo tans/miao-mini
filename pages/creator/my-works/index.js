@@ -4,7 +4,7 @@ const app = getApp();
 
 const FILTERS = [
   { key: 'all', label: '全部' },
-  { key: 'pending', label: '审核中' },
+  { key: 'pending', label: '商家审核中' },
   { key: 'adopted', label: '已采纳' },
   { key: 'rejected', label: '已淘汰' },
   { key: 'reported', label: '被举报' }
@@ -120,11 +120,11 @@ Page({
     let reportReason = '';
 
     if (status === 1 && reviewResult === 2) {
-      incomeLabel = '收入(已淘汰)';
+      incomeLabel = '收入(参与金)';
       incomeText = '¥0';
       rejectReason = claim.review_comment || claim.reviewComment || '';
     } else if (status === 1 && reviewResult === 3) {
-      incomeLabel = '收入(被举报)';
+      incomeLabel = '被举报作品无奖金';
       incomeText = '¥0';
       reportReason = claim.review_comment || claim.reviewComment || '';
     } else if (status === 2) {
@@ -142,6 +142,42 @@ Page({
     } else if (status === 6) {
       // 被举报
       reportReason = claim.report_reason || '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。';
+    }
+
+    let tipsVariant = '';
+    let tipsIcon = '';
+    let tipsTitle = '';
+    let tipsDesc = '';
+    if (status === 2) {
+      tipsVariant = 'pending';
+      tipsIcon = '../../../images/icon/clock.png';
+      tipsTitle = '已提交作品，等待审核结果';
+      tipsDesc = '预计审核时间：72小时内';
+    } else if (status === 4) {
+      tipsVariant = 'timeout';
+      tipsIcon = '../../../images/icon/alert-circle.png';
+      tipsTitle = '商家审核超时，自动发放参与奖';
+      tipsDesc = '之后商家如果采纳了您的稿件，您依然可以获得采纳金。';
+    } else if (status === 5) {
+      tipsVariant = 'rejected';
+      tipsIcon = '../../../images/icon/frown.png';
+      tipsTitle = '任务已超时';
+      tipsDesc = '该稿件未在约定期限内完成流程，暂无奖励。';
+    } else if (status === 1 && reviewResult === 2) {
+      tipsVariant = 'rejected';
+      tipsIcon = '../../../images/icon/frown.png';
+      tipsTitle = '很遗憾，此视频未能入选';
+      tipsDesc = rejectReason ? `淘汰原因：${rejectReason}` : '淘汰原因：暂无说明';
+    } else if (status === 3) {
+      tipsVariant = 'adopted';
+      tipsIcon = '../../../images/icon/smile.png';
+      tipsTitle = '恭喜你！作品已被商家采纳';
+      tipsDesc = '商家付费采纳了此稿件，该视频版权归属商家。';
+    } else if ((status === 1 && reviewResult === 3) || status === 6) {
+      tipsVariant = 'reported';
+      tipsIcon = '../../../images/icon/alert-triangle.png';
+      tipsTitle = '此视频已被举报，如有异议请尽快申诉';
+      tipsDesc = reportReason ? `被举报原因：${reportReason}` : '被举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。';
     }
 
     return {
@@ -172,7 +208,11 @@ Page({
       incomeLabel,
       incomeText,
       rejectReason,
-      reportReason
+      reportReason,
+      tipsVariant,
+      tipsIcon,
+      tipsTitle,
+      tipsDesc
     };
   },
 
