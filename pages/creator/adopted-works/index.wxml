@@ -17,6 +17,7 @@
           show-play-btn="{{false}}"
           show-fullscreen-btn="{{false}}"
           show-mute-btn="{{false}}"
+          show-background-playback-button="{{false}}"
           enable-play-gesture="{{false}}"
           enable-progress-gesture="{{false}}"
           enable-picture-in-picture="{{false}}"

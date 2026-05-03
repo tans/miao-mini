@@ -11,6 +11,7 @@
         show-center-play-btn
         enable-progress-gesture
         enable-picture-in-picture="{{false}}"
+        show-background-playback-button="{{false}}"
       ></video>
     </view>
     <view class="video-placeholder" wx:elif="{{processStatusText}}">
