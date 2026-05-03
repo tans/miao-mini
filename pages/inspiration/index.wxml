@@ -45,6 +45,7 @@
               show-mute-btn="{{false}}"
               enable-play-gesture="{{false}}"
               enable-progress-gesture="{{false}}"
+              enable-picture-in-picture="{{false}}"
             ></video>
             <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
             <view class="media-badge" wx:if="{{item.isVideo}}">
@@ -85,6 +86,7 @@
               show-mute-btn="{{false}}"
               enable-play-gesture="{{false}}"
               enable-progress-gesture="{{false}}"
+              enable-picture-in-picture="{{false}}"
             ></video>
             <view class="cover-tap-mask" wx:if="{{item.isVideo}}"></view>
             <view class="media-badge" wx:if="{{item.isVideo}}">

@@ -19,6 +19,7 @@
           show-mute-btn="{{false}}"
           enable-play-gesture="{{false}}"
           enable-progress-gesture="{{false}}"
+          enable-picture-in-picture="{{false}}"
         ></video>
         <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
           <view class="fallback-badge">创作说明</view>
@@ -40,13 +41,15 @@
           </view>
         </view>
         <view class="work-actions">
-          <view class="action-icon-wrap">
-            <!-- <text class="action-icon">↓</text> -->
-            <image class="action-icon-img" src="./images/icon1.png" />
-          </view>
-          <view class="action-icon-wrap">
-            <image class="action-icon-img" src="./images/icon2.png" />
-          </view>
+          <button
+            class="download-btn"
+            catchtap="downloadWorkMaterial"
+            data-url="{{item.originalVideoDownloadUrl}}"
+            data-type="video"
+            disabled="{{!item.originalVideoDownloadUrl}}"
+          >
+            下载原视频
+          </button>
         </view>
       </view>
     </view>

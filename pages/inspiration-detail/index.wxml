@@ -10,6 +10,7 @@
         controls
         show-center-play-btn
         enable-progress-gesture
+        enable-picture-in-picture="{{false}}"
       ></video>
     </view>
     <view class="video-placeholder" wx:elif="{{processStatusText}}">

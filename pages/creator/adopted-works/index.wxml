@@ -19,6 +19,7 @@
           show-mute-btn="{{false}}"
           enable-play-gesture="{{false}}"
           enable-progress-gesture="{{false}}"
+          enable-picture-in-picture="{{false}}"
         ></video>
         <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
           <view class="fallback-badge">创作说明</view>

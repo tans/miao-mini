@@ -67,6 +67,7 @@
           show-mute-btn="{{false}}"
           enable-play-gesture="{{false}}"
           enable-progress-gesture="{{false}}"
+          enable-picture-in-picture="{{false}}"
         ></video>
         <image wx:elif="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
         <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
