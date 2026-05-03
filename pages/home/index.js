@@ -93,12 +93,20 @@ Page({
     sort: 'created_at', // 当前排序：created_at / price_desc / price_asc
     page: 1,
     hasMore: true,
-    loading: false
+    loading: false,
+    navPinned: false,
+    navElevated: false,
+    navSlotPx: 64
   },
 
   onLoad() {
     this._initialized = false;
     this._countdownTimer = null;
+    this._navScrollTimer = null;
+    this._lastScrollTop = 0;
+    const statusBar = app.globalData.statusBarHeight || 20;
+    const navContentPx = 44;
+    this.setData({ navSlotPx: statusBar + navContentPx });
     this.loadTasks().then(() => {
       this._initialized = true;
       this._startCountdownTimer();
@@ -120,6 +128,41 @@ Page({
 
   onUnload() {
     this._stopCountdownTimer();
+    if (this._navScrollTimer) {
+      clearTimeout(this._navScrollTimer);
+      this._navScrollTimer = null;
+    }
+  },
+
+  onPageScroll(e) {
+    this._lastScrollTop = Number(e.scrollTop) || 0;
+    if (this._navScrollTimer) {
+      clearTimeout(this._navScrollTimer);
+    }
+    this._navScrollTimer = setTimeout(() => {
+      this._navScrollTimer = null;
+      this._syncNavWithScroll(this._lastScrollTop);
+    }, 16);
+  },
+
+  _syncNavWithScroll(scrollTop) {
+    const pinned = scrollTop >= 1;
+    const query = wx.createSelectorQuery().in(this);
+    query.select('#shared-bg-container').boundingClientRect();
+    query.exec((res) => {
+      const rect = res && res[0];
+      if (!rect || typeof rect.top !== 'number') {
+        if (pinned !== this.data.navPinned || this.data.navElevated) {
+          this.setData({ navPinned: pinned, navElevated: false });
+        }
+        return;
+      }
+      const top = rect.top;
+      const elevated = top < 0;
+      if (pinned !== this.data.navPinned || elevated !== this.data.navElevated) {
+        this.setData({ navPinned: pinned, navElevated: elevated });
+      }
+    });
   },
 
   _ensureCountdownTimer() {

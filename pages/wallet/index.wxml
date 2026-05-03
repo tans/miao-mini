@@ -32,11 +32,10 @@
   <!-- 交易记录标签 -->
   <view class="tabs-section">
     <view class="tab-group">
-      <text class="tab-item {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部</text>
-      <text class="tab-item {{currentTab === 'income' ? 'active' : ''}}" data-tab="income" bindtap="switchTab">收入</text>
-      <text class="tab-item {{currentTab === 'expense' ? 'active' : ''}}" data-tab="expense" bindtap="switchTab">支出</text>
+      <view class="tab-item {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部</view>
+      <view class="tab-item {{currentTab === 'income' ? 'active' : ''}}" data-tab="income" bindtap="switchTab">收入</view>
+      <view class="tab-item {{currentTab === 'expense' ? 'active' : ''}}" data-tab="expense" bindtap="switchTab">支出</view>
     </view>
-    <view class="tab-indicator" style="left: {{tabIndicatorLeft}}"></view>
   </view>
 
   <!-- 交易记录列表 -->

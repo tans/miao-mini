@@ -180,7 +180,7 @@
 }
 
 .message-title {
-  max-width: 360rpx;
+  max-width: 100%;
   font-size: 32rpx;
   line-height: 44rpx;
   font-weight: 700;
@@ -222,6 +222,10 @@
   font-size: 28rpx;
   line-height: 42rpx;
   color: #555562;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .empty-state,

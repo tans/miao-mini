@@ -23,9 +23,9 @@ Page({
     title: '',
     description: '',
     isAiWriting: false,
-    unit_price: 2,
-    award_price: 20,
-    total_count: 10,
+    unit_price: null,
+    award_price: null,
+    total_count: null,
     deadline: '',
     video_duration: '30秒',
     privacyProtected: false,
@@ -264,19 +264,32 @@ Page({
   },
 
   addRefImage() {
-    if (this.data.refImages.length >= 3) {
-      wx.showToast({ title: '最多上传3张图片', icon: 'none' });
+    const max = 6;
+    const remain = max - this.data.refImages.length;
+    if (remain <= 0) {
+      wx.showToast({ title: '最多上传6个素材', icon: 'none' });
       return;
     }
-    wx.chooseImage({
-      count: 3 - this.data.refImages.length,
-      sizeType: ['compressed'],
+    wx.chooseMedia({
+      count: remain,
+      mediaType: ['image', 'video'],
       sourceType: ['album', 'camera'],
+      maxDuration: 300,
+      sizeType: ['compressed'],
       success: (res) => {
+        const picked = (res.tempFiles || []).map((f) => ({
+          path: f.tempFilePath,
+          isVideo: f.fileType === 'video',
+        }));
         this.setData({
-          refImages: this.data.refImages.concat(res.tempFilePaths)
+          refImages: this.data.refImages.concat(picked).slice(0, max),
         });
-      }
+      },
+      fail: (err) => {
+        const msg = err && err.errMsg ? String(err.errMsg) : '';
+        if (msg.includes('cancel')) return;
+        wx.showToast({ title: '选择失败', icon: 'none' });
+      },
     });
   },
 
@@ -527,16 +540,25 @@ Page({
       if (hasMaterials) {
         const jobBase = `task-${Date.now()}`;
         for (let i = 0; i < this.data.refImages.length; i += 1) {
-          const uploadRes = await Api.uploadImage(this.data.refImages[i], {
-            returnMeta: true,
-            bizType: 'task_material',
-            jobId: `${jobBase}-${i + 1}`,
-          });
+          const raw = this.data.refImages[i];
+          const isVideo = !!(raw && raw.isVideo);
+          const tempPath = typeof raw === 'string' ? raw : (raw && raw.path) || '';
+          const uploadRes = isVideo
+            ? await Api.uploadVideo(tempPath, {
+              returnMeta: true,
+              bizType: 'task_material',
+              jobId: `${jobBase}-${i + 1}`,
+            })
+            : await Api.uploadImage(tempPath, {
+              returnMeta: true,
+              bizType: 'task_material',
+              jobId: `${jobBase}-${i + 1}`,
+            });
           materials.push({
-            file_name: uploadRes.filename || `material-${i + 1}.jpg`,
+            file_name: uploadRes.filename || (isVideo ? `material-${i + 1}.mp4` : `material-${i + 1}.jpg`),
             file_path: uploadRes.url,
             file_size: uploadRes.size || 0,
-            file_type: 'image',
+            file_type: isVideo ? 'video' : 'image',
             sort_order: i + 1,
           });
         }

@@ -1,12 +1,13 @@
 <!-- pages/home/index.wxml -->
 <!-- 共用背景图容器 -->
 <view class="home-container">
-<view class="shared-bg-container">
+<view class="shared-bg-container" id="shared-bg-container">
   <!-- 顶部背景图 -->
   <!-- <view class="shared-bg">
     <image src="../../images/home/nav-bg.png"/>
   </view> -->
-  <custom-nav title="首页"/>
+  <custom-nav title="首页" pinned="{{navPinned}}" elevated="{{navPinned && navElevated}}" />
+  <view class="nav-slot-placeholder" wx:if="{{navPinned}}" style="height: {{navSlotPx}}px;"></view>
   <!-- 顶部内容 -->
   <view class="block_1">
     <!-- <image src="../../images/home/msg-icon.png" class="banner-img" /> -->

@@ -4,6 +4,9 @@ const buildInfo = require('../../build-info.js');
 
 Page({
   data: {
+    navPinned: false,
+    navElevated: false,
+    navSlotPx: 64,
     user: null,
     balance: '0.00',
     isLoggedIn: false,
@@ -29,8 +32,59 @@ Page({
     merchantAuthActionClass: 'is-uncertified'
   },
 
+  onLoad() {
+    this._navScrollTimer = null;
+    this._lastScrollTop = 0;
+    const statusBar = app.globalData.statusBarHeight || 20;
+    this.setData({ navSlotPx: statusBar + 44 });
+  },
+
   onShow() {
     this.refreshPageData();
+  },
+
+  onHide() {
+    if (this._navScrollTimer) {
+      clearTimeout(this._navScrollTimer);
+      this._navScrollTimer = null;
+    }
+  },
+
+  onUnload() {
+    if (this._navScrollTimer) {
+      clearTimeout(this._navScrollTimer);
+      this._navScrollTimer = null;
+    }
+  },
+
+  onPageScroll(e) {
+    this._lastScrollTop = Number(e.scrollTop) || 0;
+    if (this._navScrollTimer) {
+      clearTimeout(this._navScrollTimer);
+    }
+    this._navScrollTimer = setTimeout(() => {
+      this._navScrollTimer = null;
+      this._syncNavWithScroll(this._lastScrollTop);
+    }, 16);
+  },
+
+  _syncNavWithScroll(scrollTop) {
+    const pinned = scrollTop >= 1;
+    const query = wx.createSelectorQuery().in(this);
+    query.select('#mine-top-anchor').boundingClientRect();
+    query.exec((res) => {
+      const rect = res && res[0];
+      if (!rect || typeof rect.top !== 'number') {
+        if (pinned !== this.data.navPinned || this.data.navElevated) {
+          this.setData({ navPinned: pinned, navElevated: false });
+        }
+        return;
+      }
+      const elevated = rect.top < 0;
+      if (pinned !== this.data.navPinned || elevated !== this.data.navElevated) {
+        this.setData({ navPinned: pinned, navElevated: elevated });
+      }
+    });
   },
 
   async refreshPageData() {

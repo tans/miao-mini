@@ -182,7 +182,6 @@
 
 /* 交易记录标签 */
 .tabs-section {
-  position: relative;
   background: #fff;
   padding: 0 32rpx;
   margin-top: 24rpx;
@@ -193,14 +192,15 @@
 .tab-group {
   display: flex;
   gap: 48rpx;
-  padding: 24rpx 0;
+  padding: 40rpx 0 0 0;
 }
 
 .tab-item {
+  position: relative;
   font-size: 28rpx;
   color: #999;
   font-weight: 500;
-  padding-bottom: 8rpx;
+  padding-bottom: 24rpx;
 }
 
 .tab-item.active {
@@ -208,14 +208,16 @@
   font-weight: 700;
 }
 
-.tab-indicator {
+.tab-item.active::after {
+  content: '';
   position: absolute;
+  left: 50%;
   bottom: 0;
+  transform: translateX(-50%);
   width: 64rpx;
   height: 4rpx;
   background: #ef8802;
   border-radius: 2rpx;
-  transition: left 0.3s ease;
 }
 
 /* 交易记录列表 */

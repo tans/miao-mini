@@ -13,7 +13,6 @@ Page({
     transactions: [],
     filteredTransactions: [],
     currentTab: 'all',
-    tabIndicatorLeft: '32rpx',
     loading: false,
     
     // 弹窗状态
@@ -105,11 +104,9 @@ Page({
 
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab;
-    const tabPositions = { all: '32rpx', income: '136rpx', expense: '240rpx' };
     const filteredTransactions = this.getFilteredTransactions(tab, this.data.transactions);
     this.setData({
       currentTab: tab,
-      tabIndicatorLeft: tabPositions[tab] || '32rpx',
       filteredTransactions
     });
   },

@@ -131,6 +131,7 @@ function normalizeTask(task = {}) {
     submissionCount: Number(task.submission_count ?? task.submissionCount ?? submissions.length ?? 0) || 0,
     endAt,
     end_at: endAt,
+    endAtText: formatDateTime(endAt),
     jimengEnabled: normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, !!jimengLink),
     jimengLink,
     hasSignedUp,
@@ -419,9 +420,11 @@ Page({
       const currentUserId = getCurrentUserId();
       const totalCount = Number(task.total_count || 0) || 0;
       const remainingCount = Number(task.remaining_count || 0) || 0;
+      const rawMaterials = Array.isArray(task.materials) ? task.materials : [];
+      const materials = rawMaterials.map((m) => normalizeClaimMaterial(m));
       this.setData({
         task,
-        materials: task.materials || [],
+        materials,
         claimMaterials: task.claimMaterials || [],
         submissions: task.submissions || [],
         hasSignedUp: !!task.hasSignedUp,
@@ -513,7 +516,21 @@ Page({
   },
 
   previewMaterial(e) {
-    const url = e.currentTarget.dataset.url;
+    const ds = e.currentTarget.dataset || {};
+    const url = ds.url;
+    if (!url) {
+      wx.showToast({ title: '暂无可预览', icon: 'none' });
+      return;
+    }
+    const fileType = ds.filetype || ds.fileType || '';
+    const looksLikeVideo = /\.(mp4|mov|m4v|webm|m3u8)(\?|$)/i.test(String(url));
+    if (isVideoType(fileType) || looksLikeVideo) {
+      wx.navigateTo({
+        url: `/pages/video-player/index?url=${encodeURIComponent(url)}`,
+        fail: () => wx.showToast({ title: '无法打开播放器', icon: 'none' }),
+      });
+      return;
+    }
     wx.previewImage({ urls: [url], current: url });
   },
 

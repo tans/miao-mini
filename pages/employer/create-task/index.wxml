@@ -86,16 +86,17 @@ module.exports = {
       <view class="image-reference">
         <view class="field-label-row image-reference-label-row">
           <text class="desc-label image-reference-label">任务素材</text>
-          <text class="field-hint">(可提供指定素材做为创作要求或参考)</text>
+          <text class="field-hint">(可提供图片或视频素材作为创作要求或参考)</text>
         </view>
         <view class="ref-images-box">
-          <view wx:for="{{refImages}}" wx:key="*this" class="ref-image-item">
-            <image class="ref-image" src="{{item}}" mode="aspectFill"/>
+          <view wx:for="{{refImages}}" wx:key="path" class="ref-image-item">
+            <video wx:if="{{item.isVideo}}" class="ref-image ref-material-video" src="{{item.path}}" object-fit="cover" muted controls/>
+            <image wx:else class="ref-image" src="{{item.path}}" mode="aspectFill"/>
             <view class="ref-image-remove" bindtap="removeRefImage" data-index="{{index}}">
               <image class="remove-icon" src="./images/cuo.png"/>
             </view>
           </view>
-          <view wx:if="{{refImages.length < 3}}" class="ref-upload" bindtap="addRefImage">
+          <view wx:if="{{refImages.length < 6}}" class="ref-upload" bindtap="addRefImage">
             <!-- <image class="upload-icon" src="./images/icon-upload-plus.png" /> -->
               <view class="upload-icon-wrapper">
               <view class="dashed-border"></view>

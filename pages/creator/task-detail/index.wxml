@@ -150,7 +150,7 @@
             </view>
             <view class="spec-item">
               <text class="spec-label">截稿时间</text>
-              <text class="spec-value deadline">{{task.endAt || ''}}</text>
+              <text class="spec-value deadline">{{task.endAtText || ''}}</text>
             </view>
           </view>
           <!-- 商家素材 -->
@@ -162,8 +162,28 @@
               </view>
             </view>
             <view class="material-grid">
-              <view class="material-item" wx:for="{{materials}}" wx:key="id" bindtap="previewMaterial" data-url="{{item.file_path}}">
-                <image class="material-thumb" src="{{item.file_path}}" mode="aspectFill"/>
+              <view class="material-item" wx:for="{{materials}}" wx:key="filePath">
+                <video
+                  wx:if="{{item.isVideo}}"
+                  class="material-thumb"
+                  src="{{item.previewUrl || item.file_path}}"
+                  poster="{{item.thumbnailPath}}"
+                  object-fit="cover"
+                  muted
+                  show-center-play-btn
+                  bindtap="previewMaterial"
+                  data-url="{{item.previewUrl || item.file_path}}"
+                  data-file-type="{{item.fileType}}"
+                />
+                <image
+                  wx:else
+                  class="material-thumb"
+                  src="{{item.previewUrl || item.file_path}}"
+                  mode="aspectFill"
+                  bindtap="previewMaterial"
+                  data-url="{{item.previewUrl || item.file_path}}"
+                  data-file-type="{{item.fileType}}"
+                />
               </view>
             </view>
           </view>
@@ -227,6 +247,9 @@
                 src="{{item.materials[0].previewUrl}}"
                 poster="{{item.materials[0].thumbnailPath}}"
                 controls
+                bindtap="previewMaterial"
+                data-url="{{item.materials[0].previewUrl}}"
+                data-file-type="{{item.materials[0].fileType}}"
               />
 
               <image
@@ -236,6 +259,7 @@
                 mode="aspectFill"
                 bindtap="previewMaterial"
                 data-url="{{item.materials[0].previewUrl}}"
+                data-file-type="{{item.materials[0].fileType}}"
               />
 
               <view wx:else class="submission-placeholder">

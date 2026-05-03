@@ -1,11 +1,13 @@
 <!-- pages/mine/index.wxml -->
 <view class="mine-container">
-  <!-- 背景图片 -->
-  <image class="bg-image" src="https://public.jisuhudong.com/minapp/mine-bg.png" mode="widthFix" />
-  <!-- 自定义导航栏 -->
-  <custom-nav title="我的"/>
-  <!-- 顶部区域 -->
-  <view class="header-section">
+  <view class="mine-top-anchor" id="mine-top-anchor">
+    <!-- 背景图片 -->
+    <image class="bg-image" src="https://public.jisuhudong.com/minapp/mine-bg.png" mode="widthFix" />
+    <!-- 自定义导航栏 -->
+    <custom-nav title="我的" pinned="{{navPinned}}" elevated="{{navPinned && navElevated}}" />
+    <view class="nav-slot-placeholder" wx:if="{{navPinned}}" style="height: {{navSlotPx}}px;"></view>
+    <!-- 顶部区域 -->
+    <view class="header-section">
     <!-- 用户信息卡片 -->
     <view class="user-card">
       <view class="user-info-row">
@@ -53,6 +55,7 @@
           <text class="wallet-right-text">立即提现</text>
         </view>
       </view>
+    </view>
     </view>
   </view>
 
