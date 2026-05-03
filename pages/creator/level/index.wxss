@@ -88,6 +88,7 @@
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0rpx 4rpx 16rpx 0rpx rgba(17,17,17,0.04);
+  align-items: center;
 }
 
 .summary-label {

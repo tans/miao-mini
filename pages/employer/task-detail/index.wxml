@@ -119,6 +119,9 @@
               <view class="preview-play-badge"></view>
             </view>
           </view>
+          <view class="claim-content claim-content-reported" wx:if="{{claim.statusClass == 'reported'}}">
+            <text class="content-text">举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+          </view>
 
           <view class="video-link-row" wx:if="{{claim.videoLink}}">
             <text class="video-link-label">视频链接</text>

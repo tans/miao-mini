@@ -870,8 +870,8 @@
 }
 
 .status-badge.reported {
-  background: #fff3e0;
-  color: #fb8c00;
+  background: #FFF3EE;
+  color: #EF4444;
 }
 
 .claim-content {
@@ -885,9 +885,21 @@
   background: #fff8e8;
 }
 
+.claim-content.claim-content-reported {
+  padding: 16rpx 24rpx;
+  background: #fef0f0;
+  margin-top: 24rpx;
+}
+
 .content-text {
   font-size: 24rpx;
   color: #4b5563;
+  line-height: 1.7;
+}
+
+.claim-content-reported .content-text {
+  font-size: 24rpx;
+  color: #ef4444;
   line-height: 1.7;
 }
 
