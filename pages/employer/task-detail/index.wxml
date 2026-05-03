@@ -326,10 +326,10 @@
             <switch class="switch-icon" checked="{{task.jimengEnabled}}" color="#FF9F2F" disabled/>
           </view>
           
-          <!-- <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
-          <text class="jimeng-link">{{task.jimengLink || '暂未设置'}}</text>
-          <text class="jimeng-count">{{task.jimengLinkLength || 0}}/50</text>
-          </view> -->
+          <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
+            <text class="jimeng-link">{{task.jimengLink || '暂未设置'}}</text>
+            <text class="jimeng-count">{{task.jimengLinkLength || 0}}/50</text>
+          </view>
           
           <view class="jimeng-edit-row">
             <input
