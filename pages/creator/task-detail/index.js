@@ -92,6 +92,7 @@ function normalizeTask(task = {}) {
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
   const jimengLink = task.jimeng_link || task.jimengLink || '';
+  const jimengCode = task.jimeng_code || task.jimengCode || '';
   const isPublic = task.public == null ? true : !!task.public;
   const remainingCount = Number(task.remaining_count ?? task.remainingCount ?? 0) || 0;
   const totalCount = Number(task.total_count ?? task.totalCount ?? 0) || 0;
@@ -132,8 +133,9 @@ function normalizeTask(task = {}) {
     endAt,
     end_at: endAt,
     endAtText: formatDateTime(endAt),
-    jimengEnabled: normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, !!jimengLink),
+    jimengEnabled: normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, !!(jimengLink || jimengCode)),
     jimengLink,
+    jimengCode,
     hasSignedUp,
     canSubmit,
     claim,
@@ -502,7 +504,7 @@ Page({
   },
 
   copyJimengLink() {
-    const jimengLink = (this.data.task && this.data.task.jimengLink) || '';
+    const jimengLink = (this.data.task && (this.data.task.jimengLink || this.data.task.jimengCode)) || '';
     if (!jimengLink) {
       wx.showToast({ title: '暂无可复制链接', icon: 'none' });
       return;

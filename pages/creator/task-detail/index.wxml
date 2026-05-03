@@ -212,13 +212,13 @@
       </view>
 
       <!-- 即梦合拍 -->
-      <view class="merchant-card" wx:if="{{task.jimengEnabled && task.jimengLink}}">
+      <view class="merchant-card" wx:if="{{task.jimengEnabled && (task.jimengLink || task.jimengCode)}}">
         <view class="header-content">
           <text class="header-title">即梦合拍</text>
           <text class="header-desc">复制下方邀请链接，使用即梦生成视频</text>
         </view>
         <view class="jimeng-content">
-          <text class="jimeng-link" style="color:#333333;">{{task.jimengLink}}</text>
+          <text class="jimeng-link" style="color:#333333;">{{task.jimengLink || task.jimengCode}}</text>
           <view class="jimeng-badge jimeng-copy" bindtap="copyJimengLink">
             <text class="jimeng-badge-text jimeng-copy-text">复制</text>
           </view>
@@ -227,7 +227,7 @@
           <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
         </view>
       </view>
-      <view class="merchant-card" wx:if="{{task.jimengEnabled && !task.jimengLink && !hasSignedUp}}">
+      <view class="merchant-card" wx:if="{{task.jimengEnabled && !(task.jimengLink || task.jimengCode) && !hasSignedUp}}">
         <view class="header-content">
           <text class="header-title">即梦合拍</text>
           <text class="header-desc">报名后可见邀拍链接</text>
@@ -264,6 +264,7 @@
                 src="{{item.materials[0].previewUrl}}"
                 poster="{{item.materials[0].thumbnailPath}}"
                 controls
+                show-background-playback-button="{{false}}"
                 enable-picture-in-picture="{{false}}"
                 bindtap="previewMaterial"
                 data-url="{{item.materials[0].previewUrl}}"
@@ -379,7 +380,7 @@
       <view class="modal-body">
         <!-- 视频预览 -->
         <view class="video-preview" wx:if="{{submitVideoUrl}}">
-          <video src="{{submitVideoUrl}}" class="modal-video" enable-picture-in-picture="{{false}}" />
+          <video src="{{submitVideoUrl}}" class="modal-video" enable-picture-in-picture="{{false}}" show-background-playback-button="{{false}}" />
           <view class="video-cover-overlay">
             <text class="cover-text">视频已选择</text>
           </view>
