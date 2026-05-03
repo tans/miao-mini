@@ -7,15 +7,6 @@ module.exports = {
 </wxs>
 
 <view class="create-container">
-  <!-- 顶部导航栏 -->
-  <!-- <view class="nav-bar">
-    <view class="nav-left" bindtap="goBack">
-      <image class="nav-back" src="/assets/icons/back.png" />
-    </view>
-    <text class="nav-title">发布任务</text>
-    <view class="nav-right"></view>
-  </view> -->
-
   <scroll-view scroll-y="true" class="form-scroll">
     <!-- 流程图 -->
     <view class="flow-section">
@@ -72,87 +63,117 @@ module.exports = {
 
     <!-- 基础信息 -->
     <view class="form-card">
-      <view class="card-title">基础信息</view>
-
+      <view class="card-title">
+        <text style="color:#FF9F2F;">第一步：</text>告诉我们你想做什么视频</view>
       <!-- 任务标题 -->
       <view class="title-field">
         <text class="title-label">任务标题</text>
-        <input class="title-input" placeholder="高端楼盘春日氛围视频" value="{{title}}" bindinput="onTitleInput"/>
+        <input class="title-input get-hover" placeholder="请输入任务标题" placeholder-style="color:#C9CDD4;font-size:28rpx;" value="{{title}}" bindinput="onTitleInput"/>
       </view>
-
-      <!-- 行业 -->
-      <view class="form-field">
-        <view class="field-label-row">
-          <text class="field-label">行业</text>
-          <text class="field-hint">（单选）</text>
-        </view>
-        <view class="tag-group" bindtap="openDialog">
-          <text wx:for="{{industryOptions}}" wx:key="id" wx:if="{{utils.includes(selectedIndustries, item.id)}}" class="show-tag" data-id="{{item.id}}">{{item.name}}</text>
-          <text wx:if="{{!selectedIndustries.length}}" class="field-hint">请选择行业</text>
-        </view>
-      </view>
-
-      <!-- 风格 -->
-      <view class="form-field">
-        <view class="field-label-row">
-          <text class="field-label">风格</text>
-          <text class="field-hint">（可多选）</text>
-        </view>
-        <view class="tag-group" bindtap="openStyleDialog">
-          <text wx:for="{{styleOptions}}" wx:key="index" wx:if="{{utils.includes(selectedStyles, item)}}" class="show-tag" data-style="{{item}}">{{item}}</text>
-        </view>
-        <!-- <scroll-view scroll-x="true" class="tag-scroll">
-          <view class="tag-group">
-            <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(tempSelectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
-          </view>
-        </scroll-view> -->
-      </view>
-
       <!-- 任务描述 -->
-      <view class="desc-field">
-        <text class="desc-label" >任务描述</text>
-        <view class="desc-area">
-          <textarea class="desc-textarea" placeholder="请输入不少于10个字的描述" value="{{description}}" bindinput="onDescInput" maxlength="500" auto-height/>
+      <text class="desc-label" >任务描述</text>
+      <view class="desc-area">
+        <textarea class="desc-textarea get-hover" placeholder="请输入不少于10个字的描述" value="{{description}}" bindinput="onDescInput" maxlength="500" auto-height/>
+        <view class="desc-textarea-box">
+          <text class="desc-textarea-box-text">不知道怎么写？试试AI帮写</text>
           <view class="ai-write-btn {{isAiWriting ? 'ai-write-btn-disabled' : ''}}" bindtap="aiWriteDesc">
             <image class="ai-icon" src="./images/icon-ai.png" />
             <text>{{isAiWriting ? '生成中...' : 'AI帮写'}}</text>
           </view>
         </view>
-      
-
+      </view>
       <!-- 图片参考 -->
-        <view class="image-reference" style="margin-top: 32rpx;">
-          <view class="field-label-row" style="width: 100%;">
-            <text class="field-label" style="margin-bottom: 16rpx;">任务素材</text>
-            <text class="field-hint">(可提供指定素材做为创作要求或参考)</text>
-          </view>
-          <view class="ref-images-box">
-            <view wx:for="{{refImages}}" wx:key="*this" class="ref-image-item">
-              <image class="ref-image" src="{{item}}" mode="aspectFill"/>
-              <view class="ref-image-remove" bindtap="removeRefImage" data-index="{{index}}">
-                <image class="remove-icon" src="./images/icon-remove.png"/>
-              </view>
+      <view class="image-reference">
+        <view class="field-label-row image-reference-label-row">
+          <text class="desc-label image-reference-label">任务素材</text>
+          <text class="field-hint">(可提供指定素材做为创作要求或参考)</text>
+        </view>
+        <view class="ref-images-box">
+          <view wx:for="{{refImages}}" wx:key="*this" class="ref-image-item">
+            <image class="ref-image" src="{{item}}" mode="aspectFill"/>
+            <view class="ref-image-remove" bindtap="removeRefImage" data-index="{{index}}">
+              <image class="remove-icon" src="./images/cuo.png"/>
             </view>
-            <view wx:if="{{refImages.length < 3}}" class="ref-upload" bindtap="addRefImage">
-              <!-- <image class="upload-icon" src="./images/icon-upload-plus.png" /> -->
-               <view class="upload-icon-wrapper">
-                <view class="dashed-border"></view>
-                <text class="plus-icon">+</text>
-              </view>
+          </view>
+          <view wx:if="{{refImages.length < 3}}" class="ref-upload" bindtap="addRefImage">
+            <!-- <image class="upload-icon" src="./images/icon-upload-plus.png" /> -->
+              <view class="upload-icon-wrapper">
+              <view class="dashed-border"></view>
+              <text class="plus-icon">+</text>
             </view>
           </view>
         </view>
       </view>
-      <!-- 平台禁忌 -->
-      <view class="forbidden-notice">
-        <text>平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+    </view>
+    <view class="form-card">
+      <view class="card-title">
+        <text style="color:#FF9F2F;">第二步：</text>选择视频行业、风格与尺寸</view>
+      <!-- 行业 -->
+      <view class="form-field get-hover">
+        <view class="field-label-row">
+          <text class="field-label">行业</text>
+          <text class="field-hint">（单选）</text>
+        </view>
+        <view class="tag-group" bindtap="openDialog">
+          <view>
+            <text wx:for="{{industryOptions}}" wx:key="id" wx:if="{{utils.includes(selectedIndustries, item.id)}}" class="show-tag" data-id="{{item.id}}">{{item.name}}</text>
+            <text wx:if="{{!selectedIndustries.length}}" class="field-hint">请选择行业</text>
+          </view>
+          <image style="width: 24rpx; height: 24rpx;" src="./images/arrow-down.png" />
+        </view>
       </view>
+      <!-- 风格 -->
+      <view class="form-field get-hover">
+        <view class="field-label-row">
+          <text class="field-label">风格</text>
+          <text class="field-hint">（可多选）</text>
+        </view>
+        <view class="tag-group" bindtap="openStyleDialog">
+          <view class="tag-group-content">
+            <text wx:for="{{styleOptions}}" wx:key="index" wx:if="{{utils.includes(selectedStyles, item)}}" class="show-tag" data-style="{{item}}">{{item}}</text>
+            <text wx:if="{{!selectedStyles.length}}" class="field-hint">请选择风格</text>
+          </view>
+          <image style="width: 24rpx; height: 24rpx;" src="./images/arrow-down.png" />
+        </view>
+      </view>
+      <!-- 视频规格 -->
+      <view class="form-field get-hover" style="margin-bottom: 0;">
+        <view class="field-label-row">
+          <text class="field-label">尺寸</text>
+        </view>
+        <view class="spec-item" bindtap="showRatioActionSheet">
+          <text class="spec-value">{{selectedRatio}}</text>
+          <image style="width: 24rpx; height: 24rpx;" src="./images/arrow-down.png" />
+        </view>
+      </view>
+      <!-- <view class="spec-box">
+        <view class="spec-item" bindtap="showDurationActionSheet">
+          <text class="spec-value">{{selectedDuration}}内</text>
+        </view>
+        
+        <view class="spec-item" bindtap="showQualityActionSheet">
+          <text class="spec-value">{{selectedQuality}}</text>
+        </view>
+      </view> -->
     </view>
 
-    <!-- 隐私保护 -->
-    <view class="form-card card-with-shadow">
-      <view class="card-title">隐私保护</view>
-      <view class="switch-box" bindtap="">
+    <!-- 即梦合拍 -->
+    <view class="form-card">
+      <view class="card-title">
+        <text style="color:#FF9F2F;">第三步：</text>补充一下任务要求</view>
+      <text class="desc-label" >时间要求</text>
+      <view class="form-field get-hover" style="margin-bottom: 16rpx;">
+        <view class="picker-row-box">
+          <text class="picker-label">投稿截止时间</text>
+          <view class="picker-row picker-row-disabled">
+            <text class="picker-value">{{deadline}}</text>
+          </view>
+        </view>
+      </view>
+      <text class="picker-hint">系统默认创建任务后<text style="color:#EF8802;">7天后</text>截止投稿。</text>
+      <!-- 隐私保护 -->
+      <view class="desc-label" style="margin-top: 48rpx;">隐私保护</view>
+      <view class="switch-box get-hover">
         <view class="switch-info">
           <text class="switch-title">开启稿件隐私保护</text>
           <text class="switch-desc">开启后，创作者的投稿仅商家可见</text>
@@ -160,13 +181,9 @@ module.exports = {
         <!-- <image class="switch-icon" src="./images/icon-remove.png" /> -->
         <switch class="switch-icon" checked="{{privacyProtected}}" bindchange="togglePrivacy" color="#FF9F2F"/>
       </view>
-    </view>
-
-    <!-- 即梦合拍 -->
-    <view class="form-card card-with-shadow">
-      <view class="card-title">即梦合拍</view>
-      <view class="jimeng-box">
-        <view class="switch-row flex" bindtap="">
+      <view class="desc-label" style="margin-top: 48rpx;">即梦合拍</view>
+      <view class="jimeng-box get-hover">
+        <view class="switch-row flex">
           <view class="switch-info">
             <text class="switch-title">即梦合拍设置</text>
             <text class="switch-desc">商家提供数字人模型给创作者用于合成视频</text>
@@ -176,59 +193,26 @@ module.exports = {
         </view>
         <view wx:if="{{jimengEnabled}}" class="jimeng-content">
           <view class="jimeng-input-box">
-            <textarea class="jimeng-input" placeholder="请粘贴即梦邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="200"/>
-            <text class="char-count">{{jimeng_link.length}}/200</text>
-          </view>
-          <view class="jimeng-tutorial" bindtap="showJimengTutorial">
-            <!-- <view class="tutorial-icon-wrapper">
-              <image class="tutorial-icon" src="./images/icon-upload-plus.png" />
-            </view> -->
-            <video src="" class="video-box"></video>
-            <!-- <text>查看即梦合拍教程</text> -->
+            <textarea class="jimeng-input" placeholder="请输入邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput"/>
           </view>
         </view>
         
       </view>
       <view class="jimeng-tips">
-        <text class="tips-main">tips：即梦合拍邀请</text>
-        <text class="tips-highlight">链接仅48小时有效</text>
-        <text class="tips-sub">，请在我的-任务管理-任务详情中更新链接。</text>
+        <text class="tips-main">tips：邀请链接 <text class="tips-highlight">有效时间为48小时</text>，请记得更新哦！</text>
       </view>
-    </view>
-
-    <!-- 视频规格 -->
-    <view class="form-card card-with-shadow">
-      <view class="card-title">视频规格</view>
-      <view class="spec-box">
-        <view class="spec-item" bindtap="showDurationActionSheet">
-          <text class="spec-value">{{selectedDuration}}内</text>
-          <!--<text class="spec-value">内</text>-->
-        </view>
-        <view class="spec-item" bindtap="showRatioActionSheet">
-          <text class="spec-value">{{selectedRatio}}</text>
-        </view>
-        <view class="spec-item" bindtap="showQualityActionSheet">
-          <text class="spec-value">{{selectedQuality}}</text>
-        </view>
+      <view class="jimeng-course">
+        如何使用即梦合拍？查看教程>
       </view>
     </view>
 
     <!-- 时间与奖金 -->
-    <view class="form-card card-with-shadow">
-      <view class="card-title">时间与奖金</view>
-
-      <view class="picker-box picker-box-disabled">
-        <view class="picker-row-box">
-          <text class="picker-label">投稿截止时间</text>
-          <view class="picker-row picker-row-disabled">
-            <text class="picker-value">{{deadline}}</text>
-            <text class="picker-hint">系统默认 7 天，不可修改</text>
-          </view>
-        </view>
-      </view>
-
+    <view class="form-card">
+      <view class="card-title">
+        <text style="color:#FF9F2F;">第四步：</text>设置视频征集预算</view>
+      <text class="desc-label" >奖金设置</text>
       <!-- 参与奖 -->
-      <view class="input-box">
+      <view class="input-box get-hover">
         <text class="input-label">参与奖</text>
         <view class="input-row">
           <input type="number" class="price-input" placeholder="2" value="{{unit_price}}" bindinput="onUnitPriceInput" style="text-align: right;"/>
@@ -237,7 +221,7 @@ module.exports = {
       </view>
 
       <!-- 采纳奖 -->
-      <view class="input-box">
+      <view class="input-box get-hover">
         <text class="input-label">采纳奖</text>
         <view class="input-row">
           <input type="number" class="price-input" placeholder="20" value="{{award_price}}" bindinput="onAwardPriceInput" style="text-align: right;"/>
@@ -245,19 +229,18 @@ module.exports = {
         </view>
       </view>
 
-      <view class="tips-notice">tips：被采纳的作品获得采纳奖+参与奖。</view>
-
+      <view class="tips-notice"><text style="color:#FF9F2F;">奖金发放规则：</text>被淘汰的作品获得参与奖，被采纳的作品获得采纳奖+参与奖。</view>
+      <view class="desc-label flex" style="margin-top: 48rpx;">视频征集数量  
+        <text style="font-size: 24rpx;color: #878FA1;">（一个创作者仅可投稿一条视频）</text>
+      </view>
       <!-- 报名人数上限 -->
-      <view class="input-box">
+      <view class="input-box get-hover">
         <text class="input-label">报名人数上限</text>
         <view class="input-row">
           <input type="number" class="price-input" placeholder="10" value="{{total_count}}" bindinput="onTotalCountInput" style="text-align: right;"/>
           <text class="input-unit">人</text>
         </view>
       </view>
-
-      <view class="tips-notice">tips：请按需设置报名人数，若活动采纳率过低，可能会隐形您的信誉。</view>
-
       <!-- 预算预览 -->
       <view class="budget-box">
         <view class="budget-row">
@@ -281,7 +264,7 @@ module.exports = {
         </view>
         <view class="budget-divider"></view>
         <view class="budget-total-row">
-          <text class="budget-total-label">需预支付总金额</text>
+          <text class="budget-total-label">需先冻结资金</text>
           <text class="budget-total-value">¥{{totalBudget}}</text>
         </view>
         <view class="budget-total-row" >
@@ -295,9 +278,40 @@ module.exports = {
         <view class="budget-tips">tips：活动金额按报名人数上限全额冻结，审核完全部稿件48小时后，剩余活动金即可解冻。</view>
       </view>
     </view>
-
+    <view class="form-card post-reminder-card">
+      <view class="post-reminder-header">
+        <view class="post-reminder-icon">
+          <image src="../../../images/home/msg-icon.png" style="width: 40rpx; height: 40rpx;" />
+        </view>
+        <view class="post-reminder-title-row">
+          <text class="post-reminder-title-brand">创意喵</text>
+          <text class="post-reminder-title-rest">发帖提醒</text>
+        </view>
+      </view>
+      <view class="post-reminder-list">
+        <view class="post-reminder-item">
+          <view class="post-reminder-bullet"></view>
+          <text class="post-reminder-text">描述越详细，越容易匹配到合适的创作者</text>
+        </view>
+        <view class="post-reminder-item">
+          <view class="post-reminder-bullet"></view>
+          <text class="post-reminder-text">建议提供参考视频或案例，效果会更好</text>
+        </view>
+        <view class="post-reminder-item">
+          <view class="post-reminder-bullet"></view>
+          <text class="post-reminder-text">选择推荐预算，通过率和完成质量更高</text>
+        </view>
+        <view class="post-reminder-item">
+          <view class="post-reminder-bullet"></view>
+          <text class="post-reminder-text">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+        </view>
+      </view>
+    </view>
     <!-- 提交按钮 -->
     <view class="submit-section">
+      <view class="action-text">点击发布即表示同意
+        <text style="color:#EF8802;">《平台商家服务协议》</text>
+      </view>
       <view class="submit-btn {{isSubmitting ? 'submit-btn-disabled' : ''}}" bindtap="handleSubmit">{{isSubmitting ? '发布中...' : '托管奖金并提交审核'}}</view>
       <!-- <view class="submit-indicator"></view> -->
     </view>
@@ -309,8 +323,8 @@ module.exports = {
     show="{{showDialog}}" 
     bindclose="onCloseDialog"
   >
-    <view class="tag-group" slot="desc">
-      <text wx:for="{{industryOptions}}" wx:key="id" class="tag {{utils.includes(tempSelectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
+    <view class="tags-group" slot="desc">
+      <text wx:for="{{industryOptions}}" wx:key="id" class="tags-item {{utils.includes(tempSelectedIndustries, item.id) ? 'active' : ''}}" data-id="{{item.id}}" bindtap="toggleIndustry">{{item.name}}</text>
     </view>
     <view class="tag-btn-group" slot="footer">
       <view class="reset-btn" bindtap="resetIndustrySelection">重置</view>
@@ -323,8 +337,8 @@ module.exports = {
     show="{{showStyleDialog}}" 
     bindclose="onCloseStyleDialog"
   >
-    <view class="tag-group" slot="desc">
-      <text wx:for="{{styleOptions}}" wx:key="index" class="tag {{utils.includes(tempSelectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
+    <view class="tags-group" slot="desc">
+      <text wx:for="{{styleOptions}}" wx:key="index" class="tags-item {{utils.includes(tempSelectedStyles, item) ? 'active' : ''}}" data-style="{{item}}" bindtap="toggleStyle">{{item}}</text>
     </view>
     <view class="tag-btn-group" slot="footer">
       <view class="reset-btn" bindtap="resetStyleSelection">重置</view>
