@@ -26,6 +26,19 @@ function formatDateTime(value) {
   return formatDateTimeText(value);
 }
 
+function normalizeBooleanFlag(value, defaultValue = false) {
+  if (value === undefined || value === null || value === '') return defaultValue;
+  if (typeof value === 'boolean') return value;
+  if (typeof value === 'number') return value !== 0;
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+    if (!normalized) return defaultValue;
+    if (['0', 'false', 'off', 'no'].includes(normalized)) return false;
+    if (['1', 'true', 'on', 'yes'].includes(normalized)) return true;
+  }
+  return !!value;
+}
+
 function getClaimStatusClass(status, reviewResult = 0) {
   const value = Number(status);
   const review = Number(reviewResult || 0);
@@ -78,9 +91,9 @@ function normalizeTask(task = {}) {
   const industries = toList(task.industries);
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
-  const jimengLink = String(task.jimeng_link || '').trim();
-  const jimengCode = String(task.jimeng_code || '').trim();
-  const jimengEnabled = !!task.jimeng_enabled;
+  const jimengLink = String(task.jimeng_link || task.jimengLink || '').trim();
+  const jimengCode = String(task.jimeng_code || task.jimengCode || '').trim();
+  const jimengEnabled = normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, !!(jimengLink || jimengCode));
   const isPublic = task.public == null ? true : !!task.public;
   const remainingCount = Number(task.remaining_count ?? task.remainingCount ?? 0) || 0;
   const totalCount = Number(task.total_count ?? task.totalCount ?? 0) || 0;
@@ -121,6 +134,9 @@ function normalizeTask(task = {}) {
     endAt,
     end_at: endAt,
     endAtText: formatDateTime(endAt),
+    jimengEnabled,
+    jimengLink,
+    jimengCode,
     jimeng_link: jimengLink,
     jimeng_code: jimengCode,
     jimeng_enabled: jimengEnabled,
@@ -492,7 +508,7 @@ Page({
   },
 
   copyJimengLink() {
-    const jimengLink = (this.data.task && (this.data.task.jimeng_link || this.data.task.jimeng_code)) || '';
+    const jimengLink = (this.data.task && (this.data.task.jimengLink || this.data.task.jimengCode || this.data.task.jimeng_link || this.data.task.jimeng_code)) || '';
     if (!jimengLink) {
       wx.showToast({ title: '暂无可复制链接', icon: 'none' });
       return;
