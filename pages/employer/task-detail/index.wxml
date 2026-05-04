@@ -315,7 +315,7 @@
         <view class="empty-tip" wx:else>暂无商家素材</view>
       </view>
 
-      <view class="jimeng-card" wx:if="{{task.jimengEnabled}}">
+      <view class="jimeng-card" wx:if="{{task.jimeng_enabled}}">
         <view class="section-header">
           <text class="header-title">即梦合拍</text>
         </view>
@@ -325,12 +325,12 @@
               <text class="header-hint">即梦合拍设置</text>
               <text class="header-hint">商家提供数字人模型给创作者用于合成视频</text>
             </view>
-            <switch class="switch-icon" checked="{{task.jimengEnabled}}" color="#FF9F2F" disabled/>
+            <switch class="switch-icon" checked="{{task.jimeng_enabled}}" color="#FF9F2F" disabled/>
           </view>
           
           <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
-            <text class="jimeng-link">{{task.jimengLink || '暂未设置'}}</text>
-            <text class="jimeng-count">{{task.jimengLinkLength || 0}}/50</text>
+            <text class="jimeng-link">{{task.jimeng_link || task.jimeng_code || '暂未设置'}}</text>
+            <text class="jimeng-count">{{editJimengLink.length || 0}}/50</text>
           </view>
           
           <view class="jimeng-edit-row">

@@ -22,19 +22,6 @@ function pick(...values) {
   return '';
 }
 
-function normalizeBooleanFlag(value, defaultValue = false) {
-  if (value === undefined || value === null || value === '') return defaultValue;
-  if (typeof value === 'boolean') return value;
-  if (typeof value === 'number') return value !== 0;
-  if (typeof value === 'string') {
-    const normalized = value.trim().toLowerCase();
-    if (!normalized) return defaultValue;
-    if (['0', 'false', 'off', 'no'].includes(normalized)) return false;
-    if (['1', 'true', 'on', 'yes'].includes(normalized)) return true;
-  }
-  return !!value;
-}
-
 function normalizeMediaMaterial(material = {}) {
   const fileType = String(pick(material.file_type, material.fileType, '')).toLowerCase();
   const filePath = pick(material.file_path, material.filePath, '');
@@ -95,6 +82,9 @@ function normalizeTask(task = {}) {
   const styleTags = toList(pick(task.styles, task.style));
   const materials = Array.isArray(task.materials) ? task.materials.map(normalizeMediaMaterial) : [];
   const isPublic = task.public == null ? true : !!task.public;
+  const jimengLink = String(task.jimeng_link || '').trim();
+  const jimengCode = String(task.jimeng_code || '').trim();
+  const jimengEnabled = !!task.jimeng_enabled;
 
   return {
     ...task,
@@ -117,9 +107,9 @@ function normalizeTask(task = {}) {
     endAt,
     totalCount: Number(pick(task.total_count, task.totalCount, 0)) || 0,
     submissionCount: Number(pick(task.submission_count, task.submissionCount, 0)) || 0,
-    jimengLink: pick(task.jimeng_link, task.jimengLink, ''),
-    jimengLinkLength: pick(task.jimeng_link, task.jimengLink, '').length,
-    jimengEnabled: normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, true),
+    jimeng_link: jimengLink,
+    jimeng_code: jimengCode,
+    jimeng_enabled: jimengEnabled,
     isPublic,
     visibilityText: isPublic ? '公开投稿' : '隐私保护',
     materials,
@@ -380,7 +370,7 @@ Page({
         adoptionRate,
         totalSpent,
         showEditJimeng: false,
-        editJimengLink: task.jimengLink || '',
+        editJimengLink: task.jimeng_link || task.jimeng_code || '',
         selectedClaims: {},
         selectedCount: 0,
         batchMode: false,
@@ -747,7 +737,7 @@ Page({
     const showEditJimeng = !this.data.showEditJimeng;
     this.setData({
       showEditJimeng,
-      editJimengLink: showEditJimeng ? (this.data.task.jimengLink || '') : this.data.editJimengLink,
+      editJimengLink: showEditJimeng ? (this.data.task.jimeng_link || this.data.task.jimeng_code || '') : this.data.editJimengLink,
     });
   },
 
@@ -767,8 +757,9 @@ Page({
       await Api.updateTaskJimengLink(task.id, editJimengLink);
       wx.showToast({ title: '更新成功', icon: 'success' });
       this.setData({
-        'task.jimengLink': editJimengLink,
-        'task.jimengLinkLength': editJimengLink.length,
+        'task.jimeng_link': editJimengLink,
+        'task.jimeng_enabled': true,
+        'task.jimeng_code': '',
         showEditJimeng: false,
       });
     } catch (err) {

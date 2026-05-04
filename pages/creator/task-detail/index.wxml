@@ -212,28 +212,28 @@
       </view>
 
       <!-- 即梦合拍 -->
-      <view class="merchant-card" wx:if="{{task.jimengEnabled && (task.jimengLink || task.jimengCode)}}">
+      <view class="merchant-card" wx:if="{{task.jimeng_enabled && !hasSignedUp}}">
         <view class="header-content">
           <text class="header-title">即梦合拍</text>
-          <text class="header-desc">复制下方邀请链接，使用即梦生成视频</text>
+          <text class="header-desc">报名后可见邀拍链接</text>
         </view>
         <view class="jimeng-content">
-          <text class="jimeng-link" style="color:#333333;">{{task.jimengLink || task.jimengCode}}</text>
-          <view class="jimeng-badge jimeng-copy" bindtap="copyJimengLink">
-            <text class="jimeng-badge-text jimeng-copy-text">复制</text>
-          </view>
+          <text class="jimeng-link" style="color:#333333;">报名后可见</text>
         </view>
         <view class="jimeng-course">
           <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
         </view>
       </view>
-      <view class="merchant-card" wx:if="{{task.jimengEnabled && !(task.jimengLink || task.jimengCode) && !hasSignedUp}}">
+      <view class="merchant-card" wx:if="{{task.jimeng_enabled && hasSignedUp}}">
         <view class="header-content">
           <text class="header-title">即梦合拍</text>
-          <text class="header-desc">报名后可见邀拍链接</text>
+          <text class="header-desc">{{task.jimeng_link || task.jimeng_code ? '复制下方邀请链接，使用即梦生成视频' : '商家暂未配置即梦链接'}}</text>
         </view>
-        <view class="jimeng-lock">
-          <text class="lock-text">报名后可见</text>
+        <view class="jimeng-content">
+          <text class="jimeng-link" style="color:#333333;">{{task.jimeng_link || task.jimeng_code || '暂未设置'}}</text>
+          <view class="jimeng-badge jimeng-copy" wx:if="{{task.jimeng_link || task.jimeng_code}}" bindtap="copyJimengLink">
+            <text class="jimeng-badge-text jimeng-copy-text">复制</text>
+          </view>
         </view>
         <view class="jimeng-course">
           <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
