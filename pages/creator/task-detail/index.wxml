@@ -149,31 +149,10 @@
               <text class="spec-value">{{task.videoAspect || ''}}</text>
             </view>
             <view class="spec-item">
-              <text class="spec-label">分辨率</text>
-              <text class="spec-value">{{task.videoResolution || ''}}</text>
-            </view>
-            <view class="spec-item">
-              <text class="spec-label">视频时长</text>
-              <text class="spec-value">{{task.videoDuration || '30s'}}</text>
-            </view>
-            <view class="spec-item">
               <text class="spec-label">截稿时间</text>
               <text class="spec-value deadline">{{task.endAtText || ''}}</text>
             </view>
-            <view class="spec-item">
-              <text class="spec-label">作品权限</text>
-              <text class="spec-value">{{task.visibilityText || '公开投稿'}}</text>
-            </view>
           </view>
-
-          <!-- 平台禁忌 -->
-          <view class="restriction-section">
-            <text class="restriction-text">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
-          </view>
-          <!-- <view class="restriction-section" wx:if="{{hasSignedUp}}">
-            <text class="restriction-text">当前状态：{{task.claimStatusText || '已报名，待提交'}}</text>
-          </view> -->
-
           <!-- 商家素材 -->
           <view class="material-card" wx:if="{{materials.length > 0}}">
             <view class="card-header">
@@ -212,33 +191,36 @@
       </view>
 
       <!-- 即梦合拍 -->
-      <view class="merchant-card" wx:if="{{task.jimeng_enabled && !hasSignedUp}}">
-        <view class="header-content">
-          <text class="header-title">即梦合拍</text>
-          <text class="header-desc">报名后可见邀拍链接</text>
-        </view>
-        <view class="jimeng-content">
-          <text class="jimeng-link" style="color:#333333;">报名后可见</text>
-        </view>
-        <view class="jimeng-course">
-          <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
-        </view>
-      </view>
-      <view class="merchant-card" wx:if="{{task.jimeng_enabled && hasSignedUp}}">
-        <view class="header-content">
-          <text class="header-title">即梦合拍</text>
-          <text class="header-desc">{{task.jimeng_link || task.jimeng_code ? '复制下方邀请链接，使用即梦生成视频' : '商家暂未配置即梦链接'}}</text>
-        </view>
-        <view class="jimeng-content">
-          <text class="jimeng-link" style="color:#333333;">{{task.jimeng_link || task.jimeng_code || '暂未设置'}}</text>
-          <view class="jimeng-badge jimeng-copy" wx:if="{{task.jimeng_link || task.jimeng_code}}" bindtap="copyJimengLink">
-            <text class="jimeng-badge-text jimeng-copy-text">复制</text>
+        <view class="merchant-card" wx:if="{{task.jimeng_enabled && !hasSignedUp}}">
+          <view class="header-content">
+            <text class="header-title">即梦合拍</text>
+            <text class="header-desc">复制下方邀请链接，使用即梦生成视频</text>
+          </view>
+          <view class="jimeng-content">
+            <text class="jimeng-link" style="color:#333333;">{{task.jimengLink}}</text>
+            <view class="jimeng-badge jimeng-copy" bindtap="copyJimengLink">
+              <text class="jimeng-badge-text  jimeng-copy-text">复制</text>
+            </view>
+          </view>
+          <view class="jimeng-course">
+            <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
           </view>
         </view>
-        <view class="jimeng-course">
-          <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
+        <view class="merchant-card" wx:if="{{task.jimengLink && !hasSignedUp}}">
+          <view class="header-content">
+            <text class="header-title">即梦合拍</text>
+            <text class="header-desc">复制下方邀请链接，使用即梦生成视频</text>
+          </view>
+          <view class="jimeng-content">
+            <text class="jimeng-link">https://jm.example.com/invite***</text>
+            <view class="jimeng-badge">
+              <text class="jimeng-badge-text">报名后可见</text>
+            </view>
+          </view>
+          <view class="jimeng-course">
+            如何使用即梦合拍？查看教程>
+          </view>
         </view>
-      </view>
         
       <!-- 安全提醒 -->
       <view class="merchant-card">

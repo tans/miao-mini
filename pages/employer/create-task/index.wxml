@@ -194,15 +194,7 @@ module.exports = {
         </view>
         <view wx:if="{{jimengEnabled}}" class="jimeng-content">
           <view class="jimeng-input-box">
-            <textarea class="jimeng-input" placeholder="请粘贴即梦邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput" maxlength="200"/>
-            <text class="char-count">{{jimeng_link.length}}/200</text>
-          </view>
-          <view class="jimeng-tutorial" bindtap="showJimengTutorial">
-            <!-- <view class="tutorial-icon-wrapper">
-              <image class="tutorial-icon" src="./images/icon-upload-plus.png" />
-            </view> -->
-            <video src="" class="video-box" enable-picture-in-picture="{{false}}" show-background-playback-button="{{false}}"></video>
-            <!-- <text>查看即梦合拍教程</text> -->
+            <textarea class="jimeng-input" placeholder="请输入邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput"/>
           </view>
         </view>
         
