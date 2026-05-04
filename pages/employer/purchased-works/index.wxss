@@ -204,18 +204,30 @@
 .work-actions {
   display: flex;
   align-items: center;
-  gap: 28rpx;
   margin-top: 32rpx;
 }
 
-.action-icon-wrap {
+.download-btn {
+  width: 100%;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 999rpx;
+  background: #111827;
+  color: #ffffff;
+  font-size: 26rpx;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.action-icon-wrap image {
-  width: 40rpx;
-  height: 40rpx;
+
+.download-btn::after {
+  border: none;
+}
+
+.download-btn[disabled] {
+  background: #d1d5db;
+  color: #ffffff;
 }
 
 .loading-more {

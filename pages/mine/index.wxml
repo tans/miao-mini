@@ -11,7 +11,19 @@
     <!-- 用户信息卡片 -->
     <view class="user-card">
       <view class="user-info-row">
-        <image class="user-avatar" src="{{avatarSrc}}" mode="aspectFill" binderror="onAvatarError" bindtap="goProfile"/>
+        <view class="user-avatar-wrap" bindtap="goProfile">
+          <image wx:if="{{avatarSrc}}"
+            class="user-avatar"
+            src="{{avatarSrc}}"
+            mode="aspectFill"
+            bindload="onAvatarLoad"
+            binderror="onAvatarError"
+            style="opacity: {{avatarLoadFailed ? 0 : 1}};"
+          />
+          <view wx:if="{{avatarLoadFailed || !avatarSrc}}" class="user-avatar-fallback">
+            <text class="user-avatar-fallback-text">{{avatarFallbackText}}</text>
+          </view>
+        </view>
         <view class="user-detail">
           <view class="user-name-row" bindtap="goProfile">
             <view style="display: flex; align-items: center; gap: 10rpx;">
