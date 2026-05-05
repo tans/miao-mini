@@ -405,6 +405,29 @@
   color: #303744;
 }
 
+.type-picker {
+  margin-bottom: 28rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 18rpx;
+  background: #f7f8fb;
+  border: 2rpx solid #eceef4;
+}
+
+.type-picker-label {
+  display: block;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #6a7280;
+}
+
+.type-picker-value {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1f2631;
+}
+
 .type-chips {
   display: flex;
   flex-wrap: wrap;

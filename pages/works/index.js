@@ -219,6 +219,10 @@ Page({
       `${item.id || ''}-${item.title || ''}`,
       item.content || item.title || ''
     );
+    const creatorAvatar = Api.getAvatarDisplayUrl(
+      item.creator_avatar || item.authorAvatar || '',
+      item.creator_id || item.creatorId || item.author_id || item.authorId || item.user_id || item.userId
+    );
 
     return {
       ...item,
@@ -227,6 +231,8 @@ Page({
       displayCover,
       previewVideoSrc,
       likesCount: Number(item.likes || 0),
+      creator_avatar: creatorAvatar,
+      authorAvatar: creatorAvatar,
       fallbackThemeClass: fallbackCover.themeClass,
       fallbackSummary: fallbackCover.summary,
     };

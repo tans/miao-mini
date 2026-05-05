@@ -97,6 +97,10 @@
           <view class="composer-close" bindtap="closeComposer">×</view>
         </view>
         <view class="composer-body">
+          <view class="type-picker">
+            <text class="type-picker-label">申诉类型</text>
+            <view class="type-picker-value">{{selectedType.name}}</view>
+          </view>
           <textarea
             class="composer-textarea"
             value="{{reason}}"

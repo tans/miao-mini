@@ -174,7 +174,10 @@ Page({
         ''
       ),
       cover: Api.getDisplayUrl(item.cover || ''),
-      authorAvatar: Api.getDisplayUrl(item.authorAvatar || item.creator_avatar || '') || '/assets/icons/avatar-default.jpg'
+      authorAvatar: Api.getAvatarDisplayUrl(
+        item.authorAvatar || item.creator_avatar || '',
+        item.creator_id || item.creatorId || item.author_id || item.authorId || item.user_id || item.userId
+      )
     };
   },
 

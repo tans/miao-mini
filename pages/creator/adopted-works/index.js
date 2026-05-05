@@ -244,6 +244,10 @@ Page({
       `${item.id || ''}-${item.title || ''}`,
       item.content || item.title || ''
     );
+    const creatorAvatar = Api.getAvatarDisplayUrl(
+      item.creator_avatar || item.authorAvatar || '',
+      item.creator_id || item.creatorId || item.author_id || item.authorId || item.user_id || item.userId
+    );
     const adoptedAt =
       item.review_at ||
       item.accepted_at ||
@@ -261,6 +265,8 @@ Page({
       displayCover,
       previewVideoSrc,
       likesCount: Number(item.likes || 0),
+      creator_avatar: creatorAvatar,
+      authorAvatar: creatorAvatar,
       materialCount: materials.length,
       downloadUrl: (firstMaterial && firstMaterial.file_path) || previewVideoSrc || displayCover || '',
       downloadType: (firstMaterial && firstMaterial.file_type) || coverType,

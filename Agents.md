@@ -44,6 +44,13 @@
 - `build-info.js` 由 `scripts/ci-upload.js` 自动更新，`mine` 页会读它展示“最后更新”
 - 状态文案和颜色尽量复用 `utils/enums.js` / `utils/util.js`
 
+## 提交前同步
+
+- 每次准备提交前，先 `git fetch origin`，再把当前分支同步到 `origin/main`
+- 如果有远端更新，优先 `git rebase origin/main`；遇到冲突先解决冲突，再继续提交
+- 不要在明显落后远端的情况下直接提交，避免把旧代码继续向前推
+- 如果当前正处在 rebase 或冲突处理中，先把这次同步收尾，再开始新的改动
+
 ## 需要特别注意
 
 - `README.md` 里有些目录说明已经过时，当前真实页面以 `app.json` 为准

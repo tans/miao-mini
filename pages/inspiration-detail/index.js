@@ -74,7 +74,10 @@ Page({
           ''
         ),
         cover: Api.getDisplayUrl(inspiration.cover || ''),
-        authorAvatar: Api.getDisplayUrl(inspiration.authorAvatar || inspiration.creator_avatar || '') || '/assets/icons/avatar-default.jpg'
+        authorAvatar: Api.getAvatarDisplayUrl(
+          inspiration.authorAvatar || inspiration.creator_avatar || '',
+          inspiration.creator_id || inspiration.creatorId || inspiration.author_id || inspiration.authorId || inspiration.user_id || inspiration.userId
+        )
       };
 
       this.setData({

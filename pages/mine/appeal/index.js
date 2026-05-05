@@ -16,10 +16,7 @@ const TABS = [
 ];
 
 const APPEAL_TYPES = [
-  { id: 1, name: '审核结果有误' },
-  { id: 2, name: '举报原因不实' },
-  { id: 3, name: '结算金额异议' },
-  { id: 4, name: '其他问题' },
+  { id: 1, name: '任务申诉' },
 ];
 
 function pick() {
@@ -385,12 +382,17 @@ Page({
 
     for (let i = 0; i < this.data.uploadImages.length; i += 1) {
       const image = this.data.uploadImages[i];
-      const uploadRes = await Api.uploadImage(image.tempFilePath || image, {
-        bizType: 'appeal_evidence',
-        bizId: currentUser.id ? String(currentUser.id) : '',
-        jobId: `appeal-${Date.now()}-${i + 1}`,
-        returnMeta: true,
-      });
+      let uploadRes;
+      try {
+        uploadRes = await Api.uploadImage(image.tempFilePath || image, {
+          bizType: 'appeal_evidence',
+          bizId: currentUser.id ? String(currentUser.id) : '',
+          jobId: `appeal-${Date.now()}-${i + 1}`,
+          returnMeta: true,
+        });
+      } catch (err) {
+        throw new Error(`第 ${i + 1} 张图片上传失败：${(err && err.message) || '请重试'}`);
+      }
       uploadedUrls.push(uploadRes.url);
     }
 
