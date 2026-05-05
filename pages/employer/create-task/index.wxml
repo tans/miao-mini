@@ -321,6 +321,7 @@ module.exports = {
   <mp-half-screen-dialog 
     title="选择行业" 
     ext-class="custom-class"
+    root-portal="{{true}}"
     show="{{showDialog}}" 
     bindclose="onCloseDialog"
   >
@@ -335,6 +336,7 @@ module.exports = {
   <mp-half-screen-dialog 
     title="选择风格" 
     ext-class="custom-class"
+    root-portal="{{true}}"
     show="{{showStyleDialog}}" 
     bindclose="onCloseStyleDialog"
   >

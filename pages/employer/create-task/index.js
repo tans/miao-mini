@@ -589,7 +589,7 @@ Page({
       }, 1500);
     } catch (err) {
       const msg = err && err.message || '发布失败';
-      wx.showToast({ title: msg, icon: 'none' });
+      wx.showToast({ title: msg.slice(0, 20), icon: 'none', duration: 3000 });
       this.setData({ isSubmitting: false });
     } finally {
       wx.hideLoading();
