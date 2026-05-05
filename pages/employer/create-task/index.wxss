@@ -879,6 +879,25 @@ picker.spec-item {
   border-top: 2rpx solid #ECECEF;
 }
 
+.submit-feedback {
+  margin-bottom: 20rpx;
+  padding: 18rpx 24rpx;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  text-align: left;
+}
+
+.submit-feedback-error {
+  background: rgba(239, 68, 68, 0.08);
+  color: #d92d20;
+}
+
+.submit-feedback-success {
+  background: rgba(34, 197, 94, 0.10);
+  color: #16803c;
+}
+
 .submit-btn {
   width: 100%;
   height: 96rpx;

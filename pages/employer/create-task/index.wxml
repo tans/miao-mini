@@ -310,6 +310,9 @@ module.exports = {
     </view>
     <!-- 提交按钮 -->
     <view class="submit-section">
+      <view wx:if="{{submitFeedback}}" class="submit-feedback submit-feedback-{{submitFeedbackType}}">
+        {{submitFeedback}}
+      </view>
       <view class="action-text">点击发布即表示同意
         <text class="agreement-link" bindtap="goMerchantAgreement">《平台商家服务协议》</text>
       </view>

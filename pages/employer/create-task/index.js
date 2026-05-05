@@ -79,6 +79,8 @@ Page({
     isSubmitting: false,
     showDialog: false,
     showStyleDialog: false,
+    submitFeedback: '',
+    submitFeedbackType: '',
   },
 
   onLoad() {
@@ -548,6 +550,10 @@ Page({
     const imageMaterials = this.data.refImages.filter((item) => !(item && item.isVideo));
     const videoMaterials = this.data.refImages.filter((item) => item && item.isVideo);
     if (hasMaterials && imageMaterials.length === 0) {
+      this.setData({
+        submitFeedback: '首个参考素材必须是图片，请先上传至少一张图片。',
+        submitFeedbackType: 'error',
+      });
       wx.showModal({
         title: '发布失败',
         content: '首个参考素材必须是图片，请先上传至少一张图片。',
@@ -557,7 +563,11 @@ Page({
     }
 
     const uploadMaterials = imageMaterials.concat(videoMaterials);
-    this.setData({ isSubmitting: true });
+    this.setData({
+      isSubmitting: true,
+      submitFeedback: '',
+      submitFeedbackType: '',
+    });
     wx.showLoading({ title: hasMaterials ? '上传素材中...' : '提交中...' });
     try {
       const materials = [];
@@ -609,6 +619,10 @@ Page({
       });
       wx.hideLoading();
       this.setData({ isSubmitting: false });
+      this.setData({
+        submitFeedback: (res && res.message) || '任务已提交审核',
+        submitFeedbackType: 'success',
+      });
       wx.showModal({
         title: '发布成功',
         content: (res && res.message) || '任务已提交审核',
@@ -621,7 +635,11 @@ Page({
     } catch (err) {
       const msg = String(err && (err.message || err.errMsg) || '发布失败');
       wx.hideLoading();
-      this.setData({ isSubmitting: false });
+      this.setData({
+        isSubmitting: false,
+        submitFeedback: msg,
+        submitFeedbackType: 'error',
+      });
       wx.showModal({
         title: '发布失败',
         content: msg.length > 100 ? msg.slice(0, 100) : msg,
