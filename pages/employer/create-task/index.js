@@ -23,9 +23,9 @@ Page({
     title: '',
     description: '',
     isAiWriting: false,
-    unit_price: null,
-    award_price: null,
-    total_count: null,
+    unit_price: 2,
+    award_price: 20,
+    total_count: 10,
     deadline: '',
     video_duration: '30秒',
     privacyProtected: false,
@@ -513,6 +513,18 @@ Page({
       wx.showToast({ title: '请至少选择一个行业', icon: 'none' });
       return;
     }
+    if (!Number(unit_price) || Number(unit_price) <= 0) {
+      wx.showToast({ title: '请填写参与奖', icon: 'none' });
+      return;
+    }
+    if (!Number(this.data.award_price) || Number(this.data.award_price) <= 0) {
+      wx.showToast({ title: '请填写采纳奖', icon: 'none' });
+      return;
+    }
+    if (!Number(total_count) || Number(total_count) <= 0) {
+      wx.showToast({ title: '请填写报名人数', icon: 'none' });
+      return;
+    }
     if (this.data.isBalanceInsufficient) {
       wx.showModal({
         title: '余额不足',
@@ -533,14 +545,26 @@ Page({
     }).filter(name => name);
 
     const hasMaterials = this.data.refImages.length > 0;
+    const imageMaterials = this.data.refImages.filter((item) => !(item && item.isVideo));
+    const videoMaterials = this.data.refImages.filter((item) => item && item.isVideo);
+    if (hasMaterials && imageMaterials.length === 0) {
+      wx.showModal({
+        title: '发布失败',
+        content: '首个参考素材必须是图片，请先上传至少一张图片。',
+        showCancel: false,
+      });
+      return;
+    }
+
+    const uploadMaterials = imageMaterials.concat(videoMaterials);
     this.setData({ isSubmitting: true });
     wx.showLoading({ title: hasMaterials ? '上传素材中...' : '提交中...' });
     try {
       const materials = [];
       if (hasMaterials) {
         const jobBase = `task-${Date.now()}`;
-        for (let i = 0; i < this.data.refImages.length; i += 1) {
-          const raw = this.data.refImages[i];
+        for (let i = 0; i < uploadMaterials.length; i += 1) {
+          const raw = uploadMaterials[i];
           const isVideo = !!(raw && raw.isVideo);
           const tempPath = typeof raw === 'string' ? raw : (raw && raw.path) || '';
           const uploadRes = isVideo
@@ -583,14 +607,26 @@ Page({
         jimeng_link: jimengEnabled ? jimengLinkTrim : '',
         materials,
       });
-      wx.showToast({ title: (res && res.message) || '发布成功', icon: 'success' });
-      setTimeout(() => {
-        wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
-      }, 1500);
-    } catch (err) {
-      const msg = err && err.message || '发布失败';
-      wx.showToast({ title: msg.slice(0, 20), icon: 'none', duration: 3000 });
+      wx.hideLoading();
       this.setData({ isSubmitting: false });
+      wx.showModal({
+        title: '发布成功',
+        content: (res && res.message) || '任务已提交审核',
+        confirmText: '去查看',
+        showCancel: false,
+        success: () => {
+          wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
+        },
+      });
+    } catch (err) {
+      const msg = String(err && (err.message || err.errMsg) || '发布失败');
+      wx.hideLoading();
+      this.setData({ isSubmitting: false });
+      wx.showModal({
+        title: '发布失败',
+        content: msg.length > 100 ? msg.slice(0, 100) : msg,
+        showCancel: false,
+      });
     } finally {
       wx.hideLoading();
     }
