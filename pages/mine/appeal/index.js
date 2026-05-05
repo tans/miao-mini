@@ -27,6 +27,11 @@ function pick() {
   return '';
 }
 
+function toPositiveInt(value) {
+  const num = Number(value);
+  return Number.isFinite(num) && num > 0 ? num : 0;
+}
+
 function getClaimDisputeKind(claim = {}) {
   const status = Number(claim.status);
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
@@ -401,7 +406,9 @@ Page({
 
   async submitAppeal() {
     const target = this.data.composerTarget;
-    if (!target || !target.claimId || !target.taskId) {
+    const claimId = toPositiveInt(target && target.claimId);
+    const taskId = toPositiveInt(target && target.taskId);
+    if (!target || !claimId || !taskId) {
       wx.showToast({ title: '缺少申诉对象', icon: 'none' });
       return;
     }
@@ -411,14 +418,14 @@ Page({
     }
 
     wx.showLoading({ title: '提交中...' });
-    const localId = `creator_appeal:${target.claimId}`;
+    const localId = `creator_appeal:${claimId}`;
 
     try {
       const evidence = this.data.uploadImages.length ? await this.uploadEvidenceImages() : '';
       const payload = {
         type: 1,
-        task_id: target.taskId,
-        target_id: target.taskId,
+        task_id: taskId,
+        target_id: taskId,
         reason: `${this.data.selectedType.name}：${this.data.reason.trim()}`,
         evidence,
       };
@@ -428,8 +435,8 @@ Page({
       saveDisputeRecord({
         localId,
         sourceType: 'creator_appeal',
-        claimId: target.claimId,
-        taskId: target.taskId,
+        claimId,
+        taskId,
         taskTitle: target.taskTitle,
         workTitle: target.workTitle,
         reportReason: target.disputeKind === 'reported' ? target.reasonText : '',

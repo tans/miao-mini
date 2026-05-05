@@ -565,7 +565,28 @@ const Api = {
   // Appeals
   createAppeal(data) {
     // data: { type: 1, task_id?: taskId, target_id?: taskId, reason: string, evidence?: string }
-    return this.request('POST', '/appeals', data);
+    const payload = { ...(data || {}) };
+    const normalizeIdField = (key) => {
+      if (!(key in payload)) return;
+      const value = payload[key];
+      if (value === undefined || value === null || value === '') {
+        delete payload[key];
+        return;
+      }
+      const normalized = Number(value);
+      if (Number.isFinite(normalized) && normalized > 0) {
+        payload[key] = normalized;
+        return;
+      }
+      delete payload[key];
+    };
+
+    normalizeIdField('type');
+    normalizeIdField('task_id');
+    normalizeIdField('target_id');
+    normalizeIdField('claim_id');
+
+    return this.request('POST', '/appeals', payload);
   },
 
   getAppeals(params = {}) {

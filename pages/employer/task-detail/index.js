@@ -22,6 +22,11 @@ function pick(...values) {
   return '';
 }
 
+function toPositiveInt(value) {
+  const num = Number(value);
+  return Number.isFinite(num) && num > 0 ? num : 0;
+}
+
 function normalizeMediaMaterial(material = {}) {
   const fileType = String(pick(material.file_type, material.fileType, '')).toLowerCase();
   const filePath = pick(material.file_path, material.filePath, '');
@@ -586,18 +591,20 @@ Page({
   },
 
   createReportDisputeRecords(claims = [], reason) {
-    const taskId = pick(this.data.task.id, this.data.taskId, '');
+    const taskId = toPositiveInt(pick(this.data.task.id, this.data.taskId, ''));
     const taskTitle = pick(this.data.task.title, `任务 #${taskId}`);
     const reportReason = reason || '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大';
 
     claims.forEach((claim) => {
+      const claimId = toPositiveInt(claim.id);
+      if (!claimId || !taskId) return;
       const localId = `merchant_report:${claim.id}`;
       const workTitle = pick(claim.title, claim.taskTitle, taskTitle, `作品 #${claim.id}`);
       saveDisputeRecord({
         localId,
         sourceType: 'merchant_report',
-        claimId: String(claim.id),
-        taskId: String(taskId || ''),
+        claimId,
+        taskId,
         taskTitle,
         workTitle,
         reportReason,
