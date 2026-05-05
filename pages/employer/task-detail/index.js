@@ -1,6 +1,5 @@
 const Api = require('../../../utils/api.js');
 const { formatDateTime } = require('../../../utils/util.js');
-const { saveDisputeRecord, patchDisputeRecord } = require('../../../utils/dispute-records.js');
 const app = getApp();
 
 function toList(value) {
@@ -591,41 +590,7 @@ Page({
   },
 
   createReportDisputeRecords(claims = [], reason) {
-    const taskId = toPositiveInt(pick(this.data.task.id, this.data.taskId, ''));
-    const taskTitle = pick(this.data.task.title, `任务 #${taskId}`);
-    const reportReason = reason || '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大';
-
-    claims.forEach((claim) => {
-      const claimId = toPositiveInt(claim.id);
-      if (!claimId || !taskId) return;
-      const localId = `merchant_report:${claim.id}`;
-      const workTitle = pick(claim.title, claim.taskTitle, taskTitle, `作品 #${claim.id}`);
-      saveDisputeRecord({
-        localId,
-        sourceType: 'merchant_report',
-        claimId,
-        taskId,
-        taskTitle,
-        workTitle,
-        reportReason,
-        createdAt: new Date().toISOString(),
-      });
-
-      Api.createAppeal({
-        type: 1,
-        task_id: taskId,
-        target_id: taskId,
-        reason: `举报作品：${reportReason}`,
-      }).then((res) => {
-        const remoteAppeal = (res && res.data) || {};
-        patchDisputeRecord(localId, {
-          remoteAppealId: pick(remoteAppeal.id, ''),
-          remoteStatus: pick(remoteAppeal.status, 1),
-          remoteStatusText: pick(remoteAppeal.status_str, '平台处理中'),
-          updatedAt: pick(remoteAppeal.created_at, new Date().toISOString()),
-        });
-      }).catch(() => {});
-    });
+    return claims;
   },
 
   async downloadAllMaterials() {

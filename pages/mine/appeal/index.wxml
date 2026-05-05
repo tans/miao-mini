@@ -1,12 +1,4 @@
 <view class="appeal-page">
-  <!-- <view class="hero-card">
-    <view class="hero-copy">
-      <text class="hero-title">申诉与纠纷</text>
-      <text class="hero-desc">举报、淘汰与申诉记录都会在这里汇总，平台将在 1-3 个工作日内处理。</text>
-    </view>
-    <view class="hero-mark">DISPUTE</view>
-  </view> -->
-
   <view class="tabs">
     <view
       wx:for="{{tabs}}"
@@ -21,16 +13,6 @@
 
   <view class="records" wx:if="{{filteredRecords.length > 0}}">
     <view class="record-card" wx:for="{{filteredRecords}}" wx:key="id">
-      <!-- <view class="record-header">
-        <view class="record-badge {{item.source === 'initiated' ? 'record-badge-initiated' : 'record-badge-about'}}">
-          <text>{{item.source === 'initiated' ? '我发起的' : '关于我的'}}</text>
-        </view>
-        <view class="record-status record-status-{{item.statusClass}}">
-          <text>{{item.statusText}}</text>
-        </view>
-      </view> -->
-      <image class="record-image" src="../../../images/mine/appeal-icon1.png" mode="aspectFill" />
-      <!-- <image class="record-image" src="../../../images/mine/appeal-icon2.png" mode="aspectFill" /> -->
       <view class="record-content">
         <view class="record-main">
           <text class="record-title">{{item.title}}</text>
@@ -38,26 +20,18 @@
         </view>
 
         <view class="record-panel">
-          <!-- <text class="record-label"></text> -->
-          <text class="record-text">{{item.reasonLabel}}:{{item.reasonText}}</text>
+          <text class="record-label">{{item.reasonLabel}}</text>
+          <text class="record-text">{{item.reasonText}}</text>
         </view>
-        <view class="record-primary-panel">
-          <text class="record-primary-text">商家申诉：任务并未涉及违规词汇。</text>
-        </view>
-        <view class="record-success-panel">
-          <text class="record-success-text">平台支持您的申诉，已为您补发参与奖励。</text>
-        </view>
-        <view class="record-panel" wx:if="{{item.appealText}}">
-          <text class="record-label">补充说明</text>
-          <text class="record-text">{{item.appealText}}</text>
+
+        <view class="record-panel record-panel-muted" wx:if="{{item.resultText}}">
+          <text class="record-label">处理结果</text>
+          <text class="record-text">{{item.resultText}}</text>
         </view>
 
         <view class="record-footer">
           <text class="record-time">{{item.timeLabel}} {{item.timeText}}</text>
-          <view wx:if="{{item.actionText}}" class="record-action" data-id="{{item.id}}" bindtap="openComposer">
-            <text>{{item.actionText}}</text>
-          </view>
-          <view wx:else class="record-status record-status-{{item.statusClass}}">
+          <view class="record-status record-status-{{item.statusClass}}">
             <text>{{item.statusText}}</text>
           </view>
         </view>
@@ -67,59 +41,47 @@
 
   <view class="empty-state" wx:if="{{!loading && filteredRecords.length === 0}}">
     <view class="empty-mark">0</view>
-    <text class="empty-title">暂无纠纷记录</text>
-    <text class="empty-desc">商家举报、作品淘汰或您主动发起申诉后，记录会展示在这里。</text>
+    <text class="empty-title">暂无申诉记录</text>
+    <text class="empty-desc">仅显示你提交过的创作者申诉。</text>
   </view>
 
   <view class="service-bar">
-    <!-- <view class="service-copy">
-      <text class="service-title">需要人工协助？</text>
-      <text class="service-desc">{{customerServicePhone}}</text>
-    </view>
-    <view class="service-actions">
-      <view class="service-btn service-btn-ghost" bindtap="copyServicePhone">
-        <text>复制电话</text>
-      </view>
-      <view class="service-btn service-btn-solid" bindtap="goCustomerService">
-        <text>联系客服</text>
-      </view>
-    </view> -->
-    <view class="service-btn service-btn-solid">
+    <view class="service-btn service-btn-solid" bindtap="goCustomerService">
       <text>联系客服</text>
     </view>
   </view>
 
   <view wx:if="{{showComposer}}" class="composer-mask" bindtap="closeComposer"></view>
-    <view wx:if="{{showComposer}}" class="composer-modal">
-      <view class="composer-modal-content">
-        <view class="composer-header">
-          <text class="composer-title">申诉原因</text>
-          <view class="composer-close" bindtap="closeComposer">×</view>
-        </view>
-        <view class="composer-body">
-          <view class="type-picker">
-            <text class="type-picker-label">申诉类型</text>
-            <view class="type-picker-value">{{selectedType.name}}</view>
-          </view>
-          <textarea
-            class="composer-textarea"
-            value="{{reason}}"
-            bindinput="onReasonInput"
-            maxlength="300"
-            placeholder="请输入不少于10个字的描述"
-          />
-
-          <view class="upload-list">
-            <view class="upload-item" wx:for="{{uploadImages}}" wx:key="index">
-              <image class="upload-preview" src="{{item.previewUrl || item.tempFilePath || item}}" mode="aspectFill" />
-              <view class="upload-remove" bindtap="removeImage" data-index="{{index}}">×</view>
-            </view>
-            <view class="upload-add" wx:if="{{uploadImages.length < 3}}" bindtap="uploadImage">
-              <text class="upload-add-icon">+</text>
-            </view>
-          </view>
-        </view>
-        <view class="composer-submit" bindtap="submitAppeal">提交</view>
+  <view wx:if="{{showComposer}}" class="composer-modal">
+    <view class="composer-modal-content">
+      <view class="composer-header">
+        <text class="composer-title">申诉原因</text>
+        <view class="composer-close" bindtap="closeComposer">×</view>
       </view>
+      <view class="composer-body">
+        <view class="type-picker">
+          <text class="type-picker-label">申诉类型</text>
+          <view class="type-picker-value">{{selectedType.name}}</view>
+        </view>
+        <textarea
+          class="composer-textarea"
+          value="{{reason}}"
+          bindinput="onReasonInput"
+          maxlength="300"
+          placeholder="请输入申诉说明"
+        />
+
+        <view class="upload-list">
+          <view class="upload-item" wx:for="{{uploadImages}}" wx:key="index">
+            <image class="upload-preview" src="{{item.previewUrl || item.tempFilePath || item}}" mode="aspectFill" />
+            <view class="upload-remove" bindtap="removeImage" data-index="{{index}}">×</view>
+          </view>
+          <view class="upload-add" wx:if="{{uploadImages.length < 3}}" bindtap="uploadImage">
+            <text class="upload-add-icon">+</text>
+          </view>
+        </view>
+      </view>
+      <view class="composer-submit" bindtap="submitAppeal">提交</view>
+    </view>
   </view>
 </view>

@@ -154,7 +154,7 @@
         <view class="zone-item" bindtap="goAppeal">
           <view class="zone-item-left">
             <image class="zone-icon" src="../../images/icon/shensu.png" />
-            <text class="zone-item-title">申诉与纠纷</text>
+            <text class="zone-item-title">申诉记录</text>
           </view>
           <image class="zone-arrow" src="../../images/mine/right.png" />
         </view>
