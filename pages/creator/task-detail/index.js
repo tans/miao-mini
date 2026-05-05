@@ -26,6 +26,17 @@ function formatDateTime(value) {
   return formatDateTimeText(value);
 }
 
+function formatRemainToDeadline(endAt) {
+  if (!endAt) return '';
+  const endTime = new Date(endAt).getTime();
+  if (Number.isNaN(endTime)) return '';
+  const diff = endTime - Date.now();
+  if (diff <= 0) return '已截止';
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  return `${hours}小时${minutes}分钟`;
+}
+
 function normalizeBooleanFlag(value, defaultValue = false) {
   if (value === undefined || value === null || value === '') return defaultValue;
   if (typeof value === 'boolean') return value;
@@ -366,7 +377,9 @@ Page({
     submitting: false,
     total_count: 0,
     remaining_count: 0,
-    enrolled_count: 0
+    enrolled_count: 0,
+    showSignUpSuccessModal: false,
+    signUpSuccessDesc: '',
   },
 
   onLoad(options) {
@@ -593,7 +606,11 @@ Page({
         });
       }
       wx.hideLoading();
-      wx.showToast({ title: '报名成功', icon: 'success' });
+      const t = this.data.task || {};
+      const endAt = t.endAt || t.end_at || '';
+      const remain = formatRemainToDeadline(endAt);
+      const signUpSuccessDesc =`距离截稿时间还有${this.data.countdownText}，请尽快安排时间创作并投稿，逾期将无法投稿。`
+      this.setData({ showSignUpSuccessModal: true, signUpSuccessDesc });
     } catch (err) {
       wx.hideLoading();
       const msg = err && err.message ? err.message : '报名失败';
@@ -640,6 +657,10 @@ Page({
       return;
     }
     this.setData({ showCreatorNoticeModal: true});
+  },
+
+  closeSignUpSuccessModal() {
+    this.setData({ showSignUpSuccessModal: false, signUpSuccessDesc: '' });
   },
 
   onCloseSubmitModal() {

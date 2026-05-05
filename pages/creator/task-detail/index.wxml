@@ -197,7 +197,7 @@
           <text class="header-desc">复制下方邀请链接，使用即梦生成视频</text>
         </view>
         <view class="jimeng-content">
-          <text class="jimeng-link" style="color:#333333;">{{task.jimengLink || task.jimengCode}}</text>
+          <view class="jimeng-link" style="color:#333333;">{{task.jimengLink || task.jimengCode}}</view>
           <view class="jimeng-badge jimeng-copy" bindtap="copyJimengLink">
             <text class="jimeng-badge-text jimeng-copy-text">复制</text>
           </view>
@@ -378,6 +378,17 @@
           <text>{{submitting ? '提交中...' : '提交作品'}}</text>
         </button>
       </view>
+    </view>
+  </view>
+
+  <!-- 报名成功弹窗（样式对齐钱包充值成功） -->
+  <view wx:if="{{showSignUpSuccessModal}}" class="signup-success-mask" bindtap="closeSignUpSuccessModal"></view>
+  <view wx:if="{{showSignUpSuccessModal}}" class="signup-success-container">
+    <view class="signup-success-content">
+      <text class="signup-success-title">报名成功</text>
+      <image class="signup-success-icon" src="../../wallet/images/success.png" />
+      <text class="signup-success-desc">{{signUpSuccessDesc}}</text>
+      <view class="signup-success-btn" bindtap="closeSignUpSuccessModal">我知道了</view>
     </view>
   </view>
 </view>

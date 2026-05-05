@@ -246,6 +246,8 @@ Page({
     totalSpent: 0,
     showEditJimeng: false,
     editJimengLink: '',
+    showAdoptConfirmModal: false,
+    pendingAdoptClaimId: '',
   },
 
   onLoad(options = {}) {
@@ -484,6 +486,40 @@ Page({
     });
   },
 
+  openAdoptConfirmModal(e) {
+    const { claimId } = e.currentTarget.dataset;
+    if (!claimId) {
+      wx.showToast({ title: '参数错误', icon: 'none' });
+      return;
+    }
+    this.setData({ showAdoptConfirmModal: true, pendingAdoptClaimId: String(claimId) });
+  },
+
+  closeAdoptConfirmModal() {
+    this.setData({ showAdoptConfirmModal: false, pendingAdoptClaimId: '' });
+  },
+
+  async confirmAdoptClaim() {
+    const claimId = this.data.pendingAdoptClaimId;
+    if (!claimId) return;
+    this.setData({ showAdoptConfirmModal: false, pendingAdoptClaimId: '' });
+    await this.performReviewClaim(claimId, 1, null);
+  },
+
+  async performReviewClaim(claimId, result, reason = null) {
+    try {
+      await Api.reviewClaim(claimId, result, reason);
+      if (result === 3) {
+        const claim = this.data.filteredClaims.find((item) => String(item.id) === String(claimId));
+        if (claim) this.createReportDisputeRecords([claim], reason);
+      }
+      wx.showToast({ title: result === 1 ? '已采纳' : result === 3 ? '已举报' : '已处理', icon: 'success' });
+      this.loadTaskDetail(this.data.taskId, { filter: 'all' });
+    } catch (err) {
+      wx.showToast({ title: err.message || '操作失败', icon: 'none' });
+    }
+  },
+
   async reviewClaim(e) {
     const { claimId } = e.currentTarget.dataset;
     const result = Number(e.currentTarget.dataset.result);
@@ -498,17 +534,7 @@ Page({
       if (!reason) return;
     }
 
-    try {
-      await Api.reviewClaim(claimId, result, reason);
-      if (result === 3) {
-        const claim = this.data.filteredClaims.find((item) => String(item.id) === String(claimId));
-        if (claim) this.createReportDisputeRecords([claim], reason);
-      }
-      wx.showToast({ title: result === 1 ? '已采纳' : result === 3 ? '已举报' : '已处理', icon: 'success' });
-      this.loadTaskDetail(this.data.taskId, { filter: 'all' });
-    } catch (err) {
-      wx.showToast({ title: err.message || '操作失败', icon: 'none' });
-    }
+    await this.performReviewClaim(claimId, result, reason);
   },
 
   async batchReview(e) {
@@ -768,4 +794,6 @@ Page({
       wx.hideLoading();
     }
   },
+
+  stopPropagation() {},
 });

@@ -142,7 +142,7 @@
           <view class="claim-footer">
             <!-- <text class="claim-title">{{claim.taskTitle}}</text> -->
             <view class="action-btns" wx:if="{{claim.canReview}}">
-              <text class="action-btn accept" data-claim-id="{{claim.id}}" data-result="1" bindtap="reviewClaim">采纳</text>
+              <text class="action-btn accept" data-claim-id="{{claim.id}}" bindtap="openAdoptConfirmModal">采纳</text>
               <text class="action-btn reject" data-claim-id="{{claim.id}}" data-result="2" bindtap="reviewClaim">淘汰</text>
               <text class="action-btn report" data-claim-id="{{claim.id}}" data-result="3" bindtap="reviewClaim">举报</text>
             </view>
@@ -266,10 +266,9 @@
             <text class="spec-value">{{task.visibilityText || '公开投稿'}}</text>
           </view>
         </view>
-
-        <view class="restriction-section">
+        <!-- <view class="restriction-section">
           <text class="restriction-text">平台禁忌：敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
-        </view>
+        </view> -->
       </view>
 
       <view class="material-card">
@@ -328,10 +327,10 @@
             <switch class="switch-icon" checked="{{task.jimeng_enabled}}" color="#FF9F2F" disabled/>
           </view>
           
-          <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
+          <!-- <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
             <text class="jimeng-link">{{task.jimeng_link || task.jimeng_code || '暂未设置'}}</text>
             <text class="jimeng-count">{{editJimengLink.length || 0}}/50</text>
-          </view>
+          </view> -->
           
           <view class="jimeng-edit-row">
             <input
@@ -365,6 +364,23 @@
         </view>
         <text class="safety-text">如发现违规需求或恶意灌水稿件，可在“全部投稿”中直接处理或举报。</text>
       </view> -->
+    </view>
+  </view>
+
+  <view class="creator-notice-mask" wx:if="{{showAdoptConfirmModal}}" bindtap="closeAdoptConfirmModal">
+    <view class="creator-notice-modal" catchtap="stopPropagation">
+      <view class="creator-notice-body">
+        <text class="creator-notice-title">确认采纳作品</text>
+        <text class="creator-notice-text">确认采纳作品即确认购买此作品，采纳后将自动给此作品的创作者发放采纳金与参与金。此作品的版权自动也归属于购买者。</text>
+      </view>
+      <view class="creator-notice-footer">
+        <view class="creator-notice-btn creator-notice-btn-cancel" bindtap="closeAdoptConfirmModal">
+          <text>取消</text>
+        </view>
+        <view class="creator-notice-btn creator-notice-btn-confirm" bindtap="confirmAdoptClaim">
+          <text>采纳</text>
+        </view>
+      </view>
     </view>
   </view>
 </view>

@@ -1056,3 +1056,74 @@
   font-size: 24rpx;
   color: #8c8c98;
 }
+
+/* 采纳二次确认（样式对齐创作者任务详情「创作者须知」弹窗） */
+.creator-notice-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1300;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 48rpx;
+}
+
+.creator-notice-modal {
+  width: 100%;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.creator-notice-body {
+  padding: 48rpx;
+}
+
+.creator-notice-title {
+  display: block;
+  font-size: 34rpx;
+  color: #333;
+  margin-bottom: 48rpx;
+  text-align: center;
+}
+
+.creator-notice-text {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-top: 16rpx;
+}
+
+.creator-notice-footer {
+  display: flex;
+  border-top: 1rpx solid #ececef;
+}
+
+.creator-notice-btn {
+  flex: 1;
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.creator-notice-btn text {
+  font-size: 34rpx;
+}
+
+.creator-notice-btn-cancel {
+  border-right: 1rpx solid #ececef;
+}
+
+.creator-notice-btn-cancel text {
+  color: #555562;
+}
+
+.creator-notice-btn-confirm text {
+  color: #7f8eb2;
+}

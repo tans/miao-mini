@@ -108,9 +108,13 @@
             <image src="../../images/home/badge-brand.png" class="badge-icon" />
             <text>认证企业</text>
           </view>
-          <view class="badge badge-trusted">
+          <!-- <view class="badge badge-trusted">
             <image src="../../images/home/badge-trusted.png" class="badge-icon" />
             <text>资金已托管</text>
+          </view> -->
+          <view class="badge badge-jimeng" wx:if="{{item.jimeng_enabled}}">
+            <image src="../../images/home/badge-jimeng.png" class="badge-icon" />
+            <text>即梦合拍</text>
           </view>
         </view>
 

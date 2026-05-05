@@ -331,6 +331,11 @@
   color: #616878;
   border: 2rpx solid #BEF4C8;
 }
+.badge-jimeng {
+  background: #F7F4FF;
+  color: #616878;
+  border: 2rpx solid #D4BCFF;
+}
 
 .badge-icon {
   width: 24rpx;
