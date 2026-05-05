@@ -20,6 +20,7 @@ Page({
       commission_rate: '10%',
       next_level_name: '新手创作者',
       need_count: 1,
+      level_rules: [],
       pending_count: 0
     },
     bizStats: {
@@ -197,48 +198,29 @@ Page({
       const stats = res.data || {};
       const creatorStats = stats.creator_stats || {};
       const businessStats = stats.business_stats || {};
-      const creatorLevel = Number(creatorStats.level || 0);
-      // 计算升级所需
-      const levelConfig = [
-        { level: 0, need: 1, next: '新手创作者' },
-        { level: 1, need: 5, next: '活跃创作者' },
-        { level: 2, need: 20, next: '优质创作者' },
-        { level: 3, need: 50, next: '金牌创作者' },
-        { level: 4, need: 100, next: '特约创作者' },
-        { level: 5, need: null, next: null }
-      ];
-      const adopted = creatorStats.adopted_count || 0;
-      let nextLevel = null;
-      let needCount = 0;
-      for (const cfg of levelConfig) {
-        if (cfg.level === creatorLevel) {
-          nextLevel = cfg.next;
-          needCount = cfg.need ? cfg.need - adopted : 0;
-          break;
-        }
-      }
-      // 每日投稿上限
-      const dailyLimits = [3, 8, 15, 30, 50, 999];
-      const commissionRates = ['10%', '10%', '10%', '5%', '5%', '3%'];
-      const levelNameMap = ['试用创作者', '新手创作者', '活跃创作者', '优质创作者', '金牌创作者', '特约创作者'];
-      const safeLevel = Math.min(Math.max(creatorLevel, 0), levelNameMap.length - 1);
+      const level = Number(creatorStats.level || 0);
+      const adopted = Number(creatorStats.adopted_count || 0);
+      const commissionText = creatorStats.commission_text || (typeof creatorStats.commission_rate === 'number' ? `${Math.round(creatorStats.commission_rate * 100)}%` : '10%');
       this.setData({
         creatorStats: {
-          level: creatorLevel,
-          level_name: levelNameMap[safeLevel] || '试用创作者',
+          level,
+          level_name: creatorStats.level_name || '试用创作者',
           adopted_count: adopted,
-          daily_limit: dailyLimits[safeLevel] || 3,
-          commission_rate: commissionRates[safeLevel] || '10%',
-          next_level_name: nextLevel,
-          need_count: Math.max(0, needCount),
-          pending_count: stats.pending_claims || 0
+          daily_limit: Number(creatorStats.daily_limit || 3),
+          daily_limit_text: creatorStats.daily_limit_text || '',
+          commission_rate: commissionText,
+          commission_text: commissionText,
+          next_level_name: creatorStats.next_level_name || '',
+          need_count: Number(creatorStats.need_count || 0),
+          level_rules: Array.isArray(creatorStats.level_rules) ? creatorStats.level_rules : [],
+          pending_count: Number(stats.pending_claims || 0)
         }
       });
       this.setData({
         bizStats: {
-          accepted_count: businessStats.accepted_count || 0,
-          pending_count: stats.pending_reviews || 0,
-          adopted_count: businessStats.adopted_count || 0
+          accepted_count: Number(businessStats.accepted_count || 0),
+          pending_count: Number(stats.pending_reviews || 0),
+          adopted_count: Number(businessStats.adopted_count || 0)
         }
       });
     } catch (err) {

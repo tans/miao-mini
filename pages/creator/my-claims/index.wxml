@@ -29,7 +29,7 @@
             <text class="time-value {{item.remainingTimeClass}}">{{item.remainingTimeDisplay}}</text>
           </view>
           <view class="action-buttons">
-            <view class="action-btn btn-cancel" bindtap="cancelClaim" data-claim-id="{{item.id}}" wx:if="{{item.claimStatus === 1 && item.isActive}}">
+            <view class="action-btn btn-cancel" bindtap="cancelClaim" data-claim-id="{{item.id}}" wx:if="{{item.canCancel}}">
               <text>取消</text>
             </view>
             <view class="action-btn {{item.claimActionClass || 'btn-submit'}}" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">

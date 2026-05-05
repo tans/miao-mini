@@ -60,13 +60,12 @@ Page({
     try {
       const res = await Api.getCreatorStats();
       const stats = res.data || {};
-      const levelNameMap = ['试用创作者', '新手创作者', '活跃创作者', '优质创作者', '金牌创作者', '特约创作者'];
-      const commissionRates = ['10%', '10%', '10%', '5%', '5%', '3%'];
+      const level = Number(stats.level || 0);
       this.setData({
-        currentLevel: stats.level || 0,
-        currentLevelName: levelNameMap[stats.level] || '试用创作者',
-        commissionRate: commissionRates[stats.level] || '10%',
-        totalAdopted: stats.adopted_count || 0
+        currentLevel: level,
+        currentLevelName: stats.level_name || '试用创作者',
+        commissionRate: stats.commission_text || (typeof stats.commission_rate === 'number' ? `${Math.round(stats.commission_rate * 100)}%` : '10%'),
+        totalAdopted: Number(stats.adopted_count || 0)
       });
     } catch (err) {
       wx.showToast({ title: '加载创作者数据失败', icon: 'none' });

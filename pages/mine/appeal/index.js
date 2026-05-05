@@ -454,7 +454,15 @@ Page({
       this.closeComposer();
       this.loadPageData(false);
     } catch (err) {
-      wx.showToast({ title: err.message || '提交失败', icon: 'none' });
+      const message = err && err.message ? err.message : '提交失败';
+      console.error('[appeal] submit failed:', err);
+      wx.hideLoading();
+      wx.showModal({
+        title: '提交失败',
+        content: message,
+        showCancel: false,
+      });
+      return;
     } finally {
       wx.hideLoading();
     }

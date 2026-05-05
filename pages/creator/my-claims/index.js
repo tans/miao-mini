@@ -2,16 +2,26 @@ const Api = require('../../../utils/api.js');
 const { getClaimStatusText, formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
+function pick() {
+  for (let i = 0; i < arguments.length; i += 1) {
+    const value = arguments[i];
+    if (value !== undefined && value !== null && value !== '') return value;
+  }
+  return '';
+}
+
 function normalizeClaim(claim = {}) {
-  const claimStatus = Number(claim.claim_status != null ? claim.claim_status : claim.status || 0);
-  const reviewResult = Number(claim.review_result || claim.reviewResult || 0) || 0;
-  const taskStatus = Number(claim.task_status || 0);
-  const endAt = claim.endAt || claim.end_at || '';
+  const claimStatus = Number(pick(claim.claim_status, claim.status, 0)) || 0;
+  const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  const taskStatus = Number(pick(claim.task_status, claim.taskStatus, 0)) || 0;
+  const endAt = pick(claim.endAt, claim.end_at, '');
   const now = Date.now();
   const endAtMs = endAt ? new Date(endAt).getTime() : 0;
   const normalizedStatus = claimStatus === 1 && reviewResult === 3 ? 6 : claimStatus;
+  const isReworked = reviewResult === 2 || reviewResult === 3;
+  const isReviewed = reviewResult > 0;
 
-  let isActive = claimStatus === 1 || claimStatus === 2;
+  let isActive = (claimStatus === 1 || claimStatus === 2) && !isReviewed && !isReworked;
   if (taskStatus) {
     isActive = isActive && (taskStatus === 2 || taskStatus === 3);
   }
@@ -21,13 +31,12 @@ function normalizeClaim(claim = {}) {
 
   let claimActionText = '查看详情';
   let claimActionClass = 'btn-ended';
-  if (normalizedStatus === 1 && reviewResult === 0) {
-    claimActionText = isActive ? '立即交稿' : '已截止';
-    claimActionClass = isActive ? 'btn-submit' : 'btn-ended';
-  } else if (claimStatus === 1 && reviewResult === 2) {
+  const canCancel = claimStatus === 1 && !isReviewed && !isReworked && isActive;
+
+  if (reviewResult === 2) {
     claimActionText = '已淘汰';
     claimActionClass = 'btn-rejected';
-  } else if (claimStatus === 1 && reviewResult === 3) {
+  } else if (reviewResult === 3) {
     claimActionText = '已举报';
     claimActionClass = 'btn-reported';
   } else if (normalizedStatus === 2) {
@@ -45,6 +54,9 @@ function normalizeClaim(claim = {}) {
   } else if (normalizedStatus === 6) {
     claimActionText = '已举报';
     claimActionClass = 'btn-reported';
+  } else if (normalizedStatus === 1) {
+    claimActionText = isActive ? '立即交稿' : '已截止';
+    claimActionClass = isActive ? 'btn-submit' : 'btn-ended';
   }
 
   return {
@@ -55,8 +67,9 @@ function normalizeClaim(claim = {}) {
     endAt,
     end_at: endAt,
     deadlineText: formatDateTime(endAt) || '待更新',
-    statusLabel: isActive ? '征稿中' : '已截止',
+    statusLabel: (claimStatus === 1 && isReviewed) ? '已处理' : (isActive ? '征稿中' : '已截止'),
     isActive,
+    canCancel,
     normalizedStatus,
     claimActionText,
     claimActionClass,
