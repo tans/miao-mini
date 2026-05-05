@@ -43,7 +43,7 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!loading && filteredClaims.length === 0}}">
-    <view class="empty-icon">📋</view>
+    <image src="../../../images/home/empty.png" class="clock-icon" style="width:300rpx;height:300rpx;"/>
     <text class="empty-text">暂无报名</text>
     <text class="empty-hint">快去首页领取感兴趣的任务吧</text>
   </view>

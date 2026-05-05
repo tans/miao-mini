@@ -51,7 +51,7 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{filteredTasks.length === 0 && !loading}}">
-    <view class="empty-icon">📋</view>
+    <image src="../../../images/home/empty.png" class="clock-icon" style="width:300rpx;height:300rpx;"/>
     <text class="empty-text">暂无任务</text>
     <view class="empty-btn" bindtap="goCreateTask">发布任务</view>
   </view>

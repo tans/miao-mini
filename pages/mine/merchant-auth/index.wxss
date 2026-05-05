@@ -1,7 +1,7 @@
 .auth-container {
   min-height: 100vh;
   background: linear-gradient(180deg, #f7f7f7 0%, #efefef 100%);
-  padding: 24rpx 16rpx 40rpx;
+  padding: 32rpx 24rpx 40rpx 24rpx;
   box-sizing: border-box;
 }
 
@@ -14,13 +14,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 248rpx;
-  padding: 34rpx 36rpx;
-  border-radius: 22rpx;
+  width: 702rpx;
+  height: 240rpx;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.26) 0, rgba(255, 255, 255, 0) 34%),
-    linear-gradient(135deg, #ffc640 0%, #ffa145 52%, #ff8d52 100%);
+  background: url('https://public.jisuhudong.com/minapp/商家认证背景.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
   box-shadow: 0 18rpx 40rpx rgba(255, 151, 63, 0.18);
 }
 
@@ -28,7 +27,7 @@
   position: relative;
   z-index: 2;
   flex: 1;
-  padding-right: 16rpx;
+  padding-left: 58rpx;
 }
 
 .status-title {
@@ -157,7 +156,7 @@
 }
 
 .form-card {
-  padding: 32rpx 20rpx 20rpx;
+  padding: 32rpx;
   border-radius: 20rpx;
   background: #ffffff;
   box-shadow: 0 18rpx 40rpx rgba(24, 29, 36, 0.05);
@@ -230,7 +229,7 @@
   display: flex;
   align-items: center;
   min-height: 94rpx;
-  margin-top: 22rpx;
+  margin-top: 24rpx;
   padding: 0 24rpx;
   border-radius: 16rpx;
   background: #f5f6f8;
@@ -244,7 +243,7 @@
 }
 
 .label-wide {
-  width: 226rpx;
+  width: 240rpx;
 }
 
 .form-input {
@@ -264,8 +263,8 @@
   justify-content: center;
   height: 88rpx;
   border-radius: 999rpx;
-  background: linear-gradient(90deg, #ff9828 0%, #ffac2f 100%);
-  box-shadow: 0 16rpx 30rpx rgba(255, 160, 42, 0.24);
+  background: #FF9F2F;
+  box-shadow: 0rpx 4rpx 16rpx 0rpx rgba(17,17,17,0.04);
   color: #ffffff;
   font-size: 34rpx;
   font-weight: 700;
