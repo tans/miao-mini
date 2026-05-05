@@ -154,7 +154,7 @@
       </view>
 
       <view class="empty-state" wx:if="{{!loading && filteredClaims.length === 0}}">
-        <view class="empty-icon">稿</view>
+        <image src="../../../images/home/empty.png" class="clock-icon" style="width:300rpx;height:300rpx;"/>
         <text class="empty-text">{{claimsLoadFailed ? '投稿加载失败' : '暂无投稿'}}</text>
         <text class="empty-hint">{{claimsLoadFailed ? (claimsLoadErrorMessage || '请下拉重试') : '该任务还没有可审核的作品'}}</text>
       </view>
