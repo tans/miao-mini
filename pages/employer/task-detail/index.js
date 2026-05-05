@@ -90,7 +90,10 @@ function normalizeTask(task = {}) {
     ...task,
     id: pick(task.id, task.task_id, ''),
     businessName: pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '商家'),
-    businessAvatar: pick(task.business_avatar, task.businessAvatar, task.merchantAvatar, ''),
+    businessAvatar: Api.getAvatarDisplayUrl(
+      pick(task.business_avatar, task.businessAvatar, task.merchantAvatar, ''),
+      pick(task.business_id, task.businessId, task.merchant_id, task.merchantId, '')
+    ),
     title: pick(task.title, task.name, '高端楼盘春日氛围视频'),
     unit_price: Number(pick(task.unit_price, 0)) || 0,
     award_price: Number(pick(task.award_price, 0)) || 0,
@@ -194,7 +197,10 @@ function normalizeClaim(claim = {}, task = {}) {
     statusClass: getClaimStatusClass({ ...claim, normalizedStatus }),
     filterKey: normalizedStatus === 1 && reviewResult === 0 ? 'draft' : getFilterKey(normalizedStatus),
     creatorName: claim.creator_name || '匿名创作者',
-    creatorAvatar: claim.creator_avatar || '',
+    creatorAvatar: Api.getAvatarDisplayUrl(
+      claim.creator_avatar || '',
+      claim.creator_id || claim.creatorId || claim.user_id || claim.userId
+    ),
     creatorInitial: (claim.creator_name || '匿').slice(0, 1),
     displayDate: formatDateTime(submitAt || claim.updated_at || ''),
     contentText,

@@ -7,24 +7,29 @@ Page({
     userIdDisplay: '--',
     nickname: '',
     phone: '',
-    avatarSrc: '/assets/icons/avatar-default.jpg'
+    avatarSrc: Api.getAvatarMeta().avatarSrc
   },
 
   onLoad() {
     this.loadUser();
   },
 
-  async loadUser() {
-    const user = app.globalData.user;
-    const rawAvatar = Api.getRawDisplayUrl(user && user.avatar);
-    const userIdDisplay = user && user.id != null && user.id !== '' ? String(user.id) : '--';
+  syncProfileState(user) {
+    const normalizedUser = user ? { ...user, avatar: Api.getRawDisplayUrl(user.avatar) } : null;
+    const avatarMeta = Api.getAvatarMeta(normalizedUser || {});
+    const currentUser = this.data.user || {};
     this.setData({
-      user: user ? { ...user, avatar: rawAvatar } : user,
-      userIdDisplay,
-      nickname: user && (user.nickname || user.username) || '',
-      phone: user && user.phone || '',
-      avatarSrc: Api.getDisplayUrl(rawAvatar) || '/assets/icons/avatar-default.jpg'
+      user: normalizedUser,
+      userIdDisplay: normalizedUser && normalizedUser.id != null && normalizedUser.id !== '' ? String(normalizedUser.id) : '--',
+      nickname: normalizedUser && (normalizedUser.nickname || normalizedUser.username) || currentUser.nickname || '',
+      phone: normalizedUser && normalizedUser.phone || currentUser.phone || '',
+      avatarSrc: avatarMeta.avatarSrc,
     });
+    return normalizedUser;
+  },
+
+  async loadUser() {
+    this.syncProfileState(app.globalData.user);
 
     if (!app.isLoggedIn()) {
       return;
@@ -33,17 +38,8 @@ Page({
     try {
       const res = await Api.getMe();
       const latestUser = res.data || {};
-      const latestAvatar = Api.getRawDisplayUrl(latestUser.avatar);
-      const normalizedUser = { ...latestUser, avatar: latestAvatar };
+      const normalizedUser = this.syncProfileState(latestUser);
       app.setAuth(app.getToken(), normalizedUser);
-      const userIdDisplay = normalizedUser.id != null && normalizedUser.id !== '' ? String(normalizedUser.id) : '--';
-      this.setData({
-        user: normalizedUser,
-        userIdDisplay,
-        nickname: normalizedUser.nickname || normalizedUser.username || '',
-        phone: normalizedUser.phone || '',
-        avatarSrc: Api.getDisplayUrl(latestAvatar) || '/assets/icons/avatar-default.jpg'
-      });
     } catch (err) {
       // 保留本地缓存内容
     }
@@ -91,9 +87,11 @@ Page({
           bizType: 'avatar',
           bizId: currentUser.id ? String(currentUser.id) : '',
         }).then((url) => {
-          const user = this.data.user || {};
-          user.avatar = url;
-          this.setData({ user, avatarSrc: Api.getDisplayUrl(url) || '/assets/icons/avatar-default.jpg' });
+          const user = { ...currentUser, avatar: url };
+          this.setData({
+            user,
+            avatarSrc: Api.getAvatarMeta(user).avatarSrc,
+          });
           wx.hideLoading();
         }).catch((err) => {
           wx.hideLoading();
@@ -124,12 +122,14 @@ Page({
 
     wx.showLoading({ title: '保存中...' });
     Api.updateProfile({ nickname, phone, avatar }).then(() => {
-      const user = this.data.user || {};
-      user.nickname = nickname;
-      user.phone = phone;
-      user.avatar = avatar;
+      const user = {
+        ...(this.data.user || {}),
+        nickname,
+        phone,
+        avatar,
+      };
       app.setAuth(app.getToken(), user);
-      this.setData({ user, avatarSrc: Api.getDisplayUrl(avatar) || '/assets/icons/avatar-default.jpg' });
+      this.syncProfileState(user);
       wx.hideLoading();
       wx.showToast({ title: '保存成功', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1500);
@@ -140,8 +140,9 @@ Page({
   },
 
   onAvatarError() {
-    if (this.data.avatarSrc !== '/assets/icons/avatar-default.jpg') {
-      this.setData({ avatarSrc: '/assets/icons/avatar-default.jpg' });
+    const fallbackAvatar = Api.getDefaultAvatarUrlById(this.data.user && this.data.user.id);
+    if (this.data.avatarSrc !== fallbackAvatar) {
+      this.setData({ avatarSrc: fallbackAvatar });
     }
   }
 });

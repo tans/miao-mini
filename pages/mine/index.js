@@ -2,9 +2,6 @@ const Api = require('../../utils/api.js');
 const app = getApp();
 const buildInfo = require('../../build-info.js');
 
-const AVATAR_MAX_RETRY = 3;
-const AVATAR_RETRY_DELAYS = [300, 800, 1600];
-
 Page({
   data: {
     navPinned: false,
@@ -14,10 +11,7 @@ Page({
     balance: '0.00',
     isLoggedIn: false,
     displayText: '',
-    avatarSrc: '',
-    avatarLoadFailed: true,
-    avatarRetryCount: 0,
-    avatarFallbackText: '我',
+    avatarSrc: Api.getAvatarMeta().avatarSrc,
     creatorStats: {
       level: 0,
       level_name: '试用创作者',
@@ -38,10 +32,6 @@ Page({
     merchantAuthActionClass: 'is-uncertified'
   },
 
-  avatarRetryTimer: null,
-  avatarSourceCache: Object.create(null),
-  avatarResolveSeq: 0,
-
   onLoad() {
     this._navScrollTimer = null;
     this._lastScrollTop = 0;
@@ -58,7 +48,6 @@ Page({
       clearTimeout(this._navScrollTimer);
       this._navScrollTimer = null;
     }
-    this.clearAvatarRetryTimer();
   },
 
   onUnload() {
@@ -66,7 +55,6 @@ Page({
       clearTimeout(this._navScrollTimer);
       this._navScrollTimer = null;
     }
-    this.clearAvatarRetryTimer();
   },
 
   onPageScroll(e) {
@@ -99,109 +87,6 @@ Page({
     });
   },
 
-  clearAvatarRetryTimer() {
-    if (this.avatarRetryTimer) {
-      clearTimeout(this.avatarRetryTimer);
-      this.avatarRetryTimer = null;
-    }
-  },
-
-  getAvatarFallbackText(user) {
-    const source = String((user && (user.nickname || user.username)) || '我').trim();
-    return source.charAt(0) || '我';
-  },
-
-  getAvatarDisplaySrc(rawAvatar, retryCount = 0) {
-    const displayUrl = Api.getDisplayUrl(rawAvatar) || '';
-    if (!displayUrl || retryCount <= 0) {
-      return displayUrl;
-    }
-
-    const separator = displayUrl.includes('?') ? '&' : '?';
-    return `${displayUrl}${separator}avatar_retry=${retryCount}_${Date.now()}`;
-  },
-
-  isLocalAvatarUrl(url) {
-    const value = String(url || '');
-    return (
-      value.startsWith('data:') ||
-      value.startsWith('wxfile://') ||
-      value.startsWith('cloud://') ||
-      value.startsWith('/assets/') ||
-      value.startsWith('/images/')
-    );
-  },
-
-  loadImageInfo(src) {
-    return new Promise((resolve, reject) => {
-      wx.getImageInfo({
-        src,
-        success: resolve,
-        fail: reject,
-      });
-    });
-  },
-
-  async resolveAvatarImageSrc(rawAvatar) {
-    const displayUrl = this.getAvatarDisplaySrc(rawAvatar);
-    if (!displayUrl) {
-      return '';
-    }
-    if (this.isLocalAvatarUrl(displayUrl)) {
-      return displayUrl;
-    }
-
-    const cached = this.avatarSourceCache[displayUrl];
-    if (cached) {
-      return cached;
-    }
-
-    try {
-      const info = await this.loadImageInfo(displayUrl);
-      const localPath = info && info.path ? info.path : displayUrl;
-      this.avatarSourceCache[displayUrl] = localPath;
-      return localPath;
-    } catch (err) {
-      return displayUrl;
-    }
-  },
-
-  async applyAvatarSource(rawAvatar, user) {
-    const seq = ++this.avatarResolveSeq;
-    const avatarFallbackText = this.getAvatarFallbackText(user);
-    const displayUrl = this.getAvatarDisplaySrc(rawAvatar);
-    this.clearAvatarRetryTimer();
-
-    if (!displayUrl) {
-      this.setData({
-        avatarSrc: '',
-        avatarLoadFailed: true,
-        avatarFallbackText,
-      });
-      return;
-    }
-
-    this.setData({
-      avatarSrc: '',
-      avatarLoadFailed: true,
-      avatarFallbackText,
-      avatarRetryCount: 0,
-    });
-
-    const resolvedSrc = await this.resolveAvatarImageSrc(rawAvatar);
-    if (seq !== this.avatarResolveSeq) {
-      return;
-    }
-
-    this.clearAvatarRetryTimer();
-    this.setData({
-      avatarSrc: resolvedSrc,
-      avatarLoadFailed: false,
-      avatarFallbackText,
-      avatarRetryCount: 0,
-    });
-  },
-
   async refreshPageData() {
     const isLoggedIn = app.isLoggedIn();
     this.setData({ isLoggedIn });
@@ -214,10 +99,7 @@ Page({
       this.setData({
         user: null,
         balance: '0.00',
-        avatarSrc: '',
-        avatarLoadFailed: true,
-        avatarRetryCount: 0,
-        avatarFallbackText: '我',
+        avatarSrc: Api.getAvatarMeta().avatarSrc,
         merchantAuthStatus: 'uncertified',
         merchantAuthActionText: '去认证',
         merchantAuthActionClass: 'is-uncertified'
@@ -252,13 +134,13 @@ Page({
       const previousUser = this.data.user || app.globalData.user || {};
       const normalizedAvatar = Api.getRawDisplayUrl(user.avatar) || Api.getRawDisplayUrl(previousUser.avatar);
       const normalizedUser = { ...user, avatar: normalizedAvatar };
+      const avatarMeta = Api.getAvatarMeta(normalizedUser);
       // 更新全局用户缓存
       app.setAuth(app.getToken(), normalizedUser);
       this.setData({
         user: normalizedUser,
-        avatarFallbackText: this.getAvatarFallbackText(normalizedUser),
+        avatarSrc: avatarMeta.avatarSrc,
       });
-      await this.applyAvatarSource(normalizedAvatar, normalizedUser);
     } else if (!userResult.error || userResult.error.message !== '登录已过期') {
       wx.showToast({ title: '加载失败', icon: 'none' });
     }
@@ -389,59 +271,14 @@ Page({
     this.setData({ displayText: '' });
   },
 
-  onAvatarLoad() {
-    if (this.data.avatarLoadFailed || this.data.avatarRetryCount) {
-      this.clearAvatarRetryTimer();
-      this.setData({
-        avatarLoadFailed: false,
-        avatarRetryCount: 0,
-      });
-    }
-  },
-
   onAvatarError() {
     const user = this.data.user || app.globalData.user || {};
-    const rawAvatar = Api.getRawDisplayUrl(user.avatar);
-    const avatarFallbackText = this.getAvatarFallbackText(user);
-
-    if (!rawAvatar) {
-      this.clearAvatarRetryTimer();
+    const fallbackAvatar = Api.getDefaultAvatarUrlById(user.id);
+    if (this.data.avatarSrc !== fallbackAvatar) {
       this.setData({
-        avatarSrc: '',
-        avatarLoadFailed: true,
-        avatarFallbackText,
+        avatarSrc: fallbackAvatar,
       });
-      return;
     }
-
-    const nextRetryCount = (this.data.avatarRetryCount || 0) + 1;
-    this.clearAvatarRetryTimer();
-    this.setData({
-      avatarLoadFailed: true,
-      avatarRetryCount: nextRetryCount,
-      avatarFallbackText,
-    });
-
-    if (nextRetryCount > AVATAR_MAX_RETRY) {
-      return;
-    }
-
-    const delay = AVATAR_RETRY_DELAYS[
-      Math.min(nextRetryCount - 1, AVATAR_RETRY_DELAYS.length - 1)
-    ];
-    this.avatarRetryTimer = setTimeout(() => {
-      const latestUser = this.data.user || app.globalData.user || {};
-      const latestRawAvatar = Api.getRawDisplayUrl(latestUser.avatar);
-      if (!latestRawAvatar) {
-        this.setData({
-          avatarSrc: '',
-        });
-        return;
-      }
-      this.setData({
-        avatarSrc: this.getAvatarDisplaySrc(latestRawAvatar, nextRetryCount),
-      });
-    }, delay);
   },
 
   _ensureLogin(callback) {

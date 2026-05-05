@@ -123,7 +123,10 @@ function normalizeTask(task = {}) {
     ...task,
     businessId: task.business_id || task.businessId || '',
     merchantName: task.business_name || task.merchantName || '',
-    merchantAvatar: task.business_avatar || task.merchantAvatar || '',
+    merchantAvatar: Api.getAvatarDisplayUrl(
+      task.business_avatar || '',
+      task.business_id || task.businessId || ''
+    ),
     industry: task.industry || industries[0] || '',
     industries,
     style: task.style || styles[0] || '',
@@ -282,7 +285,10 @@ function normalizeSubmission(submission = {}) {
     reviewResult,
     materials,
     creatorName: submission.creator_name || '匿名创作者',
-    creatorAvatar: submission.creator_avatar || '/assets/icons/avatar-default.jpg',
+    creatorAvatar: Api.getAvatarDisplayUrl(
+      submission.creator_avatar || '',
+      submission.creator_id || submission.creatorId || submission.user_id || submission.userId
+    ),
     creatorLevel: Number(submission.creator_level || submission.creatorLevel || 0) || 0,
     submitAt,
     submitAtText: formatDateTime(submitAt),

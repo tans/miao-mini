@@ -1,9 +1,22 @@
 // utils/api.js - 创意喵小程序 API 服务层
 const config = require('./config.js');
 
+const DEFAULT_AVATAR_URLS = [
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_1_1.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_1_2.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_1_3.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_2_1.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_2_2.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_2_3.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_3_1.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_3_2.png',
+  'https://public.jisuhudong.com/minapp/avatar/cat_avatar_3_3.png',
+];
+
 const Api = {
   tokenKey: 'miao_token',
   userKey: 'miao_user',
+  defaultAvatarUrls: DEFAULT_AVATAR_URLS,
 
   // API 请求地址级别，可通过 setApiBase 修改
   _apiBase: '',
@@ -271,6 +284,29 @@ const Api = {
     } catch (e) {
       return raw;
     }
+  },
+
+  getDefaultAvatarUrlById(id) {
+    const pool = this.defaultAvatarUrls || DEFAULT_AVATAR_URLS;
+    if (!pool.length) return '';
+
+    const parsed = Number.parseInt(id, 10);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      return pool[0];
+    }
+
+    const index = (parsed - 1) % pool.length;
+    return pool[index >= 0 ? index : index + pool.length];
+  },
+
+  getAvatarDisplayUrl(url, id) {
+    return this.getDisplayUrl(url) || this.getDefaultAvatarUrlById(id);
+  },
+
+  getAvatarMeta(user = {}) {
+    return {
+      avatarSrc: this.getAvatarDisplayUrl(user.avatar, user.id),
+    };
   },
 
   normalizeUserAvatar(user) {

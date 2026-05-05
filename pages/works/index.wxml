@@ -85,7 +85,7 @@
         <text class="work-title">{{item.task_title || item.title}}</text>
         <view class="work-meta">
           <view class="work-author">
-            <image class="author-avatar" src="{{item.creator_avatar || '/assets/icons/avatar-default.jpg'}}"/>
+            <image class="author-avatar" src="{{item.creator_avatar}}"/>
             <text class="author-name">{{item.creator_name || '创作者'}}</text>
           </view>
           <view class="work-like-count">
