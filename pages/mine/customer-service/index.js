@@ -12,8 +12,8 @@ Page({
   startService(e) {
     const type = e.currentTarget.dataset.type;
     if (type === 'complaint') {
-      // 投诉建议 - 跳转到申诉页面
-      wx.navigateTo({ url: '/pages/mine/appeal/index' });
+      // 投诉建议 - 跳转到帮助中心反馈说明
+      wx.navigateTo({ url: '/pages/mine/help/index' });
     } else if (type === 'business') {
       // 商务合作 - 跳转到商家认证页面
       wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });

@@ -52,7 +52,7 @@
       <!-- 商家信息卡片 -->
       <view class="merchant-card">
         <view class="merchant-info">
-          <image class="merchant-avatar" src="{{task.merchantAvatar}}" mode="aspectFill"/>
+          <image class="merchant-avatar" src="{{task.merchantAvatar || '/assets/icons/avatar-default.jpg'}}" mode="aspectFill"/>
           <view class="merchant-detail">
             <view class="merchant-info-row">
               <text class="merchant-name">{{task.merchantName || ''}}</text>

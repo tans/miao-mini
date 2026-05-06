@@ -76,6 +76,7 @@
   gap: 12rpx;
   margin-bottom: 16rpx;
   width: 702rpx;
+  align-items: stretch;
 }
 
 .summary-item {
@@ -86,7 +87,8 @@
   padding: 16rpx 18rpx;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 8rpx;
   box-shadow: 0rpx 4rpx 16rpx 0rpx rgba(17,17,17,0.04);
   align-items: center;
 }
@@ -94,12 +96,18 @@
 .summary-label {
   font-size: 24rpx;
   color: #9aa1b1;
+  width: 100%;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .summary-value {
   font-size: 40rpx;
   color: #333;
   font-weight: 700;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
 }
 
 .level-table {

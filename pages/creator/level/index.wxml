@@ -6,23 +6,21 @@
   <view class="summary-grid">
     <view class="summary-item">
       <text class="summary-label">累计报名(次)</text>
-      <text class="summary-value">{{currentAdoptedCount}}</text>
+      <text class="summary-value">{{totalClaims}}</text>
     </view>
     <view class="summary-item">
       <text class="summary-label">累计提交(条)</text>
-      <text class="summary-value">{{currentAdoptedCount}}</text>
+      <text class="summary-value">{{totalSubmitted}}</text>
     </view>
     <view class="summary-item">
       <text class="summary-label">累计收益(元)</text>
-      <text class="summary-value">{{currentAdoptedCount}}</text>
+      <text class="summary-value">{{totalIncomeDisplay}}</text>
     </view>
   </view>
 
   <view class="current-card" wx:if="{{currentLevel < 6}}">
     <view class="current-half">
-      <view class="current-title">Lv{{currentLevel}} 
-        <!-- <text style="font-size: 28rpx; font-weight: 600; color: #333333;">{{levels[currentLevel].name}}</text> -->
-      </view>
+      <view class="current-title">{{currentAdoptedCount}}</view>
       <text class="current-sub">累计被采纳投稿(条)</text>
     </view>
     <view class="current-half">

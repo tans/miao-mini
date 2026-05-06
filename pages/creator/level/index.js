@@ -57,7 +57,10 @@ Page({
       }
     ],
     currentLevel: 0,
-    currentAdoptedCount: 0
+    currentAdoptedCount: 0,
+    totalClaims: 0,
+    totalSubmitted: 0,
+    totalIncomeDisplay: '0.00'
   },
 
   onLoad(options) {
@@ -72,22 +75,36 @@ Page({
   },
 
   onShow() {
-    this.loadCreatorStats();
+    this.loadPageData();
   },
 
   onPullDownRefresh() {
-    this.loadCreatorStats().finally(() => wx.stopPullDownRefresh());
+    this.loadPageData().finally(() => wx.stopPullDownRefresh());
   },
 
-  async loadCreatorStats() {
+  async loadPageData() {
     const Api = require('../../../utils/api.js');
     try {
-      const res = await Api.getCreatorStats();
-      const stats = res.data || {};
+      const [creatorStatsResult, claimsResult] = await Promise.all([
+        Api.getCreatorStats(),
+        Api.getMyClaims({ page: 1, limit: 1000 })
+      ]);
+
+      const stats = creatorStatsResult.data || {};
+      const claims = Array.isArray(claimsResult.data) ? claimsResult.data : [];
       const level = Number(stats.level || 0);
+      const totalClaims = Number(stats.total_claims != null ? stats.total_claims : claims.length);
+      const totalSubmitted = Number(stats.total_submitted != null
+        ? stats.total_submitted
+        : claims.filter((claim) => Number(claim && claim.status) >= 2).length);
+      const totalIncome = Number(stats.total_income || 0);
+
       this.setData({
         currentLevel: level,
-        currentAdoptedCount: Number(stats.adopted_count || 0)
+        currentAdoptedCount: Number(stats.adopted_count || 0),
+        totalClaims,
+        totalSubmitted,
+        totalIncomeDisplay: totalIncome.toFixed(1)
       });
     } catch (err) {
       // ignore

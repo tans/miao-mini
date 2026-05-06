@@ -564,7 +564,7 @@ const Api = {
 
   // Appeals
   createAppeal(data) {
-    // data: { type: 1, task_id?: taskId, target_id?: taskId, reason: string, evidence?: string }
+    // data: { type: 1, claim_id: claimId, reason: string, evidence?: string }
     const payload = { ...(data || {}) };
     const normalizeIdField = (key) => {
       if (!(key in payload)) return;
@@ -585,6 +585,10 @@ const Api = {
     normalizeIdField('task_id');
     normalizeIdField('target_id');
     normalizeIdField('claim_id');
+
+    if (!payload.claim_id && payload.target_id) {
+      payload.claim_id = payload.target_id;
+    }
 
     return this.request('POST', '/appeals', payload);
   },

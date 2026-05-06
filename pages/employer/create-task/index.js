@@ -276,7 +276,6 @@ Page({
       count: remain,
       mediaType: ['image', 'video'],
       sourceType: ['album', 'camera'],
-      maxDuration: 300,
       sizeType: ['compressed'],
       success: (res) => {
         const picked = (res.tempFiles || []).map((f) => ({

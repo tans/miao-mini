@@ -43,7 +43,7 @@
         <view class="service-item" bindtap="startService" data-type="complaint">
           <image class="service-icon" src="/assets/icons/service-complaint.png" />
           <view class="service-content">
-            <text class="service-title">投诉建议</text>
+            <text class="service-title">帮助反馈</text>
             <text class="service-desc">问题反馈、平台建议</text>
           </view>
           <image class="service-arrow" src="../../images/mine/arrow-right.png" />
