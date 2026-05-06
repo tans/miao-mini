@@ -347,14 +347,14 @@
           </view> -->
           
           <view class="jimeng-edit-row">
-            <input
+            <textarea
+              maxlength="500"
               class="jimeng-edit-input"
               placeholder="请输入新的邀请链接"
               value="{{editJimengLink}}"
               bindinput="onJimengLinkInput"
-              maxlength="50"
             />
-            <text class="jimeng-count">{{editJimengLink.length}}/50</text>
+            <!-- <text class="jimeng-count">{{editJimengLink.length}}/50</text> -->
           </view>
 
           <view class="jimeng-actions">

@@ -194,7 +194,7 @@ module.exports = {
         </view>
         <view wx:if="{{jimengEnabled}}" class="jimeng-content">
           <view class="jimeng-input-box">
-            <textarea class="jimeng-input" placeholder="请输入邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput"/>
+            <textarea class="jimeng-input" maxlength="500" placeholder="请输入邀请链接" value="{{jimeng_link}}" bindinput="onJimengLinkInput"/>
           </view>
         </view>
         
