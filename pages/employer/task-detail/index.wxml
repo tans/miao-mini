@@ -257,16 +257,8 @@
             <text class="spec-value">{{task.videoAspect || '未设置'}}</text>
           </view>
           <view class="spec-item">
-            <text class="spec-label">分辨率</text>
-            <text class="spec-value">{{task.videoResolution || '未设置'}}</text>
-          </view>
-          <view class="spec-item">
-            <text class="spec-label">视频时长</text>
-            <text class="spec-value">{{task.videoDuration || '未设置'}}</text>
-          </view>
-          <view class="spec-item">
             <text class="spec-label">截稿时间</text>
-            <text class="spec-value">{{task.endAt || '未设置'}}</text>
+            <text class="spec-value">{{task.endAtText || '未设置'}}</text>
           </view>
           <view class="spec-item">
             <text class="spec-label">作品权限</text>

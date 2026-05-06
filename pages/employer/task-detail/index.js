@@ -125,6 +125,7 @@ function normalizeTask(task = {}) {
     videoResolution: pick(task.video_resolution, task.videoResolution, '1080P'),
     videoDuration: pick(task.video_duration, task.videoDuration, '30s'),
     endAt,
+    endAtText: formatDateTime(endAt),
     totalCount: Number(pick(task.total_count, task.totalCount, 0)) || 0,
     submissionCount: Number(pick(task.submission_count, task.submissionCount, 0)) || 0,
     jimeng_link: jimengLink,
