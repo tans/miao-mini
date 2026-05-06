@@ -566,6 +566,23 @@ Page({
     wx.previewImage({ urls: [url], current: url });
   },
 
+  async downloadAllMaterials() {
+    const materials = Array.isArray(this.data.materials) ? this.data.materials : [];
+    const files = materials
+      .filter((item) => item && (item.previewUrl || item.file_path))
+      .map((item) => ({
+        type: item.file_type || item.fileType || (item.isVideo ? 'video' : 'image'),
+        url: item.previewUrl || item.file_path,
+      }));
+
+    if (!files.length) {
+      wx.showToast({ title: '暂无素材', icon: 'none' });
+      return;
+    }
+
+    await this.downloadFiles(files);
+  },
+
   goTaskDetail(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${id}` });
@@ -697,6 +714,93 @@ Page({
   onAcknowledgeCreatorNotice() {
     this.setData({ showCreatorNoticeModal: false });
     this.setData({ showSubmitModal: true, submitVideoUrl: '' });
+  },
+
+  async downloadFiles(files) {
+    wx.showLoading({ title: `正在下载 0/${files.length}` });
+    let successCount = 0;
+    let failCount = 0;
+
+    for (let index = 0; index < files.length; index += 1) {
+      const file = files[index];
+      try {
+        const tempFilePath = await this.downloadRemoteFile(file.url);
+        await this.saveDownloadedFile(file.type, tempFilePath);
+        successCount += 1;
+        wx.showLoading({ title: `正在下载 ${successCount}/${files.length}` });
+      } catch (err) {
+        failCount += 1;
+      }
+    }
+
+    wx.hideLoading();
+    wx.showToast({
+      title: failCount ? `成功${successCount}个，失败${failCount}个` : `已下载${successCount}个文件`,
+      icon: 'none',
+    });
+  },
+
+  downloadRemoteFile(url) {
+    return new Promise((resolve, reject) => {
+      wx.downloadFile({
+        url,
+        success: (res) => {
+          if (res.statusCode === 200 && res.tempFilePath) {
+            resolve(res.tempFilePath);
+            return;
+          }
+          reject(new Error('下载失败'));
+        },
+        fail: reject,
+      });
+    });
+  },
+
+  saveDownloadedFile(type, filePath) {
+    if (type === 'video') {
+      return this.saveVideoToAlbum(filePath);
+    }
+    return this.saveImageToAlbum(filePath);
+  },
+
+  saveImageToAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+      wx.saveImageToPhotosAlbum({
+        filePath,
+        success: resolve,
+        fail: (err) => {
+          this.handleAlbumAuthError(err, '图片');
+          reject(err);
+        },
+      });
+    });
+  },
+
+  saveVideoToAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+      wx.saveVideoToPhotosAlbum({
+        filePath,
+        success: resolve,
+        fail: (err) => {
+          this.handleAlbumAuthError(err, '视频');
+          reject(err);
+        },
+      });
+    });
+  },
+
+  handleAlbumAuthError(err, label) {
+    if (!err || !err.errMsg || !err.errMsg.includes('auth deny')) return;
+    wx.showModal({
+      title: '提示',
+      content: `需要授权保存${label}到相册`,
+      confirmText: '去授权',
+      success: (res) => {
+        if (res.confirm) {
+          wx.openSetting();
+        }
+      },
+    });
   },
 
   updateUploadProgress(progress) {
