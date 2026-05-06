@@ -99,7 +99,7 @@
 
   <view class="service-bar">
     <view class="service-btn service-btn-plain" bindtap="goEntryPage">
-      <text>{{viewerRole === 'business' ? '去任务管理' : '联系客服'}}</text>
+      <text>{{viewerRole === 'business' ? '去任务管理' : '去我的作品'}}</text>
     </view>
   </view>
 
