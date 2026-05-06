@@ -57,7 +57,10 @@
               <text class="step-title">{{item.platform.title}}</text>
               <text class="step-label">{{item.platform.label}}</text>
             </view>
-            <text class="step-desc">{{item.platform.result}}</text>
+            <text class="step-desc">{{item.platform.summary}}</text>
+            <text class="step-result" wx:if="{{item.platform.showResult}}">
+              {{item.platform.resultLabel}}：{{item.platform.resultText}}
+            </text>
             <text class="step-time">{{item.platform.timeText}} · {{item.platform.detail}}</text>
           </view>
         </view>

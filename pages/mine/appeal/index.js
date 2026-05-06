@@ -202,6 +202,9 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     ? pick(appeal.result, appeal.statusText, appealResolved ? '已处理' : '平台处理中')
     : (hasReport ? '等待申诉后处理' : '等待处理结果');
   const platformLabel = appeal ? (appealResolved ? '已处理' : '平台处理中') : '待处理';
+  const platformSummary = appeal
+    ? (appealResolved ? '平台已经给出处理结果' : '平台正在审核申诉')
+    : (hasReport ? '等待创作者申诉后进入平台处理' : '等待审核结果');
   const platformDetail = appeal
     ? (appealResolved ? '平台已经给出处理结果' : '平台正在审核申诉')
     : (hasReport ? '等待创作者申诉后进入平台处理' : '等待审核结果');
@@ -269,7 +272,11 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     platform: {
       title: '平台处理',
       label: platformLabel,
+      summary: platformSummary,
       result: platformResult,
+      resultLabel: '处理结果',
+      resultText: platformResult,
+      showResult: appealResolved && !!platformResult,
       detail: platformDetail,
       timeText: appealTimeText || '时间待更新',
       stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : (hasReport ? 'waiting' : 'muted'),

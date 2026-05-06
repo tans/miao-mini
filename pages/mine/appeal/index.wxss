@@ -229,6 +229,14 @@
   color: #3d4654;
 }
 
+.step-result {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: #178044;
+}
+
 .step-time {
   display: block;
   margin-top: 8rpx;
