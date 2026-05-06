@@ -55,13 +55,28 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
+.balance-amount-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8rpx;
+  margin-top: 12rpx;
+}
+
+.balance-yuan {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'home-din-pro-700-bold';
+}
+
 .balance-value {
   display: inline-block;
   font-size: 48rpx;
   font-weight: 700;
   color: #fff;
   font-family: 'home-din-pro-700-bold';
-  margin: 16rpx 0;
+  line-height: 1;
 }
 
 /* 实名认证提示 */
