@@ -71,9 +71,8 @@
         <scroll-view scroll-x class="media-scroll">
           <view class="media-item" wx:for="{{item.materials}}" wx:key="file_path" data-claim-id="{{item.claimId}}" data-preview-type="{{media.isVideo ? 'video' : 'image'}}" data-preview-url="{{media.previewUrl}}" bindtap="previewMaterial" wx:for-item="media">
             <image wx:if="{{media.isImage}}" class="media-thumb" src="{{media.previewUrl}}" mode="aspectFill" />
-            <view wx:elif="{{media.isVideo}}" class="media-thumb media-thumb-video">
-              <text class="media-video-text">视频</text>
-            </view>
+            <image wx:elif="{{media.isVideo && media.posterUrl}}" class="media-thumb" src="{{media.posterUrl}}" mode="aspectFill" />
+            <image wx:else class="media-thumb" src="{{media.previewUrl}}" mode="aspectFill" />
           </view>
         </scroll-view>
       </view>
@@ -100,7 +99,7 @@
 
   <view class="service-bar">
     <view class="service-btn service-btn-plain" bindtap="goEntryPage">
-      <text>{{viewerRole === 'business' ? '去任务管理' : '去我的作品'}}</text>
+      <text>{{viewerRole === 'business' ? '去任务管理' : '联系客服'}}</text>
     </view>
   </view>
 
