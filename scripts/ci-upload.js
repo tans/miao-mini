@@ -2,10 +2,24 @@ const ci = require('miniprogram-ci');
 const path = require('path');
 const fs = require('fs');
 
+const envArg = process.argv.find(arg => arg.startsWith('--env='));
+const envFlag = envArg ? envArg.split('=')[1] : '';
+const isProd = envFlag === 'prod' || envFlag === 'production' || process.argv.includes('--prod');
+
+const environments = {
+  test: {
+    apiBase: 'https://miao-test.clawos.cc/api/v1',
+    appid: 'wx902124d67fa60b0e',
+  },
+  prod: {
+    apiBase: 'https://miao.jisuhudong.com/api/v1',
+    appid: 'wx4a1a4cedce98a1ac',
+  },
+};
+
 async function upload() {
   const projectPath = path.resolve(__dirname, '..');
-
-  // 更新 build-info.js 的上传时间
+  const config = isProd ? environments.prod : environments.test;
   const buildInfoPath = path.join(projectPath, 'build-info.js');
   const now = new Date();
   const uploadTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
@@ -13,17 +27,10 @@ async function upload() {
   fs.writeFileSync(buildInfoPath, buildInfoContent);
   console.log('Build info updated:', uploadTime);
 
-  // Read appid from project.config.json if not set
-  let appid = process.env.MINI_APPID;
-  if (!appid) {
-    const projectConfig = JSON.parse(fs.readFileSync(path.join(projectPath, 'project.config.json'), 'utf-8'));
-    appid = projectConfig.appid;
-  }
-
   const privateKeyPath = process.env.PRIVATE_KEY_PATH || path.resolve(__dirname, '..', 'private.key');
 
   const project = new ci.Project({
-    appid,
+    appid: config.appid,
     type: 'miniProgram',
     projectPath,
     privateKeyPath,
@@ -40,6 +47,7 @@ async function upload() {
     },
   });
 
+  console.log('Environment:', isProd ? 'prod' : 'test');
   console.log('Upload result:', uploadResult);
 }
 
