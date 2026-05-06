@@ -84,7 +84,9 @@ function normalizeTask(task = {}) {
   const endAt = pick(task.end_at, task.endAt, '');
   const industryTags = toList(pick(task.industries, task.industry));
   const styleTags = toList(pick(task.styles, task.style));
-  const materials = Array.isArray(task.materials) ? task.materials.map(normalizeMediaMaterial) : [];
+  const materials = Array.isArray(task.materials)
+    ? task.materials.map(normalizeMediaMaterial).filter((item) => item.previewUrl)
+    : [];
   const isPublic = task.public == null ? true : !!task.public;
   const jimengLink = String(task.jimeng_link || '').trim();
   const jimengCode = String(task.jimeng_code || '').trim();

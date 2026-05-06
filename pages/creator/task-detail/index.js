@@ -440,7 +440,9 @@ Page({
       const totalCount = Number(task.total_count || 0) || 0;
       const remainingCount = Number(task.remaining_count || 0) || 0;
       const rawMaterials = Array.isArray(task.materials) ? task.materials : [];
-      const materials = rawMaterials.map((m) => normalizeClaimMaterial(m));
+      const materials = rawMaterials
+        .map((m) => normalizeClaimMaterial(m))
+        .filter((m) => m.hasPreview);
       this.setData({
         task,
         materials,

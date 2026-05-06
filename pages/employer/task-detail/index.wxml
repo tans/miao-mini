@@ -271,14 +271,14 @@
         </view> -->
       </view>
 
-      <view class="material-card">
+      <view class="material-card" wx:if="{{materials.length > 0}}">
         <view class="section-header">
           <text class="header-title">商家素材</text>
           <view class="header-link" bindtap="downloadAllMaterials">
             <text>下载全部</text>
           </view>
         </view>
-        <view class="material-grid" wx:if="{{materials.length > 0}}">
+        <view class="material-grid">
           <view
             class="material-item"
             wx:for="{{materials}}"
@@ -311,7 +311,6 @@
             />
           </view>
         </view>
-        <view class="empty-tip" wx:else>暂无商家素材</view>
       </view>
 
       <view class="jimeng-card" wx:if="{{task.jimeng_enabled}}">
