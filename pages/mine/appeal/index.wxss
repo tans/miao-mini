@@ -28,16 +28,8 @@
   gap: 16rpx;
 }
 
-.hero-kicker {
-  display: block;
-  font-size: 22rpx;
-  font-weight: 700;
-  color: #ef8802;
-}
-
 .hero-title {
   display: block;
-  margin-top: 8rpx;
   font-size: 38rpx;
   font-weight: 800;
   color: #232a35;

@@ -210,20 +210,19 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, viewerRole = 
     toTimestamp(pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, ''))
   );
 
-  return {
-    key: `claim:${claimId || taskId || Date.now()}`,
-    claimId,
-    taskId,
+    return {
+      key: `claim:${claimId || taskId || Date.now()}`,
+      claimId,
+      taskId,
     taskTitle,
     taskOwnerName,
     creatorName,
     taskAvatar,
-    taskSubtitle: taskSubtitleParts.length ? taskSubtitleParts.join(' · ') : `任务ID ${taskId || '-'}`,
-    viewerRole,
-    viewerRoleLabel: viewerRole === 'business' ? '商家视角' : '创作者视角',
-    overallStateText,
-    overallStateClass,
-    claimStatusText: reportLabel,
+      taskSubtitle: taskSubtitleParts.length ? taskSubtitleParts.join(' · ') : `任务ID ${taskId || '-'}`,
+      viewerRole,
+      overallStateText,
+      overallStateClass,
+      claimStatusText: reportLabel,
     report: {
       title: '商家举报',
       label: reportLabel,
@@ -265,7 +264,6 @@ Page({
   data: {
     loading: false,
     viewerRole: 'creator',
-    viewerRoleLabel: '创作者视角',
     taskId: '',
     claimId: '',
     records: [],
@@ -288,7 +286,6 @@ Page({
 
     this.setData({
       viewerRole,
-      viewerRoleLabel: viewerRole === 'business' ? '商家视角' : '创作者视角',
       taskId,
       claimId,
       ...emptyState,
@@ -645,6 +642,10 @@ Page({
       wx.navigateTo({ url: '/pages/employer/my-tasks/index' });
       return;
     }
+    wx.navigateTo({ url: '/pages/mine/customer-service/index' });
+  },
+
+  contactService() {
     wx.navigateTo({ url: '/pages/mine/customer-service/index' });
   },
 });

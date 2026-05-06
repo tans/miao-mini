@@ -1,10 +1,7 @@
 <view class="appeal-page">
   <view class="hero-card">
     <view class="hero-top">
-      <view>
-        <text class="hero-kicker">{{viewerRoleLabel}}</text>
-        <text class="hero-title">申诉流程</text>
-      </view>
+      <text class="hero-title">申诉流程</text>
       <view class="hero-badge">{{records.length}} 条</view>
     </view>
     <text class="hero-desc">同一条流程里会展示商家举报、创作者申诉和平台处理结果。</text>
@@ -98,8 +95,8 @@
   </view>
 
   <view class="service-bar">
-    <view class="service-btn service-btn-plain" bindtap="goEntryPage">
-      <text>{{viewerRole === 'business' ? '去任务管理' : '去我的作品'}}</text>
+    <view class="service-btn service-btn-plain" bindtap="contactService">
+      <text>联系客服</text>
     </view>
   </view>
 
