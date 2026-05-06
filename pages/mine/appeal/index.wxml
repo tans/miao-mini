@@ -63,10 +63,10 @@
         </view>
       </view>
 
-      <view class="workflow-media" wx:if="{{item.materials.length > 0}}">
+      <view class="workflow-media" wx:if="{{item.creatorMaterials.length > 0}}">
         <view class="media-title">作品显示</view>
         <scroll-view scroll-x class="media-scroll">
-          <view class="media-item" wx:for="{{item.materials}}" wx:key="file_path" data-claim-id="{{item.claimId}}" data-preview-type="{{media.isVideo ? 'video' : 'image'}}" data-preview-url="{{media.previewUrl}}" bindtap="previewMaterial" wx:for-item="media">
+          <view class="media-item" wx:for="{{item.creatorMaterials}}" wx:key="file_path" data-claim-id="{{item.claimId}}" data-preview-type="{{media.isVideo ? 'video' : 'image'}}" data-preview-url="{{media.previewUrl}}" bindtap="previewMaterial" wx:for-item="media">
             <image wx:if="{{media.isImage}}" class="media-thumb" src="{{media.previewUrl}}" mode="aspectFill" />
             <image wx:elif="{{media.isVideo && media.posterUrl}}" class="media-thumb" src="{{media.posterUrl}}" mode="aspectFill" />
             <image wx:else class="media-thumb" src="{{media.previewUrl}}" mode="aspectFill" />
@@ -74,10 +74,7 @@
         </scroll-view>
       </view>
 
-      <view class="workflow-actions">
-        <view class="workflow-chip workflow-chip-muted" wx:if="{{!item.canAppeal}}">
-          <text>无需申诉</text>
-        </view>
+      <view class="workflow-actions" wx:if="{{item.canAppeal}}">
         <view class="workflow-chip workflow-chip-primary" wx:if="{{item.canAppeal}}" bindtap="openComposer" data-claim-id="{{item.claimId}}">
           <text>去申诉</text>
         </view>

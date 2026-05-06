@@ -192,7 +192,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const appealReason = appeal ? pick(appeal.reason, '') : '';
   const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
   const appealLabel = appeal
-    ? (appealResolved ? '已处理' : '待处理')
+    ? (appealResolved ? '已申诉' : '待处理')
     : (hasReport ? '待申诉' : '待处理');
   const appealDetail = appeal
     ? (appeal.evidenceCount > 0 ? `证据 ${appeal.evidenceCount} 项` : '已提交申诉说明')
@@ -208,7 +208,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
 
   const reportLabel = reviewResult === 3 ? '已举报' : '待处理';
   const overallStateText = appeal
-    ? (appealResolved ? '已处理' : '平台处理中')
+    ? (appealResolved ? '已申诉' : '平台处理中')
     : (hasReport ? '待申诉' : '待处理');
   const overallStateClass = appeal
     ? (appealResolved ? 'resolved' : 'processing')
@@ -275,6 +275,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : (hasReport ? 'waiting' : 'muted'),
     },
     materials,
+    creatorMaterials: materials,
     canAppeal,
     sortAt,
   };
