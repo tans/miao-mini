@@ -3,7 +3,7 @@
   <view class="logo-section">
     <image class="logo" src="/assets/icons/logo.png" />
     <text class="app-name">创意喵</text>
-    <text class="app-version">版本 1.0.0</text>
+    <text class="app-version">版本 {{version}}</text>
   </view>
 
   <!-- 公司介绍 -->

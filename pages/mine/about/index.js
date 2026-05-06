@@ -3,7 +3,7 @@ const config = require('../../../utils/config.js');
 
 Page({
   data: {
-    version: '1.0.0',
+    version: buildInfo.version || '1.0.0',
     customerServicePhone: config.customerServicePhone
   },
 

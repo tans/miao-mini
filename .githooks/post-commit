@@ -1,0 +1,40 @@
+#!/bin/bash
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" != "main" ] && [ "$BRANCH" != "master" ]; then
+    exit 0
+fi
+
+COMMIT_MSG=$(git log -1 --format=%s)
+
+cd "$(dirname "$0")/.." || exit 1
+
+if [ ! -d "node_modules" ]; then
+    npm ci --silent 2>/dev/null || npm install --silent
+fi
+
+if [ ! -d "node_modules/miniprogram-ci" ]; then
+    npm install miniprogram-ci --save-dev --silent 2>/dev/null
+fi
+
+if [ ! -d "node_modules/@babel/preset-typescript" ]; then
+    npm install @babel/preset-typescript --save-dev --silent 2>/dev/null
+fi
+
+echo "Setting up miniprogram_npm..."
+if [ -d "node_modules/weui-miniprogram" ]; then
+    rm -rf miniprogram_npm/weui-miniprogram
+    cp -r node_modules/weui-miniprogram miniprogram_npm/
+fi
+
+export MINI_APPID="wx902124d67fa60b0e"
+export PRIVATE_KEY_PATH="$(pwd)/.miao-mini/private.key"
+export COMMIT_MESSAGE="$COMMIT_MSG"
+
+if [ ! -f "$PRIVATE_KEY_PATH" ]; then
+    echo "Private key not found at $PRIVATE_KEY_PATH"
+    exit 1
+fi
+
+echo "Uploading mini program to WeChat..."
+node scripts/ci-upload.js

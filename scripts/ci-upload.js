@@ -11,6 +11,23 @@ const isProd =
   process.env.npm_config_prod === 'true' ||
   process.env.NPM_CONFIG_PROD === 'true';
 
+function pad2(value) {
+  return String(value).padStart(2, '0');
+}
+
+function getDefaultVersion(now = new Date()) {
+  return [
+    '1',
+    '0',
+    `${now.getFullYear()}${pad2(now.getMonth() + 1)}${pad2(now.getDate())}${pad2(now.getHours())}${pad2(now.getMinutes())}${pad2(now.getSeconds())}`,
+  ].join('.');
+}
+
+function getUploadVersion() {
+  const version = String(process.env.VERSION || '').trim();
+  return version || getDefaultVersion();
+}
+
 const environments = {
   test: {
     apiBase: 'https://miao-test.clawos.cc/api/v1',
@@ -28,9 +45,10 @@ async function upload() {
   const buildInfoPath = path.join(projectPath, 'build-info.js');
   const now = new Date();
   const uploadTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-  const buildInfoContent = `// 此文件由 CI 自动更新，请勿手动修改\nmodule.exports = {\n  uploadTime: '${uploadTime}',\n};\n`;
+  const uploadVersion = getUploadVersion();
+  const buildInfoContent = `// 此文件由 CI 自动更新，请勿手动修改\nmodule.exports = {\n  version: '${uploadVersion}',\n  uploadTime: '${uploadTime}',\n};\n`;
   fs.writeFileSync(buildInfoPath, buildInfoContent);
-  console.log('Build info updated:', uploadTime);
+  console.log('Build info updated:', { version: uploadVersion, uploadTime });
 
   const privateKeyPath = process.env.PRIVATE_KEY_PATH || path.resolve(__dirname, '..', 'private.key');
 
@@ -43,7 +61,7 @@ async function upload() {
 
   const uploadResult = await ci.upload({
     project,
-    version: process.env.VERSION || '1.0.0',
+    version: uploadVersion,
     desc: process.env.COMMIT_MESSAGE || 'CI Upload',
     setting: {
       es6: true,
@@ -53,6 +71,7 @@ async function upload() {
   });
 
   console.log('Environment:', isProd ? 'prod' : 'test');
+  console.log('Version:', uploadVersion);
   console.log('Args:', process.argv.slice(2).join(' '));
   console.log('Upload result:', uploadResult);
 }
