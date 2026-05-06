@@ -3,7 +3,7 @@ const { formatDateTime: formatDateTimeText } = require('../../../utils/util.js')
 const app = getApp();
 
 const MATERIAL_POLL_INTERVAL = 4000;
-const MATERIAL_POLL_MAX_DURATION = 2 * 60 * 1000;
+const MATERIAL_POLL_MAX_DURATION = 15 * 60 * 1000;
 
 function toList(value) {
   if (Array.isArray(value)) return value;
@@ -85,7 +85,7 @@ function getClaimActionState(claim = {}) {
   if (status === 4) return { text: '审核超时，已发参与奖', className: 'action-state-timeout' };
   if (status === 5) return { text: '已超时', className: 'action-state-timeout' };
   if (status === 1 && reviewResult === 2) return { text: '已淘汰', className: 'action-state-rejected' };
-  if (status === 6 || (status === 1 && reviewResult === 3)) return { text: '已举报', className: 'action-state-reported' };
+  if (status === 6 || (status === 1 && reviewResult === 3)) return { text: '去申诉', className: 'action-state-reported' };
   if (status === 2) return { text: '已提交，待审核', className: 'action-state-pending' };
 
   return null;
@@ -167,7 +167,7 @@ function getClaimStatusText(status, reviewResult = 0) {
   const value = Number(status);
   const review = Number(reviewResult || 0);
   if (value === 1 && review === 2) return '已淘汰';
-  if (value === 1 && review === 3) return '已举报';
+  if (value === 1 && review === 3) return '去申诉';
   const map = {
     1: '已报名，待提交',
     2: '已提交，待审核',
@@ -218,9 +218,13 @@ function normalizeClaimMaterial(material = {}) {
   const processError = material.processError || material.process_error || '';
   const isVideo = isVideoType(fileType);
   const isImage = isImageType(fileType);
-  const previewUrl = isVideo
+  const rawPreviewUrl = String(isVideo
     ? (filePath || processedFilePath || sourceFilePath || '')
-    : (filePath || processedFilePath || thumbnailPath || '');
+    : (filePath || processedFilePath || thumbnailPath || '')
+  ).trim();
+  const previewUrl = isVideo
+    ? Api.getPlayableUrl(rawPreviewUrl)
+    : Api.getDisplayUrl(rawPreviewUrl);
   const hasPreview = !!previewUrl;
 
   return {
@@ -252,7 +256,7 @@ function getSubmissionStatusText(status, reviewResult) {
   const value = Number(status);
   const review = Number(reviewResult || 0);
   if (value === 3) return '已采纳';
-  if (review === 3) return '已举报';
+  if (review === 3) return '去申诉';
   if (review === 2) return '已淘汰';
   if (value === 2) return '待审核';
   return '已投稿';
@@ -350,7 +354,7 @@ function getCurrentUserId() {
 }
 
 function hasPendingClaimMaterials(materials = []) {
-  return materials.some((item) => item.isVideo && ['pending', 'processing'].includes(item.processStatus || ''));
+  return materials.some((item) => item.isVideo && ['pending', 'processing', 'failed'].includes(item.processStatus || ''));
 }
 
 Page({
@@ -560,6 +564,15 @@ Page({
     wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${id}` });
   },
 
+  goAppeal() {
+    const claimId = this.data.submitClaimId || (this.data.task && this.data.task.claim && this.data.task.claim.id) || '';
+    if (!claimId) {
+      wx.showToast({ title: '缺少申诉对象', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({ url: `/pages/mine/appeal/index?claimId=${encodeURIComponent(String(claimId))}` });
+  },
+
   handleMainAction() {
     if (this.data.isMerchantTask) {
       wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${this.data.taskId}` });
@@ -577,7 +590,8 @@ Page({
       this.goSubmitWork();
       return;
     }
-    if (this.data.task && this.data.task.claimActionText) {
+    if (this.data.task && (this.data.task.claimActionText === '去申诉' || this.data.task.claimActionClass === 'action-state-reported')) {
+      this.goAppeal();
       return;
     }
     wx.showToast({ title: '当前状态不可提交', icon: 'none' });
@@ -817,6 +831,10 @@ Page({
       await new Promise(resolve => setTimeout(resolve, 220));
       const summary = submitRes.data && submitRes.data.process_status_summary;
       const pendingCount = summary ? ((summary.pending || 0) + (summary.processing || 0)) : 0;
+      app.startPendingClaimPolling({
+        taskId: this.data.taskId,
+        claimId,
+      });
       this.setData({ showUploadProgressModal: false });
       wx.showToast({
         title: pendingCount ? '提交成功，处理中' : '提交成功',

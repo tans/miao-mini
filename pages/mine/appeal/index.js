@@ -114,8 +114,8 @@ Page({
         .map((appeal) => normalizeAppeal(appeal))
         .sort((a, b) => (b.sortAt || 0) - (a.sortAt || 0));
 
-      this.setData({ records, loading: false });
-      this.applyFilter(this.data.activeTab);
+      this.applyFilter(this.data.activeTab, records);
+      this.setData({ records, loading: false, filteredRecords: this.data.filteredRecords });
 
       if (allowAutoOpen) {
         this.autoOpenComposer();
@@ -126,11 +126,11 @@ Page({
     }
   },
 
-  applyFilter(tabKey) {
+  applyFilter(tabKey, records = this.data.records) {
     const activeTab = tabKey || 'all';
     const filteredRecords = activeTab === 'all'
-      ? this.data.records
-      : this.data.records.filter((item) => (
+      ? records
+      : records.filter((item) => (
         activeTab === 'pending'
           ? item.statusClass === 'processing'
           : item.statusClass === 'resolved'

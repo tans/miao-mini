@@ -32,7 +32,10 @@
             <view class="action-btn btn-cancel" bindtap="cancelClaim" data-claim-id="{{item.id}}" wx:if="{{item.canCancel}}">
               <text>取消</text>
             </view>
-            <view class="action-btn {{item.claimActionClass || 'btn-submit'}}" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">
+            <view wx:if="{{item.reviewResult === 3}}" class="action-btn {{item.claimActionClass || 'btn-reported'}}" bindtap="goAppeal" data-claim-id="{{item.id}}">
+              <text>{{item.claimActionText || '去申诉'}}</text>
+            </view>
+            <view wx:else class="action-btn {{item.claimActionClass || 'btn-submit'}}" bindtap="goTaskDetail" data-claim="{{item.id}}" data-task="{{item.task_id}}">
               <text>{{item.claimActionText || '立即交稿'}}</text>
             </view>
           </view>

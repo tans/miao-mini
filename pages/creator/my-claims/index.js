@@ -37,7 +37,7 @@ function normalizeClaim(claim = {}) {
     claimActionText = '已淘汰';
     claimActionClass = 'btn-rejected';
   } else if (reviewResult === 3) {
-    claimActionText = '已举报';
+    claimActionText = '去申诉';
     claimActionClass = 'btn-reported';
   } else if (normalizedStatus === 2) {
     claimActionText = '已提交，待审核';
@@ -212,6 +212,15 @@ Page({
     const taskId = e.currentTarget.dataset.task || e.currentTarget.dataset.id;
     // 任务详情已拆分至商家/创作者视角，导航至创作者任务详情
     wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${taskId}` });
+  },
+
+  goAppeal(e) {
+    const claimId = e.currentTarget.dataset.claimId || e.currentTarget.dataset.claimid || e.currentTarget.dataset.claim;
+    if (!claimId) {
+      wx.showToast({ title: '缺少申诉对象', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({ url: `/pages/mine/appeal/index?claimId=${encodeURIComponent(claimId)}` });
   },
 
   getClaimStatusText(status) {
