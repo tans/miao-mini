@@ -4,7 +4,12 @@ const fs = require('fs');
 
 const envArg = process.argv.find(arg => arg.startsWith('--env='));
 const envFlag = envArg ? envArg.split('=')[1] : '';
-const isProd = envFlag === 'prod' || envFlag === 'production' || process.argv.includes('--prod');
+const isProd =
+  envFlag === 'prod' ||
+  envFlag === 'production' ||
+  process.argv.includes('--prod') ||
+  process.env.npm_config_prod === 'true' ||
+  process.env.NPM_CONFIG_PROD === 'true';
 
 const environments = {
   test: {
@@ -48,6 +53,7 @@ async function upload() {
   });
 
   console.log('Environment:', isProd ? 'prod' : 'test');
+  console.log('Args:', process.argv.slice(2).join(' '));
   console.log('Upload result:', uploadResult);
 }
 
