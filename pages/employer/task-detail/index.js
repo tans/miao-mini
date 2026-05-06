@@ -2,6 +2,8 @@ const Api = require('../../../utils/api.js');
 const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
+const PLACEHOLDER_MATERIAL_KEYWORDS = ['task-placeholder', 'task_placeholder'];
+
 function toList(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
   if (!value) return [];
@@ -21,6 +23,12 @@ function pick(...values) {
   return '';
 }
 
+function isPlaceholderMaterialPath(path) {
+  const normalized = String(path || '').trim().toLowerCase();
+  if (!normalized) return false;
+  return PLACEHOLDER_MATERIAL_KEYWORDS.some((keyword) => normalized.includes(keyword));
+}
+
 function toPositiveInt(value) {
   const num = Number(value);
   return Number.isFinite(num) && num > 0 ? num : 0;
@@ -32,16 +40,17 @@ function normalizeMediaMaterial(material = {}) {
   const processedFilePath = pick(material.processed_file_path, material.processedFilePath, '');
   const sourceFilePath = pick(material.source_file_path, material.sourceFilePath, '');
   const thumbnailPath = pick(material.thumbnail_path, material.thumbnailPath, '');
-  const previewUrl = Api.getDisplayUrl(
-    pick(
-      material.previewUrl,
-      filePath,
-      processedFilePath,
-      sourceFilePath,
-      fileType === 'image' ? thumbnailPath : '',
-      ''
-    )
+  const rawUrl = pick(
+    material.previewUrl,
+    filePath,
+    processedFilePath,
+    sourceFilePath,
+    fileType === 'image' ? thumbnailPath : '',
+    ''
   );
+  const previewUrl = fileType === 'video'
+    ? Api.getPlayableUrl(rawUrl)
+    : Api.getDisplayUrl(rawUrl);
 
   return {
     ...material,
@@ -85,7 +94,9 @@ function normalizeTask(task = {}) {
   const industryTags = toList(pick(task.industries, task.industry));
   const styleTags = toList(pick(task.styles, task.style));
   const materials = Array.isArray(task.materials)
-    ? task.materials.map(normalizeMediaMaterial).filter((item) => item.previewUrl)
+    ? task.materials
+      .map(normalizeMediaMaterial)
+      .filter((item) => item.previewUrl && !isPlaceholderMaterialPath(item.previewUrl) && !isPlaceholderMaterialPath(item.filePath))
     : [];
   const isPublic = task.public == null ? true : !!task.public;
   const jimengLink = String(task.jimeng_link || '').trim();
@@ -447,8 +458,29 @@ Page({
   previewMaterial(e) {
     const { url, type } = e.currentTarget.dataset;
     if (!url) return;
-    if (type === 'video') return;
+    if (type === 'video') {
+      this.openVideoPreviewByUrl(url);
+      return;
+    }
     wx.previewImage({ current: url, urls: [url] });
+  },
+
+  openVideoPreview(e) {
+    const url = e && e.currentTarget && e.currentTarget.dataset
+      ? e.currentTarget.dataset.url
+      : '';
+    this.openVideoPreviewByUrl(url);
+  },
+
+  openVideoPreviewByUrl(url) {
+    const playableUrl = Api.getPlayableUrl(url);
+    if (!playableUrl) {
+      wx.showToast({ title: '视频地址无效', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({
+      url: `/pages/video-player/index?url=${encodeURIComponent(playableUrl)}`,
+    });
   },
 
   previewImages(e) {

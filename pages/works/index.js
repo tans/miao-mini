@@ -188,7 +188,7 @@ Page({
     const imageMaterial = getImageMaterial(materials);
     const coverType = item.cover_type || (videoMaterial ? 'video' : '') || (imageMaterial ? 'image' : 'image');
     const previewVideoSrc = coverType === 'video'
-      ? Api.getDisplayUrl(
+      ? Api.getPlayableUrl(
         item.video_url ||
         item.previewVideoSrc ||
         (videoMaterial && (videoMaterial.previewUrl || videoMaterial.file_path || videoMaterial.processed_file_path)) ||

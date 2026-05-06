@@ -4,6 +4,7 @@ const app = getApp();
 
 const MATERIAL_POLL_INTERVAL = 4000;
 const MATERIAL_POLL_MAX_DURATION = 15 * 60 * 1000;
+const PLACEHOLDER_MATERIAL_KEYWORDS = ['task-placeholder', 'task_placeholder'];
 
 function toList(value) {
   if (Array.isArray(value)) return value;
@@ -20,6 +21,12 @@ function isVideoType(value) {
 
 function isImageType(value) {
   return String(value || '').toLowerCase().indexOf('image') !== -1;
+}
+
+function isPlaceholderMaterialPath(path) {
+  const normalized = String(path || '').trim().toLowerCase();
+  if (!normalized) return false;
+  return PLACEHOLDER_MATERIAL_KEYWORDS.some((keyword) => normalized.includes(keyword));
 }
 
 function formatDateTime(value) {
@@ -446,7 +453,7 @@ Page({
       const rawMaterials = Array.isArray(task.materials) ? task.materials : [];
       const materials = rawMaterials
         .map((m) => normalizeClaimMaterial(m))
-        .filter((m) => m.hasPreview);
+        .filter((m) => m.hasPreview && !isPlaceholderMaterialPath(m.previewUrl) && !isPlaceholderMaterialPath(m.filePath));
       this.setData({
         task,
         materials,

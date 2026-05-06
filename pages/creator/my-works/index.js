@@ -10,6 +10,11 @@ const FILTERS = [
   { key: 'reported', label: '被举报' }
 ];
 
+function formatMoney(value) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num.toFixed(2) : '0.00';
+}
+
 function getVideoMaterial(materials = []) {
   return materials.find((item) => item.file_type === 'video') || null;
 }
@@ -134,7 +139,7 @@ Page({
     } else if (status === 3) {
       // 已采纳
       incomeLabel = '收入(采纳金+参与金)';
-      incomeText = `¥${claim.unit_price || 0} + ¥${claim.award_price || 0}`;
+      incomeText = `¥${formatMoney(claim.creator_reward || 0)}`;
     } else if (status === 5) {
       // 已超时
       incomeLabel = '收入(已超时)';

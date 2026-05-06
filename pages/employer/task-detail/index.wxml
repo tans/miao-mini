@@ -120,7 +120,7 @@
                 controls
                 objectFit="contain"
                 show-center-play-btn="{{false}}"
-                show-fullscreen-btn="{{false}}"
+                show-fullscreen-btn="{{true}}"
                 show-mute-btn="{{false}}"
                 enable-picture-in-picture="{{false}}"
                 show-background-playback-button="{{false}}"
@@ -128,6 +128,13 @@
                 vslide-gesture="{{false}}"
                 page-gesture="{{false}}"
               />
+              <view
+                class="video-preview-action"
+                catchtap="openVideoPreview"
+                data-url="{{vid.url}}"
+              >
+                <text class="video-preview-action-text">全屏查看</text>
+              </view>
             </view>
           </view>
           <view class="claim-content claim-content-reported" wx:if="{{claim.statusClass == 'reported'}}">
@@ -284,22 +291,30 @@
             wx:for="{{materials}}"
             wx:key="file_path"
           >
-            <video
-              wx:if="{{item.isVideo && item.previewUrl}}"
-              class="material-thumb material-video-player"
-              src="{{item.previewUrl}}"
-              poster="{{item.thumbnailPath || item.previewUrl}}"
-              controls
-              objectFit="contain"
-              show-center-play-btn="{{false}}"
-              show-fullscreen-btn="{{false}}"
-              show-mute-btn="{{false}}"
-              enable-picture-in-picture="{{false}}"
-              show-background-playback-button="{{false}}"
-              enable-progress-gesture="{{false}}"
-              vslide-gesture="{{false}}"
-              page-gesture="{{false}}"
-            />
+            <view wx:if="{{item.isVideo && item.previewUrl}}" class="material-video-wrap">
+              <video
+                class="material-thumb material-video-player"
+                src="{{item.previewUrl}}"
+                poster="{{item.thumbnailPath || item.previewUrl}}"
+                controls
+                objectFit="contain"
+                show-center-play-btn="{{false}}"
+                show-fullscreen-btn="{{true}}"
+                show-mute-btn="{{false}}"
+                enable-picture-in-picture="{{false}}"
+                show-background-playback-button="{{false}}"
+                enable-progress-gesture="{{false}}"
+                vslide-gesture="{{false}}"
+                page-gesture="{{false}}"
+              />
+              <view
+                class="video-preview-action"
+                catchtap="openVideoPreview"
+                data-url="{{item.previewUrl}}"
+              >
+                <text class="video-preview-action-text">全屏查看</text>
+              </view>
+            </view>
             <image
               wx:elif="{{item.previewUrl}}"
               class="material-thumb"
