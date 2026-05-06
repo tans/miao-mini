@@ -4,10 +4,7 @@
     <view class="balance-bg">
       <view class="balance-main">
         <text class="balance-label">可提现金额(元)</text>
-        <view class="balance-amount-row">
-          <text class="balance-yuan">¥</text>
-          <text class="balance-value">{{withdrawableAmount}}</text>
-        </view>
+        <text class="balance-value">¥{{withdrawableAmount}}</text>
       </view>
     </view>
   </view>
