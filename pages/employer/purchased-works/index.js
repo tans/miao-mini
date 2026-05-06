@@ -121,8 +121,9 @@ Page({
     const id = e.currentTarget.dataset.id;
     if (!id) return;
     this.navigating = true;
-    const workData = encodeURIComponent(JSON.stringify(this.data.works.find(w => w.id === id) || {}));
-    wx.navigateTo({ url: `/pages/video-player/index?data=${workData}` });
+    const work = this.data.works.find((item) => String(item.id) === String(id)) || {};
+    wx.setStorageSync(`work_preview_${id}`, work);
+    wx.navigateTo({ url: `/pages/video-player/index?id=${id}` });
     setTimeout(() => {
       this.navigating = false;
     }, 400);
@@ -244,6 +245,9 @@ Page({
         (firstMaterial && (firstMaterial.thumbnail_path || firstMaterial.file_path)) ||
         ''
       );
+    }
+    if (coverType === 'video' && !displayCover) {
+      displayCover = '';
     }
 
     const fallbackCover = createFallbackCover(

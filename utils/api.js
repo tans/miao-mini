@@ -227,6 +227,7 @@ const Api = {
     let raw = (url || '').trim();
     if (!raw) return '';
     raw = this.getRawDisplayUrl(raw);
+    const normalized = raw.replace(/^https?:\/\/[^/]+/i, '');
     if (
       raw.startsWith('data:') ||
       raw.startsWith('wxfile://') ||
@@ -236,11 +237,18 @@ const Api = {
     ) {
       return raw;
     }
+    const isPublicMedia =
+      raw.startsWith('public/') ||
+      normalized.startsWith('/public/') ||
+      normalized.startsWith('/uploads/');
     if (
-      raw.startsWith('private/') ||
-      raw.includes('/private/') ||
-      raw.includes('.cos.') ||
-      raw.includes('/api/v1/assets/preview?raw=')
+      !isPublicMedia &&
+      (
+        raw.startsWith('private/') ||
+        raw.includes('/private/') ||
+        raw.includes('.cos.') ||
+        raw.includes('/api/v1/assets/preview?raw=')
+      )
     ) {
       return this.getAssetPreviewUrl(raw);
     }

@@ -4,24 +4,6 @@
     <view class="work-card" wx:for="{{works}}" wx:key="id" bindtap="goWorkDetail" data-id="{{item.id}}">
       <view class="work-cover-wrap">
         <image wx:if="{{item.displayCover}}" class="work-cover" src="{{item.displayCover}}" mode="aspectFill"/>
-        <video
-          wx:elif="{{item.isVideo && item.previewVideoSrc}}"
-          class="work-cover work-video-preview"
-          src="{{item.previewVideoSrc}}"
-          objectFit="cover"
-          autoplay="{{false}}"
-          loop="{{false}}"
-          muted="{{true}}"
-          controls="{{false}}"
-          show-center-play-btn="{{false}}"
-          show-play-btn="{{false}}"
-          show-fullscreen-btn="{{false}}"
-          show-mute-btn="{{false}}"
-          show-background-playback-button="{{false}}"
-          enable-play-gesture="{{false}}"
-          enable-progress-gesture="{{false}}"
-          enable-picture-in-picture="{{false}}"
-        ></video>
         <view wx:else class="work-cover work-cover-fallback {{item.fallbackThemeClass}}">
           <view class="fallback-badge">创作说明</view>
           <text class="fallback-summary">{{item.fallbackSummary}}</text>

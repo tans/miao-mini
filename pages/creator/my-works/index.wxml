@@ -40,14 +40,6 @@
       <!-- 封面 -->
       <view class="work-cover">
         <image wx:if="{{item.displayCover}}" class="cover-img" src="{{item.displayCover}}" mode="aspectFill" bindtap="goWorkDetail" data-id="{{item.id}}"/>
-        <video
-          wx:elif="{{item.isVideo}}"
-          class="cover-video"
-          src="{{item.previewVideoSrc}}"
-          poster="{{item.thumbnail}}"
-          controls
-          show-background-playback-button="{{false}}"
-        />
         <view wx:else class="cover-placeholder" bindtap="goWorkDetail" data-id="{{item.id}}">
           <text class="placeholder-title">{{item.task_title}}</text>
         </view>

@@ -41,23 +41,25 @@ Page({
   },
 
   onLoad() {
-    if (!app.isLoggedIn()) {
-      app.silentLogin().then(() => {
-        if (app.isLoggedIn()) this.loadWorks();
-      });
-      return;
-    }
-    this.loadWorks();
+    this.initialized = false;
   },
 
   onShow() {
-    if (app.isLoggedIn() && !this.data.loading) {
-      this.loadWorks();
-    }
+    this.bootstrap();
   },
 
   onPullDownRefresh() {
-    this.loadWorks().finally(() => wx.stopPullDownRefresh());
+    this.bootstrap(true).finally(() => wx.stopPullDownRefresh());
+  },
+
+  async bootstrap(force = false) {
+    if (this.initialized && !force) return;
+    if (!app.isLoggedIn()) {
+      await app.silentLogin();
+      if (!app.isLoggedIn()) return;
+    }
+    this.initialized = true;
+    await this.loadWorks();
   },
 
   async loadWorks() {
@@ -95,7 +97,7 @@ Page({
     const coverType = firstVideoMaterial ? 'video' : (firstImageMaterial ? 'image' : (firstMaterial.file_type || 'image'));
     const displayCover = coverType === 'video'
       ? Api.getDisplayUrl(
-        (firstVideoMaterial && (firstVideoMaterial.thumbnail_path || firstVideoMaterial.poster_url || firstVideoMaterial.file_path)) || ''
+        (firstVideoMaterial && (firstVideoMaterial.thumbnail_path || firstVideoMaterial.poster_url)) || ''
       )
       : Api.getDisplayUrl(
         (firstImageMaterial && (firstImageMaterial.thumbnail_path || firstImageMaterial.file_path)) ||

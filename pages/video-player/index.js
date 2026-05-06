@@ -19,6 +19,7 @@ Page({
     work: null,
     loading: true,
     videoUrl: '',
+    posterUrl: '',
     processStatus: '',
     processStatusText: '',
   },
@@ -50,6 +51,7 @@ Page({
       this.setData({
         loading: false,
         videoUrl: normalizePreviewUrl(options.url),
+        posterUrl: Api.getDisplayUrl(options.poster || ''),
       });
     }
   },
@@ -89,6 +91,7 @@ Page({
     const processStatus = (firstVideoMaterial && firstVideoMaterial.process_status) || '';
 
     let videoUrl = '';
+    let posterUrl = '';
     let processStatusText = '';
 
     if (firstVideoMaterial || work.isVideo || work.cover_type === 'video' || work.video_url || work.previewVideoSrc) {
@@ -99,6 +102,17 @@ Page({
           firstVideoMaterial.previewUrl ||
           firstVideoMaterial.file_path ||
           firstVideoMaterial.processed_file_path
+        )) ||
+        ''
+      );
+      posterUrl = Api.getDisplayUrl(
+        work.thumbnail ||
+        work.displayCover ||
+        (firstVideoMaterial && (
+          firstVideoMaterial.thumbnail_path ||
+          firstVideoMaterial.thumbnailPath ||
+          firstVideoMaterial.poster_url ||
+          firstVideoMaterial.posterUrl
         )) ||
         ''
       );
@@ -113,6 +127,7 @@ Page({
       work,
       loading: false,
       videoUrl,
+      posterUrl,
       processStatus,
       processStatusText,
     });
