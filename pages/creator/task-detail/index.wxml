@@ -157,7 +157,7 @@
           <view class="material-card" wx:if="{{materials.length > 0}}">
             <view class="card-header">
               <text class="header-title">商家素材</text>
-              <view class="download-btn">
+              <view class="download-btn" bindtap="downloadAllMaterials">
                 <text>下载全部</text>
               </view>
             </view>
