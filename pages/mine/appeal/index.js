@@ -54,6 +54,16 @@ function normalizeAppeal(remoteAppeal = {}) {
   };
 }
 
+function filterAppealRecords(tabKey, records = []) {
+  const activeTab = tabKey || 'all';
+  if (activeTab === 'all') return records;
+  return records.filter((item) => (
+    activeTab === 'pending'
+      ? item.statusClass === 'processing'
+      : item.statusClass === 'resolved'
+  ));
+}
+
 Page({
   data: {
     loading: false,
@@ -113,9 +123,10 @@ Page({
       const records = remoteAppeals
         .map((appeal) => normalizeAppeal(appeal))
         .sort((a, b) => (b.sortAt || 0) - (a.sortAt || 0));
+      const activeTab = this.data.activeTab || 'all';
+      const filteredRecords = filterAppealRecords(activeTab, records);
 
-      this.applyFilter(this.data.activeTab, records);
-      this.setData({ records, loading: false, filteredRecords: this.data.filteredRecords });
+      this.setData({ records, loading: false, filteredRecords });
 
       if (allowAutoOpen) {
         this.autoOpenComposer();
@@ -128,13 +139,7 @@ Page({
 
   applyFilter(tabKey, records = this.data.records) {
     const activeTab = tabKey || 'all';
-    const filteredRecords = activeTab === 'all'
-      ? records
-      : records.filter((item) => (
-        activeTab === 'pending'
-          ? item.statusClass === 'processing'
-          : item.statusClass === 'resolved'
-      ));
+    const filteredRecords = filterAppealRecords(activeTab, records);
     this.setData({ activeTab, filteredRecords });
   },
 
