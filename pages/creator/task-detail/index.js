@@ -801,7 +801,7 @@ Page({
       this.updateUploadProgress(86);
 
       const submitRes = await Api.submitClaim(claimId, {
-        content: `视频稿件：${uploadRes.filename || 'video.mp4'}`,
+        content: `视频稿件：任务《${this.data.task.title || this.data.taskId || '未命名任务'}》投稿视频`,
         materials: [{
           file_name: uploadRes.filename || 'video.mp4',
           file_path: uploadRes.url,
