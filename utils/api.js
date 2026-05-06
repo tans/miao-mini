@@ -512,6 +512,14 @@ const Api = {
     return this.request('GET', `/business/tasks/${taskId}/claims`);
   },
 
+  getBusinessAppeals(params = {}) {
+    const q = [];
+    if (params.limit) q.push(`limit=${params.limit}`);
+    if (params.offset) q.push(`offset=${params.offset}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/business/appeals' + qs);
+  },
+
   reviewClaim(claimId, result, reason) {
     // result: 1=已采纳, 2=已淘汰, 3=已举报
     const data = { result };

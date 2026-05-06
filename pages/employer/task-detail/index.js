@@ -185,6 +185,7 @@ function normalizeClaim(claim = {}, task = {}) {
   const status = Number(claim.status);
   const submitAt = pick(claim.submit_at, claim.submitAt, '');
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
+  const reviewComment = pick(claim.review_comment, claim.reviewComment, '');
   const normalizedStatus = status === 1 && reviewResult === 0 && hasVisibleSubmission(claim)
     ? 2
     : status;
@@ -223,6 +224,7 @@ function normalizeClaim(claim = {}, task = {}) {
     displayDate: formatDateTime(submitAt || claim.updated_at || ''),
     contentText,
     videoLink,
+    reviewComment,
     hasContent: !!contentText,
     processStatusText: pendingVideoMaterials.length > 0
       ? (pendingVideoMaterials.some((item) => item.process_status === 'failed') ? '视频处理失败' : '视频压缩加水印处理中')
@@ -611,6 +613,19 @@ Page({
     } finally {
       wx.hideLoading();
     }
+  },
+
+  goAppealFlow(e) {
+    const claimId = e.currentTarget.dataset.claimId;
+    const taskId = this.data.taskId || (this.data.task && this.data.task.id) || '';
+    if (!claimId || !taskId) {
+      wx.showToast({ title: '缺少申诉对象', icon: 'none' });
+      return;
+    }
+
+    wx.navigateTo({
+      url: `/pages/mine/appeal/index?scope=business&taskId=${encodeURIComponent(String(taskId))}&claimId=${encodeURIComponent(String(claimId))}`,
+    });
   },
 
   showReportModal() {

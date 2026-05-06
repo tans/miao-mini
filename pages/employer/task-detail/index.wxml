@@ -138,7 +138,7 @@
             </view>
           </view>
           <view class="claim-content claim-content-reported" wx:if="{{claim.statusClass == 'reported'}}">
-            <text class="content-text">举报原因：涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。</text>
+            <text class="content-text">举报原因：{{claim.reviewComment || '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。'}}</text>
           </view>
 
           <view class="video-link-row" wx:if="{{claim.videoLink}}">
@@ -148,6 +148,9 @@
 
           <view class="claim-footer">
             <!-- <text class="claim-title">{{claim.taskTitle}}</text> -->
+            <view class="action-btns" wx:if="{{claim.statusClass == 'reported'}}">
+              <text class="action-btn report" bindtap="goAppealFlow" data-claim-id="{{claim.id}}">查看申诉流程</text>
+            </view>
             <view class="action-btns" wx:if="{{claim.canReview}}">
               <text class="action-btn accept" data-claim-id="{{claim.id}}" bindtap="openAdoptConfirmModal">采纳</text>
               <text class="action-btn reject" data-claim-id="{{claim.id}}" data-result="2" bindtap="reviewClaim">淘汰</text>

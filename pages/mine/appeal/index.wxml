@@ -1,53 +1,106 @@
 <view class="appeal-page">
-  <view class="tabs">
-    <view
-      wx:for="{{tabs}}"
-      wx:key="key"
-      class="tab {{activeTab === item.key ? 'tab-active' : ''}}"
-      data-tab="{{item.key}}"
-      bindtap="switchTab"
-    >
-      <text>{{item.label}}</text>
+  <view class="hero-card">
+    <view class="hero-top">
+      <view>
+        <text class="hero-kicker">{{viewerRoleLabel}}</text>
+        <text class="hero-title">申诉流程</text>
+      </view>
+      <view class="hero-badge">{{records.length}} 条</view>
     </view>
+    <text class="hero-desc">同一条流程里会展示商家举报、创作者申诉和平台处理结果。</text>
   </view>
 
-  <view class="records" wx:if="{{filteredRecords.length > 0}}">
-    <view class="record-card" wx:for="{{filteredRecords}}" wx:key="id">
-      <view class="record-content">
-        <view class="record-main">
-          <text class="record-title">{{item.title}}</text>
-          <text class="record-subtitle">{{item.subtitle}}</text>
+  <view class="workflow-list" wx:if="{{records.length > 0}}">
+    <view class="workflow-card" wx:for="{{records}}" wx:key="key">
+      <view class="workflow-head" bindtap="openTaskDetail" data-task-id="{{item.taskId}}">
+        <image wx:if="{{item.taskAvatar}}" class="task-avatar" src="{{item.taskAvatar}}" mode="aspectFill" />
+        <view wx:else class="task-avatar task-avatar-fallback">任</view>
+        <view class="workflow-head-body">
+          <text class="task-title">{{item.taskTitle}}</text>
+          <text class="task-subtitle">{{item.taskSubtitle}}</text>
         </view>
-
-        <view class="record-panel">
-          <text class="record-label">{{item.reasonLabel}}</text>
-          <text class="record-text">{{item.reasonText}}</text>
+        <view class="workflow-state workflow-state-{{item.overallStateClass}}">
+          <text>{{item.overallStateText}}</text>
         </view>
+      </view>
 
-        <view class="record-panel record-panel-muted" wx:if="{{item.resultText}}">
-          <text class="record-label">处理结果</text>
-          <text class="record-text">{{item.resultText}}</text>
-        </view>
-
-        <view class="record-footer">
-          <text class="record-time">{{item.timeLabel}} {{item.timeText}}</text>
-          <view class="record-status record-status-{{item.statusClass}}">
-            <text>{{item.statusText}}</text>
+      <view class="workflow-steps">
+        <view class="workflow-step workflow-step-{{item.report.stateClass}}">
+          <view class="step-dot"></view>
+          <view class="step-body">
+            <view class="step-row">
+              <text class="step-title">{{item.report.title}}</text>
+              <text class="step-label">{{item.report.label}}</text>
+            </view>
+            <text class="step-desc">{{item.report.reason}}</text>
+            <text class="step-time">{{item.report.timeText}}</text>
           </view>
+        </view>
+
+        <view class="workflow-connector"></view>
+
+        <view class="workflow-step workflow-step-{{item.appeal.stateClass}}">
+          <view class="step-dot"></view>
+          <view class="step-body">
+            <view class="step-row">
+              <text class="step-title">{{item.appeal.title}}</text>
+              <text class="step-label">{{item.appeal.label}}</text>
+            </view>
+            <text class="step-desc">{{item.appeal.reason}}</text>
+            <text class="step-time">{{item.appeal.timeText}} · {{item.appeal.detail}}</text>
+          </view>
+        </view>
+
+        <view class="workflow-connector"></view>
+
+        <view class="workflow-step workflow-step-{{item.platform.stateClass}}">
+          <view class="step-dot"></view>
+          <view class="step-body">
+            <view class="step-row">
+              <text class="step-title">{{item.platform.title}}</text>
+              <text class="step-label">{{item.platform.label}}</text>
+            </view>
+            <text class="step-desc">{{item.platform.result}}</text>
+            <text class="step-time">{{item.platform.timeText}} · {{item.platform.detail}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="workflow-media" wx:if="{{item.materials.length > 0}}">
+        <view class="media-title">作品显示</view>
+        <scroll-view scroll-x class="media-scroll">
+          <view class="media-item" wx:for="{{item.materials}}" wx:key="file_path" data-claim-id="{{item.claimId}}" data-preview-type="{{media.isVideo ? 'video' : 'image'}}" data-preview-url="{{media.previewUrl}}" bindtap="previewMaterial" wx:for-item="media">
+            <image wx:if="{{media.isImage}}" class="media-thumb" src="{{media.previewUrl}}" mode="aspectFill" />
+            <view wx:elif="{{media.isVideo}}" class="media-thumb media-thumb-video">
+              <text class="media-video-text">视频</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="workflow-actions">
+        <view class="workflow-chip workflow-chip-muted" wx:if="{{!item.canAppeal}}">
+          <text>无需申诉</text>
+        </view>
+        <view class="workflow-chip workflow-chip-primary" wx:if="{{item.canAppeal}}" bindtap="openComposer" data-claim-id="{{item.claimId}}">
+          <text>去申诉</text>
         </view>
       </view>
     </view>
   </view>
 
-  <view class="empty-state" wx:if="{{!loading && filteredRecords.length === 0}}">
-    <view class="empty-mark">0</view>
-    <text class="empty-title">暂无申诉记录</text>
-    <text class="empty-desc">仅显示你提交过的创作者申诉。</text>
+  <view class="empty-state" wx:if="{{!loading && records.length === 0}}">
+    <view class="empty-mark">流程</view>
+    <text class="empty-title">{{emptyTitle}}</text>
+    <text class="empty-desc">{{emptyDesc}}</text>
+    <view class="empty-action" bindtap="goEntryPage">
+      <text>{{emptyActionText}}</text>
+    </view>
   </view>
 
   <view class="service-bar">
-    <view class="service-btn service-btn-solid" bindtap="goCustomerService">
-      <text>联系客服</text>
+    <view class="service-btn service-btn-plain" bindtap="goEntryPage">
+      <text>{{viewerRole === 'business' ? '去任务管理' : '去我的作品'}}</text>
     </view>
   </view>
 
@@ -55,21 +108,25 @@
   <view wx:if="{{showComposer}}" class="composer-modal">
     <view class="composer-modal-content">
       <view class="composer-header">
-        <text class="composer-title">申诉原因</text>
+        <view>
+          <text class="composer-title">提交申诉</text>
+          <text class="composer-subtitle">{{composerTarget.taskTitle}}</text>
+        </view>
         <view class="composer-close" bindtap="closeComposer">×</view>
       </view>
       <view class="composer-body">
-        <view class="type-picker">
-          <text class="type-picker-label">申诉类型</text>
-          <view class="type-picker-value">{{selectedType.name}}</view>
+        <view class="composer-tip">
+          <text class="composer-tip-label">商家举报原因</text>
+          <text class="composer-tip-text">{{composerTarget.reportReason}}</text>
         </view>
         <textarea
           class="composer-textarea"
           value="{{reason}}"
           bindinput="onReasonInput"
           maxlength="300"
-          placeholder="请输入申诉说明"
+          placeholder="请输入你的申诉说明"
         />
+        <text class="composer-error" wx:if="{{submitError}}">{{submitError}}</text>
 
         <view class="upload-list">
           <view class="upload-item" wx:for="{{uploadImages}}" wx:key="index">
@@ -81,7 +138,9 @@
           </view>
         </view>
       </view>
-      <view class="composer-submit" bindtap="submitAppeal">提交</view>
+      <view class="composer-submit {{submitting ? 'is-disabled' : ''}}" bindtap="submitAppeal">
+        <text>{{submitting ? '提交中...' : '提交申诉'}}</text>
+      </view>
     </view>
   </view>
 </view>
