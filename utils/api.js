@@ -512,6 +512,19 @@ const Api = {
     return this.request('GET', `/business/tasks/${taskId}/claims`);
   },
 
+  getBusinessClaims(params = {}) {
+    const q = [];
+    if (params.status !== undefined && params.status !== null && params.status !== '') {
+      q.push(`status=${encodeURIComponent(params.status)}`);
+    }
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/business/claims' + qs);
+  },
+
+  getBusinessClaim(claimId) {
+    return this.request('GET', `/business/claim/${claimId}`);
+  },
+
   getBusinessAppeals(params = {}) {
     const q = [];
     if (params.limit) q.push(`limit=${params.limit}`);

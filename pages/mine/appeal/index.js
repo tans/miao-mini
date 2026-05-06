@@ -99,6 +99,7 @@ function normalizeClaim(claim = {}) {
   const reviewResult = toNumber(pick(claim.review_result, claim.reviewResult, 0));
   const reviewComment = pick(claim.review_comment, claim.reviewComment, '');
   const taskId = String(pick(claim.task_id, claim.taskId, ''));
+  const creatorId = String(pick(claim.creator_id, claim.creatorId, ''));
   const createdAt = pick(claim.created_at, claim.createdAt, '');
   const reviewAt = pick(claim.review_at, claim.reviewAt, '');
   const submitAt = pick(claim.submit_at, claim.submitAt, '');
@@ -109,6 +110,8 @@ function normalizeClaim(claim = {}) {
     id: String(pick(claim.id, claim.claim_id, '')),
     taskId,
     task_id: taskId,
+    creatorId,
+    creator_id: creatorId,
     taskTitle: pick(claim.task_title, claim.taskTitle, ''),
     creatorName: pick(claim.creator_name, claim.creatorName, ''),
     creatorAvatar: pick(claim.creator_avatar, claim.creatorAvatar, ''),
@@ -122,43 +125,63 @@ function normalizeClaim(claim = {}) {
   };
 }
 
-function getViewerRole(options = {}) {
-  const raw = String(pick(options.scope, options.mode, options.role, '')).toLowerCase();
-  if (raw === 'business' || raw === 'merchant') return 'business';
-  return 'creator';
+function mergeClaims(baseClaim = {}, extraClaim = {}) {
+  const baseMaterials = Array.isArray(baseClaim.materials) ? baseClaim.materials : [];
+  const extraMaterials = Array.isArray(extraClaim.materials) ? extraClaim.materials : [];
+  return {
+    ...baseClaim,
+    ...extraClaim,
+    materials: extraMaterials.length ? extraMaterials : baseMaterials,
+    creatorName: extraClaim.creatorName || baseClaim.creatorName,
+    creatorAvatar: extraClaim.creatorAvatar || baseClaim.creatorAvatar,
+    reviewComment: extraClaim.reviewComment || baseClaim.reviewComment,
+    reviewResult: extraClaim.reviewResult || baseClaim.reviewResult,
+    reviewAt: extraClaim.reviewAt || baseClaim.reviewAt,
+    submitAt: extraClaim.submitAt || baseClaim.submitAt,
+    taskTitle: extraClaim.taskTitle || baseClaim.taskTitle,
+  };
 }
 
-function getEmptyState(viewerRole, hasTaskContext) {
-  if (viewerRole === 'business') {
-    return {
-      emptyTitle: hasTaskContext ? '暂无申诉流程' : '请从任务详情进入',
-      emptyDesc: hasTaskContext
-        ? '这个任务还没有可展示的举报、申诉或处理记录。'
-        : '商家视角需要从任务详情页打开，才能看到对应作品的举报和申诉流程。',
-      emptyActionText: hasTaskContext ? '返回任务管理' : '去任务管理',
-    };
-  }
+function getCurrentUserId() {
+  return String(pick(app.globalData && app.globalData.user && app.globalData.user.id, ''));
+}
 
+function getPageMeta(hasTaskContext) {
   return {
-    emptyTitle: '暂无申诉流程',
-    emptyDesc: '被商家举报或已提交申诉的作品会显示在这里。',
+    pageTitle: '申诉记录',
+    heroDesc: hasTaskContext
+      ? '当前任务的商家举报、创作者申诉和平台处理结果会统一显示在这里。'
+      : '商家举报、创作者申诉和平台处理结果会统一显示在这里。',
+    emptyTitle: hasTaskContext ? '暂无该任务申诉记录' : '暂无申诉记录',
+    emptyDesc: hasTaskContext
+      ? '这个任务还没有可展示的举报、申诉或处理记录。'
+      : '商家举报、创作者申诉和平台处理结果会统一显示在这里。',
     emptyActionText: '联系客服',
   };
 }
 
-function buildWorkflowCard({ claim = {}, task = {}, appeal = null, viewerRole = 'creator' }) {
+function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId = '' }) {
   const claimId = String(pick(claim.id, claim.claim_id, ''));
   const taskId = String(pick(claim.task_id, claim.taskId, task.id, task.task_id, ''));
   const reviewResult = toNumber(pick(claim.review_result, claim.reviewResult, 0));
+  const claimCreatorId = String(pick(claim.creator_id, claim.creatorId, ''));
+  const taskBusinessId = String(pick(task.business_id, task.businessId, claim.business_id, claim.businessId, ''));
   const appealStatus = appeal ? toNumber(appeal.status) : 0;
   const appealResolved = appealStatus === 2;
+  const hasReport = reviewResult === 3;
+  const isBusinessTask = !!currentUserId && !!taskBusinessId && String(taskBusinessId) === String(currentUserId);
+  const canAppeal = !!currentUserId
+    && !!claimCreatorId
+    && String(claimCreatorId) === String(currentUserId)
+    && reviewResult === 3
+    && !appeal;
 
   const taskTitle = pick(task.title, task.task_title, claim.task_title, claim.taskTitle, `任务 #${taskId || claimId || '-'}`);
   const taskOwnerName = pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '');
   const creatorName = pick(claim.creator_name, claim.creatorName, '');
   const taskAvatar = Api.getAvatarDisplayUrl(
     pick(task.business_avatar, task.businessAvatar, task.merchantAvatar, claim.business_avatar, claim.businessAvatar, ''),
-    pick(task.business_id, task.businessId, task.merchant_id, task.merchantId, taskId)
+    pick(taskBusinessId, task.merchant_id, task.merchantId, taskId)
   );
 
   const reportReason = reviewResult === 3
@@ -170,33 +193,32 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, viewerRole = 
   const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
   const appealLabel = appeal
     ? (appealResolved ? '已处理' : '待处理')
-    : (viewerRole === 'business' ? '等待创作者申诉' : '待申诉');
+    : (hasReport ? '待申诉' : '待处理');
   const appealDetail = appeal
     ? (appeal.evidenceCount > 0 ? `证据 ${appeal.evidenceCount} 项` : '已提交申诉说明')
-    : (viewerRole === 'business' ? '创作者提交后会进入平台处理' : '点击按钮提交申诉说明');
+    : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
 
   const platformResult = appeal
     ? pick(appeal.result, appeal.statusText, appealResolved ? '已处理' : '平台处理中')
-    : '等待申诉后处理';
+    : (hasReport ? '等待申诉后处理' : '等待处理结果');
   const platformLabel = appeal ? (appealResolved ? '已处理' : '平台处理中') : '待处理';
   const platformDetail = appeal
     ? (appealResolved ? '平台已经给出处理结果' : '平台正在审核申诉')
-    : '等待创作者申诉后进入平台处理';
+    : (hasReport ? '等待创作者申诉后进入平台处理' : '等待审核结果');
 
   const reportLabel = reviewResult === 3 ? '已举报' : '待处理';
   const overallStateText = appeal
     ? (appealResolved ? '已处理' : '平台处理中')
-    : (viewerRole === 'business' ? '等待创作者申诉' : '待申诉');
+    : (hasReport ? '待申诉' : '待处理');
   const overallStateClass = appeal
     ? (appealResolved ? 'resolved' : 'processing')
-    : (viewerRole === 'business' ? 'waiting' : 'muted');
+    : (hasReport ? 'waiting' : 'muted');
 
   const taskSubtitleParts = [];
-  if (viewerRole === 'creator' && taskOwnerName) {
-    taskSubtitleParts.push(`商家 ${taskOwnerName}`);
-  }
-  if (viewerRole === 'business' && creatorName) {
+  if (isBusinessTask && creatorName) {
     taskSubtitleParts.push(`创作者 ${creatorName}`);
+  } else if (taskOwnerName) {
+    taskSubtitleParts.push(`商家 ${taskOwnerName}`);
   }
   if (reportTimeText) {
     taskSubtitleParts.push(`举报 ${reportTimeText}`);
@@ -210,34 +232,36 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, viewerRole = 
     toTimestamp(pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, ''))
   );
 
-    return {
-      key: `claim:${claimId || taskId || Date.now()}`,
-      claimId,
-      taskId,
+  return {
+    key: `claim:${claimId || taskId || Date.now()}`,
+    claimId,
+    taskId,
     taskTitle,
     taskOwnerName,
     creatorName,
+    creatorId: claimCreatorId,
+    taskBusinessId,
+    isBusinessTask,
     taskAvatar,
-      taskSubtitle: taskSubtitleParts.length ? taskSubtitleParts.join(' · ') : `任务ID ${taskId || '-'}`,
-      viewerRole,
-      overallStateText,
-      overallStateClass,
-      claimStatusText: reportLabel,
+    taskSubtitle: taskSubtitleParts.length ? taskSubtitleParts.join(' · ') : `任务ID ${taskId || '-'}`,
+    overallStateText,
+    overallStateClass,
+    claimStatusText: reportLabel,
     report: {
       title: '商家举报',
       label: reportLabel,
       reason: reportReason || DEFAULT_REPORT_REASON,
       timeText: reportTimeText || '时间待更新',
-      detail: reviewResult === 3 ? '商家已完成举报' : '等待商家处理',
+      detail: reviewResult === 3 ? '商家已完成举报' : (reviewResult === 2 ? '商家已退回作品' : '等待商家处理'),
       stateClass: reviewResult === 3 ? 'reported' : 'waiting',
     },
     appeal: {
       title: '创作者申诉',
       label: appealLabel,
-      reason: appealReason || (viewerRole === 'creator' ? '点击按钮提交申诉说明' : '等待创作者提交申诉'),
+      reason: appealReason || (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')),
       detail: appealDetail,
       timeText: appealTimeText || '时间待更新',
-      stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : (viewerRole === 'business' ? 'waiting' : 'muted'),
+      stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : (hasReport ? 'waiting' : 'muted'),
       appealId: appeal ? String(appeal.id || '') : '',
       evidenceCount: appeal ? appeal.evidenceCount : 0,
       evidenceList: appeal ? appeal.evidence : [],
@@ -248,10 +272,10 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, viewerRole = 
       result: platformResult,
       detail: platformDetail,
       timeText: appealTimeText || '时间待更新',
-      stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : 'waiting',
+      stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : (hasReport ? 'waiting' : 'muted'),
     },
     materials,
-    canAppeal: viewerRole === 'creator' && reviewResult === 3 && !appeal,
+    canAppeal,
     sortAt,
   };
 }
@@ -263,12 +287,13 @@ function sortWorkflowCards(cards = []) {
 Page({
   data: {
     loading: false,
-    viewerRole: 'creator',
+    pageTitle: '申诉记录',
+    heroDesc: '商家举报、创作者申诉和平台处理结果会统一显示在这里。',
     taskId: '',
     claimId: '',
     records: [],
-    emptyTitle: '暂无申诉流程',
-    emptyDesc: '被商家举报或已提交申诉的作品会显示在这里。',
+    emptyTitle: '暂无申诉记录',
+    emptyDesc: '商家举报、创作者申诉和平台处理结果会统一显示在这里。',
     emptyActionText: '联系客服',
     showComposer: false,
     composerTarget: null,
@@ -279,19 +304,17 @@ Page({
   },
 
   onLoad(options = {}) {
-    const viewerRole = getViewerRole(options);
     const taskId = String(pick(options.taskId, options.task_id, ''));
     const claimId = String(pick(options.claimId, options.claim_id, ''));
-    const emptyState = getEmptyState(viewerRole, !!taskId);
+    const pageMeta = getPageMeta(!!taskId);
 
     this.setData({
-      viewerRole,
       taskId,
       claimId,
-      ...emptyState,
+      ...pageMeta,
     });
 
-    wx.setNavigationBarTitle({ title: '申诉流程' });
+    wx.setNavigationBarTitle({ title: pageMeta.pageTitle });
 
     if (!app.isLoggedIn()) {
       app.silentLogin()
@@ -321,15 +344,12 @@ Page({
     }
 
     try {
-      const records = this.data.viewerRole === 'business'
-        ? await this.loadBusinessWorkflows()
-        : await this.loadCreatorWorkflows();
-
-      const emptyState = getEmptyState(this.data.viewerRole, !!this.data.taskId);
+      const records = await this.loadUnifiedWorkflows();
+      const pageMeta = getPageMeta(!!this.data.taskId);
       this.setData({
         records: sortWorkflowCards(records),
         loading: false,
-        ...emptyState,
+        ...pageMeta,
       });
 
       this.autoOpenComposerFromRoute(records);
@@ -343,32 +363,105 @@ Page({
     }
   },
 
-  async loadCreatorWorkflows() {
-    const [claimsRes, appealsRes] = await Promise.all([
+  autoOpenComposerFromRoute(records = []) {
+    if (!this.data.claimId || this.data.showComposer) {
+      return;
+    }
+
+    const record = records.find((item) => String(item.claimId) === String(this.data.claimId));
+    if (!record || !record.canAppeal) {
+      return;
+    }
+
+    this.setData({ claimId: '' });
+    this.openComposerByRecord(record);
+  },
+
+  async loadUnifiedWorkflows() {
+    const currentUserId = getCurrentUserId();
+    const [creatorClaimsRes, creatorAppealsRes, businessClaimsRes, businessAppealsRes] = await Promise.all([
       Api.getMyClaims({ page: 1, limit: 100 }),
       Api.getAppeals({ limit: 100, offset: 0 }).catch(() => ({ data: { appeals: [] } })),
+      Api.getBusinessClaims().catch(() => ({ data: [] })),
+      Api.getBusinessAppeals({ limit: 100, offset: 0 }).catch(() => ({ data: { appeals: [] } })),
     ]);
 
-    const claims = Array.isArray(claimsRes && claimsRes.data) ? claimsRes.data : [];
-    const appeals = Array.isArray(appealsRes && appealsRes.data && appealsRes.data.appeals)
-      ? appealsRes.data.appeals
-      : [];
-
     const appealMap = new Map();
-    appeals.forEach((appeal) => {
+    const allAppeals = []
+      .concat(Array.isArray(creatorAppealsRes && creatorAppealsRes.data && creatorAppealsRes.data.appeals) ? creatorAppealsRes.data.appeals : [])
+      .concat(Array.isArray(businessAppealsRes && businessAppealsRes.data && businessAppealsRes.data.appeals) ? businessAppealsRes.data.appeals : []);
+    allAppeals.forEach((appeal) => {
       const normalizedAppeal = normalizeAppeal(appeal);
-      if (!normalizedAppeal.claimId) return;
-      if (!appealMap.has(normalizedAppeal.claimId)) {
-        appealMap.set(normalizedAppeal.claimId, normalizedAppeal);
+      if (!normalizedAppeal.claimId || appealMap.has(normalizedAppeal.claimId)) return;
+      appealMap.set(normalizedAppeal.claimId, normalizedAppeal);
+    });
+
+    const claimMap = new Map();
+    const currentUserClaims = Array.isArray(creatorClaimsRes && creatorClaimsRes.data) ? creatorClaimsRes.data : [];
+    currentUserClaims.map(normalizeClaim).forEach((claim) => {
+      if (!claim.id) return;
+      claimMap.set(claim.id, claim);
+    });
+
+    const businessClaims = Array.isArray(businessClaimsRes && businessClaimsRes.data) ? businessClaimsRes.data : [];
+    businessClaims.forEach((claim) => {
+      const normalized = normalizeClaim(claim);
+      if (!normalized.id) return;
+      if (!claimMap.has(normalized.id)) {
+        claimMap.set(normalized.id, normalized);
+      } else {
+        claimMap.set(normalized.id, {
+          ...claimMap.get(normalized.id),
+          ...normalized,
+          materials: normalized.materials.length ? normalized.materials : claimMap.get(normalized.id).materials,
+        });
       }
     });
 
-    let candidateClaims = claims
-      .map(normalizeClaim)
+    const claimList = Array.from(claimMap.values());
+    const detailTasks = [];
+    const detailCache = new Map();
+    claimList.forEach((claim) => {
+      const hasEnoughDetail = Array.isArray(claim.materials) && claim.materials.length > 0;
+      if (!hasEnoughDetail && claim.id) {
+        detailTasks.push(claim);
+      }
+    });
+
+    await Promise.all(detailTasks.map(async (claim) => {
+      const claimId = String(claim.id || '');
+      if (!claimId || detailCache.has(claimId)) return;
+
+      const preferredCreatorDetail = claim.creatorId && currentUserId && String(claim.creatorId) === String(currentUserId);
+      const preferredBusinessDetail = claim.taskBusinessId && currentUserId && String(claim.taskBusinessId) === String(currentUserId);
+      const fetchers = preferredCreatorDetail
+        ? [() => Api.getClaimById(claimId), () => Api.getBusinessClaim(claimId)]
+        : preferredBusinessDetail
+          ? [() => Api.getBusinessClaim(claimId), () => Api.getClaimById(claimId)]
+          : [() => Api.getBusinessClaim(claimId), () => Api.getClaimById(claimId)];
+
+      for (let i = 0; i < fetchers.length; i += 1) {
+        const fetchDetail = fetchers[i];
+        try {
+          const res = await fetchDetail();
+          const detail = normalizeClaim(res && res.data ? res.data : {});
+          if (detail && detail.id) {
+            detailCache.set(claimId, detail);
+            break;
+          }
+        } catch (err) {}
+      }
+    }));
+
+    let candidateClaims = claimList
+      .map((claim) => mergeClaims(claim, detailCache.get(claim.id) || {}))
       .filter((claim) => claim.reviewResult === 3 || appealMap.has(claim.id));
 
+    if (this.data.taskId) {
+      candidateClaims = candidateClaims.filter((claim) => String(claim.taskId) === String(this.data.taskId));
+    }
     if (this.data.claimId) {
-      candidateClaims = candidateClaims.filter((claim) => claim.id === this.data.claimId);
+      candidateClaims = candidateClaims.filter((claim) => String(claim.id) === String(this.data.claimId));
     }
 
     if (!candidateClaims.length) {
@@ -382,63 +475,7 @@ Page({
       claim,
       task: taskMap[claim.taskId] || {},
       appeal: appealMap.get(claim.id) || null,
-      viewerRole: 'creator',
-    }));
-  },
-
-  autoOpenComposerFromRoute(records = []) {
-    if (this.data.viewerRole !== 'creator' || !this.data.claimId || this.data.showComposer) {
-      return;
-    }
-
-    const record = records.find((item) => String(item.claimId) === String(this.data.claimId));
-    if (!record || !record.canAppeal) {
-      return;
-    }
-
-    this.setData({ claimId: '' });
-    this.openComposerByRecord(record);
-  },
-
-  async loadBusinessWorkflows() {
-    if (!this.data.taskId) {
-      return [];
-    }
-
-    const [taskRes, claimsRes, appealsRes] = await Promise.all([
-      Api.getTask(this.data.taskId).catch(() => ({ data: {} })),
-      Api.getTaskClaims(this.data.taskId).catch(() => ({ data: [] })),
-      Api.getBusinessAppeals({ limit: 100, offset: 0 }).catch(() => ({ data: { appeals: [] } })),
-    ]);
-
-    const task = taskRes && taskRes.data ? taskRes.data : {};
-    const claims = Array.isArray(claimsRes && claimsRes.data) ? claimsRes.data : [];
-    const appeals = Array.isArray(appealsRes && appealsRes.data && appealsRes.data.appeals)
-      ? appealsRes.data.appeals
-      : [];
-
-    const appealMap = new Map();
-    appeals.forEach((appeal) => {
-      const normalizedAppeal = normalizeAppeal(appeal);
-      if (!normalizedAppeal.claimId) return;
-      if (!appealMap.has(normalizedAppeal.claimId)) {
-        appealMap.set(normalizedAppeal.claimId, normalizedAppeal);
-      }
-    });
-
-    let candidateClaims = claims
-      .map(normalizeClaim)
-      .filter((claim) => claim.reviewResult === 3 || appealMap.has(claim.id));
-
-    if (this.data.claimId) {
-      candidateClaims = candidateClaims.filter((claim) => claim.id === this.data.claimId);
-    }
-
-    return candidateClaims.map((claim) => buildWorkflowCard({
-      claim,
-      task,
-      appeal: appealMap.get(claim.id) || null,
-      viewerRole: 'business',
+      currentUserId,
     }));
   },
 
@@ -459,12 +496,11 @@ Page({
   openTaskDetail(e) {
     const taskId = String(pick(e.currentTarget.dataset.taskId, e.currentTarget.dataset.taskid, ''));
     if (!taskId) return;
-
-    if (this.data.viewerRole === 'business') {
+    const record = (this.data.records || []).find((item) => String(item.taskId) === taskId);
+    if (record && record.isBusinessTask) {
       wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${encodeURIComponent(taskId)}` });
       return;
     }
-
     wx.navigateTo({ url: `/pages/creator/task-detail/index?id=${encodeURIComponent(taskId)}` });
   },
 
@@ -638,10 +674,6 @@ Page({
   },
 
   goEntryPage() {
-    if (this.data.viewerRole === 'business') {
-      wx.navigateTo({ url: '/pages/employer/my-tasks/index' });
-      return;
-    }
     wx.navigateTo({ url: '/pages/mine/customer-service/index' });
   },
 

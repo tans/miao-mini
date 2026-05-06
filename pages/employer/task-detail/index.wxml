@@ -149,7 +149,7 @@
           <view class="claim-footer">
             <!-- <text class="claim-title">{{claim.taskTitle}}</text> -->
             <view class="action-btns" wx:if="{{claim.statusClass == 'reported'}}">
-              <text class="action-btn report" bindtap="goAppealFlow" data-claim-id="{{claim.id}}">查看申诉流程</text>
+              <text class="action-btn report" bindtap="goAppealFlow" data-claim-id="{{claim.id}}">查看申诉记录</text>
             </view>
             <view class="action-btns" wx:if="{{claim.canReview}}">
               <text class="action-btn accept" data-claim-id="{{claim.id}}" bindtap="openAdoptConfirmModal">采纳</text>
