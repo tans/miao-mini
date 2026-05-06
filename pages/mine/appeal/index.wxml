@@ -13,8 +13,8 @@
         <image wx:if="{{item.taskAvatar}}" class="task-avatar" src="{{item.taskAvatar}}" mode="aspectFill" />
         <view wx:else class="task-avatar task-avatar-fallback">任</view>
         <view class="workflow-head-body">
-          <text class="task-title">{{item.taskTitle}}</text>
-          <text class="task-subtitle">{{item.taskSubtitle}}</text>
+          <text class="task-title">{{item.taskHeaderTitle}}</text>
+          <text class="task-subtitle">{{item.taskTitleLabel}} · {{item.taskSubtitle}}</text>
         </view>
         <view class="workflow-state workflow-state-{{item.overallStateClass}}">
           <text>{{item.overallStateText}}</text>
