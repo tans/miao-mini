@@ -73,6 +73,7 @@
   font-size: 64rpx;
   font-weight: 700;
   color: #fff;
+  font-family: 'home-din-pro-700-bold';
   line-height: 1;
 }
 
@@ -129,6 +130,7 @@
   font-size: 48rpx;
   font-weight: 700;
   color: #333;
+  font-family: 'home-din-pro-700-bold';
   margin-right: 16rpx;
 }
 
@@ -137,6 +139,7 @@
   font-size: 48rpx;
   font-weight: 700;
   color: #333;
+  font-family: 'home-din-pro-700-bold';
   height: 64rpx;
   line-height: 64rpx;
 }

@@ -93,6 +93,7 @@
   font-size: 64rpx;
   font-weight: 700;
   color: #fff;
+  font-family: 'home-din-pro-700-bold';
   line-height: 1;
 }
 
@@ -143,6 +144,7 @@
   font-size: 40rpx;
   font-weight: 700;
   color: #333;
+  font-family: 'home-din-pro-700-bold';
 }
 
 .balance-actions {

@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const { formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -40,7 +41,7 @@ Page({
 
       this.setData({
         balance: balance,
-        withdrawableAmount: withdrawableAmount,
+        withdrawableAmount: formatAmount(withdrawableAmount, { useGrouping: false }),
         realNameVerified: user.real_name_verified || false
       });
     } catch (err) {
