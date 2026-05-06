@@ -1,6 +1,11 @@
 const Api = require('../../utils/api.js');
-const { formatAmount, formatDateTime } = require('../../utils/util.js');
+const { formatDateTime } = require('../../utils/util.js');
 const app = getApp();
+
+function formatMoneyText(value) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num.toFixed(2) : '0.00';
+}
 
 Page({
   data: {
@@ -72,24 +77,24 @@ Page({
         ...t,
         amount: Number(t.amount || 0),
         type_text: t.type_str || '其他',
-        amountDisplay: formatAmount(Math.abs(Number(t.amount || 0)), { useGrouping: false }),
+        amountDisplay: formatMoneyText(Math.abs(Number(t.amount || 0))),
         fee: Number(t.fee || 0),
-        feeDisplay: formatAmount(Number(t.fee || 0), { useGrouping: false }),
+        feeDisplay: formatMoneyText(Number(t.fee || 0)),
         createdAtText: formatDateTime(t.created_at || t.createdAt || '')
       }));
 
-      const balance = wallet.balance || 0;
-      const frozenAmount = wallet.frozen_amount || 0;
+      const balance = Number(wallet.balance || 0);
+      const frozenAmount = Number(wallet.frozen_amount || 0);
       const withdrawableAmount = Math.max(0, balance - frozenAmount);
       const filteredTransactions = this.getFilteredTransactions(this.data.currentTab, transactions);
 
       this.setData({
-        balance: wallet.balance || 0,
-        balanceDisplay: formatAmount(wallet.balance || 0),
-        frozenAmount: formatAmount(frozenAmount),
-        withdrawableAmount: formatAmount(withdrawableAmount),
-        totalIncome: wallet.total_income || 0,
-        totalIncomeDisplay: formatAmount(wallet.total_income || 0),
+        balance,
+        balanceDisplay: formatMoneyText(balance),
+        frozenAmount: formatMoneyText(frozenAmount),
+        withdrawableAmount: formatMoneyText(withdrawableAmount),
+        totalIncome: Number(wallet.total_income || 0),
+        totalIncomeDisplay: formatMoneyText(wallet.total_income || 0),
         transactions,
         filteredTransactions,
         loading: false,

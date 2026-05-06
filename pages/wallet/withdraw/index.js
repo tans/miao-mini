@@ -1,5 +1,4 @@
 const Api = require('../../../utils/api.js');
-const { formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 
 Page({
@@ -35,13 +34,13 @@ Page({
 
       const wallet = walletRes.data || {};
       const user = userRes.data || {};
-      const balance = wallet.balance || 0;
-      const frozenAmount = wallet.frozen_amount || 0;
+      const balance = Number(wallet.balance || 0);
+      const frozenAmount = Number(wallet.frozen_amount || 0);
       const withdrawableAmount = Math.max(0, balance - frozenAmount);
 
       this.setData({
         balance: balance,
-        withdrawableAmount: formatAmount(withdrawableAmount, { useGrouping: false }),
+        withdrawableAmount: Number(withdrawableAmount).toFixed(2),
         realNameVerified: user.real_name_verified || false
       });
     } catch (err) {
