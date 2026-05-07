@@ -261,19 +261,23 @@
   color: #8b93a1;
 }
 
-.appeal-inline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-  align-items: center;
+.appeal-meta {
+  display: block;
+  margin-top: 10rpx;
 }
 
-.appeal-inline-name {
+.appeal-meta-name {
+  display: block;
+  font-size: 26rpx;
   font-weight: 700;
-  color: #3d4654;
+  color: #30363f;
 }
 
-.appeal-inline-time {
+.appeal-meta-time {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  line-height: 1.6;
   color: #8b93a1;
 }
 
@@ -299,13 +303,6 @@
   font-size: 22rpx;
   font-weight: 700;
   color: #8b93a1;
-}
-
-.media-meta {
-  margin-top: 10rpx;
-  font-size: 22rpx;
-  line-height: 1.6;
-  color: #6b7280;
 }
 
 .media-scroll {

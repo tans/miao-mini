@@ -218,6 +218,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   ));
 
   const appealReason = appeal ? pick(appeal.reason, '') : '';
+  const appealReasonText = appealReason || '';
   const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
   const appealCreatorText = creatorName ? `创作者：${creatorName}` : '创作者';
   const appealTimeLine = appeal
@@ -261,21 +262,9 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     : (hasReport ? 'waiting' : 'muted');
 
   const materials = Array.isArray(claim.materials) ? claim.materials.slice(0, 4).map(normalizeWorkflowMaterial) : [];
-  const workInfoParts = [];
-  if (claimId) {
-    workInfoParts.push(`作品ID ${claimId}`);
-  }
-  if (taskId) {
-    workInfoParts.push(`任务ID ${taskId}`);
-  }
-  if (creatorName) {
-    workInfoParts.push(`创作者：${creatorName}`);
-  }
-  const appealIdText = appeal ? String(appeal.id || '') : '';
   const headerInfoParts = [];
   if (claimId) headerInfoParts.push(`作品ID ${claimId}`);
   if (taskId) headerInfoParts.push(`任务ID ${taskId}`);
-  if (appealIdText) headerInfoParts.push(`申诉ID ${appealIdText}`);
   if (creatorName) headerInfoParts.push(`创作者：${creatorName}`);
   const sortAt = Math.max(
     toTimestamp(pick(appeal && (appeal.handleAt || appeal.handle_at), appeal && (appeal.createdAt || appeal.created_at), '')),
@@ -311,7 +300,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     appeal: {
       title: '创作者申诉',
       label: appealLabel,
-      reason: appealReason || (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')),
+      reason: appeal ? appealReasonText : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')),
       detail: appealDetail,
       creatorText: appealCreatorText,
       timeLine: appealTimeLine,
@@ -333,7 +322,6 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     },
     materials,
     creatorMaterials: materials,
-    workInfoText: [workInfoParts.join(' · '), appealIdText ? `申诉ID ${appealIdText}` : ''].filter(Boolean).join(' · '),
     canAppeal,
     sortAt,
   };

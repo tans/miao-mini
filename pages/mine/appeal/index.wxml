@@ -43,11 +43,11 @@
               <text class="step-title">{{item.appeal.title}}</text>
               <text class="step-label">{{item.appeal.label}}</text>
             </view>
-            <view class="appeal-inline">
-              <text class="appeal-inline-name">{{item.appeal.creatorText}}</text>
-              <text class="appeal-inline-time">{{item.appeal.timeLine}}</text>
+            <text wx:if="{{item.appeal.reason}}" class="step-desc">{{item.appeal.reason}}</text>
+            <view class="appeal-meta">
+              <text class="appeal-meta-name">{{item.appeal.creatorText}}</text>
+              <text class="appeal-meta-time">{{item.appeal.timeLine}}</text>
             </view>
-            <text class="step-time">{{item.appeal.reason || '还是不服'}}</text>
           </view>
         </view>
 
@@ -68,9 +68,6 @@
 
       <view class="workflow-media" wx:if="{{item.creatorMaterials.length > 0}}">
         <view class="media-title">作品显示</view>
-        <view class="media-meta" wx:if="{{item.workInfoText}}">
-          <text>{{item.workInfoText}}</text>
-        </view>
         <scroll-view scroll-x class="media-scroll">
           <view class="media-item" wx:for="{{item.creatorMaterials}}" wx:key="file_path" data-claim-id="{{item.claimId}}" data-preview-type="{{media.isVideo ? 'video' : 'image'}}" data-preview-url="{{media.previewUrl}}" bindtap="previewMaterial" wx:for-item="media">
             <image wx:if="{{media.isImage}}" class="media-thumb" src="{{media.previewUrl}}" mode="aspectFill" />
