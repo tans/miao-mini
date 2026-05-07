@@ -651,6 +651,7 @@ const Api = {
 
   getTransactions(params = {}) {
     const q = [];
+    if (params.scope) q.push(`scope=${encodeURIComponent(params.scope)}`);
     if (params.page) q.push(`page=${params.page}`);
     if (params.limit) q.push(`limit=${params.limit}`);
     const qs = q.length ? '?' + q.join('&') : '';

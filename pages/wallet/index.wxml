@@ -51,14 +51,14 @@
         <view class="trans-info">
           <text class="trans-type">{{item.type_text || '其他'}}</text>
           <text class="trans-time">{{item.createdAtText}}</text>
+          <text class="trans-remark" wx:if="{{item.remarkText}}">{{item.remarkText}}</text>
         </view>
         <view class="trans-amount-group">
           <view class="trans-amount-row">
-            <text class="trans-sign {{item.amount >= 0 ? 'income' : 'expense'}}">{{item.amount >= 0 ? '+' : '-'}}</text>
-            <text class="trans-value {{item.amount >= 0 ? 'income' : 'expense'}}">{{item.amountDisplay}}</text>
-            <text class="trans-unit {{item.amount >= 0 ? 'income' : 'expense'}}">元</text>
+            <text class="trans-sign {{item.displayAmount >= 0 ? 'income' : 'expense'}}">{{item.displayAmount >= 0 ? '+' : '-'}}</text>
+            <text class="trans-value {{item.displayAmount >= 0 ? 'income' : 'expense'}}">{{item.amountDisplay}}</text>
+            <text class="trans-unit {{item.displayAmount >= 0 ? 'income' : 'expense'}}">元</text>
           </view>
-          <text class="trans-fee" wx:if="{{item.fee > 0}}">{{item.fee_label}}：{{item.feeDisplay}}元</text>
         </view>
       </view>
     </view>

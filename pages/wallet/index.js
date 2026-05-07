@@ -7,6 +7,19 @@ function formatMoneyText(value) {
   return Number.isFinite(num) ? num.toFixed(2) : '0.00';
 }
 
+function buildRemarkText(tx) {
+  const fee = Number(tx.fee || 0);
+  const remark = Number(tx.displayAmount || tx.amount || 0) >= 0
+    ? '账款已添加到可提现金额'
+    : '账款已从待解冻金额扣除';
+
+  if (fee > 0) {
+    return `${remark}，手续费 ${formatMoneyText(fee)} 元`;
+  }
+
+  return remark;
+}
+
 Page({
   data: {
     balance: 0,
@@ -35,10 +48,10 @@ Page({
 
   getFilteredTransactions(tab, transactions) {
     if (tab === 'income') {
-      return transactions.filter((t) => t.amount > 0);
+      return transactions.filter((t) => t.displayAmount > 0);
     }
     if (tab === 'expense') {
-      return transactions.filter((t) => t.amount < 0);
+      return transactions.filter((t) => t.displayAmount < 0);
     }
     return transactions;
   },
@@ -70,19 +83,18 @@ Page({
     try {
       const [walletRes, transRes] = await Promise.all([
         Api.getWallet(),
-        Api.getTransactions()
+        Api.getTransactions({ scope: 'all', page: 1, limit: 100 })
       ]);
 
       const wallet = walletRes.data || {};
       const transData = transRes.data || {};
       const transactions = (transData.data || []).map(t => ({
         ...t,
-        amount: Number(t.amount || 0),
+        displayAmount: Number(t.amount || 0),
         type_text: t.type_str || '其他',
-        fee_label: t.fee_label || `${t.type_str || '其他'}手续费`,
         amountDisplay: formatMoneyText(Math.abs(Number(t.amount || 0))),
         fee: Number(t.fee || 0),
-        feeDisplay: formatMoneyText(Number(t.fee || 0)),
+        remarkText: buildRemarkText(t),
         createdAtText: formatDateTime(t.created_at || t.createdAt || '')
       }));
 
