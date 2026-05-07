@@ -43,7 +43,10 @@
               <text class="step-title">{{item.appeal.title}}</text>
               <text class="step-label">{{item.appeal.label}}</text>
             </view>
-            <text class="step-desc">{{item.appeal.detail}}</text>
+            <view class="appeal-inline">
+              <text class="appeal-inline-name">{{item.appeal.creatorText}}</text>
+              <text class="appeal-inline-time">{{item.appeal.timeLine}}</text>
+            </view>
             <text class="step-time">{{item.appeal.reason || '还是不服'}}</text>
           </view>
         </view>

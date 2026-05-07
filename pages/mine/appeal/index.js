@@ -219,9 +219,13 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
 
   const appealReason = appeal ? pick(appeal.reason, '') : '';
   const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
+  const appealCreatorText = creatorName ? `创作者：${creatorName}` : '创作者';
+  const appealTimeLine = appeal
+    ? `${appealTimeText || '时间待更新'}·已提交申诉说明`
+    : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
   const appealLabel = appeal ? '已申诉' : (hasReport ? '待申诉' : '待处理');
   const appealDetail = appeal
-    ? (appealReason || '还是不服')
+    ? appealCreatorText
     : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
 
   const appealDecisionText = appeal ? pick(appeal.decisionText, '') : '';
@@ -303,6 +307,8 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       label: appealLabel,
       reason: appealReason || (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')),
       detail: appealDetail,
+      creatorText: appealCreatorText,
+      timeLine: appealTimeLine,
       timeText: appealTimeText || '时间待更新',
       stateClass: appeal ? 'processing' : (hasReport ? 'waiting' : 'muted'),
       appealId: appeal ? String(appeal.id || '') : '',
