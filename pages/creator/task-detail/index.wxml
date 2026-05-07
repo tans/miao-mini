@@ -56,8 +56,7 @@
           <view class="merchant-detail">
             <view class="merchant-info-row">
               <text class="merchant-name">{{task.merchantName || ''}}</text>
-              <!-- wx:if="{{task.isBrandEnterprise}}" -->
-              <view class="badge badge-brand" >
+              <view class="badge badge-brand" wx:if="{{task.business_verified}}">
                 <image src="../../../images/home/badge-brand.png" class="badge-icon" />
                 <text class="badge-text">认证企业</text>
               </view>

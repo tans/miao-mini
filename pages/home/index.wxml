@@ -104,7 +104,7 @@
             <image src="../../images/home/badge-reward.png" class="badge-icon" />
             <view>基础: ¥{{item.unit_price}}</view>
           </view>
-          <view class="badge badge-brand">
+          <view class="badge badge-brand" wx:if="{{item.business_verified}}">
             <image src="../../images/home/badge-brand.png" class="badge-icon" />
             <text>认证企业</text>
           </view>
