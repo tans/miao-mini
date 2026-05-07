@@ -107,6 +107,18 @@ function normalizeAppeal(appeal = {}) {
   };
 }
 
+function getAppealSettlementText(decisionText, reviewResult) {
+  if (decisionText === '通过申诉') {
+    return reviewResult === 1
+      ? '采纳作品 补放参与奖励+采纳奖励'
+      : '淘汰作品 补放参与奖励';
+  }
+  if (decisionText === '拒绝申诉') {
+    return '拒绝申诉 不变更原诉';
+  }
+  return '';
+}
+
 function normalizeClaim(claim = {}) {
   const materials = Array.isArray(claim.materials) ? claim.materials.map(normalizeWorkflowMaterial) : [];
   const reviewResult = toNumber(pick(claim.review_result, claim.reviewResult, 0));
@@ -256,6 +268,9 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const platformOutcomeText = appealResolved
     ? (appealDecisionText || (appealAccepted ? '通过申诉' : '拒绝申诉'))
     : '';
+  const platformSettlementText = appealResolved
+    ? getAppealSettlementText(platformOutcomeText, reviewResult)
+    : '';
   const platformLabel = appeal
     ? (appealResolved ? platformOutcomeText : '处理中')
     : '待处理';
@@ -271,7 +286,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     ? appealReplyText
     : '';
   const platformReplyLine = appealResolved
-    ? `回复说明：${platformReplyText || platformOutcomeText || '通过申诉'}`
+    ? `回复说明：${[platformSettlementText, platformReplyText || platformOutcomeText || '通过申诉'].filter(Boolean).join('；')}`
     : platformReason;
 
   const reportLabel = hasReport ? '已举报' : '待处理';
