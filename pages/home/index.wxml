@@ -158,7 +158,7 @@
   </view>
 
   <!-- 加载更多 -->
-  <view wx:if="{{hasMore && activeIndustry === '' && displayTasks.length > 0}}" class="load-more">
+  <view wx:if="{{hasMore && displayTasks.length > 0}}" class="load-more">
     <button class="weui-btn weui-btn_default" bindtap="loadMore" disabled="{{loading}}">
       {{loading ? '加载中...' : '加载更多'}}
     </button>

@@ -145,6 +145,10 @@ Page({
     }, 16);
   },
 
+  onReachBottom() {
+    this.loadMore();
+  },
+
   _syncNavWithScroll(scrollTop) {
     const pinned = scrollTop >= 1;
     const query = wx.createSelectorQuery().in(this);
@@ -287,7 +291,7 @@ Page({
   setSort(e) {
     const sort = e.currentTarget.dataset.sort;
     if (sort === this.data.sort) return;
-    this.setData({ sort, page: 1, tasks: [], displayTasks: [], activeIndustry: '全部' });
+    this.setData({ sort, page: 1, tasks: [], displayTasks: [], activeIndustry: '全部', hasMore: true });
     this.loadTasks();
   },
 
