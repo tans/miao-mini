@@ -649,8 +649,12 @@ const Api = {
     return this.request('POST', '/creator/withdraw', { amount });
   },
 
-  getTransactions() {
-    return this.request('GET', '/creator/transactions');
+  getTransactions(params = {}) {
+    const q = [];
+    if (params.page) q.push(`page=${params.page}`);
+    if (params.limit) q.push(`limit=${params.limit}`);
+    const qs = q.length ? '?' + q.join('&') : '';
+    return this.request('GET', '/creator/transactions' + qs);
   },
 
   // Stats

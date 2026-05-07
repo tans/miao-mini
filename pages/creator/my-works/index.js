@@ -15,6 +15,23 @@ function formatMoney(value) {
   return Number.isFinite(num) ? num.toFixed(2) : '0.00';
 }
 
+function toFiniteNumber(value) {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : 0;
+}
+
+function getClaimReward(claim = {}) {
+  const reward = toFiniteNumber(pick(
+    claim.creator_reward,
+    claim.creatorReward,
+    claim.reward,
+    claim.income,
+    claim.settlement_amount,
+    claim.settlementAmount
+  ));
+  return reward > 0 ? reward : 0;
+}
+
 function getVideoMaterial(materials = []) {
   return materials.find((item) => item.file_type === 'video') || null;
 }
@@ -28,6 +45,47 @@ function pick(...values) {
     if (value !== undefined && value !== null && value !== '') return value;
   }
   return '';
+}
+
+function buildClaimIncomeMap(transactions = []) {
+  return transactions.reduce((map, tx) => {
+    const relatedId = pick(tx.related_id, tx.relatedId, tx.claim_id, tx.claimId);
+    if (!relatedId) return map;
+
+    const typeCode = String(pick(tx.type_code, tx.typeCode, '')).toLowerCase();
+    const type = Number(pick(tx.type, 0)) || 0;
+    const typeText = String(pick(tx.type_str, tx.typeText, tx.remark, ''));
+    const isClaimIncome =
+      type === 5 ||
+      type === 9 ||
+      type === 10 ||
+      typeCode === 'task_reward' ||
+      typeCode === 'participation_payment' ||
+      typeCode === 'award_payment' ||
+      typeText.indexOf('参与') >= 0 ||
+      typeText.indexOf('采纳') >= 0 ||
+      typeText.indexOf('基础奖励') >= 0 ||
+      typeText.indexOf('自动通过') >= 0 ||
+      typeText.indexOf('任务通过结算') >= 0;
+
+    const amount = toFiniteNumber(pick(tx.amount, tx.raw_amount, 0));
+    if (!isClaimIncome || amount <= 0) return map;
+
+    const key = String(relatedId);
+    map[key] = (map[key] || 0) + amount;
+    return map;
+  }, {});
+}
+
+function getSettledIncome(claim = {}, claimIncomeMap = {}) {
+  const claimId = pick(claim.id, claim.claim_id, claim.claimId);
+  const transactionIncome = claimId ? toFiniteNumber(claimIncomeMap[String(claimId)]) : 0;
+  if (transactionIncome > 0) return transactionIncome;
+
+  const claimReward = getClaimReward(claim);
+  if (claimReward > 0) return claimReward;
+
+  return 0;
 }
 
 Page({
@@ -68,12 +126,22 @@ Page({
     wx.showLoading({ title: '加载中...' });
 
     try {
-      const res = await Api.getMyClaims({ page: 1 });
-      const claims = res.data || [];
+      const [claimsRes, transRes] = await Promise.all([
+        Api.getMyClaims({ page: 1 }),
+        Api.getTransactions({ page: 1, limit: 100 }).catch(() => ({ data: { data: [] } }))
+      ]);
+      const transData = transRes.data || {};
+      const transactions = Array.isArray(transData.data)
+        ? transData.data
+        : Array.isArray(transData.transactions)
+          ? transData.transactions
+          : [];
+      const claimIncomeMap = buildClaimIncomeMap(transactions);
+      const claims = claimsRes.data || [];
       // 筛选已提交的作品，保留淘汰/举报这类已处理记录
       const submittedWorks = claims
         .filter(c => Number(c.status) >= 2 || Number(c.review_result || c.reviewResult || 0) > 0)
-        .map(c => this.formatWork(c));
+        .map(c => this.formatWork(c, claimIncomeMap));
       this.setData({ works: submittedWorks, loading: false });
       this.applyFilter(this.data.currentFilter);
     } catch (err) {
@@ -84,9 +152,10 @@ Page({
     }
   },
 
-  formatWork(claim) {
+  formatWork(claim, claimIncomeMap = {}) {
     const status = Number(claim.status);
     const reviewResult = Number(claim.review_result || claim.reviewResult || 0);
+    const settledIncome = getSettledIncome(claim, claimIncomeMap);
     const materials = Array.isArray(claim.materials) ? claim.materials : [];
     const imageMaterials = materials.filter(m => m.file_type === 'image');
     const videoMaterials = materials.filter(m => m.file_type === 'video');
@@ -128,7 +197,7 @@ Page({
 
     if (status === 1 && reviewResult === 2) {
       incomeLabel = '收入(参与金)';
-      incomeText = '¥0';
+      incomeText = `¥${formatMoney(settledIncome || claim.unit_price || 0)}`;
       rejectReason = claim.review_comment || claim.reviewComment || '';
     } else if (status === 1 && reviewResult === 3) {
       incomeLabel = '被举报作品无奖金';
@@ -136,12 +205,16 @@ Page({
       reportReason = claim.review_comment || claim.reviewComment || '';
     } else if (status === 2) {
       // 待验收/审核中
-      incomeLabel = '收入(审核超时自动补发参与金)';
-      incomeText = '¥5';
+      incomeLabel = '收入(参与金)';
+      incomeText = `¥${formatMoney(settledIncome)}`;
     } else if (status === 3) {
       // 已采纳
       incomeLabel = '收入(采纳金+参与金)';
-      incomeText = `¥${formatMoney(claim.creator_reward || 0)}`;
+      incomeText = `¥${formatMoney(settledIncome)}`;
+    } else if (status === 4) {
+      // 审核超时自动发参与奖
+      incomeLabel = '收入(审核超时自动补发参与金)';
+      incomeText = `¥${formatMoney(settledIncome || claim.unit_price || 0)}`;
     } else if (status === 5) {
       // 已超时
       incomeLabel = '收入(已超时)';
