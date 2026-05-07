@@ -36,6 +36,15 @@ function splitCSV(value) {
     .filter(Boolean);
 }
 
+function normalizeAppealReason(text) {
+  const value = String(text || '').trim();
+  if (!value) return '';
+  return value
+    .replace(/^(作品申诉|创作者申诉|申诉)[:：\s]*/i, '')
+    .replace(/[。\.]+$/g, '')
+    .trim();
+}
+
 function normalizeWorkflowMaterial(material = {}) {
   const fileType = String(pick(material.file_type, material.fileType, '')).toLowerCase();
   const filePath = pick(
@@ -76,13 +85,17 @@ function normalizeAppeal(appeal = {}) {
   const handleAt = pick(appeal.handle_at, appeal.handleAt, '');
   const resolved = status === 2;
   const evidence = splitCSV(pick(appeal.evidence, ''));
+  const rawResult = pick(appeal.result, '');
 
   return {
     id: String(pick(appeal.id, '')),
     claimId: String(pick(appeal.claim_id, appeal.claimId, appeal.target_id, appeal.targetId, '')),
     taskId: String(pick(appeal.task_id, appeal.taskId, '')),
-    reason: pick(appeal.reason, ''),
-    result: pick(appeal.result, resolved ? '已处理' : '平台处理中'),
+    reason: normalizeAppealReason(pick(appeal.reason, '')),
+    result: rawResult,
+    decisionText: pick(appeal.decision_text, appeal.decisionText, ''),
+    taskTitle: pick(appeal.task_title, appeal.taskTitle, ''),
+    merchantResult: pick(appeal.merchant_result, appeal.merchantResult, ''),
     status,
     statusText: pick(appeal.status_str, resolved ? '已处理' : '待处理'),
     statusClass: resolved ? 'resolved' : 'processing',
@@ -164,11 +177,12 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const claimId = String(pick(claim.id, claim.claim_id, ''));
   const taskId = String(pick(claim.task_id, claim.taskId, task.id, task.task_id, ''));
   const reviewResult = toNumber(pick(claim.review_result, claim.reviewResult, 0));
+  const claimStatus = toNumber(pick(claim.status, 0));
   const claimCreatorId = String(pick(claim.creator_id, claim.creatorId, ''));
   const taskBusinessId = String(pick(task.business_id, task.businessId, claim.business_id, claim.businessId, ''));
   const appealStatus = appeal ? toNumber(appeal.status) : 0;
   const appealResolved = appealStatus === 2;
-  const hasReport = reviewResult === 3;
+  const hasReport = reviewResult === 3 || !!appeal;
   const isBusinessTask = !!currentUserId && !!taskBusinessId && String(taskBusinessId) === String(currentUserId);
   const canAppeal = !!currentUserId
     && !!claimCreatorId
@@ -176,60 +190,83 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     && reviewResult === 3
     && !appeal;
 
-  const taskTitle = pick(task.title, task.task_title, claim.task_title, claim.taskTitle, `任务 #${taskId || claimId || '-'}`);
+  const taskTitle = pick(task.title, task.task_title, claim.task_title, claim.taskTitle, appeal && (appeal.taskTitle || appeal.task_title), `任务 #${taskId || claimId || '-'}`);
   const taskOwnerName = pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '');
   const creatorName = pick(claim.creator_name, claim.creatorName, '');
+  const creatorAvatar = Api.getAvatarDisplayUrl(
+    pick(claim.creator_avatar, claim.creatorAvatar, ''),
+    pick(claimCreatorId, claim.creator_id, claim.creatorId, claimId)
+  );
   const taskAvatar = Api.getAvatarDisplayUrl(
     pick(task.business_avatar, task.businessAvatar, task.merchantAvatar, claim.business_avatar, claim.businessAvatar, ''),
     pick(taskBusinessId, task.merchant_id, task.merchantId, taskId)
   );
 
   const reportReason = reviewResult === 3
-    ? pick(claim.review_comment, claim.reviewComment, DEFAULT_REPORT_REASON)
-    : pick(claim.review_comment, claim.reviewComment, '');
-  const reportTimeText = formatDateTime(pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, ''));
+    ? pick(claim.review_comment, claim.reviewComment, appeal && appeal.merchantResult, DEFAULT_REPORT_REASON)
+    : pick(claim.review_comment, claim.reviewComment, appeal && appeal.merchantResult, '');
+  const reportOwnerName = taskOwnerName || '商家';
+  const taskTitleText = `任务《${taskTitle || '未命名'}》`;
+  const reportTimeText = formatDateTime(pick(
+    claim.review_at,
+    claim.reviewAt,
+    claim.updated_at,
+    claim.updatedAt,
+    claim.created_at,
+    claim.createdAt,
+    ''
+  ));
 
   const appealReason = appeal ? pick(appeal.reason, '') : '';
   const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
-  const appealLabel = appeal
-    ? (appealResolved ? '已申诉' : '待处理')
-    : (hasReport ? '待申诉' : '待处理');
+  const appealLabel = appeal ? '已申诉' : (hasReport ? '待申诉' : '待处理');
   const appealDetail = appeal
-    ? (appeal.evidenceCount > 0 ? `证据 ${appeal.evidenceCount} 项` : '已提交申诉说明')
+    ? (appealReason || '还是不服')
     : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
 
-  const platformResult = appeal
-    ? pick(appeal.result, appeal.statusText, appealResolved ? '已处理' : '平台处理中')
-    : (hasReport ? '等待申诉后处理' : '等待处理结果');
-  const platformLabel = appeal ? (appealResolved ? '已处理' : '平台处理中') : '待处理';
-  const platformSummary = appeal
-    ? (appealResolved ? '平台已经给出处理结果' : '平台正在审核申诉')
+  const appealDecisionText = appeal ? pick(appeal.decisionText, '') : '';
+  const appealReplyText = appeal ? pick(appeal.result, appealDecisionText, '') : '';
+  const appealAccepted = appealDecisionText === '通过申诉' || (appealResolved && claimStatus === 2);
+  const platformOutcomeText = appealResolved
+    ? (appealDecisionText || (appealAccepted ? '通过申诉' : '拒绝申诉'))
+    : '';
+  const platformLabel = appeal
+    ? (appealResolved ? platformOutcomeText : '处理中')
+    : '待处理';
+  const platformReason = appeal
+    ? (appealResolved ? (platformOutcomeText || '等待平台处理') : '等待平台处理')
     : (hasReport ? '等待创作者申诉后进入平台处理' : '等待审核结果');
-  const platformDetail = appeal
-    ? (appealResolved ? '平台已经给出处理结果' : '平台正在审核申诉')
-    : (hasReport ? '等待创作者申诉后进入平台处理' : '等待审核结果');
+  const platformStateClass = appeal
+    ? (appealResolved
+      ? (appealAccepted ? 'resolved' : 'rejected')
+      : 'processing')
+    : (hasReport ? 'waiting' : 'muted');
+  const platformReplyText = appealResolved && appealReplyText && appealReplyText !== platformOutcomeText
+    ? appealReplyText
+    : '';
+  const platformReplyLine = appealResolved
+    ? `回复说明：${platformReplyText || platformOutcomeText || '通过申诉'}`
+    : platformReason;
 
-  const reportLabel = reviewResult === 3 ? '已举报' : '待处理';
+  const reportLabel = hasReport ? '已举报' : '待处理';
   const overallStateText = appeal
-    ? (appealResolved ? '已申诉' : '平台处理中')
+    ? (appealResolved ? platformOutcomeText : '申诉中')
     : (hasReport ? '待申诉' : '待处理');
   const overallStateClass = appeal
-    ? (appealResolved ? 'resolved' : 'processing')
+    ? (appealResolved ? (appealAccepted ? 'resolved' : 'rejected') : 'processing')
     : (hasReport ? 'waiting' : 'muted');
 
-  const taskSubtitleParts = [];
-  if (isBusinessTask && creatorName) {
-    taskSubtitleParts.push(`创作者 ${creatorName}`);
-  } else if (taskOwnerName) {
-    taskSubtitleParts.push(`商家 ${taskOwnerName}`);
-  }
-  if (reportTimeText) {
-    taskSubtitleParts.push(`举报 ${reportTimeText}`);
-  } else if (appealTimeText) {
-    taskSubtitleParts.push(`申诉 ${appealTimeText}`);
-  }
-
   const materials = Array.isArray(claim.materials) ? claim.materials.slice(0, 4).map(normalizeWorkflowMaterial) : [];
+  const workInfoParts = [];
+  if (claimId) {
+    workInfoParts.push(`作品ID ${claimId}`);
+  }
+  if (taskId) {
+    workInfoParts.push(`任务ID ${taskId}`);
+  }
+  if (creatorName) {
+    workInfoParts.push(`创作者：${creatorName}`);
+  }
   const sortAt = Math.max(
     toTimestamp(pick(appeal && (appeal.handleAt || appeal.handle_at), appeal && (appeal.createdAt || appeal.created_at), '')),
     toTimestamp(pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, ''))
@@ -242,12 +279,13 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     taskTitle,
     taskOwnerName,
     creatorName,
+    creatorAvatar,
     creatorId: claimCreatorId,
     taskBusinessId,
     isBusinessTask,
     taskAvatar,
-    taskHeaderTitle: taskOwnerName || taskTitle,
-    taskSubtitle: taskSubtitleParts.length ? taskSubtitleParts.join(' · ') : `任务ID ${taskId || '-'}`,
+    taskHeaderTitle: taskTitleText,
+    taskSubtitle: `商家：${reportOwnerName} · 举报时间 ${reportTimeText || '待更新'}`,
     taskTitleLabel: taskTitle,
     overallStateText,
     overallStateClass,
@@ -257,8 +295,8 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       label: reportLabel,
       reason: reportReason || DEFAULT_REPORT_REASON,
       timeText: reportTimeText || '时间待更新',
-      detail: reviewResult === 3 ? '商家已完成举报' : (reviewResult === 2 ? '商家已退回作品' : '等待商家处理'),
-      stateClass: reviewResult === 3 ? 'reported' : 'waiting',
+      detail: `商家：${reportOwnerName} · 举报时间 ${reportTimeText || '待更新'}`,
+      stateClass: hasReport ? 'reported' : 'waiting',
     },
     appeal: {
       title: '创作者申诉',
@@ -266,7 +304,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       reason: appealReason || (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')),
       detail: appealDetail,
       timeText: appealTimeText || '时间待更新',
-      stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : (hasReport ? 'waiting' : 'muted'),
+      stateClass: appeal ? 'processing' : (hasReport ? 'waiting' : 'muted'),
       appealId: appeal ? String(appeal.id || '') : '',
       evidenceCount: appeal ? appeal.evidenceCount : 0,
       evidenceList: appeal ? appeal.evidence : [],
@@ -274,17 +312,16 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     platform: {
       title: '平台处理',
       label: platformLabel,
-      summary: platformSummary,
-      result: platformResult,
-      resultLabel: '处理结果',
-      resultText: platformResult,
-      showResult: appealResolved && !!platformResult,
-      detail: platformDetail,
+      reason: platformReason,
+      detail: appealResolved ? (platformOutcomeText || '通过申诉') : '等待平台处理',
+      replyText: platformReplyText,
+      replyLine: platformReplyLine,
       timeText: appealTimeText || '时间待更新',
-      stateClass: appeal ? (appealResolved ? 'resolved' : 'processing') : (hasReport ? 'waiting' : 'muted'),
+      stateClass: platformStateClass,
     },
     materials,
     creatorMaterials: materials,
+    workInfoText: workInfoParts.join(' · '),
     canAppeal,
     sortAt,
   };

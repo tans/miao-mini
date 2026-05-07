@@ -14,7 +14,7 @@
         <view wx:else class="task-avatar task-avatar-fallback">任</view>
         <view class="workflow-head-body">
           <text class="task-title">{{item.taskHeaderTitle}}</text>
-          <text class="task-subtitle">{{item.taskTitleLabel}} · {{item.taskSubtitle}}</text>
+          <text class="task-subtitle">{{item.taskSubtitle}}</text>
         </view>
         <view class="workflow-state workflow-state-{{item.overallStateClass}}">
           <text>{{item.overallStateText}}</text>
@@ -24,13 +24,13 @@
       <view class="workflow-steps">
         <view class="workflow-step workflow-step-{{item.report.stateClass}}">
           <view class="step-dot"></view>
-          <view class="step-body">
+          <view class="step-body step-body-divider">
             <view class="step-row">
               <text class="step-title">{{item.report.title}}</text>
               <text class="step-label">{{item.report.label}}</text>
             </view>
             <text class="step-desc">{{item.report.reason}}</text>
-            <text class="step-time">{{item.report.timeText}}</text>
+            <text class="step-time">{{item.report.detail}}</text>
           </view>
         </view>
 
@@ -38,13 +38,13 @@
 
         <view class="workflow-step workflow-step-{{item.appeal.stateClass}}">
           <view class="step-dot"></view>
-          <view class="step-body">
+          <view class="step-body step-body-divider">
             <view class="step-row">
               <text class="step-title">{{item.appeal.title}}</text>
               <text class="step-label">{{item.appeal.label}}</text>
             </view>
-            <text class="step-desc">{{item.appeal.reason}}</text>
-            <text class="step-time">{{item.appeal.timeText}} · {{item.appeal.detail}}</text>
+            <text class="step-desc">{{item.appeal.detail}}</text>
+            <text class="step-time">{{item.appeal.reason || '还是不服'}}</text>
           </view>
         </view>
 
@@ -52,22 +52,22 @@
 
         <view class="workflow-step workflow-step-{{item.platform.stateClass}}">
           <view class="step-dot"></view>
-          <view class="step-body">
+          <view class="step-body step-body-divider">
             <view class="step-row">
               <text class="step-title">{{item.platform.title}}</text>
               <text class="step-label">{{item.platform.label}}</text>
             </view>
-            <text class="step-desc">{{item.platform.summary}}</text>
-            <text class="step-result" wx:if="{{item.platform.showResult}}">
-              {{item.platform.resultLabel}}：{{item.platform.resultText}}
-            </text>
-            <text class="step-time">{{item.platform.timeText}} · {{item.platform.detail}}</text>
+            <text class="step-desc">{{item.platform.detail}}</text>
+            <text class="step-time">{{item.platform.replyLine}}</text>
           </view>
         </view>
       </view>
 
       <view class="workflow-media" wx:if="{{item.creatorMaterials.length > 0}}">
         <view class="media-title">作品显示</view>
+        <view class="media-meta" wx:if="{{item.workInfoText}}">
+          <text>{{item.workInfoText}}</text>
+        </view>
         <scroll-view scroll-x class="media-scroll">
           <view class="media-item" wx:for="{{item.creatorMaterials}}" wx:key="file_path" data-claim-id="{{item.claimId}}" data-preview-type="{{media.isVideo ? 'video' : 'image'}}" data-preview-url="{{media.previewUrl}}" bindtap="previewMaterial" wx:for-item="media">
             <image wx:if="{{media.isImage}}" class="media-thumb" src="{{media.previewUrl}}" mode="aspectFill" />

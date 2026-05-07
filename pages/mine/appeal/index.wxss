@@ -131,6 +131,11 @@
   color: #278c54;
 }
 
+.workflow-state-rejected {
+  background: #fff1ef;
+  color: #d24b3d;
+}
+
 .workflow-state-waiting,
 .workflow-state-muted {
   background: #f3f4f6;
@@ -167,6 +172,11 @@
   box-shadow: 0 0 0 8rpx rgba(47, 111, 237, 0.16);
 }
 
+.workflow-step-processing .step-label {
+  background: #e8f0ff;
+  color: #245fd8;
+}
+
 .workflow-step-resolved .step-dot {
   background: #16a34a;
   box-shadow: 0 0 0 8rpx rgba(22, 163, 74, 0.16);
@@ -181,6 +191,11 @@
 .step-body {
   flex: 1;
   padding-bottom: 18rpx;
+}
+
+.step-body-divider {
+  padding-bottom: 22rpx;
+  border-bottom: 1rpx solid #eef0f4;
 }
 
 .step-row {
@@ -221,20 +236,22 @@
   color: #178044;
 }
 
+.workflow-step-rejected .step-dot {
+  background: #e35d4f;
+  box-shadow: 0 0 0 8rpx rgba(227, 93, 79, 0.16);
+}
+
+.workflow-step-rejected .step-label {
+  background: #ffe8e5;
+  color: #cf4a3d;
+}
+
 .step-desc {
   display: block;
   margin-top: 10rpx;
   font-size: 24rpx;
   line-height: 1.6;
   color: #3d4654;
-}
-
-.step-result {
-  display: block;
-  margin-top: 10rpx;
-  font-size: 24rpx;
-  line-height: 1.6;
-  color: #178044;
 }
 
 .step-time {
@@ -246,9 +263,14 @@
 
 .workflow-connector {
   width: 2rpx;
-  height: 18rpx;
+  height: 14rpx;
   margin-left: 8rpx;
   background: linear-gradient(180deg, rgba(208, 214, 222, 0.9), rgba(208, 214, 222, 0.18));
+}
+
+.workflow-step:last-child .step-body-divider {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
 .workflow-media {
@@ -261,6 +283,13 @@
   font-size: 22rpx;
   font-weight: 700;
   color: #8b93a1;
+}
+
+.media-meta {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: #6b7280;
 }
 
 .media-scroll {

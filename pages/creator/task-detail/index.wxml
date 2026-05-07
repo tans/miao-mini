@@ -219,52 +219,6 @@
         </view>
       </view>
 
-      <view class="merchant-card" wx:if="{{task.claimMaterials && task.claimMaterials.length > 0}}">
-        <view class="submission-header">
-          <view class="submission-header-main">
-            <text class="submission-title">我的投稿</text>
-            <text class="submission-time">{{task.claimSubmissionSummary || '投稿状态同步中'}}</text>
-          </view>
-          <view class="submission-status {{task.claim && task.claim.statusClass ? task.claim.statusClass : ''}}">
-            <text>{{task.claim && task.claim.statusText ? task.claim.statusText : '已提交'}}</text>
-          </view>
-        </view>
-
-        <view class="submission-material-list">
-          <view class="submission-material" wx:for="{{task.claimMaterials}}" wx:key="id">
-            <view class="submission-material-head">
-              <text class="submission-material-name">{{item.fileName || item.file_name || '投稿视频'}}</text>
-              <text class="submission-material-status status-{{item.processStatusClass}}">{{item.processStatusText}}</text>
-            </view>
-            <video
-              wx:if="{{item.isVideo && item.previewUrl}}"
-              class="submission-video"
-              src="{{item.previewUrl}}"
-              poster="{{item.thumbnailPath}}"
-              controls
-              show-background-playback-button="{{false}}"
-              enable-picture-in-picture="{{false}}"
-              bindtap="previewMaterial"
-              data-url="{{item.previewUrl}}"
-              data-file-type="{{item.fileType}}"
-            />
-            <image
-              wx:elif="{{item.isImage && item.previewUrl}}"
-              class="submission-image"
-              src="{{item.previewUrl}}"
-              mode="aspectFill"
-              bindtap="previewMaterial"
-              data-url="{{item.previewUrl}}"
-              data-file-type="{{item.fileType}}"
-            />
-            <view wx:else class="submission-placeholder">
-              <text>素材暂不可预览</text>
-            </view>
-            <text wx:if="{{item.processError}}" class="submission-error">{{item.processError}}</text>
-          </view>
-        </view>
-      </view>
-        
       <!-- 安全提醒 -->
       <view class="merchant-card">
         <view class="safety-header">
