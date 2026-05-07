@@ -59,6 +59,9 @@ module.exports = {
           </view>
         </view>
       </view>
+      <view class="flow-footer">
+        素材和作品涉及AI生成
+      </view>
     </view>
 
     <!-- 基础信息 -->
