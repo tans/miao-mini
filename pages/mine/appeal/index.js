@@ -3,7 +3,7 @@ const { formatDateTime } = require('../../../utils/util.js');
 
 const app = getApp();
 
-const DEFAULT_REPORT_REASON = '涉嫌敏感词、低俗内容、侵权内容、政治敏感、广告夸大。';
+const DEFAULT_REPORT_REASON = '违规';
 const MAX_UPLOAD_IMAGES = 3;
 
 function pick() {
@@ -216,14 +216,16 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     claim.createdAt,
     ''
   ));
+  const reportMetaText = `商家:${reportOwnerName} 举报时间:${reportTimeText || '时间待更新'}`;
 
   const appealReason = appeal ? pick(appeal.reason, '') : '';
   const appealReasonText = appealReason || '';
   const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
-  const appealCreatorText = creatorName ? `创作者：${creatorName}` : '创作者';
+  const appealCreatorText = creatorName ? `创作者:${creatorName}` : '创作者';
   const appealTimeLine = appeal
-    ? `${appealTimeText || '时间待更新'}·已提交申诉说明`
+    ? `提交申诉:${appealTimeText || '时间待更新'}`
     : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
+  const appealMetaText = `${appealCreatorText} ${appealTimeLine}`.trim();
   const appealLabel = appeal ? '已申诉' : (hasReport ? '待申诉' : '待处理');
   const appealDetail = appeal
     ? appealCreatorText
@@ -263,9 +265,9 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
 
   const materials = Array.isArray(claim.materials) ? claim.materials.slice(0, 4).map(normalizeWorkflowMaterial) : [];
   const headerInfoParts = [];
-  if (claimId) headerInfoParts.push(`作品ID ${claimId}`);
-  if (taskId) headerInfoParts.push(`任务ID ${taskId}`);
-  if (creatorName) headerInfoParts.push(`创作者：${creatorName}`);
+  if (claimId) headerInfoParts.push(`作品ID:${claimId}`);
+  if (taskId) headerInfoParts.push(`任务ID:${taskId}`);
+  if (appeal && appeal.id) headerInfoParts.push(`申诉ID:${appeal.id}`);
   const sortAt = Math.max(
     toTimestamp(pick(appeal && (appeal.handleAt || appeal.handle_at), appeal && (appeal.createdAt || appeal.created_at), '')),
     toTimestamp(pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, ''))
@@ -284,7 +286,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     isBusinessTask,
     taskAvatar,
     taskHeaderTitle: taskTitleText,
-    taskSubtitle: headerInfoParts.length ? headerInfoParts.join(' · ') : `商家：${reportOwnerName} · 举报时间 ${reportTimeText || '待更新'}`,
+    taskSubtitle: headerInfoParts.length ? headerInfoParts.join('  ') : `商家:${reportOwnerName} 举报时间:${reportTimeText || '待更新'}`,
     taskTitleLabel: taskTitle,
     overallStateText,
     overallStateClass,
@@ -294,7 +296,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       label: reportLabel,
       reason: reportReason || DEFAULT_REPORT_REASON,
       timeText: reportTimeText || '时间待更新',
-      detail: `商家：${reportOwnerName} · 举报时间 ${reportTimeText || '待更新'}`,
+      detail: reportMetaText,
       stateClass: hasReport ? 'reported' : 'waiting',
     },
     appeal: {
@@ -302,6 +304,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       label: appealLabel,
       reason: appeal ? appealReasonText : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')),
       detail: appealDetail,
+      metaText: appealMetaText,
       creatorText: appealCreatorText,
       timeLine: appealTimeLine,
       timeText: appealTimeText || '时间待更新',

@@ -44,10 +44,7 @@
               <text class="step-label">{{item.appeal.label}}</text>
             </view>
             <text wx:if="{{item.appeal.reason}}" class="step-desc">{{item.appeal.reason}}</text>
-            <view class="appeal-meta">
-              <text class="appeal-meta-name">{{item.appeal.creatorText}}</text>
-              <text class="appeal-meta-time">{{item.appeal.timeLine}}</text>
-            </view>
+            <text class="appeal-meta">{{item.appeal.metaText}}</text>
           </view>
         </view>
 
