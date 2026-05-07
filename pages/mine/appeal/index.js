@@ -159,6 +159,14 @@ function getCurrentUserId() {
   return String(pick(app.globalData && app.globalData.user && app.globalData.user.id, ''));
 }
 
+function getCurrentUserName() {
+  return String(pick(
+    app.globalData && app.globalData.user && app.globalData.user.nickname,
+    app.globalData && app.globalData.user && app.globalData.user.username,
+    ''
+  ));
+}
+
 function getPageMeta(hasTaskContext) {
   return {
     pageTitle: '申诉记录',
@@ -192,7 +200,13 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
 
   const taskTitle = pick(task.title, task.task_title, claim.task_title, claim.taskTitle, appeal && (appeal.taskTitle || appeal.task_title), `任务 #${taskId || claimId || '-'}`);
   const taskOwnerName = pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '');
-  const creatorName = pick(claim.creator_name, claim.creatorName, '');
+  const currentUserName = getCurrentUserName();
+  const creatorName = pick(
+    claim.creator_name,
+    claim.creatorName,
+    String(claimCreatorId) === String(currentUserId) ? currentUserName : '',
+    ''
+  );
   const creatorAvatar = Api.getAvatarDisplayUrl(
     pick(claim.creator_avatar, claim.creatorAvatar, ''),
     pick(claimCreatorId, claim.creator_id, claim.creatorId, claimId)

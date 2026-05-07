@@ -58,7 +58,7 @@
             <text class="trans-value {{item.amount >= 0 ? 'income' : 'expense'}}">{{item.amountDisplay}}</text>
             <text class="trans-unit {{item.amount >= 0 ? 'income' : 'expense'}}">元</text>
           </view>
-          <text class="trans-fee" wx:if="{{item.fee > 0}}">{{item.type_text}}手续费：{{item.feeDisplay}}元</text>
+          <text class="trans-fee" wx:if="{{item.fee > 0}}">{{item.fee_label}}：{{item.feeDisplay}}元</text>
         </view>
       </view>
     </view>
@@ -114,8 +114,9 @@
     <view class="modal-content success-content">
       <text class="success-title">提现成功</text>
       <image class="success-icon" src="./images/success.png" />
-      <!-- <image class="success-icon" src="/images/images/error.png" /> -->
-      <text class="success-desc">提现后，平台会在48小时内进行审核，自动发放至您的<text style="color:#EF8802">微信钱包</text>。</text>
+      <text class="success-desc">
+        本次提现¥{{withdrawResult.withdraw_amount || withdrawAmount}}，手续费¥{{withdrawResult.commission || '0.00'}}，实际到账¥{{withdrawResult.actual_amount || '0.00'}}。
+      </text>
       <view class="success-btn" bindtap="closeWithdrawSuccessModal">我知道了</view>
     </view>
   </view>

@@ -263,10 +263,9 @@
 
 .appeal-meta {
   display: block;
-  margin-top: 10rpx;
-  font-size: 24rpx;
-  line-height: 1.6;
-  color: #3d4654;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #8b93a1;
 }
 
 .workflow-connector {

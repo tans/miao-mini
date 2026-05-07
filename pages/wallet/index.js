@@ -25,6 +25,8 @@ Page({
     showRechargeSuccessModal: false,
     showWithdrawModal: false,
     showWithdrawSuccessModal: false,
+    withdrawSubmitting: false,
+    withdrawResult: null,
     
     // 输入金额
     rechargeAmount: '',
@@ -77,6 +79,7 @@ Page({
         ...t,
         amount: Number(t.amount || 0),
         type_text: t.type_str || '其他',
+        fee_label: t.fee_label || `${t.type_str || '其他'}手续费`,
         amountDisplay: formatMoneyText(Math.abs(Number(t.amount || 0))),
         fee: Number(t.fee || 0),
         feeDisplay: formatMoneyText(Number(t.fee || 0)),
@@ -149,7 +152,7 @@ Page({
   },
 
   goWithdraw() {
-    this.setData({ showWithdrawModal: true, withdrawAmount: '' });
+    this.setData({ showWithdrawModal: true, withdrawAmount: '', withdrawResult: null });
   },
 
   closeWithdrawModal() {
@@ -160,19 +163,36 @@ Page({
     this.setData({ withdrawAmount: e.detail.value });
   },
 
-  submitWithdraw() {
+  async submitWithdraw() {
+    if (this.data.withdrawSubmitting) return;
     const amount = this.data.withdrawAmount;
     if (!amount || parseFloat(amount) <= 0) {
       wx.showToast({ title: '请输入有效金额', icon: 'none' });
       return;
     }
-    this.setData({ 
-      showWithdrawModal: false, 
-      showWithdrawSuccessModal: true 
-    });
+
+    this.setData({ withdrawSubmitting: true });
+    try {
+      const res = await Api.withdraw(parseFloat(amount));
+      if (res.code === 0) {
+        this.setData({
+          showWithdrawModal: false,
+          showWithdrawSuccessModal: true,
+          withdrawResult: res.data || null,
+          withdrawAmount: ''
+        });
+        await this.loadWallet();
+      } else {
+        wx.showToast({ title: res.message || '提现失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.showToast({ title: err.message || '提现失败', icon: 'none' });
+    } finally {
+      this.setData({ withdrawSubmitting: false });
+    }
   },
 
   closeWithdrawSuccessModal() {
-    this.setData({ showWithdrawSuccessModal: false, withdrawAmount: '' });
+    this.setData({ showWithdrawSuccessModal: false, withdrawAmount: '', withdrawResult: null });
   }
 });

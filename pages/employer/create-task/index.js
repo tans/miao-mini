@@ -488,7 +488,7 @@ Page({
   },
 
   goRecharge() {
-    wx.navigateTo({ url: '/pages/employer/recharge/index' });
+    wx.navigateTo({ url: '/pages/wallet/index' });
   },
 
   goMerchantAgreement() {
