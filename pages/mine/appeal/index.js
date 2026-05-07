@@ -246,7 +246,12 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
 
   const appealDecisionText = appeal ? pick(appeal.decisionText, '') : '';
-  const appealReplyText = appeal ? pick(appeal.result, appealDecisionText, '') : '';
+  const platformReviewComment = appealResolved && (appealDecisionText === '通过申诉' || reviewResult !== 3)
+    ? pick(claim.review_comment, claim.reviewComment, '')
+    : '';
+  const appealReplyText = appeal
+    ? pick(platformReviewComment, appeal.result, appealDecisionText, '')
+    : '';
   const appealAccepted = appealDecisionText === '通过申诉' || (appealResolved && claimStatus === 2);
   const platformOutcomeText = appealResolved
     ? (appealDecisionText || (appealAccepted ? '通过申诉' : '拒绝申诉'))
