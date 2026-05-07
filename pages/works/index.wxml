@@ -101,4 +101,9 @@
     <mp-loading type="circle"></mp-loading>
     <text>加载中...</text>
   </view>
+
+  <view class="works-footer-note">
+    <text class="works-footer-note-text">作品涉及AI生成</text>
+    <text class="works-footer-note-hint">请按实际内容如实标注，便于审核识别</text>
+  </view>
 </view>

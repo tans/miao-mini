@@ -1510,6 +1510,30 @@ margin-bottom: 8rpx;
   color: #999;
 }
 
+.ai-disclosure-note {
+  margin-top: 8rpx;
+  padding: 20rpx 20rpx 18rpx;
+  border-radius: 16rpx;
+  background: #fff8ef;
+  border: 1rpx solid #ffd9ad;
+}
+
+.ai-disclosure-title {
+  display: block;
+  font-size: 26rpx;
+  line-height: 1.4;
+  font-weight: 700;
+  color: #bf6a00;
+}
+
+.ai-disclosure-text {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: #8b6a3d;
+}
+
 .modal-footer {
   padding: 24rpx 32rpx;
   padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
