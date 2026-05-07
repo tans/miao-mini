@@ -271,6 +271,12 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   if (creatorName) {
     workInfoParts.push(`创作者：${creatorName}`);
   }
+  const appealIdText = appeal ? String(appeal.id || '') : '';
+  const headerInfoParts = [];
+  if (claimId) headerInfoParts.push(`作品ID ${claimId}`);
+  if (taskId) headerInfoParts.push(`任务ID ${taskId}`);
+  if (appealIdText) headerInfoParts.push(`申诉ID ${appealIdText}`);
+  if (creatorName) headerInfoParts.push(`创作者：${creatorName}`);
   const sortAt = Math.max(
     toTimestamp(pick(appeal && (appeal.handleAt || appeal.handle_at), appeal && (appeal.createdAt || appeal.created_at), '')),
     toTimestamp(pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, ''))
@@ -289,7 +295,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     isBusinessTask,
     taskAvatar,
     taskHeaderTitle: taskTitleText,
-    taskSubtitle: `商家：${reportOwnerName} · 举报时间 ${reportTimeText || '待更新'}`,
+    taskSubtitle: headerInfoParts.length ? headerInfoParts.join(' · ') : `商家：${reportOwnerName} · 举报时间 ${reportTimeText || '待更新'}`,
     taskTitleLabel: taskTitle,
     overallStateText,
     overallStateClass,
@@ -327,7 +333,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     },
     materials,
     creatorMaterials: materials,
-    workInfoText: workInfoParts.join(' · '),
+    workInfoText: [workInfoParts.join(' · '), appealIdText ? `申诉ID ${appealIdText}` : ''].filter(Boolean).join(' · '),
     canAppeal,
     sortAt,
   };
