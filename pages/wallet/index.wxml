@@ -35,6 +35,7 @@
       <view class="tab-item {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部</view>
       <view class="tab-item {{currentTab === 'income' ? 'active' : ''}}" data-tab="income" bindtap="switchTab">收入</view>
       <view class="tab-item {{currentTab === 'expense' ? 'active' : ''}}" data-tab="expense" bindtap="switchTab">支出</view>
+      <view class="tab-item {{currentTab === 'freeze' ? 'active' : ''}}" data-tab="freeze" bindtap="switchTab">冻结解冻</view>
     </view>
   </view>
 

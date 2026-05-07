@@ -197,16 +197,20 @@
 
 .tab-group {
   display: flex;
-  gap: 48rpx;
+  width: 100%;
   padding: 40rpx 0 0 0;
+  flex-wrap: nowrap;
 }
 
 .tab-item {
   position: relative;
+  flex: 1 1 0;
   font-size: 28rpx;
   color: #999;
   font-weight: 500;
   padding-bottom: 24rpx;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .tab-item.active {

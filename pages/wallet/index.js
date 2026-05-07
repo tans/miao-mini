@@ -7,17 +7,148 @@ function formatMoneyText(value) {
   return Number.isFinite(num) ? num.toFixed(2) : '0.00';
 }
 
-function buildRemarkText(tx) {
-  const fee = Number(tx.fee || 0);
-  const remark = Number(tx.displayAmount || tx.amount || 0) >= 0
-    ? '账款已添加到可提现金额'
-    : '账款已从待解冻金额扣除';
-
-  if (fee > 0) {
-    return `${remark}，手续费 ${formatMoneyText(fee)} 元`;
+function appendFeeRemarkText(baseRemark, fee, feeLabel) {
+  const feeAmount = Number(fee || 0);
+  if (feeAmount <= 0) {
+    return baseRemark;
   }
 
-  return remark;
+  const label = String(feeLabel || '').trim() || '手续费';
+  return `${baseRemark}，${label} ${formatMoneyText(feeAmount)} 元`;
+}
+
+function getTransactionTypeCode(tx) {
+  return String(tx.type_code || '').toLowerCase();
+}
+
+function getTransactionCategory(tx) {
+  const typeCode = getTransactionTypeCode(tx);
+  if (typeCode === 'freeze' || typeCode === 'unfreeze') {
+    return 'freeze';
+  }
+  if (typeCode === 'task_payment' || typeCode === 'consume' || typeCode === 'withdraw' || typeCode === 'freeze_fee') {
+    return 'expense';
+  }
+  if (typeCode === 'recharge'
+    || typeCode === 'task_reward'
+    || typeCode === 'participation_payment'
+    || typeCode === 'award_payment'
+    || typeCode === 'refund'
+    || typeCode === 'return_margin') {
+    return 'income';
+  }
+  const amount = Number(tx.displayAmount || tx.amount || 0);
+  if (amount < 0) {
+    return 'expense';
+  }
+  return 'income';
+}
+
+function buildRemarkText(category, typeCode) {
+  if (category === 'freeze') {
+    if (typeCode === 'task_payment') {
+      return '账款已从待解冻金额扣除';
+    }
+    if (typeCode === 'unfreeze') {
+      return '账款已从待解冻金额回到可提现金额';
+    }
+    return '账款已从可提现金额转入待解冻金额';
+  }
+
+  if (category === 'expense') {
+    if (typeCode === 'task_payment') {
+      return '账款已从待解冻金额扣除';
+    }
+    if (typeCode === 'freeze_fee') {
+      return '账款已从可提现金额扣除';
+    }
+    if (typeCode === 'withdraw') {
+      return '账款已从可提现金额扣除';
+    }
+    return '账款已扣除';
+  }
+
+  return '账款已添加到可提现金额';
+}
+
+function buildTransactionViews(tx) {
+  const typeCode = getTransactionTypeCode(tx);
+  const category = getTransactionCategory(tx);
+  const createdAtText = formatDateTime(tx.created_at || tx.createdAt || '');
+  const fee = Number(tx.fee || 0);
+  const amount = Number(tx.amount || 0);
+  const feeLabel = String(tx.fee_label || '').trim() || '手续费';
+
+  if (typeCode === 'freeze') {
+    const principalAmount = Math.max(0, Math.abs(amount) - fee);
+    const views = [{
+      id: `${tx.id}-freeze`,
+      sourceId: tx.id,
+      category: 'freeze',
+      type_code: typeCode,
+      type_text: '冻结',
+      displayAmount: -principalAmount,
+      amountDisplay: formatMoneyText(principalAmount),
+      remarkText: buildRemarkText('freeze', typeCode),
+      createdAtText,
+    }];
+
+    if (fee > 0) {
+      views.push({
+        id: `${tx.id}-freeze-fee`,
+        sourceId: tx.id,
+        category: 'expense',
+        type_code: 'freeze_fee',
+        type_text: feeLabel,
+        displayAmount: -fee,
+        amountDisplay: formatMoneyText(fee),
+        remarkText: feeLabel,
+        createdAtText,
+      });
+    }
+
+    return views;
+  }
+
+  if (typeCode === 'task_payment') {
+    return [{
+      id: String(tx.id),
+      sourceId: tx.id,
+      category: 'expense',
+      type_code: typeCode,
+      type_text: tx.type_str || '奖励支出',
+      displayAmount: amount,
+      amountDisplay: formatMoneyText(Math.abs(amount)),
+      remarkText: buildRemarkText('expense', typeCode),
+      createdAtText,
+    }];
+  }
+
+  if (typeCode === 'unfreeze') {
+    return [{
+      id: `${tx.id}-unfreeze`,
+      sourceId: tx.id,
+      category: 'freeze',
+      type_code: typeCode,
+      type_text: '解冻',
+      displayAmount: amount,
+      amountDisplay: formatMoneyText(Math.abs(amount)),
+      remarkText: buildRemarkText('freeze', typeCode),
+      createdAtText,
+    }];
+  }
+
+  return [{
+    id: String(tx.id),
+    sourceId: tx.id,
+    category,
+    type_code: typeCode,
+    type_text: tx.type_str || '其他',
+    displayAmount: amount,
+    amountDisplay: formatMoneyText(Math.abs(amount)),
+    remarkText: appendFeeRemarkText(buildRemarkText(category, typeCode), fee, feeLabel),
+    createdAtText,
+  }];
 }
 
 Page({
@@ -48,10 +179,13 @@ Page({
 
   getFilteredTransactions(tab, transactions) {
     if (tab === 'income') {
-      return transactions.filter((t) => t.displayAmount > 0);
+      return transactions.filter((t) => t.category === 'income');
     }
     if (tab === 'expense') {
-      return transactions.filter((t) => t.displayAmount < 0);
+      return transactions.filter((t) => t.category === 'expense');
+    }
+    if (tab === 'freeze') {
+      return transactions.filter((t) => t.category === 'freeze');
     }
     return transactions;
   },
@@ -88,15 +222,7 @@ Page({
 
       const wallet = walletRes.data || {};
       const transData = transRes.data || {};
-      const transactions = (transData.data || []).map(t => ({
-        ...t,
-        displayAmount: Number(t.amount || 0),
-        type_text: t.type_str || '其他',
-        amountDisplay: formatMoneyText(Math.abs(Number(t.amount || 0))),
-        fee: Number(t.fee || 0),
-        remarkText: buildRemarkText(t),
-        createdAtText: formatDateTime(t.created_at || t.createdAt || '')
-      }));
+      const transactions = (transData.data || []).flatMap((t) => buildTransactionViews(t));
 
       const balance = Number(wallet.balance || 0);
       const frozenAmount = Number(wallet.frozen_amount || 0);
