@@ -372,6 +372,10 @@
           <text class="upload-text">点击选择视频</text>
           <text class="upload-hint">要求：{{task.videoAspect}} / {{task.videoResolution}} / {{task.videoDuration}}</text>
         </view>
+        <view class="ai-disclosure-note">
+          <text class="ai-disclosure-title">作品涉及AI生成</text>
+          <text class="ai-disclosure-text">如有使用AI参与创作，请按实际情况标注，便于审核识别。</text>
+        </view>
       </view>
       <view class="modal-footer">
         <button class="submit-btn {{submitting || !submitVideoUrl ? 'disabled' : ''}}" bindtap="onSubmitWork" disabled="{{submitting || !submitVideoUrl}}">

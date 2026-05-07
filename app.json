@@ -16,8 +16,6 @@
     "pages/wallet/index",
     "pages/wallet/withdraw/index",
     "pages/employer/recharge/index",
-    "pages/inspiration/index",
-    "pages/inspiration-detail/index",
     "pages/creator/task-detail/index",
     "pages/mine/profile/index",
     "pages/mine/help/index",

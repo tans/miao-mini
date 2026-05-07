@@ -348,6 +348,29 @@
   font-size: 14px;
 }
 
+.works-footer-note {
+  margin-top: 14px;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid #ececec;
+  background: linear-gradient(180deg, rgba(255, 244, 232, 0.96), rgba(255, 255, 255, 0.98));
+}
+
+.works-footer-note-text {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 700;
+  color: #bf6a00;
+}
+
+.works-footer-note-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #8b6a3d;
+}
+
 .cover-theme-0 {
   background: linear-gradient(145deg, #ff7a59, #ffb347);
 }

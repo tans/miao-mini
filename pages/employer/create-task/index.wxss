@@ -94,6 +94,15 @@
   margin-bottom: 34rpx;
 }
 
+.flow-footer {
+  text-align: center;
+  align-items: center;
+  padding: 8rpx 24rpx 32rpx; 
+  font-size: 28rpx;
+  font-weight: 900;
+  color: #ef8802;
+}
+
 .flow-step {
   display: flex;
   flex-direction: column;
