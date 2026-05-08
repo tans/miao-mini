@@ -1142,6 +1142,7 @@
 .creator-notice-title {
   display: block;
   font-size: 34rpx;
+  font-weight: 700;
   color: #333;
   margin-bottom: 48rpx;
   text-align: center;
@@ -1153,6 +1154,55 @@
   color: #333;
   line-height: 1.6;
   margin-top: 16rpx;
+}
+
+.adopt-confirm-desc-block {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.adopt-confirm-desc-amount {
+  color: #e6615e;
+  font-weight: 700;
+}
+
+.adopt-confirm-frozen-row {
+  display: flex;
+  align-items: center;
+  margin-top: 16rpx;
+}
+
+.adopt-confirm-frozen-icon {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12rpx;
+}
+
+.adopt-confirm-frozen-icon-image{
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.adopt-confirm-frozen-yen {
+  font-size: 20rpx;
+  color: #8c8c98;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.adopt-confirm-frozen-text {
+  font-size: 28rpx;
+  color: #878FA1;
+  line-height: 1.5;
+  flex: 1;
 }
 
 .creator-notice-footer {
@@ -1181,5 +1231,5 @@
 }
 
 .creator-notice-btn-confirm text {
-  color: #7f8eb2;
+  color: #576b95;
 }

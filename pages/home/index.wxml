@@ -171,4 +171,20 @@
       <text>发布任务</text>
     </view>
   </view>
+
+  <!-- 创作者社群弹窗：仅样式与结构，展示由 showCreatorCommunityModal 控制（默认 false） -->
+  <view class="creator-community-mask" wx:if="{{showCreatorCommunityModal}}">
+    <view class="creator-community-dialog">
+      <view class="creator-community-close" bindtap="closeCreatorCommunityModal">×</view>
+      <image
+        class="creator-community-bg"
+        src="../../images/home/alert-bg.png"
+        mode="widthFix"
+      />
+      <view class="creator-community-footer">
+        <view class="creator-community-btn">立即入群</view>
+        <text class="creator-community-hint">资源、灵感、人脉，助你创作更进一步！</text>
+      </view>
+    </view>
+  </view>
 </view>

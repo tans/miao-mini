@@ -384,7 +384,17 @@
     <view class="creator-notice-modal" catchtap="stopPropagation">
       <view class="creator-notice-body">
         <text class="creator-notice-title">确认采纳作品</text>
-        <text class="creator-notice-text">确认采纳作品即确认购买此作品，采纳后将自动给此作品的创作者发放采纳金与参与金。此作品的版权自动也归属于购买者。</text>
+        <text class="adopt-confirm-desc-block">
+          <text>确认采纳作品即购买此作品，采纳后将支付 </text>
+          <text class="adopt-confirm-desc-amount">20.00元</text>
+          <text>（采纳金+参与金）给创作者。此作品的版权自动也归属于购买者。</text>
+        </text>
+        <view class="adopt-confirm-frozen-row">
+          <view class="adopt-confirm-frozen-icon">
+            <image src="../../../images/icon/money.png" class="adopt-confirm-frozen-icon-image" />
+          </view>
+          <text class="adopt-confirm-frozen-text">活动剩余冻结资金：168.00 元</text>
+        </view>
       </view>
       <view class="creator-notice-footer">
         <view class="creator-notice-btn creator-notice-btn-cancel" bindtap="closeAdoptConfirmModal">

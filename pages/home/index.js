@@ -96,7 +96,9 @@ Page({
     loading: false,
     navPinned: false,
     navElevated: false,
-    navSlotPx: 64
+    navSlotPx: 64,
+    // 弹窗仅样式：需要预览时在开发者工具里 setData({ showCreatorCommunityModal: true })
+    showCreatorCommunityModal: false,
   },
 
   onLoad() {
@@ -336,5 +338,9 @@ Page({
 
   goMine() {
     wx.switchTab({ url: '/pages/mine/index' });
+  },
+
+  closeCreatorCommunityModal() {
+    this.setData({ showCreatorCommunityModal: false });
   },
 });

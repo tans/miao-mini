@@ -47,7 +47,7 @@
     </view>
 
     <view class="empty-state" wx:elif="{{loaded}}">
-      <view class="empty-illustration">消息</view>
+      <image src="../../images/home/empty.png" class="clock-icon" style="width:300rpx;height:300rpx;"/>
       <text class="empty-title">{{currentFilter === 'unread' ? '没有未读消息' : '暂时还没有消息'}}</text>
       <text class="empty-desc">{{currentFilter === 'unread' ? '新的任务进度会第一时间出现在这里' : '任务发布、报名、投稿和申诉动态会自动汇总'}}</text>
     </view>
