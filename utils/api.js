@@ -641,10 +641,6 @@ const Api = {
     return this.request('GET', '/creator/wallet');
   },
 
-  recharge(amount) {
-    return this.request('POST', '/business/recharge', { amount });
-  },
-
   withdraw(amount) {
     return this.request('POST', '/creator/withdraw', { amount });
   },

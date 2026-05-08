@@ -1,5 +1,6 @@
 // pages/employer/my-tasks/index.js
 const Api = require('../../../utils/api.js');
+const Subscribe = require('../../../utils/subscribe.js');
 const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
@@ -114,7 +115,8 @@ Page({
     userInfo: null,
     currentFilter: 'all',
     pendingReviewCount: 0,
-    loading: false
+    loading: false,
+    canSubscribeMessages: Subscribe.hasBusinessNotifyTemplates()
   },
 
   onLoad() {
@@ -235,6 +237,15 @@ Page({
 
   goWallet() {
     wx.navigateTo({ url: '/pages/wallet/index' });
+  },
+
+  async enableBusinessNotifications() {
+    const result = await Subscribe.requestBusinessNotifications();
+    if (result.accepted.length > 0) {
+      wx.showToast({ title: '已开启提醒', icon: 'success' });
+      return;
+    }
+    wx.showToast({ title: '未开启提醒', icon: 'none' });
   },
 
   formatDateTime(dateStr) {

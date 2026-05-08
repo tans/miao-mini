@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const Subscribe = require('../../../utils/subscribe.js');
 const { formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 const DEFAULT_DEADLINE_DAYS = 7;
@@ -622,9 +623,25 @@ Page({
         submitFeedback: (res && res.message) || '任务已提交审核',
         submitFeedbackType: 'success',
       });
+      const successMessage = (res && res.message) || '任务已提交审核';
+      if (Subscribe.hasBusinessNotifyTemplates()) {
+        wx.showModal({
+          title: '发布成功',
+          content: `${successMessage}。开启微信服务通知后，新投稿、审核和申诉动态可及时提醒你。`,
+          confirmText: '开启待审核提醒',
+          cancelText: '暂不开启',
+          success: async (modalRes) => {
+            if (modalRes.confirm) {
+              await Subscribe.requestBusinessNotifications();
+            }
+            wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
+          },
+        });
+        return;
+      }
       wx.showModal({
         title: '发布成功',
-        content: (res && res.message) || '任务已提交审核',
+        content: successMessage,
         confirmText: '去查看',
         showCancel: false,
         success: () => {

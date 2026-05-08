@@ -30,7 +30,8 @@ Page({
     },
     merchantAuthStatus: 'uncertified',
     merchantAuthActionText: '去认证',
-    merchantAuthActionClass: 'is-uncertified'
+    merchantAuthActionClass: 'is-uncertified',
+    pendingAppealCount: 0
   },
 
   onLoad() {
@@ -96,6 +97,7 @@ Page({
       await this.loadUserAndWallet();
       await this.loadMineStats();
       await this.loadMerchantAuthStatus();
+      await this.loadPendingAppealCount();
     } else {
       this.setData({
         user: null,
@@ -103,7 +105,8 @@ Page({
         avatarSrc: Api.getAvatarMeta().avatarSrc,
         merchantAuthStatus: 'uncertified',
         merchantAuthActionText: '去认证',
-        merchantAuthActionClass: 'is-uncertified'
+        merchantAuthActionClass: 'is-uncertified',
+        pendingAppealCount: 0
       });
       // 触发静默登录
       await app.silentLogin();
@@ -112,6 +115,7 @@ Page({
         await this.loadUserAndWallet();
         await this.loadMineStats();
         await this.loadMerchantAuthStatus();
+        await this.loadPendingAppealCount();
       }
     }
   },
@@ -224,6 +228,17 @@ Page({
         }
       });
     } catch (err) {
+      if (err && err.message === '登录已过期') {
+        try {
+          await app.silentLogin();
+          if (app.isLoggedIn()) {
+            return this.loadMineStats();
+          }
+        } catch (loginErr) {
+          console.warn('[mine/stats] relogin failed', loginErr);
+        }
+      }
+
       const code = err && err.code !== undefined && err.code !== null ? String(err.code) : 'NO_CODE';
       const message = (err && err.message) ? String(err.message) : '未知错误';
       console.error('[mine/stats] load failed', {
@@ -232,14 +247,45 @@ Page({
         err
       });
       wx.showToast({
-        title: `统计失败 ${code}: ${message}`.slice(0, 30),
+        title: '我的统计加载失败',
         icon: 'none'
       });
-      wx.showModal({
-        title: '我的统计加载失败',
-        content: `code: ${code}\nmessage: ${message}`.slice(0, 500),
-        showCancel: false
+    }
+  },
+
+  async loadPendingAppealCount() {
+    try {
+      const [claimsRes, appealsRes] = await Promise.all([
+        Api.getMyClaims({ page: 1, limit: 100 }),
+        Api.getAppeals({ limit: 100, offset: 0 }).catch(() => ({ data: { appeals: [] } }))
+      ]);
+
+      const claims = Array.isArray(claimsRes && claimsRes.data) ? claimsRes.data : [];
+      const appeals = Array.isArray(appealsRes && appealsRes.data && appealsRes.data.appeals)
+        ? appealsRes.data.appeals
+        : [];
+
+      const appealedClaimIds = new Set();
+      appeals.forEach((appeal) => {
+        const claimId = appeal && (appeal.claim_id || appeal.claimId || appeal.target_id || appeal.targetId);
+        if (claimId !== undefined && claimId !== null && claimId !== '') {
+          appealedClaimIds.add(String(claimId));
+        }
       });
+
+      const pendingAppealCount = claims.reduce((count, claim) => {
+        const claimId = claim && (claim.id || claim.claim_id || claim.claimId);
+        const reviewResult = Number(claim && (claim.review_result || claim.reviewResult || 0)) || 0;
+        if (!claimId || reviewResult !== 3 || appealedClaimIds.has(String(claimId))) {
+          return count;
+        }
+        return count + 1;
+      }, 0);
+
+      this.setData({ pendingAppealCount });
+    } catch (err) {
+      console.warn('[mine/appeal] load pending count failed', err);
+      this.setData({ pendingAppealCount: 0 });
     }
   },
 

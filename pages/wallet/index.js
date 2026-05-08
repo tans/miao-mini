@@ -102,7 +102,7 @@ function buildTransactionViews(tx) {
         type_text: feeLabel,
         displayAmount: -fee,
         amountDisplay: formatMoneyText(fee),
-        remarkText: feeLabel,
+        remarkText: '账款已从可提现金额扣除，用于寻找优质创作者',
         createdAtText,
       });
     }

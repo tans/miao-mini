@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const Subscribe = require('../../../utils/subscribe.js');
 const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
@@ -274,6 +275,7 @@ Page({
     editJimengLink: '',
     showAdoptConfirmModal: false,
     pendingAdoptClaimId: '',
+    canSubscribeMessages: Subscribe.hasBusinessNotifyTemplates(),
   },
 
   onLoad(options = {}) {
@@ -503,6 +505,15 @@ Page({
       data: url,
       success: () => wx.showToast({ title: '链接已复制', icon: 'success' }),
     });
+  },
+
+  async enableBusinessNotifications() {
+    const result = await Subscribe.requestBusinessNotifications();
+    if (result.accepted.length > 0) {
+      wx.showToast({ title: '已开启提醒', icon: 'success' });
+      return;
+    }
+    wx.showToast({ title: '未开启提醒', icon: 'none' });
   },
 
   toggleBatchMode() {

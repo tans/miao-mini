@@ -156,7 +156,13 @@
             <image class="zone-icon" src="../../images/icon/shensu.png" />
             <text class="zone-item-title">申诉记录</text>
           </view>
-          <image class="zone-arrow" src="../../images/mine/right.png" />
+          <view class="zone-item-right">
+            <view class="zone-item-badge" wx:if="{{pendingAppealCount > 0}}">
+              <text class="badge-num">{{pendingAppealCount}}</text>
+              <text class="badge-text">个任务待申诉</text>
+            </view>
+            <image class="zone-arrow" src="../../images/mine/right.png" />
+          </view>
         </view>
         <view class="zone-item" bindtap="goCustomerService">
           <view class="zone-item-left">

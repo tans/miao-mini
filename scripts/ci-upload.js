@@ -15,15 +15,17 @@ const environments = {
   test: {
     appid: 'wx902124d67fa60b0e',
     apiBase: 'https://miao-test.clawos.cc/api/v1',
+    pendingReviewTemplateId: 'oQ6nLdG2Ntb5Om6Vfc9j8eWeUDoXRj2tcTHB5hG2Mzw',
   },
   prod: {
     appid: 'wx4a1a4cedce98a1ac',
     apiBase: 'https://miao.jisuhudong.com/api/v1',
+    pendingReviewTemplateId: process.env.PENDING_REVIEW_TEMPLATE_ID || '',
   },
 };
 
-function createConfigContent(apiBase) {
-  return `// 创意喵 - 小程序配置文件\n// API 地址通过此文件配置，部署时修改此文件即可切换环境\nmodule.exports = {\n  // API Base URL - 修改此处切换测试/生产环境\n  apiBase: "${apiBase}",\n\n  // 客服热线\n  customerServicePhone: "400-xxx-xxxx",\n};\n`;
+function createConfigContent(apiBase, pendingReviewTemplateId) {
+  return `// 创意喵 - 小程序配置文件\n// API 地址通过此文件配置，部署时修改此文件即可切换环境\nmodule.exports = {\n  // API Base URL - 修改此处切换测试/生产环境\n  apiBase: "${apiBase}",\n\n  subscribeTemplates: {\n    pendingReview: "${pendingReviewTemplateId || ''}",\n    reviewResult: "",\n    appealResult: "",\n    taskStatus: "",\n  },\n\n  // 客服热线\n  customerServicePhone: "400-xxx-xxxx",\n};\n`;
 }
 
 async function upload() {
@@ -38,6 +40,7 @@ async function upload() {
     environment: isProd ? 'prod' : 'test',
     appid: config.appid,
     apiBase: config.apiBase,
+    pendingReviewTemplateId: config.pendingReviewTemplateId ? 'configured' : 'empty',
     privateKeyPath: process.env.PRIVATE_KEY_PATH || defaultPrivateKeyPath,
   });
   const buildInfoPath = path.join(projectPath, 'build-info.js');
@@ -50,7 +53,7 @@ async function upload() {
   const privateKeyPath = process.env.PRIVATE_KEY_PATH || defaultPrivateKeyPath;
 
   try {
-    fs.writeFileSync(configPath, createConfigContent(config.apiBase));
+    fs.writeFileSync(configPath, createConfigContent(config.apiBase, config.pendingReviewTemplateId));
 
     const project = new ci.Project({
       appid: config.appid,

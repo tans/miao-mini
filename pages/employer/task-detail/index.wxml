@@ -42,6 +42,10 @@
           采纳稿件后自动为创作者发放采纳奖+参与奖；淘汰自动发放参与奖；
           <text class="safety-highlight">如遇恶意低质量水稿件可直接举报</text>，平台介入确认事实后，退还此稿参与奖至商家钱包。
         </view>
+        <view class="subscribe-row" wx:if="{{canSubscribeMessages}}">
+          <text class="subscribe-row-text">开启微信服务通知，及时收到新投稿提醒</text>
+          <text class="subscribe-row-btn" bindtap="enableBusinessNotifications">开启待审核提醒</text>
+        </view>
       </view>
       <scroll-view class="filter-scroll" scroll-x="true" show-scrollbar="false">
         <view class="filter-tabs">

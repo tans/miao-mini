@@ -12,6 +12,16 @@
     </view>
   </view>
 
+  <view class="subscribe-banner" wx:if="{{canSubscribeMessages}}">
+    <view class="subscribe-copy">
+      <text class="subscribe-title">微信服务通知</text>
+      <text class="subscribe-desc">开启后，新投稿、审核和申诉动态可通过服务通知提醒</text>
+    </view>
+    <view class="subscribe-btn" bindtap="enableBusinessNotifications">
+      <text>开启待审核提醒</text>
+    </view>
+  </view>
+
   <!-- 任务列表 -->
   <view class="tasks-list" wx:if="{{filteredTasks.length > 0}}">
     <view class="task-card {{item.cardClass}}" wx:for="{{filteredTasks}}" wx:key="id">
