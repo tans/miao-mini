@@ -407,8 +407,27 @@ Page({
     });
   },
 
-  goHelp() {
-    wx.navigateTo({ url: '/pages/mine/help/index' });
+  async goHelp() {
+    const fallback = () => wx.navigateTo({ url: '/pages/mine/help/index' });
+    const defaultDocUrl = 'https://docs.qq.com/doc/DSGZhUG1YSmx2WUpR';
+
+    try {
+      const res = await Api.getAppSettings();
+      const settings = res.data || {};
+      const docUrl = (settings.help_center_doc_url || defaultDocUrl).trim();
+      const appId = settings.tencent_docs_app_id || 'wxd45c635d754dbf59';
+      if (!docUrl) {
+        fallback();
+        return;
+      }
+      wx.openEmbeddedMiniProgram({
+        appId,
+        path: `pages/detail/detail?url=${encodeURIComponent(docUrl)}`,
+        fail: fallback
+      });
+    } catch (err) {
+      fallback();
+    }
   },
 
   goAbout() {

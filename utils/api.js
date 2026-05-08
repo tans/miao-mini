@@ -480,6 +480,10 @@ const Api = {
     return this.request('GET', '/tasks' + qs, null, true);
   },
 
+  getAppSettings() {
+    return this.request('GET', '/app-settings', null, true);
+  },
+
   async getTask(id) {
     // Carry auth when available so task detail can include current user's claim state.
     return this.request('GET', `/tasks/${id}`);
