@@ -293,7 +293,7 @@
       </view>
 
       <view class="submissions-empty" wx:else>
-        <image src="../../../images/home/empty.png" class="clock-icon"/>
+        <image src="https://public.jisuhudong.com/minapp/empty.png" class="clock-icon"/>
         <text>暂无投稿记录，先报名再上传稿件</text>
       </view>
     </view>

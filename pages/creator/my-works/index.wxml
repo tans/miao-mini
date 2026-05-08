@@ -100,7 +100,7 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{!loading && filteredWorks.length === 0}}">
-    <image src="../../../images/home/empty.png" style="width: 300rpx; height: 300rpx;" />
+    <image src="https://public.jisuhudong.com/minapp/empty.png" style="width: 300rpx; height: 300rpx;" />
     <text class="empty-text">暂无作品记录</text>
     <text class="empty-hint">快去报名任务并提交作品吧</text>
   </view>

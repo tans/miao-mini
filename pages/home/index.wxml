@@ -26,7 +26,7 @@
       
     </view>
     <view class="notice-container">
-      <image src="../../images/home/IP.png" class="banner-img" />
+      <image src="https://public.jisuhudong.com/minapp/IP.png" class="banner-img" />
     </view>
   </view>
   <view class="header-gradient">
@@ -34,13 +34,13 @@
     <scroll-view class="banner-scroll" scroll-x>
       <view class="banner-list">
         <view class="banner-item" bindtap="openTutorial" data-type="creator">
-          <image src="../../images/home/1.png" class="banner-img" />
+          <image src="https://public.jisuhudong.com/minapp/1.png" class="banner-img" />
         </view>
         <view class="banner-item" bindtap="openTutorial" data-type="merchant">
-          <image src="../../images/home/2.png" class="banner-img" />
+          <image src="https://public.jisuhudong.com/minapp/2.png" class="banner-img" />
         </view>
         <view class="banner-item">
-          <image src="../../images/home/3.png" class="banner-img" />
+          <image src="https://public.jisuhudong.com/minapp/3.png" class="banner-img" />
         </view>
       </view>
     </scroll-view>
@@ -150,7 +150,7 @@
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{displayTasks.length === 0 && !loading}}">
     <!-- <mp-msg type="info" title="暂无相关任务" /> -->
-    <image src="../../images/home/empty.png" class="clock-icon" style="width:300rpx;height:300rpx;"/>
+    <image src="https://public.jisuhudong.com/minapp/empty.png" class="clock-icon" style="width:300rpx;height:300rpx;"/>
     <text>暂无任务哦</text>
   </view>
 
@@ -175,7 +175,7 @@
       <view class="creator-community-close" bindtap="closeCreatorCommunityModal">×</view>
       <image
         class="creator-community-bg"
-        src="../../images/home/alert-bg.png"
+        src="https://public.jisuhudong.com/minapp/alert-bg.png"
         mode="widthFix"
       />
       <view class="creator-community-footer">
