@@ -276,8 +276,11 @@ module.exports = {
           <text class="budget-total-value" style="color:#878FA1;font-weight:400;">¥{{walletBalanceDisplay}}</text>
         </view>
         <view class="budget-warning" wx:if="{{isBalanceInsufficient}}">
-          <text class="budget-warning-text">余额不足，还差 ¥{{balanceShortfall}}</text>
-          <view class="budget-warning-action" bindtap="goRecharge">去充值</view>
+          <view class="budget-warning-icon">
+            <image src="./images/pay.png" style="width: 32rpx; height: 32rpx;" />
+            <text class="budget-warning-text">余额不足，还差 ¥{{balanceShortfall}}</text>
+          </view>
+          <view class="budget-warning-action" bindtap="goRecharge">去充值 ></view>
         </view>
         <view class="budget-tips">tips：活动金额按报名人数上限全额冻结，审核完全部稿件48小时后，剩余活动金即可解冻。</view>
       </view>
