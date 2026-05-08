@@ -9,6 +9,11 @@ const PLACEHOLDER_COVER_KEYWORDS = [
   '/static/images/task_placeholder',
 ];
 
+const TUTORIAL_VIDEOS = {
+  creator: 'https://public.jisuhudong.com/minapp/创作者接单指引.mp4',
+  merchant: 'https://public.jisuhudong.com/minapp/商家发布教程.mp4',
+};
+
 // 计算倒计时字符串
 function formatCountdown(endAt) {
   if (!endAt) return '';
@@ -330,6 +335,19 @@ Page({
 
   goCreateTask() {
     wx.navigateTo({ url: '/pages/employer/create-task/index' });
+  },
+
+  openTutorial(e) {
+    const type = e.currentTarget.dataset.type;
+    const videoUrl = TUTORIAL_VIDEOS[type];
+    if (!videoUrl) {
+      wx.showToast({ title: '教程暂未配置', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({
+      url: `/pages/video-player/index?url=${encodeURIComponent(videoUrl)}`,
+      fail: () => wx.showToast({ title: '无法打开教程', icon: 'none' }),
+    });
   },
 
   goWorks() {

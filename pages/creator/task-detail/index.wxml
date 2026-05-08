@@ -201,7 +201,7 @@
             <text class="jimeng-badge-text jimeng-copy-text">复制</text>
           </view>
         </view>
-        <view class="jimeng-course">
+        <view class="jimeng-course" bindtap="showJimengTutorial">
           <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
         </view>
       </view>
@@ -213,7 +213,7 @@
         <view class="jimeng-lock">
           <text class="lock-text">报名后可见</text>
         </view>
-        <view class="jimeng-course">
+        <view class="jimeng-course" bindtap="showJimengTutorial">
           <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
         </view>
       </view>

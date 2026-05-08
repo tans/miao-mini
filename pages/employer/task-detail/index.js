@@ -4,6 +4,7 @@ const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
 const PLACEHOLDER_MATERIAL_KEYWORDS = ['task-placeholder', 'task_placeholder'];
+const JIMENG_TUTORIAL_VIDEO_URL = 'https://public.jisuhudong.com/minapp/既梦教程.mp4';
 
 function toList(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -791,7 +792,10 @@ Page({
   },
 
   showJimengTutorial() {
-    wx.navigateTo({ url: '/pages/employer/jimeng-tutorial/index' });
+    wx.navigateTo({
+      url: `/pages/video-player/index?url=${encodeURIComponent(JIMENG_TUTORIAL_VIDEO_URL)}`,
+      fail: () => wx.showToast({ title: '无法打开教程', icon: 'none' }),
+    });
   },
 
   onJimengLinkInput(e) {

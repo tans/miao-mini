@@ -33,17 +33,14 @@
     <!-- Banner轮播 -->
     <scroll-view class="banner-scroll" scroll-x>
       <view class="banner-list">
-        <view class="banner-item">
+        <view class="banner-item" bindtap="openTutorial" data-type="creator">
           <image src="../../images/home/1.png" class="banner-img" />
-          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
-        <view class="banner-item">
+        <view class="banner-item" bindtap="openTutorial" data-type="merchant">
           <image src="../../images/home/2.png" class="banner-img" />
-          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
         <view class="banner-item">
           <image src="../../images/home/3.png" class="banner-img" />
-          <!-- <view class="banner-tag">学会这招，收益稳稳到账</view> -->
         </view>
       </view>
     </scroll-view>

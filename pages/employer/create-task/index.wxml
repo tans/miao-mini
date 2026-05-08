@@ -205,7 +205,7 @@ module.exports = {
       <view class="jimeng-tips">
         <text class="tips-main">tips：邀请链接 <text class="tips-highlight">有效时间为48小时</text>，请记得更新哦！</text>
       </view>
-      <view class="jimeng-course">
+      <view class="jimeng-course" bindtap="showJimengTutorial">
         <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
       </view>
     </view>
