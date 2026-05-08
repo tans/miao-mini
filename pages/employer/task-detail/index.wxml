@@ -380,28 +380,36 @@
     </view>
   </view>
 
-  <view class="creator-notice-mask" wx:if="{{showAdoptConfirmModal}}" bindtap="closeAdoptConfirmModal">
+  <view class="creator-notice-mask" wx:if="{{showReviewConfirmModal}}" bindtap="closeReviewConfirmModal">
     <view class="creator-notice-modal" catchtap="stopPropagation">
       <view class="creator-notice-body">
-        <text class="creator-notice-title">确认采纳作品</text>
-        <text class="adopt-confirm-desc-block">
-          <text>确认采纳作品即购买此作品，采纳后将支付 </text>
-          <text class="adopt-confirm-desc-amount">20.00元</text>
-          <text>（采纳金+参与金）给创作者。此作品的版权自动也归属于购买者。</text>
+        <text class="creator-notice-title">{{reviewConfirmConfig.title}}</text>
+        <text
+          wx:for="{{reviewConfirmConfig.paragraphs}}"
+          wx:for-item="paragraph"
+          wx:key="id"
+          class="review-confirm-desc-block"
+        >
+          <text
+            wx:for="{{paragraph.segments}}"
+            wx:for-item="segment"
+            wx:key="id"
+            class="{{segment.highlight ? 'review-confirm-desc-amount' : ''}}"
+          >{{segment.text}}</text>
         </text>
-        <view class="adopt-confirm-frozen-row">
-          <view class="adopt-confirm-frozen-icon">
-            <image src="../../../images/icon/money.png" class="adopt-confirm-frozen-icon-image" />
+        <view class="review-confirm-frozen-row">
+          <view class="review-confirm-frozen-icon">
+            <image src="../../../images/icon/money.png" class="review-confirm-frozen-icon-image" />
           </view>
-          <text class="adopt-confirm-frozen-text">活动剩余冻结资金：168.00 元</text>
+          <text class="review-confirm-frozen-text">活动剩余冻结资金：{{reviewConfirmConfig.frozenAmount}} 元</text>
         </view>
       </view>
       <view class="creator-notice-footer">
-        <view class="creator-notice-btn creator-notice-btn-cancel" bindtap="closeAdoptConfirmModal">
+        <view class="creator-notice-btn creator-notice-btn-cancel" bindtap="closeReviewConfirmModal">
           <text>取消</text>
         </view>
-        <view class="creator-notice-btn creator-notice-btn-confirm" bindtap="confirmAdoptClaim">
-          <text>采纳</text>
+        <view class="creator-notice-btn creator-notice-btn-confirm" bindtap="confirmReviewClaim">
+          <text>{{reviewConfirmConfig.confirmText}}</text>
         </view>
       </view>
     </view>

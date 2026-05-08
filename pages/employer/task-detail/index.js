@@ -1,6 +1,6 @@
 const Api = require('../../../utils/api.js');
 const Subscribe = require('../../../utils/subscribe.js');
-const { formatDateTime } = require('../../../utils/util.js');
+const { formatDateTime, formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 
 const PLACEHOLDER_MATERIAL_KEYWORDS = ['task-placeholder', 'task_placeholder'];
@@ -140,6 +140,76 @@ function normalizeTask(task = {}) {
     adoptionRate: Number(pick(task.adoption_rate, task.adoptionRate, 0)) || 0,
     totalPublished: Number(pick(task.total_published, task.totalPublished, 0)) || 0,
     totalSpent: Number(pick(task.total_spent, task.totalSpent, 0)) || 0,
+    frozen_amount: Number(pick(task.frozen_amount, task.frozenAmount, 0)) || 0,
+  };
+}
+
+function buildReviewConfirmModal(task = {}, result = 1, reason = '') {
+  const unitPrice = Number(task.unit_price || 0) || 0;
+  const awardPrice = Number(task.award_price || 0) || 0;
+  const frozenAmount = Number(task.frozen_amount || 0) || 0;
+  const totalReward = unitPrice + awardPrice;
+
+  if (result === 1) {
+    return {
+      title: '确认采纳作品',
+      confirmText: '采纳',
+      frozenAmount: formatAmount(frozenAmount, { useGrouping: false }),
+      paragraphs: [
+        {
+          id: 'adopt-desc',
+          segments: [
+            { id: 'prefix', text: '确认采纳作品即购买此作品，采纳后将支付 ' },
+            { id: 'amount', text: `${formatAmount(totalReward, { useGrouping: false })}元`, highlight: true },
+            { id: 'suffix', text: '（采纳金+参与金）给创作者。此作品的版权自动也归属于购买者。' },
+          ],
+        },
+      ],
+    };
+  }
+
+  if (result === 2) {
+    return {
+      title: '确认淘汰作品',
+      confirmText: '淘汰',
+      frozenAmount: formatAmount(frozenAmount, { useGrouping: false }),
+      paragraphs: [
+        {
+          id: 'reject-pay',
+          segments: [
+            { id: 'prefix', text: '确认淘汰作品后，将支付 ' },
+            { id: 'amount', text: `${formatAmount(unitPrice, { useGrouping: false })}元`, highlight: true },
+            { id: 'suffix', text: '（参与金）给创作者。' },
+          ],
+        },
+        {
+          id: 'reject-rights',
+          segments: [
+            { id: 'text', text: '此作品的版权仍归属于创作者，不支持商家下载或使用此视频。' },
+          ],
+        },
+      ],
+    };
+  }
+
+  return {
+    title: '确认举报作品',
+    confirmText: '举报',
+    frozenAmount: formatAmount(frozenAmount, { useGrouping: false }),
+    paragraphs: [
+      {
+        id: 'report-desc',
+        segments: [
+          { id: 'text', text: '确认此作品属于违规投稿或恶意注水稿件，举报后无需对创作者支付任何费用，创作者账号被举报成功5次以后将永久禁封。' },
+        ],
+      },
+      ...(reason ? [{
+        id: 'report-reason',
+        segments: [
+          { id: 'text', text: `举报原因：${reason}` },
+        ],
+      }] : []),
+    ],
   };
 }
 
@@ -274,8 +344,16 @@ Page({
     totalSpent: 0,
     showEditJimeng: false,
     editJimengLink: '',
-    showAdoptConfirmModal: false,
-    pendingAdoptClaimId: '',
+    showReviewConfirmModal: false,
+    reviewConfirmConfig: {
+      title: '',
+      confirmText: '',
+      frozenAmount: '0.00',
+      paragraphs: [],
+    },
+    pendingReviewClaimId: '',
+    pendingReviewResult: 0,
+    pendingReviewReason: '',
     canSubscribeMessages: Subscribe.hasBusinessNotifyTemplates(),
   },
 
@@ -551,18 +629,40 @@ Page({
       wx.showToast({ title: '参数错误', icon: 'none' });
       return;
     }
-    this.setData({ showAdoptConfirmModal: true, pendingAdoptClaimId: String(claimId) });
+    this.openReviewConfirmModal(String(claimId), 1, '');
   },
 
-  closeAdoptConfirmModal() {
-    this.setData({ showAdoptConfirmModal: false, pendingAdoptClaimId: '' });
+  openReviewConfirmModal(claimId, result, reason = '') {
+    this.setData({
+      showReviewConfirmModal: true,
+      reviewConfirmConfig: buildReviewConfirmModal(this.data.task, result, reason),
+      pendingReviewClaimId: String(claimId),
+      pendingReviewResult: Number(result) || 0,
+      pendingReviewReason: reason || '',
+    });
   },
 
-  async confirmAdoptClaim() {
-    const claimId = this.data.pendingAdoptClaimId;
-    if (!claimId) return;
-    this.setData({ showAdoptConfirmModal: false, pendingAdoptClaimId: '' });
-    await this.performReviewClaim(claimId, 1, null);
+  closeReviewConfirmModal() {
+    this.setData({
+      showReviewConfirmModal: false,
+      pendingReviewClaimId: '',
+      pendingReviewResult: 0,
+      pendingReviewReason: '',
+    });
+  },
+
+  async confirmReviewClaim() {
+    const claimId = this.data.pendingReviewClaimId;
+    const result = Number(this.data.pendingReviewResult);
+    const reason = this.data.pendingReviewReason || null;
+    if (!claimId || ![1, 2, 3].includes(result)) return;
+    this.setData({
+      showReviewConfirmModal: false,
+      pendingReviewClaimId: '',
+      pendingReviewResult: 0,
+      pendingReviewReason: '',
+    });
+    await this.performReviewClaim(claimId, result, reason);
   },
 
   async performReviewClaim(claimId, result, reason = null) {
@@ -592,8 +692,7 @@ Page({
       reason = await this.showReportModal();
       if (!reason) return;
     }
-
-    await this.performReviewClaim(claimId, result, reason);
+    this.openReviewConfirmModal(String(claimId), result, reason || '');
   },
 
   async batchReview(e) {
