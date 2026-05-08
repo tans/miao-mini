@@ -592,6 +592,21 @@ Page({
       wx.showToast({ title: '已开启提醒', icon: 'success' });
       return;
     }
+    const setting = await Subscribe.checkSubscriptionBlocked();
+    if (!setting.mainSwitch || setting.blockedTemplates.length > 0) {
+      wx.showModal({
+        title: '提醒未开启',
+        content: '你之前拒绝过服务通知，需要到小程序设置里打开订阅消息后，才能收到待审核提醒。',
+        confirmText: '去设置',
+        cancelText: '暂不开启',
+        success: (modalRes) => {
+          if (modalRes.confirm && wx.openSetting) {
+            wx.openSetting();
+          }
+        },
+      });
+      return;
+    }
     wx.showToast({ title: '未开启提醒', icon: 'none' });
   },
 

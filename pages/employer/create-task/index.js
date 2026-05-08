@@ -629,17 +629,44 @@ Page({
       });
       const successMessage = (res && res.message) || '任务已提交审核';
       if (Subscribe.hasBusinessNotifyTemplates()) {
+        const goMyTasks = () => wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
         wx.showModal({
           title: '发布成功',
-          content: `${successMessage}。开启微信服务通知后，新投稿、审核和申诉动态可及时提醒你。`,
-          confirmText: '开启待审核提醒',
+          content: `${successMessage}。是否开启待审核提醒？开启后，新投稿会通过微信服务通知提醒你。`,
+          confirmText: '开启提醒',
           cancelText: '暂不开启',
           success: async (modalRes) => {
-            if (modalRes.confirm) {
-              await Subscribe.requestBusinessNotifications();
+            if (!modalRes.confirm) {
+              goMyTasks();
+              return;
             }
-            wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
+
+            const result = await Subscribe.requestBusinessNotifications();
+            if (result.accepted.length > 0) {
+              goMyTasks();
+              return;
+            }
+
+            const setting = await Subscribe.checkSubscriptionBlocked();
+            if (!setting.mainSwitch || setting.blockedTemplates.length > 0) {
+              wx.showModal({
+                title: '提醒未开启',
+                content: '你之前拒绝过服务通知，需要到小程序设置里打开订阅消息后，才能收到待审核提醒。',
+                confirmText: '去设置',
+                cancelText: '稍后再说',
+                success: (settingRes) => {
+                  if (settingRes.confirm && wx.openSetting) {
+                    wx.openSetting();
+                  }
+                },
+                complete: goMyTasks,
+              });
+              return;
+            }
+
+            goMyTasks();
           },
+          fail: goMyTasks,
         });
         return;
       }
@@ -649,6 +676,9 @@ Page({
         confirmText: '去查看',
         showCancel: false,
         success: () => {
+          wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
+        },
+        fail: () => {
           wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
         },
       });

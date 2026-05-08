@@ -63,9 +63,36 @@ function requestBusinessNotifications() {
   return requestSubscribe(BUSINESS_TEMPLATE_KEYS);
 }
 
+function checkSubscriptionBlocked() {
+  return new Promise((resolve) => {
+    if (!wx.getSetting) {
+      resolve({ mainSwitch: true, blockedTemplates: [] });
+      return;
+    }
+    wx.getSetting({
+      withSubscriptions: true,
+      success(res) {
+        const subSetting = res.subscriptionsSetting || {};
+        const mainSwitch = subSetting.mainSwitch !== false;
+        const itemSettings = subSetting.itemSettings || {};
+        const templates = getSubscribeTemplates();
+        const blockedTemplates = BUSINESS_TEMPLATE_KEYS.filter((key) => {
+          const tid = String(templates[key] || '').trim();
+          return tid && itemSettings[tid] === 'reject';
+        });
+        resolve({ mainSwitch, blockedTemplates });
+      },
+      fail() {
+        resolve({ mainSwitch: true, blockedTemplates: [] });
+      },
+    });
+  });
+}
+
 module.exports = {
   getTemplateIds,
   hasBusinessNotifyTemplates,
+  checkSubscriptionBlocked,
   requestBusinessNotifications,
   requestSubscribe,
 };
