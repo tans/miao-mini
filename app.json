@@ -24,7 +24,6 @@
     "pages/mine/merchant-agreement/index",
     "pages/mine/creator-agreement/index",
     "pages/mine/appeal/index",
-    "pages/mine/customer-service/index",
     "pages/video-player/index"
   ],
   "window": {

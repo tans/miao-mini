@@ -1,6 +1,7 @@
 const Api = require('../../utils/api.js');
 const app = getApp();
 const buildInfo = require('../../build-info.js');
+const { openCustomerServiceChat } = require('../../utils/customer-service.js');
 
 Page({
   data: {
@@ -441,7 +442,10 @@ Page({
   },
 
   goCustomerService() {
-    wx.navigateTo({ url: '/pages/mine/customer-service/index' });
+    openCustomerServiceChat({
+      sessionFrom: 'miao-mini:mine',
+      sendMessageTitle: '创意喵客服咨询',
+    });
   },
 
   goBack() {
