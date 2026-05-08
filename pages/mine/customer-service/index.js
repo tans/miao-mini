@@ -1,4 +1,5 @@
 const config = require('../../../utils/config.js');
+const { openCustomerServiceChat } = require('../../../utils/customer-service.js');
 
 Page({
   data: {
@@ -11,16 +12,16 @@ Page({
 
   startService(e) {
     const type = e.currentTarget.dataset.type;
-    if (type === 'complaint') {
-      // 投诉建议 - 跳转到帮助中心反馈说明
-      wx.navigateTo({ url: '/pages/mine/help/index' });
-    } else if (type === 'business') {
-      // 商务合作 - 跳转到商家认证页面
-      wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });
-    } else {
-      // 普通咨询 - 跳转到帮助页面
-      wx.navigateTo({ url: '/pages/mine/help/index' });
-    }
+    const typeMap = {
+      general: '普通咨询',
+      business: '商务合作',
+      complaint: '帮助反馈',
+    };
+    const serviceType = String(typeMap[type] || '在线客服');
+    openCustomerServiceChat({
+      sessionFrom: `miao-mini:${type || 'general'}`,
+      sendMessageTitle: `创意喵${serviceType}`,
+    });
   },
 
   goHelp() {

@@ -1,5 +1,6 @@
 const Api = require('../../../utils/api.js');
 const { formatDateTime } = require('../../../utils/util.js');
+const { openCustomerServiceChat } = require('../../../utils/customer-service.js');
 
 const app = getApp();
 
@@ -758,10 +759,16 @@ Page({
   },
 
   goEntryPage() {
-    wx.navigateTo({ url: '/pages/mine/customer-service/index' });
+    openCustomerServiceChat({
+      sessionFrom: 'miao-mini:appeal-empty',
+      sendMessageTitle: '创意喵申诉咨询',
+    });
   },
 
   contactService() {
-    wx.navigateTo({ url: '/pages/mine/customer-service/index' });
+    openCustomerServiceChat({
+      sessionFrom: 'miao-mini:appeal',
+      sendMessageTitle: '创意喵申诉咨询',
+    });
   },
 });

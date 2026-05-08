@@ -99,19 +99,24 @@ const Api = {
           }
           let data = res.data;
           // Handle non-JSON responses (e.g., HTML error pages)
-          if (typeof data === 'string') {
-            try {
-              data = JSON.parse(data);
-            } catch (e) {
-              reject(new Error('服务器响应异常'));
-              return;
-            }
+        if (typeof data === 'string') {
+          try {
+            data = JSON.parse(data);
+          } catch (e) {
+            reject(new Error('服务器响应异常'));
+            return;
           }
-          if (data && data.code === 0) {
-            resolve(data);
-          } else {
-            const msg = (data && data.message) || '请求失败';
-            const err = new Error(msg);
+        }
+        if (data && (data.code === 40402 || data.message === '用户不存在')) {
+          Api.clearAuth();
+          reject(new Error('登录已过期'));
+          return;
+        }
+        if (data && data.code === 0) {
+          resolve(data);
+        } else {
+          const msg = (data && data.message) || '请求失败';
+          const err = new Error(msg);
             err.code = data && data.code;
             err.data = data && data.data;
             err.raw = data;

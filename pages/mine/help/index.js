@@ -1,4 +1,4 @@
-const config = require('../../../utils/config.js');
+const { openCustomerServiceChat } = require('../../../utils/customer-service.js');
 
 Page({
   data: {},
@@ -13,7 +13,10 @@ Page({
   },
 
   contactService() {
-    wx.showToast({ title: '请拨打客服热线：' + config.customerServicePhone, icon: 'none' });
+    openCustomerServiceChat({
+      sessionFrom: 'miao-mini:help-center',
+      sendMessageTitle: '创意喵帮助中心咨询',
+    });
   },
 
   onPullDownRefresh() {

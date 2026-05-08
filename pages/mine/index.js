@@ -89,16 +89,15 @@ Page({
     });
   },
 
-  async refreshPageData() {
-    const isLoggedIn = app.isLoggedIn();
-    this.setData({ isLoggedIn });
+  isLoginExpiredError(err) {
+    return !!(err && err.message === '登录已过期');
+  },
+
+  async refreshPageData(retried = false) {
+    this.setData({ isLoggedIn: app.isLoggedIn() });
     this.updateDisplayText();
-    if (isLoggedIn) {
-      await this.loadUserAndWallet();
-      await this.loadMineStats();
-      await this.loadMerchantAuthStatus();
-      await this.loadPendingAppealCount();
-    } else {
+
+    if (!app.isLoggedIn()) {
       this.setData({
         user: null,
         balance: '0.00',
@@ -108,15 +107,37 @@ Page({
         merchantAuthActionClass: 'is-uncertified',
         pendingAppealCount: 0
       });
-      // 触发静默登录
-      await app.silentLogin();
-      this.setData({ isLoggedIn: app.isLoggedIn() });
-      if (app.isLoggedIn()) {
-        await this.loadUserAndWallet();
-        await this.loadMineStats();
-        await this.loadMerchantAuthStatus();
-        await this.loadPendingAppealCount();
+
+      try {
+        await app.silentLogin();
+      } catch (err) {
+        console.warn('[mine] silent login failed', err);
       }
+
+      this.setData({ isLoggedIn: app.isLoggedIn() });
+      if (!app.isLoggedIn()) {
+        return;
+      }
+    }
+
+    try {
+      await this.loadUserAndWallet();
+      await this.loadMineStats();
+      await this.loadMerchantAuthStatus();
+      await this.loadPendingAppealCount();
+    } catch (err) {
+      if (!retried && this.isLoginExpiredError(err)) {
+        try {
+          await app.silentLogin();
+          this.setData({ isLoggedIn: app.isLoggedIn() });
+          if (app.isLoggedIn()) {
+            return this.refreshPageData(true);
+          }
+        } catch (loginErr) {
+          console.warn('[mine] relogin failed', loginErr);
+        }
+      }
+      console.warn('[mine] refresh page data failed', err);
     }
   },
 
@@ -134,6 +155,13 @@ Page({
         .catch((error) => ({ ok: false, error })),
     ]);
 
+    const authError = [userResult, walletResult].find((result) => (
+      !result.ok && this.isLoginExpiredError(result.error)
+    ));
+    if (authError) {
+      throw authError.error;
+    }
+
     if (userResult.ok) {
       const user = userResult.value.data || {};
       const previousUser = this.data.user || app.globalData.user || {};
@@ -146,7 +174,7 @@ Page({
         user: normalizedUser,
         avatarSrc: avatarMeta.avatarSrc,
       });
-    } else if (!userResult.error || userResult.error.message !== '登录已过期') {
+    } else {
       wx.showToast({ title: '加载失败', icon: 'none' });
     }
 
