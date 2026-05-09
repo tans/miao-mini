@@ -79,10 +79,6 @@ Page({
     isBalanceInsufficient: true,
     balanceShortfall: '231.00',
     isSubmitting: false,
-    showPublishSuccessDialog: false,
-    publishSuccessMessage: '',
-    isPublishSuccessHandling: false,
-    canSubscribeMessages: Subscribe.hasBusinessNotifyTemplates(),
     showDialog: false,
     showStyleDialog: false,
     submitFeedback: '',
@@ -90,7 +86,6 @@ Page({
   },
 
   onLoad() {
-    this._submitFlowFinished = false;
     if (!app.isLoggedIn()) {
       wx.showLoading({ title: '登录中...' });
       app.silentLogin().then(() => {
@@ -572,17 +567,21 @@ Page({
     }
 
     const uploadMaterials = imageMaterials.concat(videoMaterials);
-    this._submitFlowFinished = false;
     this.setData({
       isSubmitting: true,
-      showPublishSuccessDialog: false,
-      publishSuccessMessage: '',
-      isPublishSuccessHandling: false,
       submitFeedback: '',
       submitFeedbackType: '',
     });
-    wx.showLoading({ title: hasMaterials ? '上传素材中...' : '提交中...' });
     try {
+      if (Subscribe.hasBusinessNotifyTemplates()) {
+        try {
+          await Subscribe.requestBusinessNotifications();
+        } catch (subscribeErr) {
+          // 订阅授权不影响发布任务。
+        }
+      }
+
+      wx.showLoading({ title: hasMaterials ? '上传素材中...' : '提交中...' });
       const materials = [];
       if (hasMaterials) {
         const jobBase = `task-${Date.now()}`;
@@ -631,21 +630,17 @@ Page({
         materials,
       });
       wx.hideLoading();
-      const successMessage = (res && res.message) || '任务已提交审核';
-      this.setData({
-        showPublishSuccessDialog: true,
-        publishSuccessMessage: successMessage,
-        submitFeedback: '',
-        submitFeedbackType: '',
+      wx.redirectTo({
+        url: '/pages/employer/my-tasks/index',
+        fail: () => {
+          wx.navigateTo({ url: '/pages/employer/my-tasks/index' });
+        },
       });
     } catch (err) {
       const msg = String(err && (err.message || err.errMsg) || '发布失败');
       wx.hideLoading();
       this.setData({
         isSubmitting: false,
-        showPublishSuccessDialog: false,
-        publishSuccessMessage: '',
-        isPublishSuccessHandling: false,
         submitFeedback: msg,
         submitFeedbackType: 'error',
       });
@@ -657,59 +652,5 @@ Page({
     } finally {
       wx.hideLoading();
     }
-  },
-
-  finishAfterPublish() {
-    if (this._submitFlowFinished) return;
-    this._submitFlowFinished = true;
-    this.setData({ isPublishSuccessHandling: true });
-    wx.redirectTo({
-      url: '/pages/employer/my-tasks/index',
-      fail: () => {
-        wx.navigateTo({
-          url: '/pages/employer/my-tasks/index',
-          fail: () => {
-            this._submitFlowFinished = false;
-            this.setData({ isPublishSuccessHandling: false });
-            wx.showToast({ title: '请从我的任务查看', icon: 'none' });
-          },
-        });
-      },
-    });
-  },
-
-  async enablePublishSuccessReminder() {
-    if (this.data.isPublishSuccessHandling || this._submitFlowFinished) {
-      return;
-    }
-    this.setData({ isPublishSuccessHandling: true });
-    const result = await Subscribe.requestBusinessNotifications();
-    if (result.accepted.length > 0) {
-      wx.showToast({ title: '已开启提醒', icon: 'success' });
-      this.finishAfterPublish();
-      return;
-    }
-
-    const setting = await Subscribe.checkSubscriptionBlocked();
-    this.setData({ isPublishSuccessHandling: false });
-    if (!setting.mainSwitch || setting.blockedTemplates.length > 0) {
-      wx.showModal({
-        title: '提醒未开启',
-        content: '你之前拒绝过服务通知，需要到小程序设置里打开订阅消息后，才能收到待审核提醒。',
-        confirmText: '去设置',
-        cancelText: '稍后再说',
-        success: (settingRes) => {
-          if (settingRes.confirm && wx.openSetting) {
-            wx.openSetting();
-          }
-        },
-      });
-      return;
-    }
-
-    wx.showToast({ title: '未开启提醒，可稍后再试', icon: 'none' });
-  },
-
-  noop() {
   }
 });

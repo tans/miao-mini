@@ -357,23 +357,4 @@ module.exports = {
       <view class="confirm-btn" bindtap="confirmStyleSelection">确认</view>
     </view>
   </mp-half-screen-dialog>
-
-  <view wx:if="{{showPublishSuccessDialog}}" class="publish-success-mask" catchtap="noop">
-    <view class="publish-success-dialog" catchtap="noop">
-      <view class="publish-success-icon">✓</view>
-      <text class="publish-success-title">发布成功</text>
-      <text class="publish-success-desc">{{publishSuccessMessage}}，开启后有新投稿会通过微信服务通知提醒你审核。</text>
-      <view class="publish-success-actions">
-        <view class="publish-success-secondary {{isPublishSuccessHandling ? 'publish-success-action-disabled' : ''}}" catchtap="finishAfterPublish">
-          暂不开启
-        </view>
-        <view wx:if="{{canSubscribeMessages}}" class="publish-success-primary {{isPublishSuccessHandling ? 'publish-success-action-disabled' : ''}}" catchtap="enablePublishSuccessReminder">
-          {{isPublishSuccessHandling ? '处理中...' : '开启提醒'}}
-        </view>
-        <view wx:else class="publish-success-primary {{isPublishSuccessHandling ? 'publish-success-action-disabled' : ''}}" catchtap="finishAfterPublish">
-          去查看
-        </view>
-      </view>
-    </view>
-  </view>
 </view>
