@@ -23,39 +23,39 @@
 
       <view class="workflow-steps">
         <view class="workflow-step workflow-step-{{item.report.stateClass}}">
-          <view class="step-dot"></view>
+          <view class="step-dot-box">
+            <view class="step-dot"></view>
+            <view class="workflow-connector"></view>
+          </view>
           <view class="step-body step-body-divider">
             <view class="step-row">
               <text class="step-title">{{item.report.title}}</text>
-              <text class="step-label">{{item.report.label}}</text>
             </view>
             <text class="step-desc">{{item.report.reason}}</text>
             <text class="step-time">{{item.report.detail}}</text>
           </view>
         </view>
 
-        <view class="workflow-connector"></view>
+        
 
         <view class="workflow-step workflow-step-{{item.appeal.stateClass}}">
-          <view class="step-dot"></view>
+          <view class="step-dot-box">
+            <view class="step-dot"></view>
+            <view class="workflow-connector"></view>
+          </view>
           <view class="step-body step-body-divider">
             <view class="step-row">
               <text class="step-title">{{item.appeal.title}}</text>
-              <text class="step-label">{{item.appeal.label}}</text>
             </view>
             <text wx:if="{{item.appeal.reason}}" class="step-desc">{{item.appeal.reason}}</text>
             <text class="appeal-meta">{{item.appeal.metaText}}</text>
           </view>
         </view>
-
-        <view class="workflow-connector"></view>
-
         <view class="workflow-step workflow-step-{{item.platform.stateClass}}">
           <view class="step-dot"></view>
           <view class="step-body step-body-divider">
             <view class="step-row">
               <text class="step-title">{{item.platform.title}}</text>
-              <text class="step-label">{{item.platform.label}}</text>
             </view>
             <text class="step-desc">{{item.platform.detail}}</text>
             <text class="step-time">{{item.platform.replyLine}}</text>
@@ -83,12 +83,12 @@
   </view>
 
   <view class="empty-state" wx:if="{{!loading && records.length === 0}}">
-    <view class="empty-mark">流程</view>
+    <image style="width: 300rpx; height: 300rpx;" src="https://public.jisuhudong.com/minapp/empty.png" mode="aspectFill" />
     <text class="empty-title">{{emptyTitle}}</text>
-    <text class="empty-desc">{{emptyDesc}}</text>
-    <view class="empty-action" bindtap="goEntryPage">
+    <!-- <text class="empty-desc">{{emptyDesc}}</text> -->
+    <!-- <view class="empty-action" bindtap="goEntryPage">
       <text>{{emptyActionText}}</text>
-    </view>
+    </view> -->
   </view>
 
   <view class="service-bar">

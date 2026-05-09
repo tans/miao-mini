@@ -172,11 +172,6 @@
   box-shadow: 0 0 0 8rpx rgba(47, 111, 237, 0.16);
 }
 
-.workflow-step-processing .step-label {
-  background: #e8f0ff;
-  color: #245fd8;
-}
-
 .workflow-step-resolved .step-dot {
   background: #16a34a;
   box-shadow: 0 0 0 8rpx rgba(22, 163, 74, 0.16);
@@ -195,13 +190,12 @@
 
 .step-body-divider {
   padding-bottom: 22rpx;
-  border-bottom: 1rpx solid #eef0f4;
 }
 
 .step-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 12rpx;
 }
 
@@ -211,39 +205,9 @@
   color: #232a35;
 }
 
-.step-label {
-  padding: 6rpx 14rpx;
-  border-radius: 999rpx;
-  background: #f3f4f6;
-  color: #6b7280;
-  font-size: 20rpx;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.workflow-step-reported .step-label {
-  background: #fff2df;
-  color: #c86a05;
-}
-
-.workflow-step-processing .step-label {
-  background: #e8f0ff;
-  color: #245fd8;
-}
-
-.workflow-step-resolved .step-label {
-  background: #e7f7eb;
-  color: #178044;
-}
-
 .workflow-step-rejected .step-dot {
   background: #e35d4f;
   box-shadow: 0 0 0 8rpx rgba(227, 93, 79, 0.16);
-}
-
-.workflow-step-rejected .step-label {
-  background: #ffe8e5;
-  color: #cf4a3d;
 }
 
 .step-desc {
@@ -270,20 +234,24 @@
 
 .workflow-connector {
   width: 2rpx;
-  height: 14rpx;
+  flex: 1;
   margin-left: 8rpx;
-  background: linear-gradient(180deg, rgba(208, 214, 222, 0.9), rgba(208, 214, 222, 0.18));
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(208, 214, 222, 0.92) 0,
+    rgba(208, 214, 222, 0.92) 6rpx,
+    transparent 6rpx,
+    transparent 11rpx
+  );
 }
 
 .workflow-step:last-child .step-body-divider {
-  border-bottom: 0;
   padding-bottom: 0;
 }
 
 .workflow-media {
   margin-top: 12rpx;
   padding-top: 18rpx;
-  border-top: 1rpx solid #f1f2f4;
 }
 
 .media-title {
@@ -566,4 +534,8 @@
 
 .composer-submit.is-disabled {
   opacity: 0.72;
+}
+.step-dot-box{
+  display: flex;
+  flex-direction: column;
 }
