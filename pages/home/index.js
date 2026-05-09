@@ -396,6 +396,7 @@ Page({
 
   async maybePromptNotifySubscription() {
     if (this._checkingNotifyPrompt || this.data.showNotifySubscribeModal) return;
+    if (app.globalData && app.globalData.homeNotifyPromptShownThisSession) return;
 
     this._checkingNotifyPrompt = true;
     try {
@@ -403,6 +404,9 @@ Page({
       if (!app.isLoggedIn()) return;
       const promptConfig = getHomeNotifyPromptConfig(app.getUser());
       if (!promptConfig || !Array.isArray(promptConfig.keys) || !promptConfig.keys.length) return;
+      if (app.globalData) {
+        app.globalData.homeNotifyPromptShownThisSession = true;
+      }
       this.setData({
         showNotifySubscribeModal: true,
         notifySubscribeKeys: promptConfig.keys,
