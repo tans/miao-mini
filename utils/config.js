@@ -54,9 +54,6 @@ module.exports = {
   apiBase: currentConfig.apiBase,
   subscribeTemplates: currentConfig.subscribeTemplates || EMPTY_SUBSCRIBE_TEMPLATES,
 
-  // 客服热线
-  customerServicePhone: '400-xxx-xxxx',
-
   // 企业微信客服链接
   customerServiceKfUrl: 'https://work.weixin.qq.com/kfid/kfc3919d20f9b916edb',
 };

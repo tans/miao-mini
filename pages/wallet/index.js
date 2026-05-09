@@ -161,6 +161,7 @@ Page({
     totalIncomeDisplay: '0.00',
     transactions: [],
     filteredTransactions: [],
+    withdrawOrders: [],
     currentTab: 'all',
     loading: false,
     
@@ -215,13 +216,15 @@ Page({
     this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
-      const [walletRes, transRes] = await Promise.all([
+      const [walletRes, transRes, withdrawRes] = await Promise.all([
         Api.getWallet(),
-        Api.getTransactions({ scope: 'all', page: 1, limit: 100 })
+        Api.getTransactions({ scope: 'all', page: 1, limit: 100 }),
+        Api.getWithdrawOrders()
       ]);
 
       const wallet = walletRes.data || {};
       const transData = transRes.data || {};
+      const withdrawOrders = Array.isArray(withdrawRes.data) ? withdrawRes.data : [];
       const transactions = (transData.data || []).flatMap((t) => buildTransactionViews(t));
 
       const balance = Number(wallet.balance || 0);
@@ -238,6 +241,7 @@ Page({
         totalIncomeDisplay: formatMoneyText(wallet.total_income || 0),
         transactions,
         filteredTransactions,
+        withdrawOrders,
         loading: false,
       });
     } catch (err) {

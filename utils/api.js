@@ -654,6 +654,10 @@ const Api = {
     return this.request('POST', '/creator/withdraw', { amount });
   },
 
+  getWithdrawOrders() {
+    return this.request('GET', '/creator/withdraw-orders');
+  },
+
   getTransactions(params = {}) {
     const q = [];
     if (params.scope) q.push(`scope=${encodeURIComponent(params.scope)}`);
