@@ -79,6 +79,10 @@ Page({
     isBalanceInsufficient: true,
     balanceShortfall: '231.00',
     isSubmitting: false,
+    showPublishSuccessDialog: false,
+    publishSuccessMessage: '',
+    isPublishSuccessHandling: false,
+    canSubscribeMessages: Subscribe.hasBusinessNotifyTemplates(),
     showDialog: false,
     showStyleDialog: false,
     submitFeedback: '',
@@ -86,6 +90,7 @@ Page({
   },
 
   onLoad() {
+    this._submitFlowFinished = false;
     if (!app.isLoggedIn()) {
       wx.showLoading({ title: '登录中...' });
       app.silentLogin().then(() => {
@@ -567,8 +572,12 @@ Page({
     }
 
     const uploadMaterials = imageMaterials.concat(videoMaterials);
+    this._submitFlowFinished = false;
     this.setData({
       isSubmitting: true,
+      showPublishSuccessDialog: false,
+      publishSuccessMessage: '',
+      isPublishSuccessHandling: false,
       submitFeedback: '',
       submitFeedbackType: '',
     });
@@ -622,71 +631,21 @@ Page({
         materials,
       });
       wx.hideLoading();
-      this.setData({ isSubmitting: false });
-      this.setData({
-        submitFeedback: (res && res.message) || '任务已提交审核',
-        submitFeedbackType: 'success',
-      });
       const successMessage = (res && res.message) || '任务已提交审核';
-      if (Subscribe.hasBusinessNotifyTemplates()) {
-        const goMyTasks = () => wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
-        wx.showModal({
-          title: '发布成功',
-          content: `${successMessage}。是否开启待审核提醒？开启后，新投稿会通过微信服务通知提醒你。`,
-          confirmText: '开启提醒',
-          cancelText: '暂不开启',
-          success: async (modalRes) => {
-            if (!modalRes.confirm) {
-              goMyTasks();
-              return;
-            }
-
-            const result = await Subscribe.requestBusinessNotifications();
-            if (result.accepted.length > 0) {
-              goMyTasks();
-              return;
-            }
-
-            const setting = await Subscribe.checkSubscriptionBlocked();
-            if (!setting.mainSwitch || setting.blockedTemplates.length > 0) {
-              wx.showModal({
-                title: '提醒未开启',
-                content: '你之前拒绝过服务通知，需要到小程序设置里打开订阅消息后，才能收到待审核提醒。',
-                confirmText: '去设置',
-                cancelText: '稍后再说',
-                success: (settingRes) => {
-                  if (settingRes.confirm && wx.openSetting) {
-                    wx.openSetting();
-                  }
-                },
-                complete: goMyTasks,
-              });
-              return;
-            }
-
-            goMyTasks();
-          },
-          fail: goMyTasks,
-        });
-        return;
-      }
-      wx.showModal({
-        title: '发布成功',
-        content: successMessage,
-        confirmText: '去查看',
-        showCancel: false,
-        success: () => {
-          wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
-        },
-        fail: () => {
-          wx.redirectTo({ url: '/pages/employer/my-tasks/index' });
-        },
+      this.setData({
+        showPublishSuccessDialog: true,
+        publishSuccessMessage: successMessage,
+        submitFeedback: '',
+        submitFeedbackType: '',
       });
     } catch (err) {
       const msg = String(err && (err.message || err.errMsg) || '发布失败');
       wx.hideLoading();
       this.setData({
         isSubmitting: false,
+        showPublishSuccessDialog: false,
+        publishSuccessMessage: '',
+        isPublishSuccessHandling: false,
         submitFeedback: msg,
         submitFeedbackType: 'error',
       });
@@ -698,5 +657,59 @@ Page({
     } finally {
       wx.hideLoading();
     }
+  },
+
+  finishAfterPublish() {
+    if (this._submitFlowFinished) return;
+    this._submitFlowFinished = true;
+    this.setData({ isPublishSuccessHandling: true });
+    wx.redirectTo({
+      url: '/pages/employer/my-tasks/index',
+      fail: () => {
+        wx.navigateTo({
+          url: '/pages/employer/my-tasks/index',
+          fail: () => {
+            this._submitFlowFinished = false;
+            this.setData({ isPublishSuccessHandling: false });
+            wx.showToast({ title: '请从我的任务查看', icon: 'none' });
+          },
+        });
+      },
+    });
+  },
+
+  async enablePublishSuccessReminder() {
+    if (this.data.isPublishSuccessHandling || this._submitFlowFinished) {
+      return;
+    }
+    this.setData({ isPublishSuccessHandling: true });
+    const result = await Subscribe.requestBusinessNotifications();
+    if (result.accepted.length > 0) {
+      wx.showToast({ title: '已开启提醒', icon: 'success' });
+      this.finishAfterPublish();
+      return;
+    }
+
+    const setting = await Subscribe.checkSubscriptionBlocked();
+    this.setData({ isPublishSuccessHandling: false });
+    if (!setting.mainSwitch || setting.blockedTemplates.length > 0) {
+      wx.showModal({
+        title: '提醒未开启',
+        content: '你之前拒绝过服务通知，需要到小程序设置里打开订阅消息后，才能收到待审核提醒。',
+        confirmText: '去设置',
+        cancelText: '稍后再说',
+        success: (settingRes) => {
+          if (settingRes.confirm && wx.openSetting) {
+            wx.openSetting();
+          }
+        },
+      });
+      return;
+    }
+
+    wx.showToast({ title: '未开启提醒，可稍后再试', icon: 'none' });
+  },
+
+  noop() {
   }
 });
