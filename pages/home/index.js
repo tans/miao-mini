@@ -4,10 +4,6 @@ const Subscribe = require('../../utils/subscribe.js');
 const app = getApp();
 
 const COVER_THEME_COUNT = 6;
-const HOME_NOTIFY_PROMPT_HIDE_UNTIL_KEY = 'miao_home_notify_prompt_hide_until';
-const HOME_NOTIFY_PROMPT_SNOOZE_MS = 3 * 24 * 60 * 60 * 1000;
-const HOME_NOTIFY_PROMPT_ACCEPTED_MS = 7 * 24 * 60 * 60 * 1000;
-const HOME_NOTIFY_PROMPT_BLOCKED_MS = 7 * 24 * 60 * 60 * 1000;
 const MERCHANT_NOTIFY_TEMPLATE_KEYS = ['pendingReview', 'appealResult', 'taskStatus'];
 const CREATOR_NOTIFY_TEMPLATE_KEYS = ['reviewResult', 'appealResult', 'taskStatus'];
 const PLACEHOLDER_COVER_KEYWORDS = [
@@ -401,9 +397,6 @@ Page({
   async maybePromptNotifySubscription() {
     if (this._checkingNotifyPrompt || this.data.showNotifySubscribeModal) return;
 
-    const hiddenUntil = Number(wx.getStorageSync(HOME_NOTIFY_PROMPT_HIDE_UNTIL_KEY) || 0);
-    if (hiddenUntil > Date.now()) return;
-
     this._checkingNotifyPrompt = true;
     try {
       await app.waitForLogin();
@@ -420,8 +413,7 @@ Page({
     }
   },
 
-  hideNotifySubscribeModal(cooldownMs = HOME_NOTIFY_PROMPT_SNOOZE_MS) {
-    wx.setStorageSync(HOME_NOTIFY_PROMPT_HIDE_UNTIL_KEY, Date.now() + cooldownMs);
+  hideNotifySubscribeModal() {
     this.setData({
       showNotifySubscribeModal: false,
       notifySubscribeLoading: false,
@@ -429,7 +421,7 @@ Page({
   },
 
   handleNotifySubscribeLater() {
-    this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_SNOOZE_MS);
+    this.hideNotifySubscribeModal();
   },
 
   async handleNotifySubscribeConfirm() {
@@ -440,13 +432,13 @@ Page({
       const result = await Subscribe.requestSubscribe(this.data.notifySubscribeKeys);
       if (result.accepted.length > 0) {
         wx.showToast({ title: '已开启消息通知', icon: 'success' });
-        this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_ACCEPTED_MS);
+        this.hideNotifySubscribeModal();
         return;
       }
 
       const setting = await Subscribe.checkSubscriptionBlocked();
       if (!setting.mainSwitch || setting.blockedTemplates.length > 0) {
-        this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_BLOCKED_MS);
+        this.hideNotifySubscribeModal();
         wx.showModal({
           title: '消息通知未开启',
           content: '你之前拒绝过服务通知，需要到小程序设置里打开订阅消息后，才能收到审核与结果提醒。',
@@ -462,7 +454,7 @@ Page({
       }
 
       wx.showToast({ title: '未开启消息通知', icon: 'none' });
-      this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_SNOOZE_MS);
+      this.hideNotifySubscribeModal();
     } catch (err) {
       this.setData({ notifySubscribeLoading: false });
       wx.showToast({ title: '暂时无法开启通知', icon: 'none' });
