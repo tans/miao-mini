@@ -34,9 +34,8 @@ Page({
 
       const wallet = walletRes.data || {};
       const user = userRes.data || {};
-      const balance = Number(wallet.balance || 0);
-      const frozenAmount = Number(wallet.frozen_amount || 0);
-      const withdrawableAmount = Math.max(0, balance - frozenAmount);
+      const withdrawableAmount = Number(wallet.balance || 0);
+      const balance = withdrawableAmount;
 
       this.setData({
         balance: balance,

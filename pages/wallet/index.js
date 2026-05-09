@@ -227,9 +227,9 @@ Page({
       const withdrawOrders = Array.isArray(withdrawRes.data) ? withdrawRes.data : [];
       const transactions = (transData.data || []).flatMap((t) => buildTransactionViews(t));
 
-      const balance = Number(wallet.balance || 0);
+      const withdrawableAmount = Number(wallet.balance || 0);
       const frozenAmount = Number(wallet.frozen_amount || 0);
-      const withdrawableAmount = Math.max(0, balance - frozenAmount);
+      const balance = withdrawableAmount + frozenAmount;
       const filteredTransactions = this.getFilteredTransactions(this.data.currentTab, transactions);
 
       this.setData({
