@@ -1,8 +1,15 @@
 // pages/home/index.js
 const Api = require('../../utils/api.js');
+const Subscribe = require('../../utils/subscribe.js');
 const app = getApp();
 
 const COVER_THEME_COUNT = 6;
+const HOME_NOTIFY_PROMPT_HIDE_UNTIL_KEY = 'miao_home_notify_prompt_hide_until';
+const HOME_NOTIFY_PROMPT_SNOOZE_MS = 3 * 24 * 60 * 60 * 1000;
+const HOME_NOTIFY_PROMPT_ACCEPTED_MS = 7 * 24 * 60 * 60 * 1000;
+const HOME_NOTIFY_PROMPT_BLOCKED_MS = 7 * 24 * 60 * 60 * 1000;
+const MERCHANT_NOTIFY_TEMPLATE_KEYS = ['pendingReview', 'appealResult', 'taskStatus'];
+const CREATOR_NOTIFY_TEMPLATE_KEYS = ['reviewResult', 'appealResult', 'taskStatus'];
 const PLACEHOLDER_COVER_KEYWORDS = [
   'task-placeholder.svg',
   '/static/images/task-placeholder',
@@ -88,6 +95,27 @@ function sortTasksForDisplay(tasks = []) {
   });
 }
 
+function getHomeNotifyPromptConfig(user) {
+  const isMerchant = !!(user && user.business_verified);
+  const merchantKeys = MERCHANT_NOTIFY_TEMPLATE_KEYS.filter((key) => Subscribe.getTemplateIds([key]).length > 0);
+  const creatorKeys = CREATOR_NOTIFY_TEMPLATE_KEYS.filter((key) => Subscribe.getTemplateIds([key]).length > 0);
+
+  if (isMerchant) {
+    const keys = Array.from(new Set(merchantKeys.concat(creatorKeys)));
+    if (!keys.length) return null;
+    return {
+      keys,
+      desc: '开启后，待审核作品、审核结果和申诉动态可通过微信服务通知及时提醒你。',
+    };
+  }
+
+  if (!creatorKeys.length) return null;
+  return {
+    keys: creatorKeys,
+    desc: '开启后，审核结果和申诉动态可通过微信服务通知及时提醒你。',
+  };
+}
+
 Page({
   data: {
     tasks: [],          // 从服务端拉取的所有任务（当前排序+分页的全量缓存）
@@ -104,6 +132,10 @@ Page({
     navSlotPx: 64,
     // 弹窗仅样式：需要预览时在开发者工具里 setData({ showCreatorCommunityModal: true })
     showCreatorCommunityModal: false,
+    showNotifySubscribeModal: false,
+    notifySubscribeLoading: false,
+    notifySubscribeKeys: [],
+    notifySubscribeDesc: '开启后，待审核作品、审核结果和申诉动态可通过微信服务通知及时提醒你。',
   },
 
   onLoad() {
@@ -111,13 +143,16 @@ Page({
     this._countdownTimer = null;
     this._navScrollTimer = null;
     this._lastScrollTop = 0;
+    this._checkingNotifyPrompt = false;
     const statusBar = app.globalData.statusBarHeight || 20;
     const navContentPx = 44;
     this.setData({ navSlotPx: statusBar + navContentPx });
-    this.loadTasks().then(() => {
-      this._initialized = true;
-      this._startCountdownTimer();
-    });
+    this.loadTasks()
+      .finally(() => {
+        this._initialized = true;
+        this._startCountdownTimer();
+        this.maybePromptNotifySubscription();
+      });
   },
 
   onShow() {
@@ -126,6 +161,7 @@ Page({
     if (this.data.tasks.length > 0) {
       this._refreshCountdowns();
     }
+    this.maybePromptNotifySubscription();
   },
 
   onHide() {
@@ -360,5 +396,79 @@ Page({
 
   closeCreatorCommunityModal() {
     this.setData({ showCreatorCommunityModal: false });
+  },
+
+  async maybePromptNotifySubscription() {
+    if (this._checkingNotifyPrompt || this.data.showNotifySubscribeModal) return;
+
+    const hiddenUntil = Number(wx.getStorageSync(HOME_NOTIFY_PROMPT_HIDE_UNTIL_KEY) || 0);
+    if (hiddenUntil > Date.now()) return;
+
+    this._checkingNotifyPrompt = true;
+    try {
+      await app.waitForLogin();
+      if (!app.isLoggedIn()) return;
+      const promptConfig = getHomeNotifyPromptConfig(app.getUser());
+      if (!promptConfig || !Array.isArray(promptConfig.keys) || !promptConfig.keys.length) return;
+      this.setData({
+        showNotifySubscribeModal: true,
+        notifySubscribeKeys: promptConfig.keys,
+        notifySubscribeDesc: promptConfig.desc,
+      });
+    } finally {
+      this._checkingNotifyPrompt = false;
+    }
+  },
+
+  hideNotifySubscribeModal(cooldownMs = HOME_NOTIFY_PROMPT_SNOOZE_MS) {
+    wx.setStorageSync(HOME_NOTIFY_PROMPT_HIDE_UNTIL_KEY, Date.now() + cooldownMs);
+    this.setData({
+      showNotifySubscribeModal: false,
+      notifySubscribeLoading: false,
+    });
+  },
+
+  handleNotifySubscribeLater() {
+    this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_SNOOZE_MS);
+  },
+
+  async handleNotifySubscribeConfirm() {
+    if (this.data.notifySubscribeLoading) return;
+
+    this.setData({ notifySubscribeLoading: true });
+    try {
+      const result = await Subscribe.requestSubscribe(this.data.notifySubscribeKeys);
+      if (result.accepted.length > 0) {
+        wx.showToast({ title: '已开启消息通知', icon: 'success' });
+        this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_ACCEPTED_MS);
+        return;
+      }
+
+      const setting = await Subscribe.checkSubscriptionBlocked();
+      if (!setting.mainSwitch || setting.blockedTemplates.length > 0) {
+        this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_BLOCKED_MS);
+        wx.showModal({
+          title: '消息通知未开启',
+          content: '你之前拒绝过服务通知，需要到小程序设置里打开订阅消息后，才能收到审核与结果提醒。',
+          confirmText: '去设置',
+          cancelText: '稍后再说',
+          success: (modalRes) => {
+            if (modalRes.confirm && wx.openSetting) {
+              wx.openSetting();
+            }
+          },
+        });
+        return;
+      }
+
+      wx.showToast({ title: '未开启消息通知', icon: 'none' });
+      this.hideNotifySubscribeModal(HOME_NOTIFY_PROMPT_SNOOZE_MS);
+    } catch (err) {
+      this.setData({ notifySubscribeLoading: false });
+      wx.showToast({ title: '暂时无法开启通知', icon: 'none' });
+    }
+  },
+
+  noop() {
   },
 });

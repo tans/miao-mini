@@ -184,4 +184,18 @@
       </view>
     </view>
   </view>
+
+  <view class="notify-subscribe-mask" wx:if="{{showNotifySubscribeModal}}">
+    <view class="notify-subscribe-dialog" catchtap="noop">
+      <view class="notify-subscribe-icon">!</view>
+      <text class="notify-subscribe-title">开启消息通知</text>
+      <text class="notify-subscribe-desc">{{notifySubscribeDesc}}</text>
+      <view class="notify-subscribe-actions">
+        <view class="notify-subscribe-secondary" bindtap="handleNotifySubscribeLater">稍后再说</view>
+        <view class="notify-subscribe-primary {{notifySubscribeLoading ? 'notify-subscribe-primary-disabled' : ''}}" bindtap="handleNotifySubscribeConfirm">
+          {{notifySubscribeLoading ? '处理中...' : '开启消息通知'}}
+        </view>
+      </view>
+    </view>
+  </view>
 </view>
