@@ -60,13 +60,17 @@ npm install
 
 ### 4. 配置后端地址
 
-在 `app.js` 中修改 `globalData.apiBase` 为你的后端地址：
+后端地址在 `utils/config.js` 中按小程序 AppID 自动选择：
 
 ```javascript
-globalData: {
-  apiBase: 'http://你的服务器IP:8888/api/v1'
+const appConfigs = {
+  wx902124d67fa60b0e: {
+    apiBase: 'https://miao-test.clawos.cc/api/v1'
+  }
 }
 ```
+
+新增测试小程序或切换环境时，在 `appConfigs` 里补充对应 AppID 和后端地址即可，不需要改上传脚本。
 
 开发阶段可在开发者工具中勾选「不校验合法域名」。
 

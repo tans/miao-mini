@@ -1,6 +1,7 @@
 const ci = require('miniprogram-ci');
 const path = require('path');
 const fs = require('fs');
+const appConfig = require('../utils/config.js');
 
 const envArg = process.argv.find(arg => arg.startsWith('--env='));
 const envFlag = envArg ? envArg.split('=')[1] : '';
@@ -14,33 +15,24 @@ const isProd =
 const environments = {
   test: {
     appid: 'wx902124d67fa60b0e',
-    apiBase: 'https://miao-test.clawos.cc/api/v1',
-    pendingReviewTemplateId: 'oQ6nLdG2Ntb5Om6Vfc9j8eWeUDoXRj2tcTHB5hG2Mzw',
   },
   prod: {
     appid: 'wx4a1a4cedce98a1ac',
-    apiBase: 'https://miao.jisuhudong.com/api/v1',
-    pendingReviewTemplateId: process.env.PENDING_REVIEW_TEMPLATE_ID || '',
   },
 };
-
-function createConfigContent(apiBase, pendingReviewTemplateId) {
-  return `// 创意喵 - 小程序配置文件\n// API 地址通过此文件配置，部署时修改此文件即可切换环境\nmodule.exports = {\n  // API Base URL - 修改此处切换测试/生产环境\n  apiBase: "${apiBase}",\n\n  subscribeTemplates: {\n    pendingReview: "${pendingReviewTemplateId || ''}",\n    reviewResult: "",\n    appealResult: "",\n    taskStatus: "",\n  },\n\n  // 客服热线\n  customerServicePhone: "400-xxx-xxxx",\n};\n`;
-}
 
 async function upload() {
   const projectPath = path.resolve(__dirname, '..');
   const config = isProd ? environments.prod : environments.test;
-  const configPath = path.join(projectPath, 'utils', 'config.js');
-  const originalConfig = fs.readFileSync(configPath, 'utf8');
+  const runtimeConfig = appConfig.getAppConfig(config.appid);
   const defaultPrivateKeyPath = isProd
     ? path.resolve(__dirname, '..', 'private.wx4a1a4cedce98a1ac.key')
     : path.resolve(__dirname, '..', 'private.key');
   console.log('Upload target:', {
     environment: isProd ? 'prod' : 'test',
     appid: config.appid,
-    apiBase: config.apiBase,
-    pendingReviewTemplateId: config.pendingReviewTemplateId ? 'configured' : 'empty',
+    apiBase: runtimeConfig.apiBase,
+    pendingReviewTemplateId: runtimeConfig.subscribeTemplates && runtimeConfig.subscribeTemplates.pendingReview ? 'configured' : 'empty',
     privateKeyPath: process.env.PRIVATE_KEY_PATH || defaultPrivateKeyPath,
   });
   const buildInfoPath = path.join(projectPath, 'build-info.js');
@@ -52,32 +44,26 @@ async function upload() {
 
   const privateKeyPath = process.env.PRIVATE_KEY_PATH || defaultPrivateKeyPath;
 
-  try {
-    fs.writeFileSync(configPath, createConfigContent(config.apiBase, config.pendingReviewTemplateId));
+  const project = new ci.Project({
+    appid: config.appid,
+    type: 'miniProgram',
+    projectPath,
+    privateKeyPath,
+  });
 
-    const project = new ci.Project({
-      appid: config.appid,
-      type: 'miniProgram',
-      projectPath,
-      privateKeyPath,
-    });
+  const uploadResult = await ci.upload({
+    project,
+    version: process.env.VERSION || '1.0.0',
+    desc: process.env.COMMIT_MESSAGE || 'CI Upload',
+    setting: {
+      es6: true,
+      es7: true,
+      minify: false,
+    },
+  });
 
-    const uploadResult = await ci.upload({
-      project,
-      version: process.env.VERSION || '1.0.0',
-      desc: process.env.COMMIT_MESSAGE || 'CI Upload',
-      setting: {
-        es6: true,
-        es7: true,
-        minify: false,
-      },
-    });
-
-    console.log('Args:', process.argv.slice(2).join(' '));
-    console.log('Upload result:', uploadResult);
-  } finally {
-    fs.writeFileSync(configPath, originalConfig);
-  }
+  console.log('Args:', process.argv.slice(2).join(' '));
+  console.log('Upload result:', uploadResult);
 }
 
 upload().catch(err => {

@@ -60,7 +60,7 @@
 
 ## 常见改动位置
 
-- 改 API 地址: [`utils/config.js`](./utils/config.js)
+- 改 API 地址 / AppID 对应环境: [`utils/config.js`](./utils/config.js)
 - 改全局登录逻辑: [`app.js`](./app.js)
 - 改任务列表展示: [`pages/home/index.js`](./pages/home/index.js)
 - 改灵感流/作品卡片: [`pages/works/index.js`](./pages/works/index.js)
@@ -70,9 +70,10 @@
 
 - 执行命令: `npm run upload`
 - 上传脚本: [`scripts/ci-upload.js`](./scripts/ci-upload.js)
-- 默认读取 [`project.config.json`](./project.config.json) 里的 `appid`
+- 测试/生产 AppID 在 [`scripts/ci-upload.js`](./scripts/ci-upload.js) 中选择；接口地址由 [`utils/config.js`](./utils/config.js) 按 AppID 解析
 - 默认使用项目根目录的 [`private.key`](./private.key)，也可用环境变量 `PRIVATE_KEY_PATH` 覆盖
 - 上传版本默认是 `1.0.0`，可用环境变量 `VERSION` 覆盖
 - 上传描述默认是 `CI Upload`，可用环境变量 `COMMIT_MESSAGE` 覆盖
 - 脚本会自动重写 [`build-info.js`](./build-info.js) 的 `uploadTime`，`mine` 页会读取这个时间展示“最后更新”
+- 上传脚本不会再改写 [`utils/config.js`](./utils/config.js)，新增环境时直接补 AppID 映射即可
 - 如果只改了后端 `/data/miao`，通常不需要执行这里的小程序上传
