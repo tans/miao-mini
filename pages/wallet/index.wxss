@@ -1,12 +1,9 @@
 .wallet-container {
   min-height: 100vh;
   background: #fafafa;
+  /* background: red; */
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: flex-start;
-  padding: 0 24rpx 48rpx;
+  padding: 0 0 48rpx 0;
 }
 
 /* 顶部导航栏 */
@@ -53,6 +50,7 @@
   border-radius: 16rpx;
   overflow: hidden;
   width: 702rpx;
+  margin: auto;
 }
 
 .balance-bg {
@@ -280,7 +278,6 @@
 /* 交易记录标签 */
 .tabs-section {
   background: #fff;
-  padding: 0 32rpx;
   margin-top: 24rpx;
   border-radius: 16rpx 16rpx 0 0;
   width: 100%;
@@ -323,9 +320,9 @@
 
 /* 交易记录列表 */
 .transactions-section {
-  padding: 40rpx 24rpx;
+  margin: 40rpx auto;
   border-radius: 0 0 16rpx 16rpx;
-  width: 100%;
+  width: 702rpx;
 }
 
 .empty-state {
