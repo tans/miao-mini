@@ -408,8 +408,13 @@ Page({
   },
 
   async goHelp() {
-    const fallback = () => wx.navigateTo({ url: '/pages/mine/help/index' });
     const defaultDocUrl = 'https://docs.qq.com/doc/DSGZhUG1YSmx2WUpR';
+    const showHelpError = () => {
+      wx.showToast({
+        title: '帮助中心打开失败',
+        icon: 'none'
+      });
+    };
 
     try {
       const res = await Api.getAppSettings();
@@ -417,16 +422,16 @@ Page({
       const docUrl = (settings.help_center_doc_url || defaultDocUrl).trim();
       const appId = settings.tencent_docs_app_id || 'wxd45c635d754dbf59';
       if (!docUrl) {
-        fallback();
+        showHelpError();
         return;
       }
       wx.openEmbeddedMiniProgram({
         appId,
         path: `pages/detail/detail?url=${encodeURIComponent(docUrl)}`,
-        fail: fallback
+        fail: showHelpError
       });
     } catch (err) {
-      fallback();
+      showHelpError();
     }
   },
 

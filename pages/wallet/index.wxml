@@ -109,14 +109,14 @@
     </view>
   </view>
 
-  <!-- 提现成功弹窗 -->
+  <!-- 提现申请提交弹窗 -->
   <view wx:if="{{showWithdrawSuccessModal}}" class="modal-mask" bindtap="closeWithdrawSuccessModal"></view>
   <view wx:if="{{showWithdrawSuccessModal}}" class="modal-container">
     <view class="modal-content success-content">
-      <text class="success-title">提现成功</text>
+      <text class="success-title">提现申请已提交</text>
       <image class="success-icon" src="./images/success.png" />
       <text class="success-desc">
-        本次提现¥{{withdrawResult.withdraw_amount || withdrawAmount}}，手续费¥{{withdrawResult.commission || '0.00'}}，实际到账¥{{withdrawResult.actual_amount || '0.00'}}。
+        本次申请提现¥{{withdrawResult.withdraw_amount || withdrawAmount}}，手续费¥{{withdrawResult.commission || '0.00'}}，预计到账¥{{withdrawResult.actual_amount || '0.00'}}，请等待平台审核。
       </text>
       <view class="success-btn" bindtap="closeWithdrawSuccessModal">我知道了</view>
     </view>
