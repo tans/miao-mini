@@ -14,7 +14,7 @@ const appConfigs = {
     apiBase: 'https://miao-test.clawos.cc/api/v1',
     subscribeTemplates: {
       pendingReview: 'oQ6nLdG2Ntb5Om6Vfc9j8eWeUDoXRj2tcTHB5hG2Mzw',
-      reviewResult: '',
+      reviewResult: '8nQFpp2iXI83mCGsiTNWrcTCJ2PT1kkfBvK9CWnR13A',
       appealResult: '',
       taskStatus: '',
     },
