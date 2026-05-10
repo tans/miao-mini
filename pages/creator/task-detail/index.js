@@ -58,6 +58,16 @@ function normalizeBooleanFlag(value, defaultValue = false) {
   return !!value;
 }
 
+function readOptionalNumber() {
+  for (let i = 0; i < arguments.length; i += 1) {
+    const value = arguments[i];
+    if (value === undefined || value === null || value === '') continue;
+    const num = Number(value);
+    if (Number.isFinite(num)) return num;
+  }
+  return null;
+}
+
 function getClaimStatusClass(status, reviewResult = 0) {
   const value = Number(status);
   const review = Number(reviewResult || 0);
@@ -89,11 +99,12 @@ function getClaimActionState(claim = {}) {
   const status = Number(claim.status || 0);
   const reviewResult = getClaimReviewResult(claim);
 
+  if (reviewResult === 3) return { text: '去申诉', className: 'action-state-reported' };
+  if (reviewResult === 2) return { text: '已淘汰', className: 'action-state-rejected' };
   if (status === 3) return { text: '已采纳', className: 'action-state-approved' };
   if (status === 4) return { text: '审核超时，已发参与奖', className: 'action-state-timeout' };
   if (status === 5) return { text: '已超时', className: 'action-state-timeout' };
-  if (status === 1 && reviewResult === 2) return { text: '已淘汰', className: 'action-state-rejected' };
-  if (status === 6 || (status === 1 && reviewResult === 3)) return { text: '去申诉', className: 'action-state-reported' };
+  if (status === 6) return { text: '去申诉', className: 'action-state-reported' };
   if (status === 2) return { text: '已提交，待审核', className: 'action-state-pending' };
 
   return null;
@@ -116,6 +127,21 @@ function normalizeTask(task = {}) {
   const isPublic = task.public == null ? true : !!task.public;
   const remainingCount = Number(task.remaining_count ?? task.remainingCount ?? 0) || 0;
   const totalCount = Number(task.total_count ?? task.totalCount ?? 0) || 0;
+  const adoptionRateValue = readOptionalNumber(
+    task.adoptionRate,
+    task.adoption_rate,
+    task.merchantAdoptionRate,
+    task.merchant_adoption_rate
+  );
+  const totalPublishedValue = readOptionalNumber(
+    task.totalPublished,
+    task.total_published,
+    task.publishCount,
+    task.publish_count,
+    task.businessPublishCount,
+    task.business_publish_count,
+    task.totalTasks
+  );
   const isFull = totalCount > 0 && remainingCount <= 0;
   const hasSignedUp = task.hasSignedUp != null ? task.hasSignedUp : (task.has_signed_up != null ? task.has_signed_up : !!claim);
   const canSubmit = claim
@@ -144,8 +170,10 @@ function normalizeTask(task = {}) {
     videoAspect: task.videoAspect || task.video_aspect || '',
     videoResolution: task.videoResolution || task.video_resolution || '',
     videoDuration: task.videoDuration || task.video_duration || '',
-    adoptionRate: task.adoptionRate ?? task.adoption_rate ?? 0,
-    totalPublished: task.totalPublished ?? task.total_published ?? task.totalTasks ?? 0,
+    adoptionRate: adoptionRateValue == null ? 0 : adoptionRateValue,
+    adoptionRateDisplay: adoptionRateValue == null ? '--' : `${adoptionRateValue}%`,
+    totalPublished: totalPublishedValue == null ? 0 : totalPublishedValue,
+    totalPublishedDisplay: totalPublishedValue == null ? '--' : String(totalPublishedValue),
     totalSpent: task.totalSpent ?? task.total_spent ?? task.totalSpend ?? 0,
     isPublic,
     visibilityText: isPublic ? '公开投稿' : '隐私保护',
@@ -174,8 +202,8 @@ function normalizeTask(task = {}) {
 function getClaimStatusText(status, reviewResult = 0) {
   const value = Number(status);
   const review = Number(reviewResult || 0);
-  if (value === 1 && review === 2) return '已淘汰';
-  if (value === 1 && review === 3) return '去申诉';
+  if (review === 2) return '已淘汰';
+  if (review === 3) return '已举报';
   const map = {
     1: '已报名，待提交',
     2: '已提交，待审核',
@@ -264,7 +292,7 @@ function getSubmissionStatusText(status, reviewResult) {
   const value = Number(status);
   const review = Number(reviewResult || 0);
   if (value === 3) return '已采纳';
-  if (review === 3) return '去申诉';
+  if (review === 3) return '已举报';
   if (review === 2) return '已淘汰';
   if (value === 2) return '待审核';
   return '已投稿';
