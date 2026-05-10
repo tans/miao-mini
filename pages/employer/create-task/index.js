@@ -1,5 +1,6 @@
 const Api = require('../../../utils/api.js');
 const Subscribe = require('../../../utils/subscribe.js');
+const { INDUSTRY_OPTIONS } = require('../../../utils/industry-options.js');
 const { formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 const DEFAULT_DEADLINE_DAYS = 7;
@@ -49,24 +50,7 @@ Page({
     durationIndex: 1,
     ratioIndex: 0,
     qualityIndex: 1,
-    industryOptions: [
-      { id: 1001, name: '餐饮美食' },
-      { id: 1002, name: '酒店民宿' },
-      { id: 1003, name: '本地生活' },
-      { id: 1004, name: '房产家居' },
-      { id: 1005, name: '家居家电' },
-      { id: 1006, name: '服饰穿搭' },
-      { id: 1007, name: '美妆护肤' },
-      { id: 1008, name: '母婴亲子' },
-      { id: 1009, name: '数码科技' },
-      { id: 1010, name: '教育培训' },
-      { id: 1011, name: '汽车服务' },
-      { id: 1012, name: '医疗健康' },
-      { id: 1013, name: '金融理财' },
-      { id: 1014, name: '企业商务' },
-      { id: 1015, name: '电商零售' },
-      { id: 1099, name: '其他行业' }
-    ],
+    industryOptions: INDUSTRY_OPTIONS,
     styleOptions: ['口语化', '高级感', '接地气', '幽默风趣', '温馨治愈', '时尚潮流'],
     baseTotal: '20.00',
     awardTotal: '200.00',

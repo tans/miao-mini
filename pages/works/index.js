@@ -1,24 +1,5 @@
 const Api = require('../../utils/api.js');
-
-const TAG_OPTIONS = [
-  '全部',
-  '餐饮美食',
-  '酒店民宿',
-  '本地生活',
-  '房产家居',
-  '家居家电',
-  '服饰穿搭',
-  '美妆护肤',
-  '母婴亲子',
-  '数码科技',
-  '教育培训',
-  '汽车服务',
-  '医疗健康',
-  '金融理财',
-  '企业商务',
-  '电商零售',
-  '其他行业',
-];
+const { INDUSTRY_TAGS } = require('../../utils/industry-options.js');
 
 const COVER_THEME_COUNT = 6;
 
@@ -53,7 +34,7 @@ Page({
     searchValue: '',
     searchBarHidden: false,
     activeTag: '全部',
-    tags: TAG_OPTIONS,
+    tags: INDUSTRY_TAGS,
     page: 1,
     loading: false,
     hasMore: true,

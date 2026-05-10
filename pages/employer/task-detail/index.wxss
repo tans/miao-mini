@@ -859,9 +859,10 @@
 }
 
 .status-badge {
-  padding: 8rpx 16rpx;
-  border-radius: 12rpx;
-  font-size: 24rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 10rpx;
+  font-size: 20rpx;
+  line-height: 1.4;
 }
 
 .status-badge.pending {

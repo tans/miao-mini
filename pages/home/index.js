@@ -1,6 +1,7 @@
 // pages/home/index.js
 const Api = require('../../utils/api.js');
 const Subscribe = require('../../utils/subscribe.js');
+const { buildIndustryTags } = require('../../utils/industry-options.js');
 const app = getApp();
 
 const COVER_THEME_COUNT = 6;
@@ -116,7 +117,7 @@ Page({
   data: {
     tasks: [],          // 从服务端拉取的所有任务（当前排序+分页的全量缓存）
     displayTasks: [],   // 当前展示的任务（行业过滤后）
-    industryTags: ['全部'],   // 从任务数据中提取的行业标签列表，首项固定为“全部”
+    industryTags: buildIndustryTags(),   // 首页展示完整行业标签，缺省仍保留“全部”
     styleTags: [],      // 从任务数据中提取的风格标签列表
     activeIndustry: '全部', // 当前选中的行业（全部=不过滤）
     sort: 'created_at', // 当前排序：created_at / price_desc / price_asc
@@ -300,7 +301,7 @@ Page({
         (t.industryArray || []).forEach(tag => tag && industryTagSet.add(tag));
         (t.styleArray || []).forEach(tag => tag && styleTagSet.add(tag));
       });
-      const industryTags = ['全部', ...Array.from(industryTagSet).filter((tag) => tag !== '全部')];
+      const industryTags = buildIndustryTags(Array.from(industryTagSet));
       const styleTags = Array.from(styleTagSet);
 
       // 应用当前行业过滤
