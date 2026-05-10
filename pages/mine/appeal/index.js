@@ -6,6 +6,8 @@ const app = getApp();
 
 const DEFAULT_REPORT_REASON = '违规';
 const MAX_UPLOAD_IMAGES = 3;
+const APPEAL_TIMEOUT_HOURS = 48;
+const APPEAL_TIMEOUT_MS = APPEAL_TIMEOUT_HOURS * 60 * 60 * 1000;
 
 function pick() {
   for (let i = 0; i < arguments.length; i += 1) {
@@ -30,6 +32,35 @@ function toTimestamp(value) {
   return Number.isFinite(ts) ? ts : 0;
 }
 
+function formatRemainDuration(ms) {
+  if (!Number.isFinite(ms) || ms <= 0) return '已超时';
+  const totalMinutes = Math.ceil(ms / (60 * 1000));
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  if (hours <= 0) return `${minutes}分钟`;
+  if (minutes <= 0) return `${hours}小时`;
+  return `${hours}小时${minutes}分`;
+}
+
+function getAppealCountdownText(reviewAt, nowTs = Date.now()) {
+  const reviewTs = toTimestamp(reviewAt);
+  if (!reviewTs) return '';
+  const remain = reviewTs + APPEAL_TIMEOUT_MS - nowTs;
+  if (remain <= 0) return '已超时，平台将自动判拒';
+  return `剩余 ${formatRemainDuration(remain)} 自动判拒`;
+}
+
+function isAppealDeadlineExpired(reviewAt, nowTs = Date.now()) {
+  const reviewTs = toTimestamp(reviewAt);
+  return !!reviewTs && reviewTs + APPEAL_TIMEOUT_MS <= nowTs;
+}
+
+function isExistingAppealError(err) {
+  const code = toNumber(err && err.code);
+  const message = String((err && err.message) || '').trim();
+  return code === 40901 || message.includes('已有申诉记录');
+}
+
 function splitCSV(value) {
   return String(value || '')
     .split(',')
@@ -40,6 +71,7 @@ function splitCSV(value) {
 function normalizeAppealReason(text) {
   const value = String(text || '').trim();
   if (!value) return '';
+  if (value === '系统自动处理：超时未申诉') return '';
   return value
     .replace(/^(作品申诉|创作者申诉|申诉)[:：\s]*/i, '')
     .replace(/[。\.]+$/g, '')
@@ -100,6 +132,7 @@ function normalizeAppeal(appeal = {}) {
     status,
     statusText: pick(appeal.status_str, resolved ? '已处理' : '待处理'),
     statusClass: resolved ? 'resolved' : 'processing',
+    autoTimeout: !!pick(appeal.auto_timeout, appeal.autoTimeout, false),
     createdAt,
     handleAt,
     evidence,
@@ -118,6 +151,22 @@ function getAppealSettlementText(decisionText, reviewResult) {
     return '拒绝申诉 不变更原诉';
   }
   return '';
+}
+
+function normalizeMerchantReportReason(text) {
+  const value = String(text || '').trim();
+  if (!value) return '';
+  if (
+    value === '合理合规'
+    || value === '平台处理中'
+    || value === '作品被举报'
+    || value === '作品被退回'
+    || value.indexOf('通过申诉') >= 0
+    || value.indexOf('拒绝申诉') >= 0
+  ) {
+    return '';
+  }
+  return value;
 }
 
 function normalizeClaim(claim = {}) {
@@ -201,15 +250,20 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const claimStatus = toNumber(pick(claim.status, 0));
   const claimCreatorId = String(pick(claim.creator_id, claim.creatorId, ''));
   const taskBusinessId = String(pick(task.business_id, task.businessId, claim.business_id, claim.businessId, ''));
+  const reportAt = pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, '');
+  const appealDeadlineExpired = isAppealDeadlineExpired(reportAt);
   const appealStatus = appeal ? toNumber(appeal.status) : 0;
   const appealResolved = appealStatus === 2;
+  const appealAutoTimeout = !!(appeal && appeal.autoTimeout);
   const hasReport = reviewResult === 3 || !!appeal;
+  const reportTimedOut = !appeal && hasReport && appealDeadlineExpired;
   const isBusinessTask = !!currentUserId && !!taskBusinessId && String(taskBusinessId) === String(currentUserId);
   const canAppeal = !!currentUserId
     && !!claimCreatorId
     && String(claimCreatorId) === String(currentUserId)
     && reviewResult === 3
-    && !appeal;
+    && !appeal
+    && !appealDeadlineExpired;
 
   const taskTitle = pick(task.title, task.task_title, claim.task_title, claim.taskTitle, appeal && (appeal.taskTitle || appeal.task_title), `任务 #${taskId || claimId || '-'}`);
   const taskOwnerName = pick(task.business_name, task.businessName, task.merchant_name, task.merchantName, '');
@@ -230,17 +284,20 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   );
 
   const reportReason = reviewResult === 3
-    ? pick(claim.review_comment, claim.reviewComment, appeal && appeal.merchantResult, DEFAULT_REPORT_REASON)
-    : pick(claim.review_comment, claim.reviewComment, appeal && appeal.merchantResult, '');
+    ? pick(
+      normalizeMerchantReportReason(appeal && appeal.merchantResult),
+      normalizeMerchantReportReason(claim.review_comment),
+      DEFAULT_REPORT_REASON
+    )
+    : pick(
+      normalizeMerchantReportReason(appeal && appeal.merchantResult),
+      normalizeMerchantReportReason(claim.review_comment),
+      ''
+    );
   const reportOwnerName = taskOwnerName || '商家';
   const taskTitleText = `任务《${taskTitle || '未命名'}》`;
   const reportTimeText = formatDateTime(pick(
-    claim.review_at,
-    claim.reviewAt,
-    claim.updated_at,
-    claim.updatedAt,
-    claim.created_at,
-    claim.createdAt,
+    reportAt,
     ''
   ));
   const reportMetaText = `商家:${reportOwnerName} 举报时间:${reportTimeText || '时间待更新'}`;
@@ -249,21 +306,27 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const appealReasonText = appealReason || '';
   const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
   const appealCreatorText = creatorName ? `创作者:${creatorName}` : '创作者';
+  const appealCountdownText = !appeal && hasReport && !reportTimedOut ? getAppealCountdownText(reportAt) : '';
   const appealTimeLine = appeal
-    ? `提交申诉:${appealTimeText || '时间待更新'}`
-    : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
+    ? (appealAutoTimeout
+      ? `超时未申诉:${appealTimeText || '时间待更新'}`
+      : `提交申诉:${appealTimeText || '时间待更新'}`)
+    : (reportTimedOut
+      ? '已超时，平台将自动判拒'
+      : (appealCountdownText || (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'))));
   const appealMetaText = `${appealCreatorText} ${appealTimeLine}`.trim();
-  const appealLabel = appeal ? '已申诉' : (hasReport ? '待申诉' : '待处理');
+  const appealLabel = appeal
+    ? (appealAutoTimeout ? '已超时' : '已申诉')
+    : (reportTimedOut ? '已超时' : (hasReport ? '待申诉' : '待处理'));
   const appealDetail = appeal
-    ? appealCreatorText
-    : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'));
+    ? (appealAutoTimeout ? '创作者未在48小时内提交申诉，系统已自动处理' : appealCreatorText)
+    : (reportTimedOut
+      ? `创作者未在${APPEAL_TIMEOUT_HOURS}小时内提交申诉`
+      : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')));
 
   const appealDecisionText = appeal ? pick(appeal.decisionText, '') : '';
-  const platformReviewComment = appealResolved && (appealDecisionText === '通过申诉' || reviewResult !== 3)
-    ? pick(claim.review_comment, claim.reviewComment, '')
-    : '';
   const appealReplyText = appeal
-    ? pick(platformReviewComment, appeal.result, appealDecisionText, '')
+    ? pick(appeal.result, appealDecisionText, '')
     : '';
   const appealAccepted = appealDecisionText === '通过申诉' || (appealResolved && claimStatus === 2);
   const platformOutcomeText = appealResolved
@@ -274,15 +337,17 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     : '';
   const platformLabel = appeal
     ? (appealResolved ? platformOutcomeText : '处理中')
-    : '待处理';
+    : (reportTimedOut ? '待判拒' : '待处理');
   const platformReason = appeal
     ? (appealResolved ? (platformOutcomeText || '等待平台处理') : '等待平台处理')
-    : (hasReport ? '等待创作者申诉后进入平台处理' : '等待审核结果');
+    : (reportTimedOut
+      ? '等待平台自动判拒'
+      : (hasReport ? '等待创作者申诉后进入平台处理' : '等待审核结果'));
   const platformStateClass = appeal
     ? (appealResolved
       ? (appealAccepted ? 'resolved' : 'rejected')
       : 'processing')
-    : (hasReport ? 'waiting' : 'muted');
+    : (reportTimedOut ? 'rejected' : (hasReport ? 'waiting' : 'muted'));
   const platformReplyText = appealResolved && appealReplyText && appealReplyText !== platformOutcomeText
     ? appealReplyText
     : '';
@@ -293,10 +358,10 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const reportLabel = hasReport ? '已举报' : '待处理';
   const overallStateText = appeal
     ? (appealResolved ? platformOutcomeText : '申诉中')
-    : (hasReport ? '待申诉' : '待处理');
+    : (reportTimedOut ? '已超时' : (hasReport ? '待申诉' : '待处理'));
   const overallStateClass = appeal
     ? (appealResolved ? (appealAccepted ? 'resolved' : 'rejected') : 'processing')
-    : (hasReport ? 'waiting' : 'muted');
+    : (reportTimedOut ? 'rejected' : (hasReport ? 'waiting' : 'muted'));
 
   const materials = Array.isArray(claim.materials) ? claim.materials.slice(0, 4).map(normalizeWorkflowMaterial) : [];
   const headerInfoParts = [];
@@ -330,6 +395,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       title: '商家举报',
       label: reportLabel,
       reason: reportReason || DEFAULT_REPORT_REASON,
+      rawTime: reportAt,
       timeText: reportTimeText || '时间待更新',
       detail: reportMetaText,
       stateClass: hasReport ? 'reported' : 'waiting',
@@ -337,13 +403,18 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
     appeal: {
       title: '创作者申诉',
       label: appealLabel,
-      reason: appeal ? appealReasonText : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果')),
+      reason: appeal
+        ? appealReasonText
+        : (reportTimedOut
+          ? '超时未申诉'
+          : (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'))),
       detail: appealDetail,
       metaText: appealMetaText,
       creatorText: appealCreatorText,
       timeLine: appealTimeLine,
       timeText: appealTimeText || '时间待更新',
-      stateClass: appeal ? 'processing' : (hasReport ? 'waiting' : 'muted'),
+      stateClass: appeal ? (appealAutoTimeout ? 'rejected' : 'processing') : (reportTimedOut ? 'rejected' : (hasReport ? 'waiting' : 'muted')),
+      countdownText: appealCountdownText,
       appealId: appeal ? String(appeal.id || '') : '',
       evidenceCount: appeal ? appeal.evidenceCount : 0,
       evidenceList: appeal ? appeal.evidence : [],
@@ -388,6 +459,8 @@ Page({
     submitting: false,
   },
 
+  countdownTimer: null,
+
   onLoad(options = {}) {
     const taskId = String(pick(options.taskId, options.task_id, ''));
     const claimId = String(pick(options.claimId, options.claim_id, ''));
@@ -415,6 +488,99 @@ Page({
     if (app.isLoggedIn() && !this.data.loading) {
       this.loadPageData(false);
     }
+    this.startCountdownTimer();
+  },
+
+  onHide() {
+    this.stopCountdownTimer();
+  },
+
+  onUnload() {
+    this.stopCountdownTimer();
+  },
+
+  startCountdownTimer() {
+    if (this.countdownTimer) return;
+    this.countdownTimer = setInterval(() => {
+      this.refreshAppealCountdowns();
+    }, 60 * 1000);
+  },
+
+  stopCountdownTimer() {
+    if (!this.countdownTimer) return;
+    clearInterval(this.countdownTimer);
+    this.countdownTimer = null;
+  },
+
+  refreshAppealCountdowns() {
+    const nowTs = Date.now();
+    const records = (this.data.records || []).map((record) => {
+      if (!record || !record.report || !record.appeal || record.appeal.appealId) {
+        return record;
+      }
+      if (!record.report.rawTime) {
+        return record;
+      }
+      const countdownExpired = isAppealDeadlineExpired(record.report.rawTime, nowTs);
+      const countdownText = countdownExpired ? '' : getAppealCountdownText(record.report.rawTime, nowTs);
+      if (!countdownExpired && !countdownText) {
+        return record;
+      }
+      const nextMetaText = countdownExpired
+        ? `${record.appeal.creatorText || '创作者'} 已超时，平台将自动判拒`.trim()
+        : `${record.appeal.creatorText || '创作者'} ${countdownText}`.trim();
+      const nextReason = countdownExpired
+        ? '超时未申诉'
+        : (record.canAppeal ? '点击按钮提交申诉说明' : '等待创作者提交申诉');
+      const nextDetail = countdownExpired
+        ? `创作者未在${APPEAL_TIMEOUT_HOURS}小时内提交申诉`
+        : nextReason;
+      const nextAppealLabel = countdownExpired ? '已超时' : '待申诉';
+      const nextOverallStateText = countdownExpired ? '已超时' : '待申诉';
+      const nextStateClass = countdownExpired ? 'rejected' : 'waiting';
+      const nextCanAppeal = countdownExpired ? false : record.canAppeal;
+
+      if (
+        countdownText === record.appeal.countdownText
+        && nextMetaText === record.appeal.metaText
+        && nextReason === record.appeal.reason
+        && nextDetail === record.appeal.detail
+        && nextAppealLabel === record.appeal.label
+        && nextStateClass === record.appeal.stateClass
+        && nextCanAppeal === record.canAppeal
+        && nextOverallStateText === record.overallStateText
+        && nextStateClass === record.overallStateClass
+      ) {
+        return record;
+      }
+      return {
+        ...record,
+        canAppeal: nextCanAppeal,
+        overallStateText: nextOverallStateText,
+        overallStateClass: nextStateClass,
+        appeal: {
+          ...record.appeal,
+          label: nextAppealLabel,
+          reason: nextReason,
+          detail: nextDetail,
+          countdownText,
+          metaText: nextMetaText,
+          timeLine: countdownExpired ? '已超时，平台将自动判拒' : countdownText,
+          stateClass: nextStateClass,
+        },
+        platform: countdownExpired
+          ? {
+            ...record.platform,
+            label: '待判拒',
+            reason: '等待平台自动判拒',
+            detail: '等待平台自动判拒',
+            replyLine: '等待平台自动判拒',
+            stateClass: 'rejected',
+          }
+          : record.platform,
+      };
+    });
+    this.setData({ records });
   },
 
   onPullDownRefresh() {
@@ -436,6 +602,8 @@ Page({
         loading: false,
         ...pageMeta,
       });
+      this.refreshAppealCountdowns();
+      this.startCountdownTimer();
 
       this.autoOpenComposerFromRoute(records);
     } catch (err) {
@@ -619,6 +787,10 @@ Page({
     }
 
     const record = (this.data.records || []).find((item) => String(item.claimId) === claimId);
+    if (record && record.appeal && record.appeal.appealId) {
+      wx.showToast({ title: '该作品已有申诉记录', icon: 'none' });
+      return;
+    }
     if (!record || !record.canAppeal) {
       wx.showToast({ title: '当前作品暂无可申诉状态', icon: 'none' });
       return;
@@ -643,8 +815,9 @@ Page({
     });
   },
 
-  closeComposer() {
-    if (this.data.submitting) return;
+  closeComposer(forceClose = false) {
+    const forced = forceClose === true;
+    if (this.data.submitting && !forced) return;
     this.setData({
       showComposer: false,
       composerTarget: null,
@@ -746,11 +919,17 @@ Page({
         evidence,
       });
 
+      this.closeComposer(true);
       wx.showToast({ title: '申诉已提交', icon: 'success' });
-      this.closeComposer();
       await this.loadPageData(false);
     } catch (err) {
       const message = err && err.message ? err.message : '提交失败';
+      if (isExistingAppealError(err)) {
+        this.closeComposer(true);
+        wx.showToast({ title: '该作品已有申诉记录', icon: 'none' });
+        await this.loadPageData(false);
+        return;
+      }
       this.setData({ submitError: message });
       wx.showToast({ title: message, icon: 'none' });
     } finally {
