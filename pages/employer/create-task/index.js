@@ -6,6 +6,7 @@ const app = getApp();
 const DEFAULT_DEADLINE_DAYS = 7;
 const PLATFORM_FEE_RATE = 0.10;
 const PRIVACY_DISCOUNT_RATE = 0.05;
+const MERCHANT_TUTORIAL_VIDEO_URL = 'https://public.jisuhudong.com/minapp/商家发布教程.mp4';
 const JIMENG_TUTORIAL_VIDEO_URL = 'https://public.jisuhudong.com/minapp/既梦教程.mp4';
 
 function formatLocalDate(date) {
@@ -472,6 +473,13 @@ Page({
     });
   },
 
+  showMerchantTutorial() {
+    wx.navigateTo({
+      url: `/pages/video-player/index?url=${encodeURIComponent(MERCHANT_TUTORIAL_VIDEO_URL)}`,
+      fail: () => wx.showToast({ title: '无法打开教程', icon: 'none' }),
+    });
+  },
+
   goBack() {
     wx.navigateBack({ fail: () => wx.switchTab({ url: '/pages/home/index' }) });
   },
@@ -557,12 +565,10 @@ Page({
       submitFeedbackType: '',
     });
     try {
-      if (Subscribe.hasBusinessNotifyTemplates()) {
-        try {
-          await Subscribe.requestBusinessNotifications();
-        } catch (subscribeErr) {
-          // 订阅授权不影响发布任务。
-        }
+      try {
+        await Subscribe.requestPendingReviewNotification();
+      } catch (subscribeErr) {
+        // 订阅授权不影响发布任务。
       }
 
       wx.showLoading({ title: hasMaterials ? '上传素材中...' : '提交中...' });

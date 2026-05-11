@@ -1,5 +1,6 @@
 // pages/employer/my-tasks/index.js
 const Api = require('../../../utils/api.js');
+const Subscribe = require('../../../utils/subscribe.js');
 const { formatDateTime } = require('../../../utils/util.js');
 const app = getApp();
 
@@ -12,6 +13,7 @@ function normalizeTaskStatus(rawStatus, options = {}) {
   const statusTextMap = {
     active: '征稿中',
     ended: '已结束',
+    paused: '已暂停',
   };
   const { isFilledAndReviewed = false } = options;
 
@@ -49,6 +51,17 @@ function normalizeTaskStatus(rawStatus, options = {}) {
     };
   }
 
+  if (rawStatus === 'paused' || statusCode === 6) {
+    return {
+      statusKey: 'paused',
+      statusText: statusTextMap.paused,
+      cardClass: 'card-ended',
+      statusClass: 'status-ended',
+      actionText: '查看详情',
+      actionTap: 'goTaskDetail',
+    };
+  }
+
   return {
     statusKey: 'ended',
     statusText: statusTextMap.ended,
@@ -81,6 +94,11 @@ function normalizeTask(task = {}) {
       actionText: '查看结果',
       actionTap: 'goTaskResult',
     }
+    : meta.statusKey === 'paused'
+      ? {
+        actionText: '查看详情',
+        actionTap: 'goTaskDetail',
+      }
     : pendingReviewCount > 0
       ? {
         actionText: '去审核',
@@ -118,6 +136,7 @@ Page({
   },
 
   onLoad() {
+    this._subscribePromptTriggered = false;
     if (!app.isLoggedIn()) {
       app.silentLogin().then(() => {
         if (app.isLoggedIn()) {
@@ -133,6 +152,7 @@ Page({
   },
 
   onShow() {
+    this._subscribePromptTriggered = false;
     if (app.isLoggedIn()) {
       this.loadData();
     }
@@ -216,6 +236,10 @@ Page({
     const { action, id } = e.currentTarget.dataset;
     if (!id) return;
 
+    if (action === 'goReviewTask') {
+      this.requestPendingReviewNotificationOnce();
+    }
+
     if (action === 'goTaskDetail') {
       wx.navigateTo({ url: `/pages/employer/task-detail/index?id=${id}` });
       return;
@@ -235,6 +259,12 @@ Page({
 
   goWallet() {
     wx.navigateTo({ url: '/pages/wallet/index' });
+  },
+
+  requestPendingReviewNotificationOnce() {
+    if (this._subscribePromptTriggered) return;
+    this._subscribePromptTriggered = true;
+    Subscribe.requestPendingReviewNotification().catch(() => {});
   },
 
   formatDateTime(dateStr) {

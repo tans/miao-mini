@@ -1,4 +1,5 @@
 const Api = require('../../../utils/api.js');
+const Subscribe = require('../../../utils/subscribe.js');
 const { formatDateTime, formatAmount } = require('../../../utils/util.js');
 const app = getApp();
 
@@ -356,6 +357,7 @@ Page({
   },
 
   onLoad(options = {}) {
+    this._subscribePromptTriggered = false;
     const taskId = options.id || options.taskId || '';
     const validTabs = ['detail', 'proposals'];
     const initialTab = validTabs.includes(options.tab)
@@ -385,6 +387,7 @@ Page({
   },
 
   onShow() {
+    this._subscribePromptTriggered = false;
     if (app.isLoggedIn() && this.data.taskId && !this.data.loading) {
       this.loadTaskDetail(this.data.taskId);
     }
@@ -540,29 +543,8 @@ Page({
   previewMaterial(e) {
     const { url, type } = e.currentTarget.dataset;
     if (!url) return;
-    if (type === 'video') {
-      this.openVideoPreviewByUrl(url);
-      return;
-    }
+    if (type === 'video') return;
     wx.previewImage({ current: url, urls: [url] });
-  },
-
-  openVideoPreview(e) {
-    const url = e && e.currentTarget && e.currentTarget.dataset
-      ? e.currentTarget.dataset.url
-      : '';
-    this.openVideoPreviewByUrl(url);
-  },
-
-  openVideoPreviewByUrl(url) {
-    const playableUrl = Api.getPlayableUrl(url);
-    if (!playableUrl) {
-      wx.showToast({ title: '视频地址无效', icon: 'none' });
-      return;
-    }
-    wx.navigateTo({
-      url: `/pages/video-player/index?url=${encodeURIComponent(playableUrl)}`,
-    });
   },
 
   previewImages(e) {
@@ -651,6 +633,7 @@ Page({
       pendingReviewResult: 0,
       pendingReviewReason: '',
     });
+    this.requestPendingReviewNotificationOnce();
     await this.performReviewClaim(claimId, result, reason);
   },
 
@@ -700,6 +683,7 @@ Page({
       if (!reason) return;
     }
 
+    this.requestPendingReviewNotificationOnce();
     wx.showLoading({ title: '处理中...' });
     try {
       await Api.batchReviewClaim(selectedClaims.map((item) => item.id), action, reason);
@@ -741,6 +725,12 @@ Page({
 
   createReportDisputeRecords(claims = [], reason) {
     return claims;
+  },
+
+  requestPendingReviewNotificationOnce() {
+    if (this._subscribePromptTriggered) return;
+    this._subscribePromptTriggered = true;
+    Subscribe.requestPendingReviewNotification().catch(() => {});
   },
 
   async downloadAllMaterials() {

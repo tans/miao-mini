@@ -1,10 +1,12 @@
 const Api = require('../../../utils/api.js');
+const Subscribe = require('../../../utils/subscribe.js');
 const { formatDateTime: formatDateTimeText } = require('../../../utils/util.js');
 const app = getApp();
 
 const MATERIAL_POLL_INTERVAL = 4000;
 const MATERIAL_POLL_MAX_DURATION = 15 * 60 * 1000;
 const PLACEHOLDER_MATERIAL_KEYWORDS = ['task-placeholder', 'task_placeholder'];
+const CREATOR_TUTORIAL_VIDEO_URL = 'https://public.jisuhudong.com/minapp/创作者接单指引.mp4';
 const JIMENG_TUTORIAL_VIDEO_URL = 'https://public.jisuhudong.com/minapp/既梦教程.mp4';
 
 function toList(value) {
@@ -423,6 +425,7 @@ Page({
   },
 
   onLoad(options) {
+    this._subscribePromptTriggered = false;
     if (options.id) {
       this.setData({ taskId: options.id });
       this.loadTaskDetail(options.id).then(() => {
@@ -434,6 +437,7 @@ Page({
   },
 
   onShow() {
+    this._subscribePromptTriggered = false;
     if (!this.data.taskId || !this.data.task) return;
     const currentUserId = getCurrentUserId();
     const isMerchantTask = !!(currentUserId && String(this.data.task.businessId || this.data.task.business_id || '') === currentUserId);
@@ -579,6 +583,13 @@ Page({
   showJimengTutorial() {
     wx.navigateTo({
       url: `/pages/video-player/index?url=${encodeURIComponent(JIMENG_TUTORIAL_VIDEO_URL)}`,
+      fail: () => wx.showToast({ title: '无法打开教程', icon: 'none' }),
+    });
+  },
+
+  showCreatorTutorial() {
+    wx.navigateTo({
+      url: `/pages/video-player/index?url=${encodeURIComponent(CREATOR_TUTORIAL_VIDEO_URL)}`,
       fail: () => wx.showToast({ title: '无法打开教程', icon: 'none' }),
     });
   },
@@ -948,6 +959,7 @@ Page({
       return;
     }
 
+    await this.requestReviewResultNotificationOnce();
     this.setData({ submitting: true, showUploadProgressModal: true, uploadProgress: 0 }, () => {
       this.startUploadProgress();
     });
@@ -996,6 +1008,16 @@ Page({
       wx.showToast({ title: err.message || '提交失败', icon: 'none' });
     } finally {
       this.setData({ submitting: false });
+    }
+  },
+
+  async requestReviewResultNotificationOnce() {
+    if (this._subscribePromptTriggered) return;
+    this._subscribePromptTriggered = true;
+    try {
+      await Subscribe.requestReviewResultNotification();
+    } catch (err) {
+      // 订阅授权不影响投稿。
     }
   },
 

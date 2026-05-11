@@ -6,6 +6,8 @@ const BUSINESS_TEMPLATE_KEYS = [
   'appealResult',
   'taskStatus',
 ];
+const PENDING_REVIEW_TEMPLATE_KEYS = ['pendingReview'];
+const REVIEW_RESULT_TEMPLATE_KEYS = ['reviewResult'];
 const MAX_REQUEST_TEMPLATE_COUNT = 5;
 
 function getSubscribeTemplates() {
@@ -26,6 +28,10 @@ function getTemplateIds(keys = BUSINESS_TEMPLATE_KEYS) {
 
 function hasBusinessNotifyTemplates() {
   return getTemplateIds(BUSINESS_TEMPLATE_KEYS).length > 0;
+}
+
+function hasTemplates(keys) {
+  return getTemplateIds(keys).length > 0;
 }
 
 function isAccepted(value) {
@@ -63,6 +69,21 @@ function requestBusinessNotifications() {
   return requestSubscribe(BUSINESS_TEMPLATE_KEYS);
 }
 
+function requestOptionalSubscribe(keys) {
+  if (!hasTemplates(keys)) {
+    return Promise.resolve({ accepted: [], rejected: [], raw: null, skipped: true });
+  }
+  return requestSubscribe(keys);
+}
+
+function requestPendingReviewNotification() {
+  return requestOptionalSubscribe(PENDING_REVIEW_TEMPLATE_KEYS);
+}
+
+function requestReviewResultNotification() {
+  return requestOptionalSubscribe(REVIEW_RESULT_TEMPLATE_KEYS);
+}
+
 function checkSubscriptionBlocked() {
   return new Promise((resolve) => {
     if (!wx.getSetting) {
@@ -91,8 +112,12 @@ function checkSubscriptionBlocked() {
 
 module.exports = {
   getTemplateIds,
+  hasTemplates,
   hasBusinessNotifyTemplates,
   checkSubscriptionBlocked,
   requestBusinessNotifications,
+  requestPendingReviewNotification,
+  requestReviewResultNotification,
+  requestOptionalSubscribe,
   requestSubscribe,
 };
