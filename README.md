@@ -81,6 +81,25 @@ const appConfigs = {
 
 开发阶段可在开发者工具中勾选「不校验合法域名」。
 
+## 上传与发布
+
+测试环境上传：
+
+```bash
+npm run upload
+```
+
+生产环境发布：
+
+```bash
+npm run upload -- --prod
+```
+
+- 上传脚本是 `scripts/ci-upload.js`
+- `npm run upload` 默认走测试 AppID 和 `private.key`
+- `npm run upload -- --prod` 会切到生产 AppID，并默认使用 `private.wx4a1a4cedce98a1ac.key`
+- 接口地址由 `utils/config.js` 按 AppID 自动选择，新增环境时只需要补充 `appConfigs`
+
 ## 功能模块
 
 ### 商家端
@@ -94,6 +113,7 @@ const appConfigs = {
 - 接单任务
 - 提交视频作品
 - 查看钱包和交易记录
+- 在钱包页使用微信支付充值
 
 ## API 文档
 

@@ -8,6 +8,24 @@ function formatMoneyText(value) {
   return Number.isFinite(num) ? num.toFixed(2) : '0.00';
 }
 
+function normalizeAmountInput(value) {
+  const raw = String(value || '');
+  const filtered = raw.replace(/[^\d.]/g, '');
+  const parts = filtered.split('.');
+
+  if (!parts.length) {
+    return '';
+  }
+
+  const integerPart = parts[0];
+  if (parts.length === 1) {
+    return integerPart;
+  }
+
+  const decimalPart = parts.slice(1).join('').slice(0, 2);
+  return `${integerPart}.${decimalPart}`;
+}
+
 function appendFeeRemarkText(baseRemark, fee, feeLabel) {
   const feeAmount = Number(fee || 0);
   if (feeAmount <= 0) {
@@ -197,6 +215,7 @@ Page({
     showRechargeSuccessModal: false,
     showWithdrawModal: false,
     showWithdrawSuccessModal: false,
+    rechargeSubmitting: false,
     withdrawSubmitting: false,
     withdrawResult: null,
     
@@ -298,19 +317,69 @@ Page({
   },
 
   onRechargeInput(e) {
-    this.setData({ rechargeAmount: e.detail.value });
+    this.setData({ rechargeAmount: normalizeAmountInput(e.detail.value) });
   },
 
-  submitRecharge() {
-    const amount = this.data.rechargeAmount;
-    if (!amount || parseFloat(amount) <= 0) {
+  async submitRecharge() {
+    if (this.data.rechargeSubmitting) return;
+    const amount = parseFloat(this.data.rechargeAmount);
+    if (!amount || amount <= 0) {
       wx.showToast({ title: '请输入有效金额', icon: 'none' });
       return;
     }
-    this.setData({ 
-      showRechargeModal: false, 
-      showRechargeSuccessModal: true 
-    });
+    this.setData({ rechargeSubmitting: true });
+    wx.showLoading({ title: '发起支付中...' });
+    try {
+      const res = await Api.createRechargeOrder(amount);
+      const order = res.data || {};
+      const paymentParams = order.payment_params || {};
+      const orderNo = order.order_no || '';
+
+      if (!orderNo || !paymentParams.timeStamp || !paymentParams.nonceStr || !paymentParams.package || !paymentParams.paySign) {
+        throw new Error('支付参数不完整');
+      }
+
+      await new Promise((resolve, reject) => {
+        wx.requestPayment({
+          timeStamp: String(paymentParams.timeStamp),
+          nonceStr: String(paymentParams.nonceStr),
+          package: String(paymentParams.package),
+          signType: String(paymentParams.signType || 'RSA'),
+          paySign: String(paymentParams.paySign),
+          success: resolve,
+          fail: reject,
+        });
+      });
+
+      await this.waitForRechargePaid(orderNo);
+      this.setData({
+        showRechargeModal: false,
+        showRechargeSuccessModal: true,
+        rechargeAmount: '',
+      });
+      await this.loadWallet();
+    } catch (err) {
+      const msg = String(err && (err.errMsg || err.message) || '支付失败');
+      if (!msg.includes('cancel')) {
+        wx.showToast({ title: msg.length > 20 ? '支付失败' : msg, icon: 'none' });
+      }
+    } finally {
+      wx.hideLoading();
+      this.setData({ rechargeSubmitting: false });
+    }
+  },
+
+  async waitForRechargePaid(orderNo) {
+    const start = Date.now();
+    while (Date.now() - start < 120000) {
+      const res = await Api.queryRechargeOrder(orderNo);
+      const order = res.data || {};
+      if (Number(order.status) === 2) {
+        return order;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+    }
+    throw new Error('支付结果确认超时，请稍后在钱包里查看');
   },
 
   closeRechargeSuccessModal() {

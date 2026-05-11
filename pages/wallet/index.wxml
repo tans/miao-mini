@@ -74,10 +74,10 @@
         <view class="modal-close" bindtap="closeRechargeModal">×</view>
       </view>
       <view class="modal-body">
-        <input class="modal-input" type="number" placeholder="请输入金额" value="{{rechargeAmount}}" bindinput="onRechargeInput" />
+        <input class="modal-input" type="digit" placeholder="请输入金额" value="{{rechargeAmount}}" bindinput="onRechargeInput" />
         <text class="modal-tip">充值金额将全额到账。</text>
       </view>
-      <view class="modal-submit" bindtap="submitRecharge">确认充值</view>
+      <view class="modal-submit {{rechargeSubmitting ? 'disabled' : ''}}" bindtap="submitRecharge">{{rechargeSubmitting ? '支付中...' : '确认充值'}}</view>
     </view>
   </view>
 

@@ -26,7 +26,7 @@
 - 我的 `pages/mine/index`: 用户中心，聚合钱包、创作者专区、商家专区、客服
 - 商家创建任务 `pages/employer/create-task/index`: 发任务、AI 帮写、素材上传、预算预览
 - 创作者任务 `pages/creator/my-claims/index`: 我的认领、提交作品、取消认领
-- 钱包 `pages/wallet/index`: 余额、冻结金额、交易记录、提现
+- 钱包 `pages/wallet/index`: 余额、冻结金额、交易记录、提现、微信充值
 
 ## 业务流程
 
@@ -41,6 +41,7 @@
 - 登录态使用本地缓存 `miao_token` 和 `miao_user`
 - `app.js` 在启动时会静默登录，`utils/api.js` 会在 401 时清理登录态
 - 任务、认领、作品、钱包的数据都走 `utils/api.js`，不要在页面里手写请求
+- 钱包充值走微信小程序 `wx.requestPayment`，后端 `/account/recharge` 返回 JSAPI 支付参数
 - `build-info.js` 由 `scripts/ci-upload.js` 自动更新，`mine` 页会读它展示“最后更新”
 - 状态文案和颜色尽量复用 `utils/enums.js` / `utils/util.js`
 
@@ -66,12 +67,14 @@
 - 改灵感流/作品卡片: [`pages/works/index.js`](./pages/works/index.js)
 - 改任务创建表单: [`pages/employer/create-task/index.js`](./pages/employer/create-task/index.js)
 
-## 上传体验版
+## 上传与发布
 
-- 执行命令: `npm run upload`
+- 测试环境上传命令: `npm run upload`
+- 生产环境发布命令: `npm run upload -- --prod`
+- 这条是正式发布命令，优先写进这份 `Agents.md`
 - 上传脚本: [`scripts/ci-upload.js`](./scripts/ci-upload.js)
 - 测试/生产 AppID 在 [`scripts/ci-upload.js`](./scripts/ci-upload.js) 中选择；接口地址由 [`utils/config.js`](./utils/config.js) 按 AppID 解析
-- 默认使用项目根目录的 [`private.key`](./private.key)，也可用环境变量 `PRIVATE_KEY_PATH` 覆盖
+- 测试环境默认使用项目根目录的 [`private.key`](./private.key)；生产环境默认使用 [`private.wx4a1a4cedce98a1ac.key`](./private.wx4a1a4cedce98a1ac.key)；也可用环境变量 `PRIVATE_KEY_PATH` 覆盖
 - 上传版本默认是 `1.0.0`，可用环境变量 `VERSION` 覆盖
 - 上传描述默认是 `CI Upload`，可用环境变量 `COMMIT_MESSAGE` 覆盖
 - 脚本会自动重写 [`build-info.js`](./build-info.js) 的 `uploadTime`，`mine` 页会读取这个时间展示“最后更新”
