@@ -1,10 +1,9 @@
 const Api = require('../../utils/api.js');
-const { formatDateTime } = require('../../utils/util.js');
+const { formatAmount, formatDateTime } = require('../../utils/util.js');
 const app = getApp();
 
 function formatMoneyText(value) {
-  const num = Number(value);
-  return Number.isFinite(num) ? num.toFixed(2) : '0.00';
+  return formatAmount(value, { useGrouping: false });
 }
 
 function normalizeAmountInput(value) {

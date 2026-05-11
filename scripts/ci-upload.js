@@ -1,6 +1,7 @@
 const ci = require('miniprogram-ci');
 const path = require('path');
 const fs = require('fs');
+const pkg = require('../package.json');
 const appConfig = require('../utils/config.js');
 
 const envArg = process.argv.find(arg => arg.startsWith('--env='));
@@ -37,10 +38,11 @@ async function upload() {
   });
   const buildInfoPath = path.join(projectPath, 'build-info.js');
   const now = new Date();
+  const version = process.env.VERSION || pkg.version || '1.0.1';
   const uploadTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-  const buildInfoContent = `// 此文件由 CI 自动更新，请勿手动修改\nmodule.exports = {\n  uploadTime: '${uploadTime}',\n};\n`;
+  const buildInfoContent = `// 此文件由 CI 自动更新，请勿手动修改\nmodule.exports = {\n  version: '${version}',\n  uploadTime: '${uploadTime}',\n};\n`;
   fs.writeFileSync(buildInfoPath, buildInfoContent);
-  console.log('Build info updated:', uploadTime);
+  console.log('Build info updated:', { version, uploadTime });
 
   const privateKeyPath = process.env.PRIVATE_KEY_PATH || defaultPrivateKeyPath;
 
@@ -53,7 +55,7 @@ async function upload() {
 
   const uploadResult = await ci.upload({
     project,
-    version: process.env.VERSION || '1.0.0',
+    version,
     desc: process.env.COMMIT_MESSAGE || 'CI Upload',
     setting: {
       es6: true,

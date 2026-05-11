@@ -52,8 +52,10 @@ function formatAmount(value, options = {}) {
   const num = Number(value || 0);
   const safeNum = Number.isFinite(num) ? num : 0;
   const { useGrouping = true } = options;
+  const rounded = Math.round(safeNum * 100) / 100;
+  const normalized = Object.is(rounded, -0) ? 0 : rounded;
 
-  return safeNum.toLocaleString('zh-CN', {
+  return normalized.toLocaleString('zh-CN', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
     useGrouping,

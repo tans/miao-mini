@@ -1,5 +1,6 @@
 const Api = require('../../../utils/api.js');
 const app = getApp();
+const { formatAmount } = require('../../../utils/util.js');
 
 function normalizeAmountInput(value) {
   const raw = String(value || '');
@@ -59,8 +60,8 @@ Page({
 
       this.setData({
         balance: balance,
-        withdrawableAmount: Number(withdrawableAmount).toFixed(2),
-        minWithdrawAmount: minWithdrawAmount.toFixed(2),
+        withdrawableAmount: formatAmount(withdrawableAmount, { useGrouping: false }),
+        minWithdrawAmount: formatAmount(minWithdrawAmount, { useGrouping: false }),
         realNameVerified: user.real_name_verified || false
       });
     } catch (err) {
@@ -94,7 +95,7 @@ Page({
     }
     const minWithdrawAmount = Number(this.data.minWithdrawAmount || 50);
     if (amount < minWithdrawAmount) {
-      this.setData({ error: `满${minWithdrawAmount.toFixed(2)}元才能提现` });
+      this.setData({ error: `满${formatAmount(minWithdrawAmount, { useGrouping: false })}元才能提现` });
       return;
     }
 

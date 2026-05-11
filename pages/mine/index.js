@@ -2,6 +2,7 @@ const Api = require('../../utils/api.js');
 const app = getApp();
 const buildInfo = require('../../build-info.js');
 const { openCustomerServiceChat } = require('../../utils/customer-service.js');
+const { formatAmount } = require('../../utils/util.js');
 
 Page({
   data: {
@@ -182,7 +183,7 @@ Page({
     if (walletResult.ok) {
       const wallet = walletResult.value.data || {};
       this.setData({
-        balance: Number(wallet.balance || 0).toFixed(2)
+        balance: formatAmount(wallet.balance || 0, { useGrouping: false })
       });
     }
   },
