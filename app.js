@@ -28,6 +28,7 @@ App({
   _pendingClaimStartedAt: 0,
 
   onLaunch() {
+    this.installExceptionHandlers();
     this.loadHomeFontFace();
 
     // 获取状态栏高度和设备信息
@@ -54,6 +55,32 @@ App({
     }
 
     this.restorePendingClaimPolling();
+  },
+
+  installExceptionHandlers() {
+    if (typeof wx !== "undefined" && typeof wx.onError === "function") {
+      wx.onError((error) => {
+        Api.reportException({
+          type: "app_error",
+          message: typeof error === "string" ? error : (error && error.message) || "App Error",
+          stack: typeof error === "string" ? error : (error && error.stack) || "",
+        });
+      });
+    }
+
+    if (typeof wx !== "undefined" && typeof wx.onUnhandledRejection === "function") {
+      wx.onUnhandledRejection((event) => {
+        const reason = event && event.reason;
+        Api.reportException({
+          type: "unhandled_rejection",
+          message: typeof reason === "string" ? reason : (reason && reason.message) || "Unhandled Rejection",
+          stack: reason && reason.stack || "",
+          extra: {
+            event: reason && typeof reason === "object" ? reason : String(reason || ""),
+          },
+        });
+      });
+    }
   },
 
   onShow() {

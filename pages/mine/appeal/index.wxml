@@ -36,8 +36,6 @@
           </view>
         </view>
 
-        
-
         <view class="workflow-step workflow-step-{{item.appeal.stateClass}}">
           <view class="step-dot-box">
             <view class="step-dot"></view>

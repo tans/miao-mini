@@ -1,5 +1,6 @@
 // utils/api.js - 创意喵小程序 API 服务层
 const config = require('./config.js');
+const buildInfo = require('../build-info.js');
 
 const DEFAULT_AVATAR_URLS = [
   'https://public.jisuhudong.com/minapp/avatar/cat_avatar_1_1.png',
@@ -17,6 +18,7 @@ const Api = {
   tokenKey: 'miao_token',
   userKey: 'miao_user',
   defaultAvatarUrls: DEFAULT_AVATAR_URLS,
+  _reportingException: false,
 
   // API 请求地址级别，可通过 setApiBase 修改
   _apiBase: '',
@@ -77,8 +79,90 @@ const Api = {
     getApp().globalData.user = null;
   },
 
+  _safeStringify(value, limit = 2000) {
+    if (value == null) return '';
+    let text = '';
+    try {
+      text = typeof value === 'string' ? value : JSON.stringify(value);
+    } catch (e) {
+      text = String(value);
+    }
+    text = String(text)
+      .replace(/"?(password|token|access_token|refresh_token|secret|authorization|cookie|openid|session_key)"?\s*:\s*"[^"]*"/gi, '"$1":"<redacted>"')
+      .replace(/Bearer\s+[A-Za-z0-9\-_.]+/gi, 'Bearer <redacted>');
+    if (text.length > limit) {
+      return `${text.slice(0, limit)}...<truncated>`;
+    }
+    return text;
+  },
+
+  reportException(payload = {}) {
+    if (this._reportingException) {
+      return Promise.resolve();
+    }
+    this._reportingException = true;
+
+    return new Promise((resolve) => {
+      const app = typeof getApp === 'function' ? getApp() : null;
+      const systemInfo = (() => {
+        try {
+          return wx.getSystemInfoSync ? wx.getSystemInfoSync() : null;
+        } catch (e) {
+          return null;
+        }
+      })();
+      const pageStack = typeof getCurrentPages === 'function' ? getCurrentPages() : [];
+      const currentPage = pageStack && pageStack.length ? pageStack[pageStack.length - 1] : null;
+      const header = {
+        'Content-Type': 'application/json',
+      };
+      const token = this.getToken();
+      if (token) {
+        header.Authorization = `Bearer ${token}`;
+      }
+
+      const body = {
+        source: payload.source || 'miao-mini',
+        level: payload.level || 'error',
+        type: payload.type || 'client_error',
+        message: this._safeStringify(payload.message || ''),
+        stack: this._safeStringify(payload.stack || ''),
+        method: payload.method || '',
+        path: payload.path || '',
+        query: payload.query || '',
+        status_code: Number(payload.statusCode || 0),
+        request_body: this._safeStringify(payload.requestBody || ''),
+        response_body: this._safeStringify(payload.responseBody || ''),
+        page: payload.page || (currentPage && currentPage.route ? `/${currentPage.route}` : ''),
+        platform: payload.platform || (systemInfo && systemInfo.platform) || 'miniprogram',
+        app_version: payload.appVersion || buildInfo.uploadTime || '',
+        device_info: this._safeStringify(payload.deviceInfo || {
+          brand: systemInfo && systemInfo.brand,
+          model: systemInfo && systemInfo.model,
+          system: systemInfo && systemInfo.system,
+          version: systemInfo && systemInfo.version,
+          SDKVersion: systemInfo && systemInfo.SDKVersion,
+        }, 3000),
+        extra: payload.extra || {},
+        occurred_at: payload.occurredAt || new Date().toISOString(),
+      };
+
+      wx.request({
+        url: `${this.getApiBase()}/exceptions`,
+        method: 'POST',
+        data: body,
+        header,
+        complete: () => {
+          this._reportingException = false;
+          resolve();
+        },
+      });
+    });
+  },
+
   request(method, path, data = null, noAuth = false) {
     return new Promise((resolve, reject) => {
+      const requestData = data;
       const header = {
         'Content-Type': 'application/json',
       };
@@ -97,29 +181,53 @@ const Api = {
             reject(new Error('登录已过期'));
             return;
           }
-          let data = res.data;
+          let responseData = res.data;
           // Handle non-JSON responses (e.g., HTML error pages)
-        if (typeof data === 'string') {
+        if (typeof responseData === 'string') {
           try {
-            data = JSON.parse(data);
+            responseData = JSON.parse(responseData);
           } catch (e) {
+            Api.reportException({
+              type: 'request_parse_error',
+              message: '服务器响应异常',
+              method,
+              path,
+              statusCode: res.statusCode,
+              requestBody: Api._safeStringify(requestData),
+              responseBody: Api._safeStringify(res.data),
+              extra: {
+                rawType: typeof res.data,
+              },
+            });
             reject(new Error('服务器响应异常'));
             return;
           }
         }
-        if (data && (data.code === 40402 || data.message === '用户不存在')) {
+        if (responseData && (responseData.code === 40402 || responseData.message === '用户不存在')) {
           Api.clearAuth();
           reject(new Error('登录已过期'));
           return;
         }
-        if (data && data.code === 0) {
-          resolve(data);
+        if (responseData && responseData.code === 0) {
+          resolve(responseData);
         } else {
-          const msg = (data && data.message) || '请求失败';
+          const msg = (responseData && responseData.message) || '请求失败';
           const err = new Error(msg);
-            err.code = data && data.code;
-            err.data = data && data.data;
-            err.raw = data;
+            err.code = responseData && responseData.code;
+            err.data = responseData && responseData.data;
+            err.raw = responseData;
+            Api.reportException({
+              type: 'request_error',
+              message: msg,
+              method,
+              path,
+              statusCode: res.statusCode,
+              requestBody: Api._safeStringify(requestData),
+              responseBody: Api._safeStringify(responseData),
+              extra: {
+                code: responseData && responseData.code,
+              },
+            });
             reject(err);
           }
         },
@@ -127,6 +235,16 @@ const Api = {
           const msg = err && (err.message || err.errMsg) || '网络请求失败';
           const error = new Error(msg);
           error.raw = err;
+          Api.reportException({
+            type: 'network_error',
+            message: msg,
+            method,
+            path,
+            requestBody: Api._safeStringify(requestData),
+            extra: {
+              fail: Api._safeStringify(err),
+            },
+          });
           reject(error);
         }
       });

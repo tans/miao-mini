@@ -34,6 +34,7 @@ function getTransactionCategory(tx) {
     || typeCode === 'participation_payment'
     || typeCode === 'award_payment'
     || typeCode === 'refund'
+    || typeCode === 'withdraw_refund'
     || typeCode === 'return_margin') {
     return 'income';
   }
@@ -63,12 +64,33 @@ function buildRemarkText(category, typeCode) {
       return '账款已从可提现金额扣除';
     }
     if (typeCode === 'withdraw') {
-      return '账款已从可提现金额扣除';
+      return '账款已提现，预计1到3工作日到账';
     }
     return '账款已扣除';
   }
 
+  if (typeCode === 'recharge') {
+    return '账款充值';
+  }
+  if (typeCode === 'withdraw_refund') {
+    return '账款提现退款';
+  }
+
   return '账款已添加到可提现金额';
+}
+
+function buildReadableRemark(tx, category, typeCode, fee, feeLabel) {
+  const originalRemark = String(tx.remark || '').trim();
+  if (typeCode === 'withdraw') {
+    return buildRemarkText(category, typeCode);
+  }
+  if (typeCode === 'withdraw_refund') {
+    return originalRemark ? originalRemark.replace(/^提现退回[:：]?\s*/, '账款提现退款，原因：') : buildRemarkText(category, typeCode);
+  }
+  if (typeCode === 'recharge') {
+    return buildRemarkText(category, typeCode);
+  }
+  return appendFeeRemarkText(buildRemarkText(category, typeCode), fee, feeLabel);
 }
 
 function buildTransactionViews(tx) {
@@ -78,6 +100,11 @@ function buildTransactionViews(tx) {
   const fee = Number(tx.fee || 0);
   const amount = Number(tx.amount || 0);
   const feeLabel = String(tx.fee_label || '').trim() || '手续费';
+  const titleMap = {
+    withdraw: '提现',
+    withdraw_refund: '提现',
+    recharge: '充值',
+  };
 
   if (typeCode === 'freeze') {
     const principalAmount = Math.max(0, Math.abs(amount) - fee);
@@ -143,10 +170,10 @@ function buildTransactionViews(tx) {
     sourceId: tx.id,
     category,
     type_code: typeCode,
-    type_text: tx.type_str || '其他',
+    type_text: titleMap[typeCode] || tx.type_str || '其他',
     displayAmount: amount,
     amountDisplay: formatMoneyText(Math.abs(amount)),
-    remarkText: appendFeeRemarkText(buildRemarkText(category, typeCode), fee, feeLabel),
+    remarkText: buildReadableRemark(tx, category, typeCode, fee, feeLabel),
     createdAtText,
   }];
 }
@@ -161,7 +188,6 @@ Page({
     totalIncomeDisplay: '0.00',
     transactions: [],
     filteredTransactions: [],
-    withdrawOrders: [],
     currentTab: 'all',
     loading: false,
     
@@ -216,15 +242,13 @@ Page({
     this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
-      const [walletRes, transRes, withdrawRes] = await Promise.all([
+      const [walletRes, transRes] = await Promise.all([
         Api.getWallet(),
-        Api.getTransactions({ scope: 'all', page: 1, limit: 100 }),
-        Api.getWithdrawOrders()
+        Api.getTransactions({ scope: 'all', page: 1, limit: 100 })
       ]);
 
       const wallet = walletRes.data || {};
       const transData = transRes.data || {};
-      const withdrawOrders = Array.isArray(withdrawRes.data) ? withdrawRes.data : [];
       const transactions = (transData.data || []).flatMap((t) => buildTransactionViews(t));
 
       const withdrawableAmount = Number(wallet.balance || 0);
@@ -241,7 +265,6 @@ Page({
         totalIncomeDisplay: formatMoneyText(wallet.total_income || 0),
         transactions,
         filteredTransactions,
-        withdrawOrders,
         loading: false,
       });
     } catch (err) {

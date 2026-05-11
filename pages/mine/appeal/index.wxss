@@ -535,7 +535,8 @@
 .composer-submit.is-disabled {
   opacity: 0.72;
 }
-.step-dot-box{
+
+.step-dot-box {
   display: flex;
   flex-direction: column;
 }
