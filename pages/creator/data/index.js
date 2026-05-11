@@ -1,6 +1,13 @@
 const Api = require('../../../utils/api.js');
 const app = getApp();
 
+function normalizeClaimListResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.data)) return data.data;
+  if (data && Array.isArray(data.claims)) return data.claims;
+  return [];
+}
+
 Page({
   data: {
     // 卡片统计数据
@@ -75,7 +82,7 @@ Page({
   async loadClaimsStats() {
     try {
       const res = await Api.getMyClaims({ page: 1 });
-      const claims = res.data || [];
+      const claims = normalizeClaimListResponse(res && res.data);
       const totalClaims = claims.length;
       // 累计提交: status >= 2 (待验收/已完成)
       const totalSubmitted = claims.filter(c => Number(c.status) >= 2).length;

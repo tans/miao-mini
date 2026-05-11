@@ -768,6 +768,14 @@ const Api = {
     return this.request('GET', '/creator/wallet');
   },
 
+  createRechargeOrder(amount) {
+    return this.request('POST', '/account/recharge', { amount });
+  },
+
+  queryRechargeOrder(orderNo) {
+    return this.request('GET', `/account/recharge/${encodeURIComponent(orderNo)}`);
+  },
+
   withdraw(amount) {
     return this.request('POST', '/creator/withdraw', { amount });
   },

@@ -10,6 +10,13 @@ function pick() {
   return '';
 }
 
+function normalizeClaimListResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.data)) return data.data;
+  if (data && Array.isArray(data.claims)) return data.claims;
+  return [];
+}
+
 function normalizeClaim(claim = {}) {
   const claimStatus = Number(pick(claim.claim_status, claim.status, 0)) || 0;
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
@@ -136,7 +143,8 @@ Page({
     wx.showLoading({ title: '加载中...' });
     try {
       const res = await Api.getMyClaims({ page: 1 });
-      let claims = (res.data || []).map(c => this.calculateRemainingTime(normalizeClaim(c)));
+      const claimList = normalizeClaimListResponse(res && res.data);
+      let claims = claimList.map(c => this.calculateRemainingTime(normalizeClaim(c)));
       claims.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       this.setData({ claims, loading: false });
       this.applyFilter(this.data.currentFilter);

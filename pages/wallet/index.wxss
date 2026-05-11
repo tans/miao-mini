@@ -423,6 +423,10 @@
   justify-content: center;
 }
 
+.modal-submit.disabled {
+  opacity: 0.7;
+}
+
 /* 成功弹窗样式 */
 .success-content {
   padding-top: 48rpx;

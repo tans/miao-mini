@@ -47,6 +47,13 @@ function pick(...values) {
   return '';
 }
 
+function normalizeClaimListResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.data)) return data.data;
+  if (data && Array.isArray(data.claims)) return data.claims;
+  return [];
+}
+
 function buildClaimIncomeMap(transactions = []) {
   return transactions.reduce((map, tx) => {
     const relatedId = pick(tx.related_id, tx.relatedId, tx.claim_id, tx.claimId);
@@ -137,7 +144,7 @@ Page({
           ? transData.transactions
           : [];
       const claimIncomeMap = buildClaimIncomeMap(transactions);
-      const claims = claimsRes.data || [];
+      const claims = normalizeClaimListResponse(claimsRes && claimsRes.data);
       // 筛选已提交的作品，保留淘汰/举报这类已处理记录
       const submittedWorks = claims
         .filter(c => Number(c.status) >= 2 || Number(c.review_result || c.reviewResult || 0) > 0)

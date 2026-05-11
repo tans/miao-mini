@@ -21,7 +21,12 @@ const appConfigs = {
   },
   wx4a1a4cedce98a1ac: {
     apiBase: 'https://miao.jisuhudong.com/api/v1',
-    subscribeTemplates: EMPTY_SUBSCRIBE_TEMPLATES,
+    subscribeTemplates: {
+      pendingReview: 'Nh9dx1Fs5CTfWJUls0iTt2NzpIaJOmIz7EbhdTIjuEE',
+      reviewResult: '78UAV64JZ-zlNklvKsXPnK6XZPCvHCXVwuDAJcBSihQ',
+      appealResult: '',
+      taskStatus: '',
+    },
   },
 };
 
