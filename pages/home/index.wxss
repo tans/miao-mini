@@ -253,9 +253,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16rpx;
 }
 .task-title-row {
-  width: 60%;
+  flex: 1;
+  min-width: 0;
   display: block;
 }
 
@@ -275,6 +277,7 @@
 .task-price-row {
   display: flex;
   align-items: baseline;
+  flex-shrink: 0;
 }
 
 .task-price {
