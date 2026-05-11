@@ -103,7 +103,7 @@
       </view>
       <view class="modal-body">
         <input class="modal-input" type="number" placeholder="请输入金额" value="{{withdrawAmount}}" bindinput="onWithdrawInput" />
-        <text class="modal-tip">可提现金额满<text style="color:#EF8802">50元</text>才可提现。</text>
+        <text class="modal-tip">可提现金额满<text style="color:#EF8802">{{minWithdrawAmount}}元</text>才可提现。</text>
       </view>
       <view class="modal-submit" bindtap="submitWithdraw">确认提现</view>
     </view>

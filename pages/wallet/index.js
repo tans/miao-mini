@@ -1,7 +1,6 @@
 const Api = require('../../utils/api.js');
 const { formatDateTime } = require('../../utils/util.js');
 const app = getApp();
-const MIN_WITHDRAW_AMOUNT = 50;
 
 function formatMoneyText(value) {
   const num = Number(value);
@@ -218,6 +217,7 @@ Page({
     rechargeSubmitting: false,
     withdrawSubmitting: false,
     withdrawResult: null,
+    minWithdrawAmount: '50.00',
     
     // 输入金额
     rechargeAmount: '',
@@ -274,6 +274,7 @@ Page({
       const withdrawableAmount = Number(wallet.balance || 0);
       const frozenAmount = Number(wallet.frozen_amount || 0);
       const balance = withdrawableAmount + frozenAmount;
+      const minWithdrawAmount = Number(wallet.min_withdraw_amount || 50);
       const filteredTransactions = this.getFilteredTransactions(this.data.currentTab, transactions);
 
       this.setData({
@@ -283,6 +284,7 @@ Page({
         withdrawableAmount: formatMoneyText(withdrawableAmount),
         totalIncome: Number(wallet.total_income || 0),
         totalIncomeDisplay: formatMoneyText(wallet.total_income || 0),
+        minWithdrawAmount: formatMoneyText(minWithdrawAmount),
         transactions,
         filteredTransactions,
         loading: false,
@@ -395,7 +397,7 @@ Page({
   },
 
   onWithdrawInput(e) {
-    this.setData({ withdrawAmount: e.detail.value });
+    this.setData({ withdrawAmount: normalizeAmountInput(e.detail.value) });
   },
 
   async submitWithdraw() {
@@ -406,8 +408,9 @@ Page({
       wx.showToast({ title: '请输入有效金额', icon: 'none' });
       return;
     }
-    if (parsedAmount < MIN_WITHDRAW_AMOUNT) {
-      wx.showToast({ title: `满${MIN_WITHDRAW_AMOUNT}元才能提现`, icon: 'none' });
+    const minWithdrawAmount = Number(this.data.minWithdrawAmount || 50);
+    if (parsedAmount < minWithdrawAmount) {
+      wx.showToast({ title: `满${formatMoneyText(minWithdrawAmount)}元才能提现`, icon: 'none' });
       return;
     }
     if (parsedAmount > parseFloat(this.data.withdrawableAmount || 0)) {

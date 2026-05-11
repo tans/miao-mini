@@ -1,11 +1,29 @@
 const Api = require('../../../utils/api.js');
 const app = getApp();
-const MIN_WITHDRAW_AMOUNT = 50;
+
+function normalizeAmountInput(value) {
+  const raw = String(value || '');
+  const filtered = raw.replace(/[^\d.]/g, '');
+  const parts = filtered.split('.');
+
+  if (!parts.length) {
+    return '';
+  }
+
+  const integerPart = parts[0];
+  if (parts.length === 1) {
+    return integerPart;
+  }
+
+  const decimalPart = parts.slice(1).join('').slice(0, 2);
+  return `${integerPart}.${decimalPart}`;
+}
 
 Page({
   data: {
     balance: 0,
     withdrawableAmount: '0.00',
+    minWithdrawAmount: '50.00',
     amount: '',
     realNameVerified: false,
     loading: false,
@@ -36,11 +54,13 @@ Page({
       const wallet = walletRes.data || {};
       const user = userRes.data || {};
       const withdrawableAmount = Number(wallet.balance || 0);
+      const minWithdrawAmount = Number(wallet.min_withdraw_amount || 50);
       const balance = withdrawableAmount;
 
       this.setData({
         balance: balance,
         withdrawableAmount: Number(withdrawableAmount).toFixed(2),
+        minWithdrawAmount: minWithdrawAmount.toFixed(2),
         realNameVerified: user.real_name_verified || false
       });
     } catch (err) {
@@ -49,15 +69,7 @@ Page({
   },
 
   onAmountInput(e) {
-    const value = e.detail.value;
-    // 限制只能输入数字，保留两位小数
-    const filtered = value.replace(/[^\d.]/g, '');
-    const parts = filtered.split('.');
-    let result = parts[0];
-    if (parts.length > 1) {
-      result = parts[0] + '.' + parts[1].slice(0, 2);
-    }
-    this.setData({ amount: result, error: '' });
+    this.setData({ amount: normalizeAmountInput(e.detail.value), error: '' });
   },
 
   handleAllAmount() {
@@ -80,8 +92,9 @@ Page({
       this.setData({ error: '超过可提现余额' });
       return;
     }
-    if (amount < MIN_WITHDRAW_AMOUNT) {
-      this.setData({ error: `满${MIN_WITHDRAW_AMOUNT}元才能提现` });
+    const minWithdrawAmount = Number(this.data.minWithdrawAmount || 50);
+    if (amount < minWithdrawAmount) {
+      this.setData({ error: `满${minWithdrawAmount.toFixed(2)}元才能提现` });
       return;
     }
 

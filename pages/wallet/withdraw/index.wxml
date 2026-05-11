@@ -35,7 +35,7 @@
       <text class="all-amount-text">全部提现</text>
     </view>
     <view class="withdraw-threshold-tip">
-      <text class="withdraw-threshold-text">可提现金额满50元才可提现</text>
+      <text class="withdraw-threshold-text">可提现金额满{{minWithdrawAmount}}元才可提现</text>
     </view>
   </view>
 
@@ -55,7 +55,7 @@
   <!-- 注意事项 -->
   <view class="notice-section">
     <view class="notice-title">提现说明</view>
-    <view class="notice-item">• 可提现金额满50元才可发起提现</view>
+    <view class="notice-item">• 可提现金额满{{minWithdrawAmount}}元才可发起提现</view>
     <view class="notice-item">• 提现申请提交后，预计1到3个工作日到账</view>
     <view class="notice-item">• 如有疑问请联系客服</view>
   </view>
