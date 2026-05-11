@@ -16,7 +16,7 @@ module.exports = {
           <text class="flow-headline">发单先托管</text>
           <text class="flow-headline-highlight">验收再放款</text>
         </view>
-        <text class="flow-hint">详细教程</text>
+        <text class="flow-hint" bindtap="showMerchantTutorial">详细教程</text>
       </view>
       <view class="flow-body">
         <view class="flow-step">

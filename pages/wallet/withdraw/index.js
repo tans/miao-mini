@@ -1,5 +1,6 @@
 const Api = require('../../../utils/api.js');
 const app = getApp();
+const MIN_WITHDRAW_AMOUNT = 50;
 
 Page({
   data: {
@@ -77,6 +78,10 @@ Page({
     const maxAmount = parseFloat(this.data.withdrawableAmount);
     if (amount > maxAmount) {
       this.setData({ error: '超过可提现余额' });
+      return;
+    }
+    if (amount < MIN_WITHDRAW_AMOUNT) {
+      this.setData({ error: `满${MIN_WITHDRAW_AMOUNT}元才能提现` });
       return;
     }
 

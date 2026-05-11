@@ -157,6 +157,15 @@
   color: #ef8802;
 }
 
+.withdraw-threshold-tip {
+  margin-top: 20rpx;
+}
+
+.withdraw-threshold-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
 /* 错误提示 */
 .error-tip {
   padding: 16rpx 32rpx;

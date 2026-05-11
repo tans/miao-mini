@@ -78,7 +78,7 @@ function formatDateObject(date) {
 
 /**
  * 获取任务状态文本
- * 对应 TaskStatus: 1=兼容旧数据(按已上架处理), 2=已上架, 3=进行中, 4=已结束, 5=已取消
+ * 对应 TaskStatus: 1=兼容旧数据(按已上架处理), 2=已上架, 3=进行中, 4=已结束, 5=已取消, 6=已暂停
  */
 function getStatusText(status) {
   return enums.getTaskStatusText(status);
@@ -86,7 +86,7 @@ function getStatusText(status) {
 
 /**
  * 获取状态对应的样式类
- * 对应 TaskStatus: 1=兼容旧数据(按已上架处理), 2=已上架, 3=进行中, 4=已结束, 5=已取消
+ * 对应 TaskStatus: 1=兼容旧数据(按已上架处理), 2=已上架, 3=进行中, 4=已结束, 5=已取消, 6=已暂停
  */
 function getStatusClass(status) {
   const colorMap = {
@@ -95,6 +95,7 @@ function getStatusClass(status) {
     3: 'in-progress',
     4: 'closed',
     5: 'cancelled',
+    6: 'cancelled',
   };
   return colorMap[status] || 'open';
 }

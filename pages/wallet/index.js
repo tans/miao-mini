@@ -1,6 +1,7 @@
 const Api = require('../../utils/api.js');
 const { formatDateTime } = require('../../utils/util.js');
 const app = getApp();
+const MIN_WITHDRAW_AMOUNT = 50;
 
 function formatMoneyText(value) {
   const num = Number(value);
@@ -331,14 +332,23 @@ Page({
   async submitWithdraw() {
     if (this.data.withdrawSubmitting) return;
     const amount = this.data.withdrawAmount;
-    if (!amount || parseFloat(amount) <= 0) {
+    const parsedAmount = parseFloat(amount);
+    if (!amount || parsedAmount <= 0) {
       wx.showToast({ title: '请输入有效金额', icon: 'none' });
+      return;
+    }
+    if (parsedAmount < MIN_WITHDRAW_AMOUNT) {
+      wx.showToast({ title: `满${MIN_WITHDRAW_AMOUNT}元才能提现`, icon: 'none' });
+      return;
+    }
+    if (parsedAmount > parseFloat(this.data.withdrawableAmount || 0)) {
+      wx.showToast({ title: '超过可提现余额', icon: 'none' });
       return;
     }
 
     this.setData({ withdrawSubmitting: true });
     try {
-      const res = await Api.withdraw(parseFloat(amount));
+      const res = await Api.withdraw(parsedAmount);
       if (res.code === 0) {
         this.setData({
           showWithdrawModal: false,

@@ -75,7 +75,7 @@
       </view>
       <view class="modal-body">
         <input class="modal-input" type="number" placeholder="请输入金额" value="{{rechargeAmount}}" bindinput="onRechargeInput" />
-        <text class="modal-tip">充值手续费为充值金额的<text style="color:#EF8802">10%</text>，实际到账金额将自动扣除手续费。</text>
+        <text class="modal-tip">充值金额将全额到账。</text>
       </view>
       <view class="modal-submit" bindtap="submitRecharge">确认充值</view>
     </view>
@@ -103,7 +103,7 @@
       </view>
       <view class="modal-body">
         <input class="modal-input" type="number" placeholder="请输入金额" value="{{withdrawAmount}}" bindinput="onWithdrawInput" />
-        <text class="modal-tip">提现手续费为提现金额的<text style="color:#EF8802">10%</text>，实际到账金额将自动扣除手续费。</text>
+        <text class="modal-tip">可提现金额满<text style="color:#EF8802">50元</text>才可提现。</text>
       </view>
       <view class="modal-submit" bindtap="submitWithdraw">确认提现</view>
     </view>
@@ -116,7 +116,7 @@
       <text class="success-title">提现申请已提交</text>
       <image class="success-icon" src="./images/success.png" />
       <text class="success-desc">
-        本次申请提现¥{{withdrawResult.withdraw_amount || withdrawAmount}}，手续费¥{{withdrawResult.commission || '0.00'}}，预计到账¥{{withdrawResult.actual_amount || '0.00'}}，请等待平台审核。
+        本次申请提现¥{{withdrawResult.withdraw_amount || withdrawAmount}}，请等待平台审核，预计1到3个工作日到账。
       </text>
       <view class="success-btn" bindtap="closeWithdrawSuccessModal">我知道了</view>
     </view>

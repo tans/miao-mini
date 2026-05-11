@@ -7,7 +7,7 @@
           <text class="flow-headline">新手不踩坑</text>
           <text class="flow-headline-highlight">投稿看流程</text>
         </view>
-        <text class="flow-hint">详细教程</text>
+        <text class="flow-hint" bindtap="showCreatorTutorial">详细教程</text>
       </view>
       <view class="flow-body">
         <view class="flow-step">

@@ -128,13 +128,6 @@
                 vslide-gesture="{{false}}"
                 page-gesture="{{false}}"
               />
-              <view
-                class="video-preview-action"
-                catchtap="openVideoPreview"
-                data-url="{{vid.url}}"
-              >
-                <text class="video-preview-action-text">全屏查看</text>
-              </view>
             </view>
           </view>
           <view class="claim-content claim-content-reported" wx:if="{{claim.statusClass == 'reported'}}">
@@ -302,13 +295,6 @@
                 vslide-gesture="{{false}}"
                 page-gesture="{{false}}"
               />
-              <view
-                class="video-preview-action"
-                catchtap="openVideoPreview"
-                data-url="{{item.previewUrl}}"
-              >
-                <text class="video-preview-action-text">全屏查看</text>
-              </view>
             </view>
             <image
               wx:elif="{{item.previewUrl}}"

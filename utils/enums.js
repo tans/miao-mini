@@ -7,6 +7,7 @@ const TaskStatus = {
   ONGOING: 3,    // 进行中
   ENDED: 4,      // 已结束
   CANCELLED: 5,  // 已取消
+  PAUSED: 6,     // 已暂停
 };
 
 const TaskStatusText = {
@@ -15,6 +16,7 @@ const TaskStatusText = {
   [TaskStatus.ONGOING]: '进行中',
   [TaskStatus.ENDED]: '已结束',
   [TaskStatus.CANCELLED]: '已取消',
+  [TaskStatus.PAUSED]: '已暂停',
 };
 
 const TaskStatusColor = {
@@ -23,6 +25,7 @@ const TaskStatusColor = {
   [TaskStatus.ONGOING]: 'primary',
   [TaskStatus.ENDED]: 'secondary',
   [TaskStatus.CANCELLED]: 'danger',
+  [TaskStatus.PAUSED]: 'warning',
 };
 
 const ClaimStatus = {
