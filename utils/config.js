@@ -61,4 +61,6 @@ module.exports = {
 
   // 企业微信客服链接
   customerServiceKfUrl: 'https://work.weixin.qq.com/kfid/kfc3919d20f9b916edb',
+  // 微信客服企业ID（corpId / 企业ID）
+  customerServiceCorpId: 'wwd2cdec523ef2ef07',
 };

@@ -54,10 +54,6 @@ Page({
     this.setData({ nickname: e.detail.value });
   },
 
-  onPhoneInput(e) {
-    this.setData({ phone: e.detail.value });
-  },
-
   async onGetPhoneNumber(e) {
     const code = e && e.detail && e.detail.code;
     if (!code) {

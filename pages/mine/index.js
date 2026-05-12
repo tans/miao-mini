@@ -320,9 +320,9 @@ Page({
   },
 
   updateDisplayText() {
-    const uploadTime = buildInfo.uploadTime;
-    if (uploadTime) {
-      this.setData({ displayText: String(uploadTime).trim() });
+    const version = buildInfo.version;
+    if (version) {
+      this.setData({ displayText: String(version).trim() });
       return;
     }
 
@@ -409,7 +409,7 @@ Page({
   },
 
   async goHelp() {
-    const defaultDocUrl = 'https://docs.qq.com/doc/DSGZhUG1YSmx2WUpR';
+    const defaultDocUrl = 'https://docs.qq.com/doc/p/319ca9bc4cc0101019e8f7c743af703c9b487464?nlc=1';
     const showHelpError = () => {
       wx.showToast({
         title: '帮助中心打开失败',

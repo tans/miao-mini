@@ -30,27 +30,20 @@
     <view class="info-row">
       <text class="info-label">联系电话</text>
       <view class="phone-field">
-        <input
-          class="info-input"
-          value="{{phone}}"
-          bindinput="onPhoneInput"
-          type="number"
-          maxlength="11"
-          placeholder="请输入手机号"
-          placeholder-class="info-placeholder"
-        />
+        <view class="info-value phone-value {{phone ? '' : 'info-placeholder'}}">
+          {{phone || '请先授权手机号'}}
+        </view>
         <button
-          class="phone-bind-btn"
+          class="info-copy-btn phone-bind-btn"
           open-type="getPhoneNumber"
           bindgetphonenumber="onGetPhoneNumber"
           loading="{{bindingPhone}}"
           disabled="{{bindingPhone}}"
         >
-          一键验证
+          授权
         </button>
       </view>
     </view>
-    <view class="phone-hint">支持微信手机号快速验证，也可手动填写后保存。</view>
   </view>
 
   <!-- 保存按钮 -->

@@ -465,6 +465,10 @@ const Api = {
   },
 
   async uploadViaBackend(tempFilePath, options = {}, fileType = 'image', ext = '', filename = '') {
+    const app = typeof getApp === 'function' ? getApp() : null;
+    if (app && typeof app.waitForLogin === 'function') {
+      await app.waitForLogin();
+    }
     const uploadUrl = this.getApiBase().replace(/\/api\/v1$/, '') + '/api/v1/upload';
     const formData = {
       type: fileType,
@@ -528,6 +532,10 @@ const Api = {
   },
 
   async uploadToCos(tempFilePath, options = {}) {
+    const app = typeof getApp === 'function' ? getApp() : null;
+    if (app && typeof app.waitForLogin === 'function') {
+      await app.waitForLogin();
+    }
     const fileType = options.type || 'image';
     const ext = (options.ext || this.getFileExt(tempFilePath) || (fileType === 'video' ? '.mp4' : '.jpg')).toLowerCase();
     const filename = options.filename || this.getFileNameFromPath(tempFilePath) || (fileType === 'video' ? 'video.mp4' : 'image.jpg');

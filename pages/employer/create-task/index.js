@@ -6,6 +6,7 @@ const app = getApp();
 const DEFAULT_DEADLINE_DAYS = 7;
 const PLATFORM_FEE_RATE = 0.10;
 const PRIVACY_DISCOUNT_RATE = 0.05;
+const UNLIMITED_STYLE = '不限';
 const MERCHANT_TUTORIAL_VIDEO_URL = 'https://public.jisuhudong.com/minapp/商家发布教程.mp4';
 const JIMENG_TUTORIAL_VIDEO_URL = 'https://public.jisuhudong.com/minapp/既梦教程.mp4';
 
@@ -37,8 +38,8 @@ Page({
     jimeng_link: '',
     selectedIndustries: [],
     tempSelectedIndustries: [],
-    selectedStyles: [],
-    tempSelectedStyles: [],
+    selectedStyles: [UNLIMITED_STYLE],
+    tempSelectedStyles: [UNLIMITED_STYLE],
     refImages: [],
     videoSpecOptions: {
       duration: ['15秒', '30秒', '60秒', '90秒'],
@@ -52,7 +53,7 @@ Page({
     ratioIndex: 0,
     qualityIndex: 1,
     industryOptions: INDUSTRY_OPTIONS,
-    styleOptions: ['口语化', '高级感', '接地气', '幽默风趣', '温馨治愈', '时尚潮流'],
+    styleOptions: [UNLIMITED_STYLE, '口语化', '高级感', '接地气', '幽默风趣', '温馨治愈', '时尚潮流'],
     baseTotal: '20.00',
     awardTotal: '200.00',
     originalPlatformFee: '22.00',
@@ -149,19 +150,19 @@ Page({
   // 确认风格选择
   confirmStyleSelection() {
     this.setData({
-      selectedStyles: [...this.data.tempSelectedStyles],
+      selectedStyles: this.normalizeStyleSelection(this.data.tempSelectedStyles),
       showStyleDialog: false
     });
   },
   
   // 重置风格选择
   resetStyleSelection() {
-    this.setData({ tempSelectedStyles: [] });
+    this.setData({ tempSelectedStyles: [UNLIMITED_STYLE] });
   },
     // 打开对话框
-    openStyleDialog() {
+  openStyleDialog() {
       this.setData({
-        tempSelectedStyles: [...this.data.selectedStyles],
+        tempSelectedStyles: this.normalizeStyleSelection(this.data.selectedStyles),
         showStyleDialog: true
       });
     },
@@ -201,7 +202,7 @@ Page({
       }
     }
 
-    if (Array.isArray(aiStyles) && aiStyles.length && this.data.selectedStyles.length === 0) {
+    if (Array.isArray(aiStyles) && aiStyles.length && this.isStyleSelectionDefault()) {
       const matchedStyles = aiStyles.map((name) => String(name).trim()).filter(Boolean);
       if (matchedStyles.length) {
         nextData.selectedStyles = matchedStyles.slice(0, 3);
@@ -221,6 +222,19 @@ Page({
     return this.data.selectedStyles.indexOf(style) > -1;
   },
 
+  normalizeStyleSelection(styles) {
+    const list = Array.from(new Set((styles || []).map((style) => String(style).trim()).filter(Boolean)));
+    if (list.length === 0) {
+      return [UNLIMITED_STYLE];
+    }
+    return list;
+  },
+
+  isStyleSelectionDefault() {
+    const styles = this.normalizeStyleSelection(this.data.selectedStyles);
+    return styles.length === 1 && styles[0] === UNLIMITED_STYLE;
+  },
+
   toggleIndustry(e) {
     const id = Number(e.currentTarget.dataset.id);
     const isSelected = this.data.tempSelectedIndustries.indexOf(id) > -1;
@@ -231,13 +245,18 @@ Page({
 
   toggleStyle(e) {
     const style = e.currentTarget.dataset.style;
-    const { tempSelectedStyles } = this.data;
+    let tempSelectedStyles = [...this.data.tempSelectedStyles];
+
     const index = tempSelectedStyles.indexOf(style);
     if (index > -1) {
       tempSelectedStyles.splice(index, 1);
     } else {
       tempSelectedStyles.push(style);
     }
+    if (tempSelectedStyles.length === 0) {
+      tempSelectedStyles = [UNLIMITED_STYLE];
+    }
+
     this.setData({ tempSelectedStyles });
   },
 
@@ -420,7 +439,7 @@ Page({
   },
 
   aiWriteDesc() {
-    const { title, description, selectedIndustries, selectedStyles, isAiWriting } = this.data;
+    const { title, description, selectedIndustries, isAiWriting } = this.data;
 
     if (isAiWriting) {
       return;
@@ -445,7 +464,7 @@ Page({
       title: cleanTitle,
       description: (description || '').trim(),
       industries: industryNames,
-      styles: selectedStyles
+      styles: this.normalizeStyleSelection(this.data.selectedStyles)
     }).then(res => {
       wx.hideLoading();
       if (res.data && res.data.success && res.data.description) {
@@ -493,7 +512,7 @@ Page({
   },
 
   async handleSubmit() {
-    const { title, description, unit_price, total_count, selectedIndustries, selectedStyles, privacyProtected, jimeng_link, jimengEnabled } = this.data;
+    const { title, description, unit_price, total_count, selectedIndustries, privacyProtected, jimeng_link, jimengEnabled } = this.data;
 
     if (this.data.isSubmitting) {
       return;
@@ -602,20 +621,20 @@ Page({
 
       wx.showLoading({ title: '发布中...' });
       const jimengLinkTrim = String(jimeng_link || '').trim();
-      const res = await Api.createTask({
-        title,
-        description,
+    const res = await Api.createTask({
+      title,
+      description,
         unit_price: Number(unit_price),
         total_count: Number(total_count),
         award_price: Number(this.data.award_price) || 0,
         deadline: this.data.deadline,
         video_duration: this.data.selectedDuration,
-        video_aspect: this.data.selectedRatio,
-        video_resolution: this.data.selectedQuality,
-        public: !privacyProtected,
-        industries: industryNames,
-        styles: selectedStyles,
-        jimeng_enabled: !!jimengEnabled,
+      video_aspect: this.data.selectedRatio,
+      video_resolution: this.data.selectedQuality,
+      public: !privacyProtected,
+      industries: industryNames,
+      styles: this.normalizeStyleSelection(this.data.selectedStyles),
+      jimeng_enabled: !!jimengEnabled,
         jimeng_link: jimengEnabled ? jimengLinkTrim : '',
         materials,
       });

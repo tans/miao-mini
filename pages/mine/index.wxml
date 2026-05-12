@@ -175,7 +175,7 @@
     </view>
 
 
-  <view class="update-time" wx:if="{{displayText}}">更新时间：{{displayText}}</view>
+  <view class="update-time" wx:if="{{displayText}}">版本号：{{displayText}}</view>
 
 
 </view>

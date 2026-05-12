@@ -9,11 +9,12 @@ function showUnavailableToast() {
 
 function openCustomerServiceChat(options = {}) {
   const url = String(config.customerServiceKfUrl || '').trim();
+  const corpId = String(config.customerServiceCorpId || '').trim();
   const sessionFrom = String(options.sessionFrom || '').trim();
   const showMessageCard = options.showMessageCard !== false;
   const sendMessageTitle = String(options.sendMessageTitle || '创意喵客服咨询').trim();
 
-  if (!url) {
+  if (!url || !corpId) {
     showUnavailableToast();
     return;
   }
@@ -28,6 +29,7 @@ function openCustomerServiceChat(options = {}) {
   }
 
   wx.openCustomerServiceChat({
+    corpId,
     extInfo,
     success: () => {},
     fail: (err) => {

@@ -121,26 +121,27 @@
   min-width: 0;
 }
 
+.phone-value {
+  display: flex;
+  align-items: center;
+  min-height: 92rpx;
+}
+
 .phone-bind-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  height: 64rpx;
-  line-height: 64rpx;
-  padding: 0 22rpx;
-  border-radius: 32rpx;
-  background: linear-gradient(135deg, #ff9f2f 0%, #ff7a18 100%);
-  color: #fff;
-  font-size: 24rpx;
-  font-weight: 600;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  margin-left: 16rpx;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .phone-bind-btn::after {
   border: none;
-}
-
-.phone-hint {
-  margin: -8rpx 40rpx 0;
-  color: #8c8c8c;
-  font-size: 22rpx;
 }
 
 .info-placeholder {

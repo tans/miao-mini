@@ -39,7 +39,7 @@
         <view class="banner-item" bindtap="openTutorial" data-type="merchant">
           <image src="https://public.jisuhudong.com/minapp/2.png" class="banner-img" />
         </view>
-        <view class="banner-item">
+        <view class="banner-item" bindtap="openTutorial" data-type="intro">
           <image src="https://public.jisuhudong.com/minapp/3.png" class="banner-img" />
         </view>
       </view>

@@ -13,6 +13,7 @@ const PLACEHOLDER_COVER_KEYWORDS = [
 const TUTORIAL_VIDEOS = {
   creator: 'https://public.jisuhudong.com/minapp/创作者接单指引.mp4',
   merchant: 'https://public.jisuhudong.com/minapp/商家发布教程.mp4',
+  intro: 'https://public.jisuhudong.com/minapp/创意喵介绍.mp4',
 };
 
 // 计算倒计时字符串
