@@ -321,16 +321,6 @@
             </view>
             <switch class="switch-icon" checked="{{task.jimeng_enabled}}" color="#FF9F2F" disabled/>
           </view>
-
-          <view class="jimeng-display-list" wx:if="{{task.jimeng_link}}">
-            <view class="jimeng-display-item">
-              <view class="jimeng-display-meta">
-                <text class="jimeng-display-label">邀请链接</text>
-                <text class="jimeng-display-value">{{task.jimeng_link}}</text>
-              </view>
-              <text class="jimeng-copy-btn" bindtap="copyJimengValue" data-value="{{task.jimeng_link}}" data-label="链接">复制</text>
-            </view>
-          </view>
           
           <view class="jimeng-edit-row">
             <textarea
@@ -340,14 +330,6 @@
               value="{{editJimengLink}}"
               bindinput="onJimengLinkInput"
             />
-          </view>
-          <view class="jimeng-display-list" wx:if="{{editJimengLink}}">
-            <view class="jimeng-display-item">
-              <view class="jimeng-display-meta">
-                <text class="jimeng-display-label">当前链接</text>
-                <text class="jimeng-display-value">{{editJimengLink}}</text>
-              </view>
-            </view>
           </view>
 
           <view class="jimeng-actions">

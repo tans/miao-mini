@@ -74,6 +74,133 @@ Page({
     return !!(auth && auth.state === 'TAKING_EFFECT' && auth.authorization_id);
   },
 
+  isWechatOpenIDMissingError(err) {
+    if (err && err.code && Number(err.code) !== 50201) {
+      return false;
+    }
+    const message = String((err && err.message) || '');
+    return message.includes('用户未绑定微信 openid');
+  },
+
+  async reloginForWithdrawAuthorization() {
+    await app.silentLogin();
+    if (!app.isLoggedIn()) {
+      throw new Error('微信登录失败，请重新进入小程序后重试');
+    }
+  },
+
+  async launchWithdrawAuthorizationOnce() {
+    const authRes = await Api.createWithdrawAuthorization();
+    const authData = authRes.data || null;
+    this.setData({ withdrawAuthorization: authData });
+
+    if (!authData) {
+      Api.reportException({
+        type: 'withdraw_authorization_empty',
+        message: authRes.message || '提现授权创建失败',
+        path: '/creator/withdraw-authorization',
+        method: 'POST',
+        statusCode: 200,
+        responseBody: authRes,
+        page: '/pages/wallet/withdraw/index',
+        extra: {
+          stage: 'create_authorization',
+        },
+      });
+      throw new Error('提现授权创建失败');
+    }
+    if (!authData.package_info) {
+      if (this.isWithdrawAuthorizationEffective(authData)) {
+        return authData;
+      }
+      Api.reportException({
+        type: 'withdraw_authorization_no_package',
+        message: authRes.message || '未获取到微信提现授权信息',
+        path: '/creator/withdraw-authorization',
+        method: 'POST',
+        statusCode: 200,
+        responseBody: authRes,
+        page: '/pages/wallet/withdraw/index',
+        extra: {
+          stage: 'create_authorization',
+          state: authData.state || '',
+          authorization_id: authData.authorization_id || '',
+        },
+      });
+      throw new Error(authRes.message || '未获取到微信提现授权信息');
+    }
+
+    await new Promise((resolve, reject) => {
+      if (typeof wx.requestMerchantTransfer !== 'function' || !wx.canIUse('requestMerchantTransfer')) {
+        Api.reportException({
+          type: 'withdraw_authorization_api_unsupported',
+          message: '当前微信版本不支持提现授权',
+          path: '/pages/wallet/withdraw/index',
+          page: '/pages/wallet/withdraw/index',
+          extra: {
+            stage: 'request_merchant_transfer',
+            canIUse: typeof wx.canIUse === 'function' ? wx.canIUse('requestMerchantTransfer') : false,
+            hasApi: typeof wx.requestMerchantTransfer === 'function',
+            app_id: authData.wechat_app_id || '',
+            mch_id: authData.wechat_mch_id || '',
+          },
+        });
+        reject(new Error('当前微信版本不支持提现授权，请升级后重试'));
+        return;
+      }
+      const accountInfo = wx.getAccountInfoSync ? wx.getAccountInfoSync() : null;
+      const miniProgramAppId = accountInfo && accountInfo.miniProgram && accountInfo.miniProgram.appId;
+      wx.requestMerchantTransfer({
+        mchId: authData.wechat_mch_id || '',
+        appId: authData.wechat_app_id || miniProgramAppId || '',
+        package: authData.package_info,
+        success: resolve,
+        fail: (err) => {
+          const message = (err && (err.errMsg || err.message)) || '提现授权未完成';
+          console.warn('[withdraw-authorization] requestMerchantTransfer failed:', message, err);
+          Api.reportException({
+            type: 'withdraw_authorization_launch_failed',
+            message,
+            path: '/pages/wallet/withdraw/index',
+            page: '/pages/wallet/withdraw/index',
+            extra: {
+              stage: 'request_merchant_transfer',
+              err: err || '',
+              app_id: authData.wechat_app_id || miniProgramAppId || '',
+              mch_id: authData.wechat_mch_id || '',
+              package_info: authData.package_info || '',
+              authorization_id: authData.authorization_id || '',
+              state: authData.state || '',
+            },
+          });
+          reject(new Error(message));
+        }
+      });
+    });
+
+    const latestRes = await Api.getWithdrawAuthorization();
+    const latestAuth = latestRes.data || null;
+    this.setData({ withdrawAuthorization: latestAuth });
+    if (!this.isWithdrawAuthorizationEffective(latestAuth)) {
+      Api.reportException({
+        type: 'withdraw_authorization_not_effective',
+        message: '微信提现授权尚未生效',
+        path: '/creator/withdraw-authorization',
+        method: 'GET',
+        statusCode: 200,
+        responseBody: latestRes,
+        page: '/pages/wallet/withdraw/index',
+        extra: {
+          stage: 'refresh_authorization',
+          state: (latestAuth && latestAuth.state) || '',
+          authorization_id: (latestAuth && latestAuth.authorization_id) || '',
+        },
+      });
+      throw new Error('微信提现授权尚未生效，请稍后再试');
+    }
+    return latestAuth;
+  },
+
   async ensureWithdrawAuthorization() {
     const currentAuth = this.data.withdrawAuthorization;
     if (this.isWithdrawAuthorizationEffective(currentAuth)) {
@@ -82,115 +209,19 @@ Page({
 
     this.setData({ authorizing: true, error: '' });
     try {
-      const authRes = await Api.createWithdrawAuthorization();
-      const authData = authRes.data || null;
-      this.setData({ withdrawAuthorization: authData });
-
-      if (!authData) {
-        Api.reportException({
-          type: 'withdraw_authorization_empty',
-          message: authRes.message || '提现授权创建失败',
-          path: '/creator/withdraw-authorization',
-          method: 'POST',
-          statusCode: 200,
-          responseBody: authRes,
-          page: '/pages/wallet/withdraw/index',
-          extra: {
-            stage: 'create_authorization',
-          },
-        });
-        throw new Error('提现授权创建失败');
-      }
-      if (!authData.package_info) {
-        if (this.isWithdrawAuthorizationEffective(authData)) {
-          return authData;
-        }
-        Api.reportException({
-          type: 'withdraw_authorization_no_package',
-          message: authRes.message || '未获取到微信提现授权信息',
-          path: '/creator/withdraw-authorization',
-          method: 'POST',
-          statusCode: 200,
-          responseBody: authRes,
-          page: '/pages/wallet/withdraw/index',
-          extra: {
-            stage: 'create_authorization',
-            state: authData.state || '',
-            authorization_id: authData.authorization_id || '',
-          },
-        });
-        throw new Error(authRes.message || '未获取到微信提现授权信息');
-      }
-
-      await new Promise((resolve, reject) => {
-        if (typeof wx.requestMerchantTransfer !== 'function' || !wx.canIUse('requestMerchantTransfer')) {
-          Api.reportException({
-            type: 'withdraw_authorization_api_unsupported',
-            message: '当前微信版本不支持提现授权',
-            path: '/pages/wallet/withdraw/index',
-            page: '/pages/wallet/withdraw/index',
-            extra: {
-              stage: 'request_merchant_transfer',
-              canIUse: typeof wx.canIUse === 'function' ? wx.canIUse('requestMerchantTransfer') : false,
-              hasApi: typeof wx.requestMerchantTransfer === 'function',
-              app_id: authData.wechat_app_id || '',
-              mch_id: authData.wechat_mch_id || '',
-            },
-          });
-          reject(new Error('当前微信版本不支持提现授权，请升级后重试'));
-          return;
-        }
-        const accountInfo = wx.getAccountInfoSync ? wx.getAccountInfoSync() : null;
-        const miniProgramAppId = accountInfo && accountInfo.miniProgram && accountInfo.miniProgram.appId;
-        wx.requestMerchantTransfer({
-          mchId: authData.wechat_mch_id || '',
-          appId: authData.wechat_app_id || miniProgramAppId || '',
-          package: authData.package_info,
-          success: resolve,
-          fail: (err) => {
-            const message = (err && (err.errMsg || err.message)) || '提现授权未完成';
-            console.warn('[withdraw-authorization] requestMerchantTransfer failed:', message, err);
-            Api.reportException({
-              type: 'withdraw_authorization_launch_failed',
-              message,
-              path: '/pages/wallet/withdraw/index',
-              page: '/pages/wallet/withdraw/index',
-              extra: {
-                stage: 'request_merchant_transfer',
-                err: err || '',
-                app_id: authData.wechat_app_id || miniProgramAppId || '',
-                mch_id: authData.wechat_mch_id || '',
-                package_info: authData.package_info || '',
-                authorization_id: authData.authorization_id || '',
-                state: authData.state || '',
-              },
-            });
-            reject(new Error(message));
+      let retriedAfterRelogin = false;
+      while (true) {
+        try {
+          return await this.launchWithdrawAuthorizationOnce();
+        } catch (err) {
+          if (!retriedAfterRelogin && this.isWechatOpenIDMissingError(err)) {
+            retriedAfterRelogin = true;
+            await this.reloginForWithdrawAuthorization();
+            continue;
           }
-        });
-      });
-
-      const latestRes = await Api.getWithdrawAuthorization();
-      const latestAuth = latestRes.data || null;
-      this.setData({ withdrawAuthorization: latestAuth });
-      if (!this.isWithdrawAuthorizationEffective(latestAuth)) {
-        Api.reportException({
-          type: 'withdraw_authorization_not_effective',
-          message: '微信提现授权尚未生效',
-          path: '/creator/withdraw-authorization',
-          method: 'GET',
-          statusCode: 200,
-          responseBody: latestRes,
-          page: '/pages/wallet/withdraw/index',
-          extra: {
-            stage: 'refresh_authorization',
-            state: latestAuth && latestAuth.state || '',
-            authorization_id: latestAuth && latestAuth.authorization_id || '',
-          },
-        });
-        throw new Error('微信提现授权尚未生效，请稍后再试');
+          throw err;
+        }
       }
-      return latestAuth;
     } finally {
       this.setData({ authorizing: false });
     }

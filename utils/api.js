@@ -897,6 +897,10 @@ const Api = {
     return this.request('PUT', `/business/tasks/${taskId}`, { jimeng_link: jimengLink });
   },
 
+  pauseBusinessTask(taskId) {
+    return this.request('PUT', `/business/tasks/${taskId}/pause`, {});
+  },
+
   // AI task description generation
   aiWriteTaskDescription(data) {
     // data: { title, industries, styles }

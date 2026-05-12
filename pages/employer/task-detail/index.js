@@ -340,7 +340,6 @@ Page({
     totalAdopted: 0,
     adoptionRate: 0,
     totalSpent: 0,
-    showEditJimeng: false,
     editJimengLink: '',
     showReviewConfirmModal: false,
     reviewConfirmConfig: {
@@ -477,7 +476,6 @@ Page({
         totalAdopted,
         adoptionRate,
         totalSpent,
-        showEditJimeng: false,
         editJimengLink: task.jimeng_link || '',
         selectedClaims: {},
         selectedCount: 0,
@@ -535,18 +533,6 @@ Page({
     wx.setClipboardData({
       data: String(this.data.task.id),
       success: () => wx.showToast({ title: '已复制', icon: 'success' }),
-    });
-  },
-
-  copyJimengValue(e) {
-    const { value, label } = e.currentTarget.dataset;
-    if (!value) {
-      wx.showToast({ title: `暂无可复制${label || ''}`, icon: 'none' });
-      return;
-    }
-    wx.setClipboardData({
-      data: String(value),
-      success: () => wx.showToast({ title: `${label || '内容'}已复制`, icon: 'success' }),
     });
   },
 
@@ -891,10 +877,8 @@ Page({
   },
 
   toggleEditJimeng() {
-    const showEditJimeng = !this.data.showEditJimeng;
     this.setData({
-      showEditJimeng,
-      editJimengLink: showEditJimeng ? (this.data.task.jimeng_link || '') : this.data.editJimengLink,
+      editJimengLink: this.data.task.jimeng_link || this.data.editJimengLink,
     });
   },
 
@@ -912,14 +896,50 @@ Page({
     wx.showLoading({ title: '更新中...' });
     try {
       await Api.updateTaskJimengLink(task.id, editJimengLink);
-      wx.showToast({ title: '更新成功', icon: 'success' });
+      wx.showToast({ title: '保存成功', icon: 'success' });
       this.setData({
         'task.jimeng_link': String(editJimengLink || '').trim(),
         'task.jimeng_enabled': true,
-        showEditJimeng: false,
       });
     } catch (err) {
       wx.showToast({ title: err.message || '更新失败', icon: 'none' });
+    } finally {
+      wx.hideLoading();
+    }
+  },
+
+  async pauseTask() {
+    const task = this.data.task || {};
+    if (!task.id) {
+      wx.showToast({ title: '任务不存在', icon: 'none' });
+      return;
+    }
+    if (![2, 3].includes(Number(task.status))) {
+      wx.showToast({ title: '当前状态不支持暂停报名', icon: 'none' });
+      return;
+    }
+
+    const confirmed = await new Promise((resolve) => {
+      wx.showModal({
+        title: '暂停报名',
+        content: '暂停后任务将从首页下架，但已报名并提交的作品仍会继续审核和结算。是否继续？',
+        confirmText: '暂停报名',
+        cancelText: '再想想',
+        success: (res) => resolve(!!res.confirm),
+        fail: () => resolve(false),
+      });
+    });
+    if (!confirmed) return;
+
+    wx.showLoading({ title: '暂停中...' });
+    try {
+      await Api.pauseBusinessTask(task.id);
+      this.setData({
+        'task.status': 6,
+      });
+      wx.showToast({ title: '已暂停报名', icon: 'success' });
+    } catch (err) {
+      wx.showToast({ title: err.message || '暂停失败', icon: 'none' });
     } finally {
       wx.hideLoading();
     }

@@ -182,6 +182,9 @@
 }
 
 .submit-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   height: 88rpx;
   line-height: 88rpx;
   background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
