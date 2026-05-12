@@ -27,8 +27,21 @@ function toPositiveInt(value) {
   return Number.isFinite(num) && num > 0 ? num : 0;
 }
 
+function normalizeDateTimeInput(value) {
+  if (value === undefined || value === null || value === '') return '';
+  return String(value)
+    .trim()
+    .replace('T', ' ')
+    .replace(/Z$/, '')
+    .replace(/\.\d+/, '')
+    .replace(/([+-]\d{2}:\d{2})$/, '')
+    .replace(/([+-]\d{4})$/, '');
+}
+
 function toTimestamp(value) {
-  const ts = new Date(value || '').getTime();
+  const normalized = normalizeDateTimeInput(value);
+  if (!normalized) return 0;
+  const ts = new Date(normalized).getTime();
   return Number.isFinite(ts) ? ts : 0;
 }
 
