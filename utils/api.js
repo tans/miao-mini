@@ -14,6 +14,28 @@ const DEFAULT_AVATAR_URLS = [
   'https://public.jisuhudong.com/minapp/avatar/cat_avatar_3_3.png',
 ];
 
+function isPublicStaticAssetUrl(raw) {
+  const value = (raw || '').trim();
+  if (!value) return false;
+
+  if (
+    value.startsWith('data:') ||
+    value.startsWith('wxfile://') ||
+    value.startsWith('cloud://') ||
+    value.startsWith('/assets/') ||
+    value.startsWith('/images/')
+  ) {
+    return true;
+  }
+
+  const match = value.match(/^https?:\/\/([^/?#]+)([^?#]*)/i);
+  if (!match) return false;
+
+  const host = match[1].toLowerCase();
+  const path = (match[2] || '').toLowerCase();
+  return host === 'public.jisuhudong.com' && path.startsWith('/minapp/');
+}
+
 const Api = {
   tokenKey: 'miao_token',
   userKey: 'miao_user',
@@ -346,18 +368,19 @@ const Api = {
     return `${base}/api/v1/assets/preview?raw=${encodeURIComponent(value)}`;
   },
 
+  _isSameApiOrigin(url) {
+    const raw = (url || '').trim();
+    if (!raw) return false;
+    const apiOrigin = this.getApiBase().replace(/\/api\/v1$/, '').replace(/\/+$/, '');
+    return raw.indexOf(apiOrigin) === 0;
+  },
+
   getDisplayUrl(url) {
     let raw = (url || '').trim();
     if (!raw) return '';
     raw = this.getRawDisplayUrl(raw);
     const normalized = raw.replace(/^https?:\/\/[^/]+/i, '');
-    if (
-      raw.startsWith('data:') ||
-      raw.startsWith('wxfile://') ||
-      raw.startsWith('cloud://') ||
-      raw.startsWith('/assets/') ||
-      raw.startsWith('/images/')
-    ) {
+    if (isPublicStaticAssetUrl(raw)) {
       return raw;
     }
     const isPublicMedia =
@@ -376,7 +399,7 @@ const Api = {
       return this.getAssetPreviewUrl(raw);
     }
     if (/^https?:\/\//i.test(raw)) {
-      return raw;
+      return this._isSameApiOrigin(raw) ? raw : this.getAssetPreviewUrl(raw);
     }
     return this.resolvePublicUrl(raw);
   },
@@ -385,20 +408,14 @@ const Api = {
     let raw = (url || '').trim();
     if (!raw) return '';
     raw = this.getRawDisplayUrl(raw);
-    if (
-      raw.startsWith('data:') ||
-      raw.startsWith('wxfile://') ||
-      raw.startsWith('cloud://') ||
-      raw.startsWith('/assets/') ||
-      raw.startsWith('/images/')
-    ) {
+    if (isPublicStaticAssetUrl(raw)) {
       return raw;
     }
     if (raw.startsWith('/')) {
       return this.resolvePublicUrl(raw);
     }
     if (/^https?:\/\//i.test(raw)) {
-      return raw;
+      return this._isSameApiOrigin(raw) ? raw : this.getAssetPreviewUrl(raw);
     }
     return this.resolvePublicUrl(raw);
   },
@@ -457,11 +474,17 @@ const Api = {
     if (options.jobId) formData.job_id = options.jobId;
 
     const uploadRes = await new Promise((resolve, reject) => {
+      const token = this.getToken();
+      const header = {};
+      if (token) {
+        header.Authorization = 'Bearer ' + token;
+      }
       wx.uploadFile({
         url: uploadUrl,
         filePath: tempFilePath,
         name: 'file',
         formData,
+        header,
         timeout: options.timeout || (fileType === 'video' ? 600000 : 120000),
         success: (res) => {
           if (res.statusCode >= 200 && res.statusCode < 300) {
