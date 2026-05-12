@@ -298,8 +298,8 @@ const Api = {
   },
 
   // Auth
-  loginByWechat(code) {
-    return this.request('POST', '/auth/wechat-mini-login', { code }, true).then(res => {
+  loginByWechat(code, withAuth = false) {
+    return this.request('POST', '/auth/wechat-mini-login', { code }, !withAuth).then(res => {
       if (res.data && res.data.token) {
         this.setAuth(res.data.token, res.data.user);
       }

@@ -341,8 +341,16 @@
         
 
         
-        <view class="jimeng-confirm" bindtap="updateJimengLink">
-          <text>更新链接</text>
+        <view class="jimeng-state-tip" wx:if="{{task.isTaskPaused}}">
+          <text>当前任务已暂停报名，首页已下架，但已报名并提交的作品仍会继续审核和结算。</text>
+        </view>
+        <view class="jimeng-action-row">
+          <view class="jimeng-confirm" bindtap="updateJimengLink">
+            <text>更新链接</text>
+          </view>
+          <view class="jimeng-pause" wx:if="{{task.canPauseTask}}" bindtap="pauseTask">
+            <text>暂停报名</text>
+          </view>
         </view>
       </view>
 

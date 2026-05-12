@@ -533,6 +533,22 @@
   gap: 24rpx;
 }
 
+.jimeng-state-tip {
+  margin-top: 24rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 12rpx;
+  background: #fff6eb;
+  color: #c96b00;
+  font-size: 22rpx;
+  line-height: 1.6;
+}
+
+.jimeng-action-row {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 24rpx;
+}
+
 .jimeng-tutorial text {
   font-size: 24rpx;
   font-weight: 900;
@@ -541,6 +557,7 @@
 
 .jimeng-btn,
 .jimeng-confirm {
+  flex: 1;
   align-self: flex-end;
   padding: 0 32rpx;
   border-radius: 999rpx;
@@ -554,7 +571,21 @@
 }
 
 .jimeng-confirm {
-  margin-top: -8rpx;
+  margin-top: 0;
+}
+
+.jimeng-pause {
+  flex: 1;
+  align-self: flex-end;
+  padding: 0 32rpx;
+  border-radius: 999rpx;
+  background: #fff1f1;
+  color: #d64545;
+  font-size: 24rpx;
+  font-weight: 700;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
 }
 
 .safety-header {

@@ -83,7 +83,26 @@ Page({
   },
 
   async reloginForWithdrawAuthorization() {
-    await app.silentLogin();
+    const code = await new Promise((resolve, reject) => {
+      wx.login({
+        success: (res) => {
+          if (res && res.code) {
+            resolve(res.code);
+            return;
+          }
+          reject(new Error('微信登录凭证获取失败'));
+        },
+        fail: () => reject(new Error('微信登录失败，请重新进入小程序后重试')),
+      });
+    });
+
+    try {
+      await Api.loginByWechat(code, true);
+    } catch (err) {
+      console.warn('[withdraw-authorization] rebind login failed:', err);
+      await app.silentLogin();
+    }
+
     if (!app.isLoggedIn()) {
       throw new Error('微信登录失败，请重新进入小程序后重试');
     }

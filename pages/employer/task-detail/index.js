@@ -131,6 +131,9 @@ function normalizeTask(task = {}) {
     submissionCount: Number(pick(task.submission_count, task.submissionCount, 0)) || 0,
     jimeng_link: jimengLink,
     jimeng_enabled: jimengEnabled,
+    taskStatusCode: Number(task.status || 0) || 0,
+    canPauseTask: [2, 3].includes(Number(task.status || 0) || 0),
+    isTaskPaused: Number(task.status || 0) === 6,
     isPublic,
     visibilityText: isPublic ? '公开投稿' : '隐私保护',
     materials,
@@ -938,6 +941,12 @@ Page({
         'task.status': 6,
       });
       wx.showToast({ title: '已暂停报名', icon: 'success' });
+      this.setData({
+        'task.status': 6,
+        'task.taskStatusCode': 6,
+        'task.canPauseTask': false,
+        'task.isTaskPaused': true,
+      });
     } catch (err) {
       wx.showToast({ title: err.message || '暂停失败', icon: 'none' });
     } finally {
