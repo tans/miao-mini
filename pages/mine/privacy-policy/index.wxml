@@ -1,0 +1,37 @@
+<view class="agreement-page">
+  <text class="doc-main-title">隐私政策</text>
+
+  <view class="article">
+    <text class="article-title">一、信息收集范围</text>
+    <text class="clause">1.1 为向您提供账号注册、任务发布、报名、投稿、支付结算、客服与安全风控等服务，我们会收集您主动提供或使用服务过程中产生的必要信息。</text>
+    <text class="clause">1.2 可能收集的信息包括手机号码、头像昵称、认证资料、任务与作品内容、订单与资金记录、设备信息、日志信息及您授权的其他信息。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">二、信息使用目的</text>
+    <text class="clause">2.1 我们仅会在实现服务功能、完成交易、风控审核、客户服务、消息通知、统计分析及法律法规允许的范围内使用您的信息。</text>
+    <text class="clause">2.2 我们不会以与本政策不符的目的处理您的个人信息，也不会在未取得授权的情况下向无关第三方披露您的信息。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">三、信息共享与存储</text>
+    <text class="clause">3.1 为完成任务撮合、素材上传、支付结算与消息通知，我们可能将必要信息提供给合作的云服务、支付、短信及风控服务提供方，但仅限于实现服务所必需的范围。</text>
+    <text class="clause">3.2 我们会按照法律法规要求在合理期限内保存相关记录，并采取安全措施保护数据安全。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">四、您的权利</text>
+    <text class="clause">4.1 您可以查询、更正、删除、撤回授权、注销账号或通过客服渠道咨询个人信息处理相关问题。</text>
+    <text class="clause">4.2 当您撤回同意后，我们将停止处理对应个人信息，但这不影响此前基于您的同意已开展的处理活动的合法性。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">五、未成年人保护</text>
+    <text class="clause">5.1 若您为未成年人，请在监护人的陪同和指导下阅读本政策并使用我们的服务。</text>
+  </view>
+
+  <view class="article">
+    <text class="article-title">六、联系我们</text>
+    <text class="clause">6.1 如您对隐私政策有任何疑问、意见或建议，可通过平台客服渠道与我们联系。</text>
+  </view>
+</view>

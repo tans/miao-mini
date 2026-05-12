@@ -183,6 +183,11 @@
   box-shadow: 0 0 0 8rpx rgba(201, 206, 216, 0.12);
 }
 
+.workflow-step-platform-pending .step-dot {
+  background: #c9ced8;
+  box-shadow: 0 0 0 8rpx rgba(201, 206, 216, 0.12);
+}
+
 .step-body {
   flex: 1;
   padding-bottom: 18rpx;

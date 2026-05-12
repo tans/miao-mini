@@ -417,6 +417,7 @@ Page({
     submitClaimId: '',
     submitVideoUrl: '',
     submitting: false,
+    creatorAgreementChecked: false,
     total_count: 0,
     remaining_count: 0,
     enrolled_count: 0,
@@ -566,6 +567,14 @@ Page({
     wx.navigateTo({ url: '/pages/mine/creator-agreement/index' });
   },
 
+  goPrivacyPolicy() {
+    wx.navigateTo({ url: '/pages/mine/privacy-policy/index' });
+  },
+
+  toggleCreatorAgreement() {
+    this.setData({ creatorAgreementChecked: !this.data.creatorAgreementChecked });
+  },
+
   copyJimengLink() {
     const jimengLink = (this.data.task && (this.data.task.jimengLink || this.data.task.jimengCode || this.data.task.jimeng_link || this.data.task.jimeng_code)) || '';
     if (!jimengLink) {
@@ -675,6 +684,10 @@ Page({
     }
     if (this.data.hasSignedUp) {
       wx.showToast({ title: '已报名', icon: 'none' });
+      return;
+    }
+    if (!this.data.creatorAgreementChecked) {
+      wx.showToast({ title: '请先阅读并勾选协议', icon: 'none' });
       return;
     }
     wx.showLoading({ title: '报名中...' });

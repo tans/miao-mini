@@ -9,7 +9,7 @@
   <view class="article">
     <text class="article-title">第一条 协议目的</text>
     <text class="clause">1.1 本协议由甲方与乙方就甲方使用乙方运营的「创意喵」小程序及相关服务（下称「本平台」）发布视频类任务、托管资金、验收作品及结算等事项订立。</text>
-    <text class="clause">1.2 甲方在平台完成商家认证、发单、托管或支付等行为，即视为已阅读并同意本协议全部条款。</text>
+    <text class="clause">1.2 甲方在阅读并确认本协议后，可通过商家认证、发单、托管或支付等行为使用本平台服务。</text>
   </view>
 
   <view class="article">
@@ -58,7 +58,7 @@
 
   <view class="article">
     <text class="article-title">第九条 协议生效</text>
-    <text class="clause">9.1 本协议自甲方在平台点击同意或完成首次发单等接受服务的行为之日起生效，至甲方账户注销或双方权利义务依法终止之日止。</text>
+    <text class="clause">9.1 本协议自甲方阅读并确认后使用平台服务之日起生效，至甲方账户注销或双方权利义务依法终止之日止。</text>
     <text class="clause">9.2 本协议未尽事宜，适用平台公示规则及中华人民共和国法律法规；如部分条款无效，不影响其他条款效力。</text>
   </view>
 

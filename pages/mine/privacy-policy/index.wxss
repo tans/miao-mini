@@ -1,0 +1,39 @@
+.agreement-page {
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 24rpx;
+  box-sizing: border-box;
+  padding-bottom: 48rpx;
+}
+
+.doc-main-title {
+  display: block;
+  font-size: 32rpx;
+  color: #000000;
+  font-weight: 700;
+  text-align: center;
+  line-height: 44rpx;
+  margin-bottom: 32rpx;
+}
+
+.article {
+  margin-top: 28rpx;
+}
+
+.article-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000000;
+  line-height: 40rpx;
+  margin-bottom: 16rpx;
+}
+
+.clause {
+  display: block;
+  font-size: 26rpx;
+  color: #333333;
+  line-height: 44rpx;
+  margin-bottom: 12rpx;
+  text-align: justify;
+}

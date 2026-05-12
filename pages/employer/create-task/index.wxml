@@ -319,10 +319,18 @@ module.exports = {
       <view wx:if="{{submitFeedback}}" class="submit-feedback submit-feedback-{{submitFeedbackType}}">
         {{submitFeedback}}
       </view>
-      <view class="action-text">点击发布即表示同意
-        <text class="agreement-link" bindtap="goMerchantAgreement">《平台商家服务协议》</text>
+      <view class="agreement-check-row">
+        <view class="agreement-check {{agreementChecked ? 'agreement-check-checked' : ''}}" bindtap="toggleAgreement">
+          <view class="agreement-check-icon {{agreementChecked ? 'agreement-check-icon-checked' : ''}}"></view>
+        </view>
+        <view class="agreement-text">
+          <text class="agreement-text-tip">请先阅读并勾选</text>
+          <text class="agreement-link" catchtap="goMerchantAgreement">《平台商家服务协议》</text>
+          <text class="agreement-text-tip">和</text>
+          <text class="agreement-link" catchtap="goPrivacyPolicy">《隐私政策》</text>
+        </view>
       </view>
-      <view class="submit-btn {{isSubmitting ? 'submit-btn-disabled' : ''}}" bindtap="handleSubmit">{{isSubmitting ? '发布中...' : '托管奖金并提交审核'}}</view>
+      <view class="submit-btn {{isSubmitting || !agreementChecked ? 'submit-btn-disabled' : ''}}" bindtap="handleSubmit">{{isSubmitting ? '发布中...' : '托管奖金并提交审核'}}</view>
       <!-- <view class="submit-indicator"></view> -->
     </view>
   </scroll-view>

@@ -301,10 +301,23 @@
 
   <!-- 底部操作栏 -->
   <view class="action-bar">
-    <view class="action-text" wx:if="{{!isMerchantTask&&!hasSignedUp}}">报名即代表同意 
-      <text class="creator-agreement-link" bindtap="goCreatorAgreement">《平台创作者协议》</text>
+    <view class="agreement-check-row" wx:if="{{!isMerchantTask&&!hasSignedUp}}">
+      <view class="agreement-check {{creatorAgreementChecked ? 'agreement-check-checked' : ''}}" bindtap="toggleCreatorAgreement">
+        <view class="agreement-check-icon {{creatorAgreementChecked ? 'agreement-check-icon-checked' : ''}}"></view>
+      </view>
+      <view class="agreement-text">
+        <text class="agreement-text-tip">报名前请先阅读并勾选</text>
+        <text class="creator-agreement-link" catchtap="goCreatorAgreement">《平台创作者协议》</text>
+        <text class="agreement-text-tip">和</text>
+        <text class="agreement-link" catchtap="goPrivacyPolicy">《隐私政策》</text>
+      </view>
     </view>
-    <button style="width:100%" class="action-btn {{isMerchantTask ? 'submit-work-btn' : (!hasSignedUp || canSubmit ? 'submit-work-btn' : (task.claimActionClass || 'action-state-pending'))}}" bindtap="handleMainAction">
+    <button
+      style="width:100%"
+      class="action-btn {{isMerchantTask ? 'submit-work-btn' : (!hasSignedUp && !creatorAgreementChecked ? 'submit-work-btn-disabled' : (!hasSignedUp || canSubmit ? 'submit-work-btn' : (task.claimActionClass || 'action-state-pending')))}}"
+      bindtap="handleMainAction"
+      disabled="{{!isMerchantTask && !hasSignedUp && !creatorAgreementChecked}}"
+    >
       <text>{{isMerchantTask ? '编辑审核' : (!hasSignedUp ? '截稿倒计时：'+countdownText+'，立即报名' : canSubmit ? '上传稿件' : (task.claimActionText || '已报名，等待审核'))}}</text>
     </button>
   </view>

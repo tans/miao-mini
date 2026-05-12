@@ -65,6 +65,7 @@ Page({
     isBalanceInsufficient: true,
     balanceShortfall: '231.00',
     isSubmitting: false,
+    agreementChecked: false,
     showDialog: false,
     showStyleDialog: false,
     submitFeedback: '',
@@ -511,8 +512,16 @@ Page({
     wx.navigateTo({ url: '/pages/mine/merchant-agreement/index' });
   },
 
+  goPrivacyPolicy() {
+    wx.navigateTo({ url: '/pages/mine/privacy-policy/index' });
+  },
+
+  toggleAgreement() {
+    this.setData({ agreementChecked: !this.data.agreementChecked });
+  },
+
   async handleSubmit() {
-    const { title, description, unit_price, total_count, selectedIndustries, privacyProtected, jimeng_link, jimengEnabled } = this.data;
+    const { title, description, unit_price, total_count, selectedIndustries, privacyProtected, jimeng_link, jimengEnabled, agreementChecked } = this.data;
 
     if (this.data.isSubmitting) {
       return;
@@ -540,6 +549,10 @@ Page({
     }
     if (!Number(total_count) || Number(total_count) <= 0) {
       wx.showToast({ title: '请填写报名人数', icon: 'none' });
+      return;
+    }
+    if (!agreementChecked) {
+      wx.showToast({ title: '请先阅读并勾选协议', icon: 'none' });
       return;
     }
     if (this.data.isBalanceInsufficient) {
