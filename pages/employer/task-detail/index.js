@@ -101,8 +101,7 @@ function normalizeTask(task = {}) {
       .filter((item) => item.previewUrl && !isPlaceholderMaterialPath(item.previewUrl) && !isPlaceholderMaterialPath(item.filePath))
     : [];
   const isPublic = task.public == null ? true : !!task.public;
-  const jimengLink = String(task.jimeng_link || '').trim();
-  const jimengCode = String(task.jimeng_code || '').trim();
+  const jimengLink = String(task.jimeng_link || task.jimengLink || '').trim();
   const jimengEnabled = !!task.jimeng_enabled;
 
   return {
@@ -131,7 +130,6 @@ function normalizeTask(task = {}) {
     totalCount: Number(pick(task.total_count, task.totalCount, 0)) || 0,
     submissionCount: Number(pick(task.submission_count, task.submissionCount, 0)) || 0,
     jimeng_link: jimengLink,
-    jimeng_code: jimengCode,
     jimeng_enabled: jimengEnabled,
     isPublic,
     visibilityText: isPublic ? '公开投稿' : '隐私保护',
@@ -480,7 +478,7 @@ Page({
         adoptionRate,
         totalSpent,
         showEditJimeng: false,
-        editJimengLink: task.jimeng_link || task.jimeng_code || '',
+        editJimengLink: task.jimeng_link || '',
         selectedClaims: {},
         selectedCount: 0,
         batchMode: false,
@@ -537,6 +535,18 @@ Page({
     wx.setClipboardData({
       data: String(this.data.task.id),
       success: () => wx.showToast({ title: '已复制', icon: 'success' }),
+    });
+  },
+
+  copyJimengValue(e) {
+    const { value, label } = e.currentTarget.dataset;
+    if (!value) {
+      wx.showToast({ title: `暂无可复制${label || ''}`, icon: 'none' });
+      return;
+    }
+    wx.setClipboardData({
+      data: String(value),
+      success: () => wx.showToast({ title: `${label || '内容'}已复制`, icon: 'success' }),
     });
   },
 
@@ -884,7 +894,7 @@ Page({
     const showEditJimeng = !this.data.showEditJimeng;
     this.setData({
       showEditJimeng,
-      editJimengLink: showEditJimeng ? (this.data.task.jimeng_link || this.data.task.jimeng_code || '') : this.data.editJimengLink,
+      editJimengLink: showEditJimeng ? (this.data.task.jimeng_link || '') : this.data.editJimengLink,
     });
   },
 
@@ -894,8 +904,8 @@ Page({
       wx.showToast({ title: '任务不存在', icon: 'none' });
       return;
     }
-    if (!editJimengLink || editJimengLink.length < 10) {
-      wx.showToast({ title: '请输入有效的邀请链接', icon: 'none' });
+    if (!String(editJimengLink || '').trim()) {
+      wx.showToast({ title: '请输入邀请文案或链接', icon: 'none' });
       return;
     }
 
@@ -904,9 +914,8 @@ Page({
       await Api.updateTaskJimengLink(task.id, editJimengLink);
       wx.showToast({ title: '更新成功', icon: 'success' });
       this.setData({
-        'task.jimeng_link': editJimengLink,
+        'task.jimeng_link': String(editJimengLink || '').trim(),
         'task.jimeng_enabled': true,
-        'task.jimeng_code': '',
         showEditJimeng: false,
       });
     } catch (err) {

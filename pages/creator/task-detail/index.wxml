@@ -190,22 +190,27 @@
       </view>
 
       <!-- 即梦合拍 -->
-      <view class="merchant-card" wx:if="{{task.jimengEnabled && (task.jimengLink || task.jimengCode)}}">
+      <view class="merchant-card" wx:if="{{task.jimengEnabled && task.jimengLink}}">
         <view class="header-content">
           <text class="header-title">即梦合拍</text>
           <text class="header-desc">复制下方邀请链接，使用即梦生成视频</text>
         </view>
         <view class="jimeng-content">
-          <view class="jimeng-link" style="color:#333333;">{{task.jimengLink || task.jimengCode}}</view>
-          <view class="jimeng-badge jimeng-copy" bindtap="copyJimengLink">
-            <text class="jimeng-badge-text jimeng-copy-text">复制</text>
+          <view class="jimeng-display-list" wx:if="{{task.jimengLink}}">
+            <view class="jimeng-display-item">
+              <view class="jimeng-display-meta">
+                <text class="jimeng-display-label">邀请链接</text>
+                <text class="jimeng-display-value">{{task.jimengLink}}</text>
+              </view>
+              <text class="jimeng-copy-btn" bindtap="copyJimengValue" data-value="{{task.jimengLink}}" data-label="链接">复制</text>
+            </view>
           </view>
         </view>
         <view class="jimeng-course" bindtap="showJimengTutorial">
           <image src="../../../images/icon/start.png" style="width: 24rpx; height: 24rpx;margin-right: 6rpx;" />如何使用即梦合拍？查看教程>
         </view>
       </view>
-      <view class="merchant-card" wx:if="{{task.jimengEnabled && !(task.jimengLink || task.jimengCode) && !hasSignedUp}}">
+      <view class="merchant-card" wx:if="{{task.jimengEnabled && !task.jimengLink && !hasSignedUp}}">
         <view class="header-content">
           <text class="header-title">即梦合拍</text>
           <text class="header-desc">报名后可见邀拍链接</text>

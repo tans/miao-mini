@@ -124,8 +124,7 @@ function normalizeTask(task = {}) {
   const styles = toList(task.styles);
   const endAt = task.endAt || task.end_at || '';
   const jimengLink = String(task.jimeng_link || task.jimengLink || '').trim();
-  const jimengCode = String(task.jimeng_code || task.jimengCode || '').trim();
-  const jimengEnabled = normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, !!(jimengLink || jimengCode));
+  const jimengEnabled = normalizeBooleanFlag(task.jimeng_enabled ?? task.jimengEnabled, !!jimengLink);
   const isPublic = task.public == null ? true : !!task.public;
   const remainingCount = Number(task.remaining_count ?? task.remainingCount ?? 0) || 0;
   const totalCount = Number(task.total_count ?? task.totalCount ?? 0) || 0;
@@ -185,9 +184,7 @@ function normalizeTask(task = {}) {
     endAtText: formatDateTime(endAt),
     jimengEnabled,
     jimengLink,
-    jimengCode,
     jimeng_link: jimengLink,
-    jimeng_code: jimengCode,
     jimeng_enabled: jimengEnabled,
     hasSignedUp,
     canSubmit,
@@ -575,16 +572,16 @@ Page({
     this.setData({ creatorAgreementChecked: !this.data.creatorAgreementChecked });
   },
 
-  copyJimengLink() {
-    const jimengLink = (this.data.task && (this.data.task.jimengLink || this.data.task.jimengCode || this.data.task.jimeng_link || this.data.task.jimeng_code)) || '';
-    if (!jimengLink) {
-      wx.showToast({ title: '暂无可复制链接', icon: 'none' });
+  copyJimengValue(e) {
+    const { value, label } = e.currentTarget.dataset;
+    if (!value) {
+      wx.showToast({ title: `暂无可复制${label || ''}`, icon: 'none' });
       return;
     }
     wx.setClipboardData({
-      data: jimengLink,
+      data: String(value),
       success: () => {
-        wx.showToast({ title: '复制成功', icon: 'success' });
+        wx.showToast({ title: `${label || '内容'}已复制`, icon: 'success' });
       }
     });
   },

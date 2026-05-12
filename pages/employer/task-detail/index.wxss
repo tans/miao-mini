@@ -513,11 +513,49 @@
   margin-bottom: 24rpx;
 }
 
-.jimeng-link {
+.jimeng-display-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.jimeng-display-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 24rpx;
+  border-radius: 8rpx;
+  background: #fff;
+}
+
+.jimeng-display-meta {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.jimeng-display-label {
+  font-size: 22rpx;
+  color: #8c8c98;
+}
+
+.jimeng-display-value {
   font-size: 24rpx;
-  color: #2563eb;
+  color: #333;
   word-break: break-all;
+}
+
+.jimeng-copy-btn {
+  flex-shrink: 0;
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  background: #fff4e8;
+  color: #ef8802;
+  font-size: 22rpx;
+  font-weight: 700;
 }
 
 .jimeng-count {

@@ -422,7 +422,7 @@ Page({
   },
 
   goWithdraw() {
-    this.setData({ showWithdrawModal: true, withdrawAmount: '', withdrawResult: null });
+    wx.navigateTo({ url: '/pages/wallet/withdraw/index' });
   },
 
   closeWithdrawModal() {

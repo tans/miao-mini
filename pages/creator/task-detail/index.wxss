@@ -616,9 +616,6 @@
   padding: 20rpx 24rpx;
   background: #F6F7FE;
   border-radius: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .jimeng-badge {

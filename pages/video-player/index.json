@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "视频预览",
-  "usingComponents": {}
+  "usingComponents": {},
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
 }

@@ -26,7 +26,6 @@ Page({
     withdrawableAmount: '0.00',
     minWithdrawAmount: '50.00',
     amount: '',
-    realNameVerified: false,
     withdrawAuthorization: null,
     authorizing: false,
     loading: false,
@@ -49,14 +48,12 @@ Page({
 
   async loadWalletInfo() {
     try {
-      const [walletRes, userRes, authRes] = await Promise.all([
+      const [walletRes, authRes] = await Promise.all([
         Api.getWallet(),
-        Api.getMe(),
         Api.getWithdrawAuthorization().catch(() => ({ data: null }))
       ]);
 
       const wallet = walletRes.data || {};
-      const user = userRes.data || {};
       const withdrawAuthorization = authRes.data || null;
       const withdrawableAmount = Number(wallet.balance || 0);
       const minWithdrawAmount = Number(wallet.min_withdraw_amount || 50);
@@ -66,7 +63,6 @@ Page({
         balance: balance,
         withdrawableAmount: formatAmount(withdrawableAmount, { useGrouping: false }),
         minWithdrawAmount: formatAmount(minWithdrawAmount, { useGrouping: false }),
-        realNameVerified: user.real_name_verified || false,
         withdrawAuthorization
       });
     } catch (err) {
@@ -230,22 +226,6 @@ Page({
       return;
     }
 
-    if (!this.data.realNameVerified) {
-      this.setData({ error: '请先完成实名认证' });
-      wx.showModal({
-        title: '实名认证',
-        content: '首次提现需要先绑定实名认证，是否前往认证？',
-        confirmText: '去认证',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm) {
-            wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });
-          }
-        }
-      });
-      return;
-    }
-
     this.setData({ loading: true, error: '' });
 
     try {
@@ -270,7 +250,6 @@ Page({
         page: '/pages/wallet/withdraw/index',
         extra: {
           stage: 'withdraw_flow',
-          real_name_verified: !!this.data.realNameVerified,
           withdraw_authorization_state: this.data.withdrawAuthorization && this.data.withdrawAuthorization.state || '',
           withdraw_authorization_id: this.data.withdrawAuthorization && this.data.withdrawAuthorization.authorization_id || '',
         },

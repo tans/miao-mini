@@ -8,6 +8,171 @@ const HOME_FONT_PATH = "/assets/fonts/D-DIN-PRO-700-Bold.otf";
 const PENDING_SUBMIT_KEY = "miao_pending_claim_submit";
 const PENDING_POLL_INTERVAL = 4000;
 const PENDING_POLL_MAX_DURATION = 15 * 60 * 1000;
+const SHARE_MENUS = ["shareAppMessage", "shareTimeline"];
+const DEFAULT_SHARE_IMAGE = "/images/home/banner-default.png";
+
+function trimString(value) {
+  return String(value == null ? "" : value).trim();
+}
+
+function buildQueryString(params = {}) {
+  const query = Object.entries(params)
+    .filter(([, value]) => value !== undefined && value !== null && trimString(value) !== "")
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(trimString(value))}`);
+  return query.length ? `?${query.join("&")}` : "";
+}
+
+function firstTruthy() {
+  for (let i = 0; i < arguments.length; i += 1) {
+    const value = arguments[i];
+    if (value !== undefined && value !== null && trimString(value) !== "") {
+      return value;
+    }
+  }
+  return "";
+}
+
+function ensureShareMenu() {
+  if (typeof wx === "undefined" || typeof wx.showShareMenu !== "function") return;
+  try {
+    wx.showShareMenu({ menus: SHARE_MENUS });
+  } catch (err) {
+    // 分享菜单在部分页面或低版本环境下可能失败，忽略即可。
+  }
+}
+
+function getRoutePath(page) {
+  return `/${String(page && page.route ? page.route : "").replace(/^\/+/, "")}`;
+}
+
+function getShareRoute(page) {
+  const route = getRoutePath(page);
+  const options = (page && page.__shareLoadOptions) || {};
+  const pageData = (page && page.data) || {};
+
+  if (route === "/pages/video-player/index") {
+    const work = pageData.work || {};
+    const id = firstTruthy(page.workId, work.id, options.id);
+    if (id) return `${route}?id=${encodeURIComponent(trimString(id))}`;
+    return `${route}${buildQueryString(options)}`;
+  }
+
+  if (route === "/pages/employer/task-detail/index" || route === "/pages/creator/task-detail/index") {
+    const task = pageData.task || {};
+    const id = firstTruthy(page.taskId, task.id, options.id);
+    if (id) return `${route}?id=${encodeURIComponent(trimString(id))}`;
+    return `${route}${buildQueryString(options)}`;
+  }
+
+  return `${route}${buildQueryString(options)}`;
+}
+
+function getShareTitle(page) {
+  const route = getRoutePath(page);
+  const data = (page && page.data) || {};
+  const work = data.work || {};
+  const task = data.task || {};
+  const baseTitle = trimString(
+    firstTruthy(
+      work.title,
+      task.title,
+      data.pageTitle,
+      data.title,
+      work.task_title,
+      task.task_title
+    )
+  );
+
+  if (route === "/pages/home/index") return "创意喵｜AI视频众包撮合平台";
+  if (route === "/pages/works/index") return "创意喵灵感作品";
+  if (route === "/pages/video-player/index") return baseTitle ? `${baseTitle}｜创意喵视频预览` : "创意喵视频预览";
+  if (route === "/pages/employer/task-detail/index" || route === "/pages/creator/task-detail/index") {
+    return baseTitle ? `${baseTitle}｜创意喵任务详情` : "创意喵任务详情";
+  }
+  if (baseTitle) return baseTitle;
+  return "创意喵";
+}
+
+function getShareImage(page) {
+  const data = (page && page.data) || {};
+  const work = data.work || {};
+  const task = data.task || {};
+
+  return firstTruthy(
+    work.displayCover,
+    work.posterUrl,
+    work.thumbnail,
+    work.cover_url,
+    work.image,
+    task.displayCover,
+    task.cover,
+    task.cover_url,
+    task.thumbnail,
+    task.poster_url,
+    data.posterUrl,
+    data.videoPoster,
+    data.coverUrl,
+    DEFAULT_SHARE_IMAGE
+  );
+}
+
+function buildShareConfig(page) {
+  return {
+    title: getShareTitle(page),
+    path: getShareRoute(page),
+    imageUrl: getShareImage(page),
+  };
+}
+
+function buildTimelineShareConfig(page) {
+  const config = buildShareConfig(page);
+  const query = config.path.indexOf("?") > -1 ? config.path.split("?")[1] : "";
+  return {
+    title: config.title,
+    query,
+    imageUrl: config.imageUrl,
+  };
+}
+
+if (typeof Page === "function") {
+  const originalPage = Page;
+  Page = function patchedPage(pageConfig) {
+    const config = pageConfig || {};
+    const originalOnLoad = config.onLoad;
+    const originalOnShow = config.onShow;
+
+    config.onLoad = function onLoad(options) {
+      this.__shareLoadOptions = options || {};
+      ensureShareMenu();
+      if (typeof originalOnLoad === "function") {
+        return originalOnLoad.apply(this, arguments);
+      }
+      return undefined;
+    };
+
+    config.onShow = function onShow() {
+      ensureShareMenu();
+      if (typeof originalOnShow === "function") {
+        return originalOnShow.apply(this, arguments);
+      }
+      return undefined;
+    };
+
+    if (typeof config.onShareAppMessage !== "function") {
+      config.onShareAppMessage = function onShareAppMessage() {
+        return buildShareConfig(this);
+      };
+    }
+
+    if (typeof config.onShareTimeline !== "function") {
+      config.onShareTimeline = function onShareTimeline() {
+        return buildTimelineShareConfig(this);
+      };
+    }
+
+    return originalPage.call(this, config);
+  };
+}
 
 App({
   globalData: {

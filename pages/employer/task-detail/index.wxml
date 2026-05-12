@@ -321,21 +321,33 @@
             </view>
             <switch class="switch-icon" checked="{{task.jimeng_enabled}}" color="#FF9F2F" disabled/>
           </view>
-          
-          <!-- <view wx:if="{{!showEditJimeng}}" class="jimeng-link-row">
-            <text class="jimeng-link">{{task.jimeng_link || task.jimeng_code || '暂未设置'}}</text>
-            <text class="jimeng-count">{{editJimengLink.length || 0}}/50</text>
-          </view> -->
+
+          <view class="jimeng-display-list" wx:if="{{task.jimeng_link}}">
+            <view class="jimeng-display-item">
+              <view class="jimeng-display-meta">
+                <text class="jimeng-display-label">邀请链接</text>
+                <text class="jimeng-display-value">{{task.jimeng_link}}</text>
+              </view>
+              <text class="jimeng-copy-btn" bindtap="copyJimengValue" data-value="{{task.jimeng_link}}" data-label="链接">复制</text>
+            </view>
+          </view>
           
           <view class="jimeng-edit-row">
             <textarea
               maxlength="500"
               class="jimeng-edit-input"
-              placeholder="请输入新的邀请链接"
+              placeholder="请粘贴新的邀请文案或链接"
               value="{{editJimengLink}}"
               bindinput="onJimengLinkInput"
             />
-            <!-- <text class="jimeng-count">{{editJimengLink.length}}/50</text> -->
+          </view>
+          <view class="jimeng-display-list" wx:if="{{editJimengLink}}">
+            <view class="jimeng-display-item">
+              <view class="jimeng-display-meta">
+                <text class="jimeng-display-label">当前链接</text>
+                <text class="jimeng-display-value">{{editJimengLink}}</text>
+              </view>
+            </view>
           </view>
 
           <view class="jimeng-actions">

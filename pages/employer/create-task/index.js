@@ -269,7 +269,9 @@ Page({
 
   toggleJimeng() {
     const checked = arguments[0] && arguments[0].detail ? !!arguments[0].detail.value : !this.data.jimengEnabled;
-    this.setData({ jimengEnabled: checked });
+    this.setData({
+      jimengEnabled: checked,
+    });
   },
 
   addRefImage() {
@@ -634,9 +636,9 @@ Page({
 
       wx.showLoading({ title: '发布中...' });
       const jimengLinkTrim = String(jimeng_link || '').trim();
-    const res = await Api.createTask({
-      title,
-      description,
+      const res = await Api.createTask({
+        title,
+        description,
         unit_price: Number(unit_price),
         total_count: Number(total_count),
         award_price: Number(this.data.award_price) || 0,
@@ -648,8 +650,8 @@ Page({
       industries: industryNames,
       styles: this.normalizeStyleSelection(this.data.selectedStyles),
       jimeng_enabled: !!jimengEnabled,
-        jimeng_link: jimengEnabled ? jimengLinkTrim : '',
-        materials,
+      jimeng_link: jimengEnabled ? jimengLinkTrim : '',
+      materials,
       });
       wx.hideLoading();
       wx.redirectTo({

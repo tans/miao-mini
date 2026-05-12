@@ -12,12 +12,6 @@
     </view>
   </view>
 
-  <!-- 实名认证提示 -->
-  <view class="verify-tip" wx:if="{{!realNameVerified}}">
-    <text class="tip-icon">!</text>
-    <text class="tip-text">首次提现需要先完成实名认证</text>
-  </view>
-
   <view class="verify-tip" wx:if="{{withdrawAuthorization && withdrawAuthorization.state !== 'TAKING_EFFECT'}}">
     <text class="tip-icon">!</text>
     <text class="tip-text">请先完成微信提现免确认收款授权</text>
