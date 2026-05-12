@@ -178,15 +178,13 @@
 
 /* 确认提现按钮 */
 .submit-section {
-  padding: 0 32rpx;
+  margin: 40rpx 32rpx;
 }
 
 .submit-btn {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  height: 88rpx;
-  line-height: 88rpx;
   background: linear-gradient(135deg, #ff9a1f 0%, #ef6c00 100%);
   border-radius: 44rpx;
   font-size: 32rpx;
