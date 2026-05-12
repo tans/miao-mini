@@ -239,7 +239,7 @@ Page({
       tipsVariant = 'pending';
       tipsIcon = '../../../images/icon/clock.png';
       tipsTitle = '已提交作品，等待审核结果';
-      tipsDesc = '预计审核时间：72小时内';
+      tipsDesc = '预计审核时间：48小时内';
     } else if (status === 4) {
       tipsVariant = 'timeout';
       tipsIcon = '../../../images/icon/alert-circle.png';

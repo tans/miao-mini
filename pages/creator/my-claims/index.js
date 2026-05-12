@@ -17,6 +17,13 @@ function normalizeClaimListResponse(data) {
   return [];
 }
 
+function formatUserLevel(level, levelName) {
+  const parsedLevel = Number(level);
+  const name = pick(levelName, '').trim();
+  if (!Number.isFinite(parsedLevel) || !name) return '';
+  return `Lv${parsedLevel}${name}`;
+}
+
 function normalizeClaim(claim = {}) {
   const claimStatus = Number(pick(claim.claim_status, claim.status, 0)) || 0;
   const reviewResult = Number(pick(claim.review_result, claim.reviewResult, 0)) || 0;
@@ -95,8 +102,8 @@ Page({
     submitNote: '',
     dialogButtons: [{ text: '取消', action: 'cancel' }, { text: '提交', type: 'primary', action: 'confirm' }],
     currentFilter: 'active',
-    userLevel: 'Lv3优质创作者',
-    dailyLimit: 8
+    userLevel: '',
+    dailyLimit: 0
   },
 
   onLoad(options) {
@@ -142,11 +149,20 @@ Page({
     this.setData({ loading: true });
     wx.showLoading({ title: '加载中...' });
     try {
-      const res = await Api.getMyClaims({ page: 1 });
-      const claimList = normalizeClaimListResponse(res && res.data);
+      const [claimsRes, creatorStatsRes] = await Promise.all([
+        Api.getMyClaims({ page: 1 }),
+        Api.getCreatorStats().catch(() => null)
+      ]);
+      const claimList = normalizeClaimListResponse(claimsRes && claimsRes.data);
       let claims = claimList.map(c => this.calculateRemainingTime(normalizeClaim(c)));
       claims.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      this.setData({ claims, loading: false });
+      const creatorStats = creatorStatsRes && creatorStatsRes.data ? creatorStatsRes.data : {};
+      this.setData({
+        claims,
+        loading: false,
+        userLevel: formatUserLevel(creatorStats.level, creatorStats.level_name),
+        dailyLimit: Number(creatorStats.daily_limit || 0)
+      });
       this.applyFilter(this.data.currentFilter);
     } catch (err) {
       this.setData({ loading: false });

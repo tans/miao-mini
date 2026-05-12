@@ -97,6 +97,9 @@
          </view>
         <!-- 标签区域 -->
         <view class="task-tags">
+          <view class="badge badge-top" wx:if="{{item.top_weight > 0}}">
+            <text>置顶</text>
+          </view>
           <view class="badge badge-reward" wx:if="{{item.unit_price > 0}}">
             <image src="../../images/home/badge-reward.png" class="badge-icon" />
             <view>基础: ¥{{item.unit_price}}</view>

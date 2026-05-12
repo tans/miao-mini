@@ -86,7 +86,12 @@ function sortTasksForDisplay(tasks = []) {
     const aFull = !!a.isFull;
     const bFull = !!b.isFull;
     if (aFull !== bFull) return aFull ? 1 : -1;
-    return 0;
+    const aWeight = Number(a.top_weight || 0) || 0;
+    const bWeight = Number(b.top_weight || 0) || 0;
+    if (aWeight !== bWeight) return bWeight - aWeight;
+    const aCreated = new Date(a.created_at || 0).getTime() || 0;
+    const bCreated = new Date(b.created_at || 0).getTime() || 0;
+    return bCreated - aCreated;
   });
 }
 
@@ -250,6 +255,7 @@ Page({
           ...t,
           award_price: Number(t.award_price || 0) || 0,
           unit_price: Number(t.unit_price || 0) || 0,
+          top_weight: Number(t.top_weight || 0) || 0,
           remaining_count: remainingCount,
           total_count: totalCount,
           isFull,

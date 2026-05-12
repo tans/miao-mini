@@ -214,6 +214,7 @@ App({
       } catch (e) {
         this.globalData.user = null;
       }
+      this.silentLogin({ quiet: true }).catch(() => {});
     } else {
       // 无缓存，静默登录
       this.silentLogin();
@@ -276,14 +277,15 @@ App({
   },
 
   // 静默登录：获取微信 code，调接口自动登录/注册
-  silentLogin() {
+  silentLogin(options = {}) {
+    const quiet = !!options.quiet;
     // 已有登录中的请求，等待它
     if (this._loginPromise) return this._loginPromise;
     // 正在登录中
     if (this._loginLock) return this._loginPromise;
 
     this._loginLock = true;
-    this._loginPromise = this._doSilentLogin().finally(() => {
+    this._loginPromise = this._doSilentLogin({ quiet }).finally(() => {
       this._loginLock = false;
       this._loginPromise = null;
     });
@@ -291,36 +293,43 @@ App({
     return this._loginPromise;
   },
 
-  async _doSilentLogin() {
+  async _doSilentLogin(options = {}) {
+    const quiet = !!options.quiet;
     return new Promise((resolve, reject) => {
       wx.login({
         success: (res) => {
           if (!res.code) {
-            wx.showModal({
-              title: "登录失败",
-              content: "微信登录code无效，请检查网络后重试",
-              showCancel: false,
-            });
+            if (!quiet) {
+              wx.showModal({
+                title: "登录失败",
+                content: "微信登录code无效，请检查网络后重试",
+                showCancel: false,
+              });
+            }
             return reject(new Error("invalid code"));
           }
           const Api = require("./utils/api.js");
           Api.loginByWechat(res.code)
             .then(() => resolve())
             .catch((err) => {
-              wx.showModal({
-                title: "登录失败",
-                content: "服务器错误，请稍后重试",
-                showCancel: false,
-              });
+              if (!quiet) {
+                wx.showModal({
+                  title: "登录失败",
+                  content: "服务器错误，请稍后重试",
+                  showCancel: false,
+                });
+              }
               reject(err);
             });
         },
         fail: () => {
-          wx.showModal({
-            title: "登录失败",
-            content: "无法连接微信，请检查网络后重试",
-            showCancel: false,
-          });
+          if (!quiet) {
+            wx.showModal({
+              title: "登录失败",
+              content: "无法连接微信，请检查网络后重试",
+              showCancel: false,
+            });
+          }
           reject(new Error("wx.login failed"));
         },
       });

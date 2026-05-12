@@ -317,6 +317,13 @@
   border: 2rpx solid #FFD8D2;
 }
 
+.badge-top {
+  background: #111827;
+  color: #ffffff;
+  border: 2rpx solid #111827;
+  font-weight: 700;
+}
+
 .badge-reward,
 .task-price {
   font-family: 'home-din-pro-700-bold';
