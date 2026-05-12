@@ -66,6 +66,10 @@
   box-sizing: border-box;
 }
 
+.info-row-muted {
+  background: #fafafa;
+}
+
 .info-row + .info-row {
   margin-top: 24rpx;
 }
@@ -96,8 +100,47 @@
   background: #FEF4E6;
 }
 
+.info-copy-btn-muted {
+  color: #9ca3af;
+  background: #eef0f3;
+}
+
 .info-input {
   height: 92rpx;
+}
+
+.info-value-muted {
+  color: #9ca3af;
+}
+
+.phone-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  min-width: 0;
+}
+
+.phone-bind-btn {
+  flex-shrink: 0;
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 22rpx;
+  border-radius: 32rpx;
+  background: linear-gradient(135deg, #ff9f2f 0%, #ff7a18 100%);
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.phone-bind-btn::after {
+  border: none;
+}
+
+.phone-hint {
+  margin: -8rpx 40rpx 0;
+  color: #8c8c8c;
+  font-size: 22rpx;
 }
 
 .info-placeholder {

@@ -297,7 +297,7 @@ const Api = {
   },
 
   bindPhone(detail) {
-    // detail: { code, encryptedData, iv } from getPhoneNumber
+    // detail: { code } from getPhoneNumber
     return this.request('POST', '/users/bind-phone', detail);
   },
 

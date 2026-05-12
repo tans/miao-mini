@@ -7,7 +7,8 @@ Page({
     userIdDisplay: '--',
     nickname: '',
     phone: '',
-    avatarSrc: Api.getAvatarMeta().avatarSrc
+    avatarSrc: Api.getAvatarMeta().avatarSrc,
+    bindingPhone: false,
   },
 
   onLoad() {
@@ -55,6 +56,29 @@ Page({
 
   onPhoneInput(e) {
     this.setData({ phone: e.detail.value });
+  },
+
+  async onGetPhoneNumber(e) {
+    const code = e && e.detail && e.detail.code;
+    if (!code) {
+      wx.showToast({ title: '未获取到手机号授权', icon: 'none' });
+      return;
+    }
+
+    this.setData({ bindingPhone: true });
+    wx.showLoading({ title: '绑定中...' });
+    try {
+      const res = await Api.bindPhone({ code });
+      const user = res.data || {};
+      app.setAuth(app.getToken(), user);
+      this.syncProfileState(user);
+      wx.showToast({ title: '绑定成功', icon: 'success' });
+    } catch (err) {
+      wx.showToast({ title: err.message || '绑定失败', icon: 'none' });
+    } finally {
+      wx.hideLoading();
+      this.setData({ bindingPhone: false });
+    }
   },
 
   goBack() {
