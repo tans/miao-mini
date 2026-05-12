@@ -177,6 +177,8 @@ function normalizeClaim(claim = {}) {
   const creatorId = String(pick(claim.creator_id, claim.creatorId, ''));
   const createdAt = pick(claim.created_at, claim.createdAt, '');
   const reviewAt = pick(claim.review_at, claim.reviewAt, '');
+  const reportAt = pick(claim.report_at, claim.reportAt, '');
+  const reportReason = pick(claim.report_reason, claim.reportReason, '');
   const submitAt = pick(claim.submit_at, claim.submitAt, '');
   const updatedAt = pick(claim.updated_at, claim.updatedAt, '');
 
@@ -193,6 +195,10 @@ function normalizeClaim(claim = {}) {
     reviewResult,
     reviewComment,
     reviewAt,
+    reportAt,
+    report_at: reportAt,
+    reportReason,
+    report_reason: reportReason,
     submitAt,
     createdAt,
     updatedAt,
@@ -212,6 +218,8 @@ function mergeClaims(baseClaim = {}, extraClaim = {}) {
     reviewComment: extraClaim.reviewComment || baseClaim.reviewComment,
     reviewResult: extraClaim.reviewResult || baseClaim.reviewResult,
     reviewAt: extraClaim.reviewAt || baseClaim.reviewAt,
+    reportAt: extraClaim.reportAt || baseClaim.reportAt,
+    reportReason: extraClaim.reportReason || baseClaim.reportReason,
     submitAt: extraClaim.submitAt || baseClaim.submitAt,
     taskTitle: extraClaim.taskTitle || baseClaim.taskTitle,
   };
@@ -250,7 +258,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const claimStatus = toNumber(pick(claim.status, 0));
   const claimCreatorId = String(pick(claim.creator_id, claim.creatorId, ''));
   const taskBusinessId = String(pick(task.business_id, task.businessId, claim.business_id, claim.businessId, ''));
-  const reportAt = pick(claim.review_at, claim.reviewAt, claim.updated_at, claim.updatedAt, claim.created_at, claim.createdAt, '');
+  const reportAt = pick(claim.report_at, claim.reportAt, claim.review_at, claim.reviewAt, '');
   const appealDeadlineExpired = isAppealDeadlineExpired(reportAt);
   const appealStatus = appeal ? toNumber(appeal.status) : 0;
   const appealResolved = appealStatus === 2;
@@ -286,11 +294,15 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const reportReason = reviewResult === 3
     ? pick(
       normalizeMerchantReportReason(appeal && appeal.merchantResult),
+      normalizeMerchantReportReason(claim.reportReason),
+      normalizeMerchantReportReason(claim.report_reason),
       normalizeMerchantReportReason(claim.review_comment),
       DEFAULT_REPORT_REASON
     )
     : pick(
       normalizeMerchantReportReason(appeal && appeal.merchantResult),
+      normalizeMerchantReportReason(claim.reportReason),
+      normalizeMerchantReportReason(claim.report_reason),
       normalizeMerchantReportReason(claim.review_comment),
       ''
     );
@@ -304,13 +316,14 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
 
   const appealReason = appeal ? pick(appeal.reason, '') : '';
   const appealReasonText = appealReason || '';
-  const appealTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, appeal.createdAt, appeal.created_at, '')) : '';
+  const appealCreatedTimeText = appeal ? formatDateTime(pick(appeal.createdAt, appeal.created_at, '')) : '';
+  const appealHandledTimeText = appeal ? formatDateTime(pick(appeal.handleAt, appeal.handle_at, '')) : '';
   const appealCreatorText = creatorName ? `创作者:${creatorName}` : '创作者';
   const appealCountdownText = !appeal && hasReport && !reportTimedOut ? getAppealCountdownText(reportAt) : '';
   const appealTimeLine = appeal
     ? (appealAutoTimeout
-      ? `超时未申诉:${appealTimeText || '时间待更新'}`
-      : `提交申诉:${appealTimeText || '时间待更新'}`)
+      ? `超时未申诉:${appealCreatedTimeText || '时间待更新'}（48小时）`
+      : `提交申诉:${appealCreatedTimeText || '时间待更新'}`)
     : (reportTimedOut
       ? '已超时，平台将自动判拒'
       : (appealCountdownText || (canAppeal ? '点击按钮提交申诉说明' : (hasReport ? '等待创作者提交申诉' : '等待处理结果'))));
@@ -346,7 +359,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
   const platformStateClass = appeal
     ? (appealResolved
       ? (appealAccepted ? 'resolved' : 'rejected')
-      : 'processing')
+      : 'platform-pending')
     : (reportTimedOut ? 'rejected' : (hasReport ? 'waiting' : 'muted'));
   const platformReplyText = appealResolved && appealReplyText && appealReplyText !== platformOutcomeText
     ? appealReplyText
@@ -412,7 +425,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       metaText: appealMetaText,
       creatorText: appealCreatorText,
       timeLine: appealTimeLine,
-      timeText: appealTimeText || '时间待更新',
+      timeText: appealCreatedTimeText || '时间待更新',
       stateClass: appeal ? (appealAutoTimeout ? 'rejected' : 'processing') : (reportTimedOut ? 'rejected' : (hasReport ? 'waiting' : 'muted')),
       countdownText: appealCountdownText,
       appealId: appeal ? String(appeal.id || '') : '',
@@ -426,7 +439,7 @@ function buildWorkflowCard({ claim = {}, task = {}, appeal = null, currentUserId
       detail: appealResolved ? (platformOutcomeText || '通过申诉') : '等待平台处理',
       replyText: platformReplyText,
       replyLine: platformReplyLine,
-      timeText: appealTimeText || '时间待更新',
+      timeText: appealHandledTimeText || '时间待更新',
       stateClass: platformStateClass,
     },
     materials,
