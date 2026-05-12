@@ -182,6 +182,30 @@ const Api = {
     });
   },
 
+  reportUploadException(payload = {}) {
+    return this.reportException({
+      type: payload.type || 'upload_error',
+      level: payload.level || 'error',
+      message: payload.message || '上传失败',
+      method: payload.method || 'POST',
+      path: payload.path || '/upload',
+      statusCode: payload.statusCode || 0,
+      requestBody: payload.requestBody || {},
+      responseBody: payload.responseBody || '',
+      extra: {
+        upload_mode: payload.uploadMode || '',
+        file_type: payload.fileType || '',
+        ext: payload.ext || '',
+        filename: payload.filename || '',
+        biz_type: payload.bizType || '',
+        biz_id: payload.bizId || '',
+        job_id: payload.jobId || '',
+        fallback: !!payload.fallback,
+        ...(payload.extra || {}),
+      },
+    });
+  },
+
   request(method, path, data = null, noAuth = false) {
     return new Promise((resolve, reject) => {
       const requestData = data;
@@ -495,10 +519,55 @@ const Api = {
             resolve(res);
             return;
           }
+          this.reportUploadException({
+            type: 'upload_http_error',
+            message: `上传失败(${res.statusCode})`,
+            method: 'POST',
+            path: '/upload',
+            statusCode: res.statusCode,
+            requestBody: {
+              type: fileType,
+              biz_type: options.bizType || '',
+              biz_id: options.bizId || '',
+              job_id: options.jobId || '',
+              filename,
+              ext,
+            },
+            responseBody: res.data,
+            uploadMode: 'backend',
+            fileType,
+            ext,
+            filename,
+            bizType: options.bizType || '',
+            bizId: options.bizId || '',
+            jobId: options.jobId || '',
+          });
           reject(new Error(`上传失败(${res.statusCode})`));
         },
         fail: (err) => {
           const msg = err && (err.message || err.errMsg) || '上传失败';
+          this.reportUploadException({
+            type: 'upload_network_error',
+            message: msg,
+            method: 'POST',
+            path: '/upload',
+            requestBody: {
+              type: fileType,
+              biz_type: options.bizType || '',
+              biz_id: options.bizId || '',
+              job_id: options.jobId || '',
+              filename,
+              ext,
+            },
+            responseBody: err,
+            uploadMode: 'backend',
+            fileType,
+            ext,
+            filename,
+            bizType: options.bizType || '',
+            bizId: options.bizId || '',
+            jobId: options.jobId || '',
+          });
           reject(new Error(msg));
         },
       });
@@ -509,10 +578,56 @@ const Api = {
       try {
         payload = JSON.parse(payload);
       } catch (e) {
+        this.reportUploadException({
+          type: 'upload_parse_error',
+          message: '服务器响应异常',
+          method: 'POST',
+          path: '/upload',
+          statusCode: uploadRes.statusCode || 0,
+          requestBody: {
+            type: fileType,
+            biz_type: options.bizType || '',
+            biz_id: options.bizId || '',
+            job_id: options.jobId || '',
+            filename,
+            ext,
+          },
+          responseBody: uploadRes.data,
+          uploadMode: 'backend',
+          fileType,
+          ext,
+          filename,
+          bizType: options.bizType || '',
+          bizId: options.bizId || '',
+          jobId: options.jobId || '',
+        });
         throw new Error('服务器响应异常');
       }
     }
     if (!payload || payload.code !== 0) {
+      this.reportUploadException({
+        type: 'upload_response_error',
+        message: (payload && payload.message) || '上传失败',
+        method: 'POST',
+        path: '/upload',
+        statusCode: uploadRes.statusCode || 0,
+        requestBody: {
+          type: fileType,
+          biz_type: options.bizType || '',
+          biz_id: options.bizId || '',
+          job_id: options.jobId || '',
+          filename,
+          ext,
+        },
+        responseBody: payload,
+        uploadMode: 'backend',
+        fileType,
+        ext,
+        filename,
+        bizType: options.bizType || '',
+        bizId: options.bizId || '',
+        jobId: options.jobId || '',
+      });
       throw new Error((payload && payload.message) || '上传失败');
     }
 
@@ -574,23 +689,90 @@ const Api = {
               resolve();
               return;
             }
+            this.reportUploadException({
+              type: 'cos_upload_http_error',
+              message: `上传失败(${res.statusCode})`,
+              method: 'PUT',
+              path: '/cos/upload',
+              statusCode: res.statusCode,
+              requestBody: {
+                type: fileType,
+                ext,
+                filename,
+                biz_type: options.bizType || '',
+                biz_id: options.bizId || '',
+                job_id: options.jobId || '',
+              },
+              responseBody: res.data,
+              uploadMode: 'cos',
+              fileType,
+              ext,
+              filename,
+              bizType: options.bizType || '',
+              bizId: options.bizId || '',
+              jobId: options.jobId || '',
+            });
             reject(new Error(`上传失败(${res.statusCode})`));
           },
           fail: (err) => {
             const msg = err && (err.message || err.errMsg) || '上传失败';
+            this.reportUploadException({
+              type: 'cos_upload_network_error',
+              message: msg,
+              method: 'PUT',
+              path: '/cos/upload',
+              requestBody: {
+                type: fileType,
+                ext,
+                filename,
+                biz_type: options.bizType || '',
+                biz_id: options.bizId || '',
+                job_id: options.jobId || '',
+              },
+              responseBody: err,
+              uploadMode: 'cos',
+              fileType,
+              ext,
+              filename,
+              bizType: options.bizType || '',
+              bizId: options.bizId || '',
+              jobId: options.jobId || '',
+            });
             reject(new Error(msg));
           },
         });
       });
     } catch (err) {
-      const errMsg = (err && (err.message || err.errMsg)) || '';
-      const shouldFallback = !errMsg || errMsg.includes('url not in domain list') || errMsg.includes('request:fail');
-      if (!shouldFallback) {
-        throw err;
-      }
-      const backendResult = await this.uploadViaBackend(tempFilePath, options, fileType, ext, filename);
-      wx.setStorageSync('lastUploadTime', new Date().toISOString());
-      return options.returnMeta ? backendResult : backendResult.url;
+      const errMsg = (err && (err.message || err.errMsg)) || '上传失败';
+      const needsDomainHint = errMsg.includes('url not in domain list') || errMsg.includes('request:fail');
+
+      this.reportUploadException({
+        type: needsDomainHint ? 'cos_upload_domain_error' : 'cos_upload_failed',
+        message: needsDomainHint ? `COS直传失败，请检查合法域名配置: ${errMsg}` : errMsg,
+        method: 'PUT',
+        path: '/cos/upload',
+        requestBody: {
+          type: fileType,
+          ext,
+          filename,
+          biz_type: options.bizType || '',
+          biz_id: options.bizId || '',
+          job_id: options.jobId || '',
+        },
+        responseBody: err,
+        uploadMode: 'cos',
+        fileType,
+        ext,
+        filename,
+        bizType: options.bizType || '',
+        bizId: options.bizId || '',
+        jobId: options.jobId || '',
+        extra: {
+          hint: needsDomainHint ? '请在微信小程序后台同时配置 request 和 uploadFile/downloadFile 等合法域名，并确认 COS 直传域名已放行' : '',
+        },
+      });
+
+      throw new Error(needsDomainHint ? `COS直传失败，请检查合法域名配置: ${errMsg}` : errMsg);
     }
 
     wx.setStorageSync('lastUploadTime', new Date().toISOString());
@@ -805,6 +987,14 @@ const Api = {
 
   queryRechargeOrder(orderNo) {
     return this.request('GET', `/account/recharge/${encodeURIComponent(orderNo)}`);
+  },
+
+  getWithdrawAuthorization() {
+    return this.request('GET', '/creator/withdraw-authorization');
+  },
+
+  createWithdrawAuthorization(data = {}) {
+    return this.request('POST', '/creator/withdraw-authorization', data);
   },
 
   withdraw(amount) {

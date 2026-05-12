@@ -18,6 +18,11 @@
     <text class="tip-text">首次提现需要先完成实名认证</text>
   </view>
 
+  <view class="verify-tip" wx:if="{{withdrawAuthorization && withdrawAuthorization.state !== 'TAKING_EFFECT'}}">
+    <text class="tip-icon">!</text>
+    <text class="tip-text">请先完成微信提现免确认收款授权</text>
+  </view>
+
   <!-- 提现金额输入 -->
   <view class="amount-section">
     <view class="section-title">提现金额</view>
@@ -46,9 +51,10 @@
 
   <!-- 确认提现按钮 -->
   <view class="submit-section">
-    <button class="submit-btn {{loading ? 'loading' : ''}}" bindtap="handleWithdraw" disabled="{{loading}}">
+    <button class="submit-btn {{loading || authorizing ? 'loading' : ''}}" bindtap="handleWithdraw" disabled="{{loading || authorizing}}">
       <text wx:if="{{!loading}}">确认提现</text>
       <text wx:if="{{loading}}">提交中...</text>
+      <text wx:if="{{!loading && authorizing}}">授权中...</text>
     </button>
   </view>
 
@@ -56,6 +62,7 @@
   <view class="notice-section">
     <view class="notice-title">提现说明</view>
     <view class="notice-item">• 可提现金额满{{minWithdrawAmount}}元才可发起提现</view>
+    <view class="notice-item">• 提现前需先在微信中完成收款授权</view>
     <view class="notice-item">• 提现申请提交后，预计1到3个工作日到账</view>
     <view class="notice-item">• 如有疑问请联系客服</view>
   </view>

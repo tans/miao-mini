@@ -1,6 +1,6 @@
 {
   "name": "miao-mini",
-  "version": "1.0.8",
+  "version": "1.0.11",
   "description": "连接商家与创作者的视频任务撮合平台",
   "scripts": {
     "dev": "npx serve . -p 3000",

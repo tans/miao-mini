@@ -2,21 +2,42 @@ const Api = require('../../../utils/api.js');
 const app = getApp();
 
 Page({
+  _currentUser() {
+    return this._currentUserProfile || app.globalData.user || {};
+  },
+
   _defaultContactPhone() {
-    const user = app.globalData.user || {};
+    const user = this._currentUser();
     return (this.data.userPhone || user.phone || '').trim();
+  },
+
+  _normalizeContactName(rawName) {
+    const contactName = (rawName || '').trim();
+    if (!contactName) return '';
+
+    const user = this._currentUser();
+    const fallbackNames = [user.nickname, user.username]
+      .map(name => (name || '').trim())
+      .filter(Boolean);
+    if (fallbackNames.includes(contactName)) {
+      return '';
+    }
+
+    return contactName;
   },
 
   async loadCurrentUser() {
     try {
       const res = await Api.getMe();
       const user = res.data || {};
+      this._currentUserProfile = user;
       this.setData({
         userPhone: user.phone || ''
       });
       return user;
     } catch (e) {
       const user = app.globalData.user || {};
+      this._currentUserProfile = user;
       this.setData({
         userPhone: user.phone || ''
       });
@@ -59,7 +80,7 @@ Page({
         status: normalizedStatus,
         companyName: data.company_name || '',
         creditCode: data.credit_code || data.social_credit_code || data.unified_social_credit_code || '',
-        contactName: data.contact_name || '',
+        contactName: this._normalizeContactName(data.contact_name || ''),
         contactPhone: data.contact_phone || this._defaultContactPhone(),
         licenseUrl: data.license_url || '',
         licensePreviewUrl: data.license_preview_url || data.license_url || '',
@@ -202,7 +223,7 @@ Page({
                 }
                 const legalPerson = ocrData.legal_person || ocrData.legalPerson || '';
                 if (legalPerson) {
-                  nextData.contactName = legalPerson;
+                  nextData.contactName = this._normalizeContactName(legalPerson);
                   ocrAnyFilled = true;
                 }
                 if (!this.data.contactPhone && this._defaultContactPhone()) {
@@ -244,7 +265,7 @@ Page({
     if (!(status === 'uncertified' || isEditing)) {
       return;
     }
-    const finalContactName = (contactName || '').trim();
+    const finalContactName = this._normalizeContactName(contactName);
     const finalContactPhone = (contactPhone || this._defaultContactPhone()).trim();
     if (!companyName.trim()) {
       wx.showToast({ title: '请输入企业名称', icon: 'none' });
