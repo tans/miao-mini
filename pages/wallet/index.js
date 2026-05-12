@@ -34,6 +34,40 @@ function appendFeeRemarkText(baseRemark, fee, feeLabel) {
   return `${baseRemark}，${label} ${formatMoneyText(feeAmount)} 元`;
 }
 
+function parseWithdrawRefundRemark(remark) {
+  const raw = String(remark || '').trim();
+  if (!raw) {
+    return '';
+  }
+
+  let cleaned = raw
+    .replace(/^提现退回[:：]?\s*/, '')
+    .replace(/^账款提现退款[,，]?\s*/, '')
+    .trim();
+
+  const reasonMatch = cleaned.match(/(?:^|[，,])\s*原因[:：]\s*(.+)$/);
+  let reasonText = reasonMatch ? String(reasonMatch[1] || '').trim() : '';
+
+  if (!reasonText && /管理员拒绝|打款失败|转账失败/.test(cleaned)) {
+    reasonText = cleaned;
+  }
+
+  if (!reasonText) {
+    return '提现退回，金额已退回余额';
+  }
+
+  reasonText = reasonText
+    .replace(/^管理员拒绝[:：]?\s*/, '管理员拒绝（')
+    .replace(/^打款失败[:：]?\s*/, '打款失败（')
+    .replace(/^微信打款失败[:：]?\s*/, '微信打款失败（');
+
+  if (/（[^）]*$/.test(reasonText)) {
+    reasonText += '）';
+  }
+
+  return `提现退回，金额已退回余额。原因：${reasonText}`;
+}
+
 function getTransactionTypeCode(tx) {
   return String(tx.type_code || '').toLowerCase();
 }
@@ -102,7 +136,7 @@ function buildReadableRemark(tx, category, typeCode, fee, feeLabel) {
     return buildRemarkText(category, typeCode);
   }
   if (typeCode === 'withdraw_refund') {
-    return originalRemark ? originalRemark.replace(/^提现退回[:：]?\s*/, '账款提现退款，原因：') : buildRemarkText(category, typeCode);
+    return originalRemark ? parseWithdrawRefundRemark(originalRemark) : '提现退回，金额已退回余额';
   }
   if (typeCode === 'recharge') {
     return buildRemarkText(category, typeCode);
