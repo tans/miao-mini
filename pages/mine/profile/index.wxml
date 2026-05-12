@@ -14,7 +14,7 @@
     <view class="info-row info-row-muted">
       <text class="info-label">用户ID</text>
       <text class="info-value info-value-muted">{{userIdDisplay}}</text>
-      <view class="info-copy-btn info-copy-btn" bindtap="copyUserId">复制</view>
+      <view class="info-copy-btn" bindtap="copyUserId">复制</view>
     </view>
     <view class="info-row">
       <text class="info-label">昵称</text>
@@ -34,7 +34,7 @@
           {{phone || '请先授权手机号'}}
         </view>
         <button
-          class="info-copy-btn phone-bind-btn"
+          class="info-copy-btn  "
           size="mini"
           open-type="getPhoneNumber"
           bindgetphonenumber="onGetPhoneNumber"
