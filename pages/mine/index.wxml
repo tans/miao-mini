@@ -19,12 +19,15 @@
             binderror="onAvatarError"
             style="opacity: 1;"
           />
+          <view class="edit-icon-badge">
+            <text class="edit-icon-text">✎</text>
+          </view>
         </view>
         <view class="user-detail">
           <view class="user-name-row" bindtap="goProfile">
-            <view style="display: flex; align-items: center; gap: 10rpx;">
+            <view class="user-name-trigger">
               <text class="user-name">{{user.nickname || user.username || '未登录'}}</text>
-              <!-- <image class="wallet-arrow" src="../../images/mine/right.png" /> -->
+              <text class="user-name-edit-icon">✎</text>
             </view>
             <!-- <view class="user-right">
               <text class="user-id">ID：{{user.id || '--'}}</text>

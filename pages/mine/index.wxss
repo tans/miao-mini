@@ -169,6 +169,27 @@
   flex-shrink: 0;
 }
 
+.edit-icon-badge {
+  position: absolute;
+  right: -2rpx;
+  bottom: -2rpx;
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  background: #fff7ec;
+  border: 2rpx solid #fff;
+  box-shadow: 0 4rpx 12rpx rgba(239, 136, 2, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-icon-text {
+  font-size: 18rpx;
+  line-height: 1;
+  color: #ef8802;
+}
+
 .user-avatar {
   width: 100%;
   height: 100%;
@@ -212,6 +233,12 @@
   margin-bottom: 8rpx;
 }
 
+.user-name-trigger {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
 .user-right {
   display: flex;
   align-items: center;
@@ -222,6 +249,13 @@
   font-weight: 700;
   color: #333;
   margin-right: 8rpx;
+}
+
+.user-name-edit-icon {
+  font-size: 20rpx;
+  line-height: 1;
+  color: #ef8802;
+  flex-shrink: 0;
 }
 
 .user-id {
