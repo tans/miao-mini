@@ -190,7 +190,7 @@ module.exports = {
         <view class="switch-row flex">
           <view class="switch-info">
             <text class="switch-title">即梦合拍设置</text>
-            <text class="switch-desc">商家提供数字人模型给创作者用于合成视频</text>
+            <text class="switch-desc">开启授权后创作者即可用你本人形象出镜</text>
           </view>
           <!-- <image class="switch-icon" src="./images/icon-remove.png" /> -->
           <switch class="switch-icon" checked="{{jimengEnabled}}" bindchange="toggleJimeng" color="#FF9F2F"/>

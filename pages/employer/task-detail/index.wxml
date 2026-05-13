@@ -317,7 +317,7 @@
           <view class="jimeng-content-main">
             <view class="jimeng-content-header">
               <text class="header-hint">即梦合拍设置</text>
-              <text class="header-hint">商家提供数字人模型给创作者用于合成视频</text>
+              <text class="header-hint">开启授权后创作者即可用你本人形象出镜</text>
             </view>
             <switch class="switch-icon" checked="{{task.jimeng_enabled}}" color="#FF9F2F" disabled/>
           </view>
