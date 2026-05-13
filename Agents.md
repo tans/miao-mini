@@ -23,7 +23,6 @@
 ## 主要页面
 
 - 首页 `pages/home/index`: 任务大厅，支持筛选、排序、倒计时、报名
-- 灵感 `pages/works/index`: 过审作品流，支持搜索、标签和排序
 - 我的 `pages/mine/index`: 用户中心，聚合钱包、创作者专区、商家专区、客服
 - 商家创建任务 `pages/employer/create-task/index`: 发任务、AI 帮写、素材上传、预算预览
 - 创作者任务 `pages/creator/my-claims/index`: 我的认领、提交作品、取消认领

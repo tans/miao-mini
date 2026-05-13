@@ -171,8 +171,8 @@
 
 .edit-icon-badge {
   position: absolute;
-  right: -2rpx;
-  bottom: -2rpx;
+  right: -8rpx;
+  bottom: -8rpx;
   width: 34rpx;
   height: 34rpx;
   border-radius: 50%;
@@ -185,7 +185,7 @@
 }
 
 .edit-icon-text {
-  font-size: 18rpx;
+  font-size: 24rpx;
   line-height: 1;
   color: #ef8802;
 }
@@ -252,8 +252,9 @@
 }
 
 .user-name-edit-icon {
-  font-size: 20rpx;
+  font-size: 36rpx;
   line-height: 1;
+  text-decoration: underline;
   color: #ef8802;
   flex-shrink: 0;
 }
