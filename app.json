@@ -2,7 +2,6 @@
   "pages": [
     "pages/home/index",
     "pages/messages/index",
-    "pages/works/index",
     "pages/creator/adopted-works/index",
     "pages/mine/index",
     "pages/creator/my-claims/index",

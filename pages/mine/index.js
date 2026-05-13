@@ -444,10 +444,6 @@ Page({
     wx.switchTab({ url: '/pages/home/index' });
   },
 
-  goInspiration() {
-    wx.switchTab({ url: '/pages/works/index' });
-  },
-
   goMerchantAuth() {
     this._ensureLogin(() => {
       wx.navigateTo({ url: '/pages/mine/merchant-auth/index' });
