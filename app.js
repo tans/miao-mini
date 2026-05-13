@@ -84,7 +84,6 @@ function getShareTitle(page) {
   );
 
   if (route === "/pages/home/index") return "创意喵｜AI视频众包撮合平台";
-  if (route === "/pages/works/index") return "创意喵灵感作品";
   if (route === "/pages/video-player/index") return baseTitle ? `${baseTitle}｜创意喵视频预览` : "创意喵视频预览";
   if (route === "/pages/employer/task-detail/index" || route === "/pages/creator/task-detail/index") {
     return baseTitle ? `${baseTitle}｜创意喵任务详情` : "创意喵任务详情";

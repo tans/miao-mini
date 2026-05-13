@@ -359,10 +359,6 @@ Page({
     });
   },
 
-  goWorks() {
-    wx.switchTab({ url: '/pages/works/index' });
-  },
-
   goMine() {
     wx.switchTab({ url: '/pages/mine/index' });
   },
