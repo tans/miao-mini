@@ -1105,7 +1105,7 @@ picker.spec-item {
 .agreement-check-row {
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   margin-bottom: 12rpx;
 }

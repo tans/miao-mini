@@ -323,7 +323,10 @@ module.exports = {
         <view class="agreement-check {{agreementChecked ? 'agreement-check-checked' : ''}}" bindtap="toggleAgreement">
           <view class="agreement-check-icon {{agreementChecked ? 'agreement-check-icon-checked' : ''}}"></view>
         </view>
-        <view class="agreement-text">
+        <view class="agreement-text" 
+        
+        bindtap="toggleAgreement"
+        >
           <text class="agreement-text-tip">请先阅读并勾选</text>
           <text class="agreement-link" catchtap="goMerchantAgreement">《平台商家服务协议》</text>
           <text class="agreement-text-tip">和</text>

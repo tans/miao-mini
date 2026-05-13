@@ -252,9 +252,9 @@
 }
 
 .user-name-edit-icon {
-  font-size: 36rpx;
+  font-size: 32rpx;
   line-height: 1;
-  text-decoration: underline;
+  /* text-decoration: underline; */
   color: #ef8802;
   flex-shrink: 0;
 }
